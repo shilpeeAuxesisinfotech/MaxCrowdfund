@@ -33,7 +33,7 @@ public class MyInvestmentDetailRepayAdapter extends RecyclerView.Adapter<MyInves
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         holder.tvName.setText(String.valueOf(arrayList.get(position).getData().getPeriod()));
         holder.tv_invested.setText(arrayList.get(position).getData().getAmount());
-        Log.d(TAG, "onBindViewHolder: ");
+
     }
 
     @Override
