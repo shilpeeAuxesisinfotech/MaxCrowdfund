@@ -31,7 +31,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.activity.DashboardActivity;
 import com.auxesis.maxcrowdfund.adapter.AccountBalanceAdapter;
 import com.auxesis.maxcrowdfund.adapter.PortFolioAdapter;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
@@ -74,8 +73,6 @@ public class DashboardFragment extends Fragment {
     List<PortfolioModel> arrears_4 = new ArrayList<>();
     List<PortfolioModel> reserved = new ArrayList<>();
 
-
-
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
         binding = DataBindingUtil.inflate( inflater,R.layout.fragment_dashboard, container, false);
@@ -83,22 +80,6 @@ public class DashboardFragment extends Fragment {
          //here data must be an instance of the class DashboardViewModel
         binding.setDashboard(dashboardViewModel);
         binding.setLifecycleOwner(this);
-      //  binding.recyViewAccBalance.setLayoutManager(new LinearLayoutManager(getActivity()));
-      //  binding.recyViewAccBalance.setHasFixedSize(true);
-
-       /* dashboardViewModel.getAccountBalance().observe(this, new Observer<AccountBalanceResponse>() {
-            @Override
-            public void onChanged(AccountBalanceResponse accountBalanceResponse) {
-                Log.d(TAG, "onChanged: "+accountBalanceResponse.getBalance().getHeading());
-               *//* deposited.sadd(accountBalanceResponse.getBalance().getData().getDeposited());
-                arrayList.addAll(deposited);
-                accountbalanceadapter =new DashboardAccBalanceAdapter(getActivity(),arrayList);
-                binding.recyViewAccBalance.setAdapter(accountbalanceadapter);*//*
-               // accountbalanceadapter.setAccountBalanceList(accountBalanceResponse.getBalance().getData().getDeposited());
-
-            }
-        });
-*/
 
         if (Utils.isInternetConnected(getActivity())) {
             getAccountBalance();
@@ -106,10 +87,7 @@ public class DashboardFragment extends Fragment {
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
         }
-
         return root;
-
-
     }
     private void getAccountBalance() {
         pd = ProgressDialog.show(getActivity(), "Please Wait...");
