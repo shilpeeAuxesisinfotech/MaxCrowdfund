@@ -4,13 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.activity.customInterface.OnDownloadClickListener;
 import com.auxesis.maxcrowdfund.adapter.InvestmentDocumentAdapter;
@@ -18,24 +22,27 @@ import com.auxesis.maxcrowdfund.adapter.MyInvestmentDetailAdapter;
 import com.auxesis.maxcrowdfund.adapter.MyInvestmentDetailRepayAdapter;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
-import com.auxesis.maxcrowdfund.customUtils.ApiClient;
-import com.auxesis.maxcrowdfund.customUtils.EndPointInterface;
+import com.auxesis.maxcrowdfund.restapi.ApiClient;
+import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.myinvestmentdetail.MyInvestmentDetailResponse;
 import com.google.gson.Gson;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 import static com.auxesis.maxcrowdfund.constant.Utils.showToast;
 
 
 public class MyInvestmentDetailActivity extends AppCompatActivity implements OnDownloadClickListener {
     private static final String TAG = "MyInvestmentDetailActiv";
     TextView tv_back_arrow, tvHeaderTitle, tv_arrow_document, tv_arrow_repayment_schedule, tvInvestment, tv_investment_amount,
-            tvInvested, tv_invested_amount, tv_document,tv_repayment_schedule;
+            tvInvested, tv_invested_amount, tv_document, tv_repayment_schedule;
     RelativeLayout rl_document_click, rl_repayment_schedule_click;
     LinearLayout ll_contant_document, ll_repayment_schedule_content;
     ProgressDialog pd;
-    RecyclerView recyclerView, recyclerViewDocment,recyclerViewRepayment;
+    RecyclerView recyclerView, recyclerViewDocment, recyclerViewRepayment;
+    Button btn_change, btn_view_pinch;
 
     MyInvestmentDetailAdapter adapter;
     InvestmentDocumentAdapter documentadapter;
@@ -81,6 +88,23 @@ public class MyInvestmentDetailActivity extends AppCompatActivity implements OnD
         tv_invested_amount = findViewById(R.id.tv_invested_amount);
         tv_document = findViewById(R.id.tv_document);
         tv_repayment_schedule = findViewById(R.id.tv_repayment_schedule);
+
+        btn_change = findViewById(R.id.btn_change);
+        btn_view_pinch = findViewById(R.id.btn_view_pinch);
+
+
+        btn_change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ChangeEmailActivity.class));
+            }
+        });
+        btn_view_pinch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), MaxPropertyGroupDetailActivity.class));
+            }
+        });
 
         if (Utils.isInternetConnected(getApplicationContext())) {
             getMyInvestmentDetail();
@@ -137,8 +161,8 @@ public class MyInvestmentDetailActivity extends AppCompatActivity implements OnD
                     tv_invested_amount.setText(response.body().getDetails().getInvested().getData());
                     tv_document.setText(response.body().getDetails().getDocuments().getHeading());
 
-                    if (response.body().getDetails().getLoanTerms().getData().size()>0) {
-                        adapter = new MyInvestmentDetailAdapter(getApplicationContext(),  response.body().getDetails().getLoanTerms().getData());
+                    if (response.body().getDetails().getLoanTerms().getData().size() > 0) {
+                        adapter = new MyInvestmentDetailAdapter(getApplicationContext(), response.body().getDetails().getLoanTerms().getData());
                         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MyInvestmentDetailActivity.this, LinearLayoutManager.VERTICAL, false);
                         recyclerView.setLayoutManager(mLayoutManager);
                         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -146,7 +170,7 @@ public class MyInvestmentDetailActivity extends AppCompatActivity implements OnD
                         adapter.notifyDataSetChanged();
                     }
                     //for document
-                    if (response.body().getDetails().getDocuments().getData().size()>0) {
+                    if (response.body().getDetails().getDocuments().getData().size() > 0) {
                         documentadapter = new InvestmentDocumentAdapter(getApplicationContext(), MyInvestmentDetailActivity.this, response.body().getDetails().getDocuments().getData());
                         RecyclerView.LayoutManager mdLayoutManager = new LinearLayoutManager(MyInvestmentDetailActivity.this, LinearLayoutManager.VERTICAL, false);
                         recyclerViewDocment.setLayoutManager(mdLayoutManager);
@@ -156,8 +180,8 @@ public class MyInvestmentDetailActivity extends AppCompatActivity implements OnD
                     }
                     //For repayment_schedule
                     tv_repayment_schedule.setText(response.body().getDetails().getRepaymentSchedule().getHeading());
-                    if (response.body().getDetails().getRepaymentSchedule().getData().size()>0) {
-                        repaymentadapter = new MyInvestmentDetailRepayAdapter(getApplicationContext(),  response.body().getDetails().getRepaymentSchedule().getData());
+                    if (response.body().getDetails().getRepaymentSchedule().getData().size() > 0) {
+                        repaymentadapter = new MyInvestmentDetailRepayAdapter(getApplicationContext(), response.body().getDetails().getRepaymentSchedule().getData());
                         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MyInvestmentDetailActivity.this, LinearLayoutManager.VERTICAL, false);
                         recyclerViewRepayment.setLayoutManager(mLayoutManager);
                         recyclerViewRepayment.setItemAnimator(new DefaultItemAnimator());

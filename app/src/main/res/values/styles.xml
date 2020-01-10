@@ -8,11 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
-       <!-- <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>-->
+        <!-- <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>-->
     </style>
 
     <!--For Menu-->
-   <!-- <style name="MyActionButtonOverflow" parent="android:style/Widget.Holo.Light.ActionButton.Overflow">
+    <!-- <style name="MyActionButtonOverflow" parent="android:style/Widget.Holo.Light.ActionButton.Overflow">
         <item name="android:src">@drawable/user</item>
         <item name="android:background">?android:attr/actionBarItemBackground</item>
         <item name="android:contentDescription">"Lala"</item>

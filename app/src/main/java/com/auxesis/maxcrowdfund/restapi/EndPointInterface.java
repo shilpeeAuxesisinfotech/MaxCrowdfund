@@ -1,15 +1,18 @@
-package com.auxesis.maxcrowdfund.customUtils;
+package com.auxesis.maxcrowdfund.restapi;
 
+import com.auxesis.maxcrowdfund.custommvvm.changeemail.ChangeEmailResponse;
 import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.MyInvestmentSearchResponse;
 import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.myinvestmentdetail.MyInvestmentDetailResponse;
 import com.auxesis.maxcrowdfund.custommvvm.profile.profileModel.ProfileResponse;
 import com.auxesis.maxcrowdfund.custommvvm.dashboardDetail.DashboardDetailModel.DashboardDetailModelResponce;
 import com.auxesis.maxcrowdfund.custommvvm.dashboardDetail.DashboardDetailModel.DashboardSignatureResponce;
 import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.MyInvestmentResponce;
+import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -45,6 +48,10 @@ public interface EndPointInterface {
     Call<MyInvestmentDetailResponse> getMyInvestmentDetail();
 
 
+    @POST("api/change-email")
+    Call<ChangeEmailResponse> changeEmail(@Header("Content-Type") String content,
+                                          @Header("X-CSRF-Token") String xcsrf,
+                                          @Body JsonObject jsonObject);
 
 
 

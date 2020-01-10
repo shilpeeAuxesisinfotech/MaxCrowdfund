@@ -41,6 +41,7 @@ import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
 import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.MyInvestmentsActivity;
 import com.auxesis.maxcrowdfund.model.MyListModel;
+import com.auxesis.maxcrowdfund.mvvm.HomeActivity;
 import com.google.android.material.navigation.NavigationView;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -191,9 +192,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_contact_information) {
             startActivity(new Intent(MainActivity.this, ContactInformationActivity.class));
             // overridePendingTransition(R.anim.enter, R.anim.exit);
-        } /*else if (id == R.id.nav_demo) {
+        } else if (id == R.id.nav_demo) {
             startActivity(new Intent(MainActivity.this, HomeActivity.class));
-        } */ else if (id == R.id.nav_logout) {
+        }  else if (id == R.id.nav_logout) {
             if (isInternetConnected(getApplicationContext())) {
                 getCheckUser();
             } else {

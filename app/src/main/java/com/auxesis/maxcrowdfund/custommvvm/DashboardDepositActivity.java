@@ -11,9 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.activity.LoginActivity;
-import com.auxesis.maxcrowdfund.customUtils.ApiClient;
-import com.auxesis.maxcrowdfund.customUtils.EndPointInterface;
+import com.auxesis.maxcrowdfund.restapi.ApiClient;
+import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.auxesis.maxcrowdfund.custommvvm.dashboardDetail.DashboardDetailModel.DashboardDetailModelResponce;
 import com.auxesis.maxcrowdfund.custommvvm.dashboardDetail.DashboardDetailModel.DashboardSignatureResponce;
 import com.google.gson.Gson;
