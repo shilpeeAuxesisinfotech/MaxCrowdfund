@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray_bg"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context=".activity.ChangeMobileNumberActivity">
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/header" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header"
+        android:padding="@dimen/_10sdp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:padding="@dimen/_5sdp"
+            app:cardCornerRadius="@dimen/_5sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_10sdp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:padding="@dimen/_5sdp"
+                        android:text="Enter the mobile number you wish to verify"
+                        android:textColor="@color/light_gray_text"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <com.hbb20.CountryCodePicker
+                            android:id="@+id/ccp_countryCode"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".3"
+                            android:gravity="right"
+                            app:ccp_arrowColor="@color/colorPrimaryDark"
+                            app:ccp_contentColor="@color/colorPrimaryDark"
+                            app:ccp_defaultLanguage="ENGLISH"
+                            app:ccp_defaultNameCode="IN"
+                            app:ccp_textSize="@dimen/_12sdp" />
+
+                        <EditText
+                            android:id="@+id/edt_mobile"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_35sdp"
+                            android:layout_weight=".7"
+                            android:backgroundTint="@color/colorAccent"
+                            android:fontFamily="sans-serif"
+                            android:hint="Enter mobile number"
+                            android:inputType="phone"
+                            android:maxLength="10"
+                            android:text=""
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textColorHint="@color/light_gray_text"
+                            android:textSize="@dimen/_12sdp" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btn_send_verify"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_marginLeft="@dimen/_30sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:layout_marginRight="@dimen/_30sdp"
+                        android:background="@drawable/button_ripple_green"
+                        android:fontFamily="sans-serif"
+                        android:gravity="center"
+                        android:text="Send verification code"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+</RelativeLayout>

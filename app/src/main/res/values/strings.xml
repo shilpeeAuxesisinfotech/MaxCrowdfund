@@ -1,0 +1,109 @@
+<resources>
+    <string name="app_name">Max Crowdfund</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="menu_dashboard">Dashboard</string>
+    <string name="investments_opportunity">Investment Opportunities</string>
+    <string name="menu_my_investments">My Investments</string>
+    <string name="menu_my_profile">My Profile</string>
+    <string name="menu_contact_information">Contact Information</string>
+
+    <string name="menu_logout">Logout</string>
+
+    <string name="max_property_group">Max Property Group</string>
+
+
+    <!--Main Activity-->
+    <!--For Investment and investment detail-->
+    <string name="interest_per_annual">Interest per annual</string>
+    <string name="risk_cla">Risk Class</string>
+    <string name="loan_amount">Loan Amount</string>
+    <string name="filled">filled,</string>
+    <string name="investors">Investors</string>
+    <string name="left">left</string>
+    <string name="months">Months</string>
+    <string name="type">Type</string>
+    <string name="location">Location</string>
+    <string name="total_raised">Total raised</string>
+    <string name="active_investores">Active investores</string>
+    <string name="average_return">Average return</string>
+
+    <!--For Summary-->
+    <string name="invest">Invest</string>
+
+    <string name="max">Max</string>
+    <string name="crowdfund">Crowdfund</string>
+    <string name="max_crowdfund">Max Crowdfund</string>
+    <string name="international_real_estate_crowdfunding_platform">International Real Estate Crowdfunding Platform</string>
+    <string name="please_enter_your_e_mail_and">Please Enter your e-mail and</string>
+    <string name="password_to_login">password to login</string>
+    <string name="e_mail">E-mail</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="don_t_have_one_yet_please_register">Don"'"t have one yet? Please register</string>
+    <string name="first_on">first on</string>
+    <string name="maxcrowdfund_com">maxcrowdfund.com</string>
+
+    <string name="enter_email">Please enter your E-mail</string>
+    <string name="enter_password">Please enter your password</string>
+
+    <string name="yes">Yes</string>
+    <string name="no_internet">No internet Connection</string>
+    <string name="oops_connect_your_internet">Oops! Connect Your Internet</string>
+    <string name="something_went">Oops ! Something Went Wrong</string>
+    <string name="please_try_again">Please Try Again</string>
+    <string name="timed_out">Oops.Timeout Error!</string>
+    <string name="server_down">Unable to reach server</string>
+
+    <string name="version">Version</string>
+
+    <string name="deposit">Deposit</string>
+    <string name="ideal">iDeal</string>
+    <string name="trustly">Trustly</string>
+
+    <string name="enter_amount">Please enter your amount</string>
+
+    <string name="change_avatar">Change avatar</string>
+    <string name="change_email">Change E-mail</string>
+    <string name="change_mobile_no">Change mobile number</string>
+    <string name="submit">Submit</string>
+    <string name="change_password">Change password</string>
+    <string name="change_default_bank_account">Change default bank account</string>
+    <string name="change_preference">Change preference</string>
+
+    <!--For camera dialog-->
+    <string name="choose_photo">Choose photo</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="remove">Remove</string>
+    <string name="cancel">Cancel</string>
+    <string name="no_data_found">No data found</string>
+
+
+    <string name="download_Pdf">Download pdf</string>
+    <string name="download_Doc">Download Doc</string>
+    <string name="download_zip">Download Zip</string>
+    <string name="download_video">Download Video</string>
+    <string name="download_mp3">Download MP3</string>
+    <string name="openFolder">Open Downloaded Folder</string>
+    <string name="downloadStarted">Download Started…</string>
+    <string name="downloadCompleted">Download Completed…</string>
+    <string name="downloadFailed">Download Failed…</string>
+    <string name="downloadAgain">Download Again</string>
+    <string name="noSdcard">Oops!! There is no SD Card.</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="action_settings">Settings</string>
+    <string name="clear">Clear</string>
+    <string name="filter">Filter</string>
+    <string name="company">Company</string>
+    <string name="invested">Invested</string>
+
+    <!--For my investment -->
+    <string name="enter_company">Please enter company name</string>
+    <string name="enter_from">Please enter from</string>
+    <string name="enter_to">Please enter to</string>
+
+</resources>

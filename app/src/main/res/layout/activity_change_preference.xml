@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray_bg"
+    tools:context=".activity.ChangePreferenceActivity">
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/header" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header"
+        android:padding="@dimen/_10sdp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:padding="@dimen/_5sdp"
+            app:cardCornerRadius="@dimen/_5sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
+
+                <TextView
+                    android:id="@+id/tvlanguagePre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="sans-serif"
+                    android:gravity="left"
+                    android:text="Language preference"
+                    android:textColor="@color/light_gray_text"
+                    android:textSize="@dimen/_12sdp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:background="@drawable/custom_spinner_bg"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spinnerAddproduct"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:dropDownWidth="fill_parent"
+                        android:spinnerMode="dropdown" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tvActiveAccount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="sans-serif"
+                    android:gravity="left"
+                    android:text="Active account"
+                    android:textColor="@color/light_gray_text"
+                    android:textSize="@dimen/_12sdp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:background="@drawable/custom_spinner_bg"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spinnerActiveAccount"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:dropDownWidth="fill_parent"
+                        android:spinnerMode="dropdown" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tvNotifications"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="left"
+                    android:text="Notifications"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/_12sdp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight=".6">
+
+                        <TextView
+                            android:id="@+id/tvAccountLogin"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:gravity="left"
+                            android:text="Account Login"
+                            android:textColor="@color/light_gray_text"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".4">
+
+                        <RadioGroup
+                            android:id="@+id/radioButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_25sdp"
+                            android:background="@drawable/radio_outline"
+                            android:checkedButton="@+id/off"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/off"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/radio_button_bg"
+                                android:button="@null"
+                                android:checked="false"
+                                android:gravity="center"
+                                android:text="Off"
+                                android:textColor="@drawable/radio_text" />
+
+                            <RadioButton
+                                android:id="@+id/on"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/radio_button_bg"
+                                android:button="@null"
+                                android:checked="true"
+                                android:gravity="center"
+                                android:text="ON"
+                                android:textColor="@drawable/radio_text" />
+                        </RadioGroup>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight=".6">
+
+                        <TextView
+                            android:id="@+id/tvInvestmentOpp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:gravity="left"
+                            android:text="Investment opportunities"
+                            android:textColor="@color/light_gray_text"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".4">
+
+                        <RadioGroup
+                            android:id="@+id/radioInvestment"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_25sdp"
+                            android:background="@drawable/radio_outline"
+                            android:checkedButton="@+id/off"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/investment_off"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/radio_button_bg"
+                                android:button="@null"
+                                android:checked="false"
+                                android:gravity="center"
+                                android:text="Off"
+                                android:textColor="@drawable/radio_text" />
+
+                            <RadioButton
+                                android:id="@+id/investment_on"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/radio_button_bg"
+                                android:button="@null"
+                                android:checked="true"
+                                android:gravity="center"
+                                android:text="ON"
+                                android:textColor="@drawable/radio_text" />
+                        </RadioGroup>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight=".6">
+
+                        <TextView
+                            android:id="@+id/tvInvestmentUpdate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:gravity="left"
+                            android:text="Investment updates"
+                            android:textColor="@color/light_gray_text"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".4">
+
+                        <RadioGroup
+                            android:id="@+id/radioInvestmentUpdate"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_25sdp"
+                            android:background="@drawable/radio_outline"
+                            android:checkedButton="@+id/off"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/investUpdate_off"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/radio_button_bg"
+                                android:button="@null"
+                                android:checked="false"
+                                android:gravity="center"
+                                android:text="Off"
+                                android:textColor="@drawable/radio_text" />
+
+                            <RadioButton
+                                android:id="@+id/investUpdate_on"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/radio_button_bg"
+                                android:button="@null"
+                                android:checked="true"
+                                android:gravity="center"
+                                android:text="ON"
+                                android:textColor="@drawable/radio_text" />
+                        </RadioGroup>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight=".6">
+
+                        <TextView
+                            android:id="@+id/tvNewslatter"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:gravity="left"
+                            android:text="NewsLatter(every 2-4weeks)"
+                            android:textColor="@color/light_gray_text"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".4">
+
+                        <RadioGroup
+                            android:id="@+id/radioNewslatter"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_25sdp"
+                            android:background="@drawable/radio_outline"
+                            android:checkedButton="@+id/off"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/newslatter_off"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/radio_button_bg"
+                                android:button="@null"
+                                android:checked="false"
+                                android:gravity="center"
+                                android:text="Off"
+                                android:textColor="@drawable/radio_text" />
+
+                            <RadioButton
+                                android:id="@+id/newslatter_on"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/radio_button_bg"
+                                android:button="@null"
+                                android:checked="true"
+                                android:gravity="center"
+                                android:text="ON"
+                                android:textColor="@drawable/radio_text" />
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_send_verify"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_marginLeft="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginRight="@dimen/_40sdp"
+                    android:background="@drawable/button_ripple_green"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:text="Update preferences"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+</RelativeLayout>
