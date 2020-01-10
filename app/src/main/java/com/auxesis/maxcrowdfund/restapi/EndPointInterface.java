@@ -8,15 +8,14 @@ import com.auxesis.maxcrowdfund.custommvvm.dashboardDetail.DashboardDetailModel.
 import com.auxesis.maxcrowdfund.custommvvm.dashboardDetail.DashboardDetailModel.DashboardSignatureResponce;
 import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.MyInvestmentResponce;
 import com.google.gson.JsonObject;
-
 import org.json.JSONObject;
-
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+
 
 public interface EndPointInterface {
 
@@ -53,6 +52,19 @@ public interface EndPointInterface {
                                           @Header("X-CSRF-Token") String xcsrf,
                                           @Body JsonObject jsonObject);
 
+
+   /* @GET("api/account-balance")
+    Call<AccountBalanceResponse> getAccountBalance(@Header("Content-Type") String content);
+
+    @GET("api/portfolio")
+    Call<PortfolioResponse> getPortfolio(@Header("Content-Type") String content);
+
+*/
+
+
+    /*For fragment*/
+
+    //public final static String GER_ACCOUNT_BALANCE = BASE_URL + "api/account-balance";
 
 
 /*

@@ -1,14 +1,21 @@
-package com.auxesis.maxcrowdfund.activity;
+package com.auxesis.maxcrowdfund.mvvm.ui.dashborad;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
@@ -24,10 +31,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.auxesis.maxcrowdfund.R;
+import com.auxesis.maxcrowdfund.activity.DashboardActivity;
 import com.auxesis.maxcrowdfund.adapter.AccountBalanceAdapter;
 import com.auxesis.maxcrowdfund.adapter.PortFolioAdapter;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
+import com.auxesis.maxcrowdfund.databinding.FragmentDashboardBinding;
 import com.auxesis.maxcrowdfund.model.AccountBalanceModel;
 import com.auxesis.maxcrowdfund.model.PortfolioModel;
 import org.json.JSONException;
@@ -38,15 +47,13 @@ import static com.auxesis.maxcrowdfund.constant.APIUrl.GER_ACCOUNT_BALANCE;
 import static com.auxesis.maxcrowdfund.constant.APIUrl.GER_PORTFOLIO;
 import static com.auxesis.maxcrowdfund.constant.Utils.showToast;
 
-
-public class DashboardActivity extends AppCompatActivity {
-    private static final String TAG = "DashboardActivity";
-    TextView tv_back_arrow, tvHeaderTitle, tvNoRecord,tvNoRecordPortFolio;
+public class DashboardFragment extends Fragment {
+    private static final String TAG = "DashboardFragment";
+    private DashboardViewModel dashboardViewModel;
     ProgressDialog pd;
-    AccountBalanceAdapter accountBalanceAdapter;
+    FragmentDashboardBinding binding;
+    AccountBalanceAdapter accountbalanceadapter;
     PortFolioAdapter portFolioAdapter;
-    RecyclerView recyclerView,recyclerViewPortFolio;
-
     List<AccountBalanceModel> accountlist = new ArrayList<>();
     List<AccountBalanceModel> depositedlist = new ArrayList<>();
     List<AccountBalanceModel> withdrawnlist = new ArrayList<>();
@@ -67,51 +74,45 @@ public class DashboardActivity extends AppCompatActivity {
     List<PortfolioModel> arrears_4 = new ArrayList<>();
     List<PortfolioModel> reserved = new ArrayList<>();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
-        init();
-    }
 
-    private void init() {
-        tv_back_arrow = findViewById(R.id.tv_back_arrow);
-        tvHeaderTitle = findViewById(R.id.tvHeaderTitle);
-        tvHeaderTitle.setText(R.string.menu_dashboard);
-        tv_back_arrow.setOnClickListener(new View.OnClickListener() {
+
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
+        binding = DataBindingUtil.inflate( inflater,R.layout.fragment_dashboard, container, false);
+        View root = binding.getRoot();
+         //here data must be an instance of the class DashboardViewModel
+        binding.setDashboard(dashboardViewModel);
+        binding.setLifecycleOwner(this);
+      //  binding.recyViewAccBalance.setLayoutManager(new LinearLayoutManager(getActivity()));
+      //  binding.recyViewAccBalance.setHasFixedSize(true);
+
+       /* dashboardViewModel.getAccountBalance().observe(this, new Observer<AccountBalanceResponse>() {
             @Override
-            public void onClick(View v) {
-                onBackPressed();
+            public void onChanged(AccountBalanceResponse accountBalanceResponse) {
+                Log.d(TAG, "onChanged: "+accountBalanceResponse.getBalance().getHeading());
+               *//* deposited.sadd(accountBalanceResponse.getBalance().getData().getDeposited());
+                arrayList.addAll(deposited);
+                accountbalanceadapter =new DashboardAccBalanceAdapter(getActivity(),arrayList);
+                binding.recyViewAccBalance.setAdapter(accountbalanceadapter);*//*
+               // accountbalanceadapter.setAccountBalanceList(accountBalanceResponse.getBalance().getData().getDeposited());
+
             }
         });
+*/
 
-        recyclerView = findViewById(R.id.recyclerView);
-        tvNoRecord = findViewById(R.id.tvNoRecord);
-
-        recyclerViewPortFolio = findViewById(R.id.recyclerViewPortFolio);
-        tvNoRecordPortFolio = findViewById(R.id.tvNoRecordPortFolio);
-
-     /*   btn_deposited = findViewById(R.id.btn_deposited);
-        btn_deposited.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DashboardActivity.this, DashboardDepositActivity.class);
-                overridePendingTransition(R.anim.enter, R.anim.exit);
-                startActivityForResult(intent, REQUEST_CODE);
-            }
-        });*/
-
-        if (Utils.isInternetConnected(getApplicationContext())) {
+        if (Utils.isInternetConnected(getActivity())) {
             getAccountBalance();
             getPortFolio();
         } else {
-            showToast(DashboardActivity.this, getResources().getString(R.string.oops_connect_your_internet));
+            Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
         }
-    }
 
+        return root;
+
+
+    }
     private void getAccountBalance() {
-        Utils.hideKeyboard(this);
-        pd = ProgressDialog.show(DashboardActivity.this, "Please Wait...");
+        pd = ProgressDialog.show(getActivity(), "Please Wait...");
         try {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, GER_ACCOUNT_BALANCE, null, new Response.Listener<JSONObject>() {
                 @Override
@@ -257,17 +258,12 @@ public class DashboardActivity extends AppCompatActivity {
                             accountlist.addAll(mpg_purchaselist);
 
                             if (accountlist.size() > 0) {
-                                tvNoRecord.setVisibility(View.GONE);
-                                recyclerView.setVisibility(View.VISIBLE);
-                                accountBalanceAdapter = new AccountBalanceAdapter(DashboardActivity.this, accountlist);
-                                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(DashboardActivity.this);
-                                recyclerView.setLayoutManager(mLayoutManager);
-                                recyclerView.setItemAnimator(new DefaultItemAnimator());
-                                recyclerView.setAdapter(accountBalanceAdapter);
-                                accountBalanceAdapter.notifyDataSetChanged();
-                            } else {
-                                tvNoRecord.setVisibility(View.VISIBLE);
-                                recyclerView.setVisibility(View.GONE);
+                                accountbalanceadapter = new AccountBalanceAdapter(getActivity(), accountlist);
+                                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+                                binding.recyViewAccBalance.setLayoutManager(mLayoutManager);
+                                binding.recyViewAccBalance.setItemAnimator(new DefaultItemAnimator());
+                                binding.recyViewAccBalance.setAdapter(accountbalanceadapter);
+                                accountbalanceadapter.notifyDataSetChanged();
                             }
                         }
                     } catch (JSONException e) {
@@ -288,7 +284,7 @@ public class DashboardActivity extends AppCompatActivity {
                         try {
                             JSONObject errorObj = new JSONObject(new String(response.data));
                             if (response.statusCode == 400 || response.statusCode == 405 || response.statusCode == 500) {
-                                showToast(DashboardActivity.this, getResources().getString(R.string.something_went));
+                                showToast(getActivity(), getResources().getString(R.string.something_went));
                             } else if (response.statusCode == 401) {
 
                             } else if (response.statusCode == 422) {
@@ -296,27 +292,27 @@ public class DashboardActivity extends AppCompatActivity {
                                 if (json != "" && json != null) {
                                     // displayMessage(json);
                                 } else {
-                                    showToast(DashboardActivity.this, getResources().getString(R.string.please_try_again));
+                                    showToast(getActivity(), getResources().getString(R.string.please_try_again));
                                 }
                             } else if (response.statusCode == 503) {
-                                showToast(DashboardActivity.this, getResources().getString(R.string.server_down));
+                                showToast(getActivity(), getResources().getString(R.string.server_down));
                             } else {
-                                showToast(DashboardActivity.this, getResources().getString(R.string.please_try_again));
+                                showToast(getActivity(), getResources().getString(R.string.please_try_again));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     } else {
                         if (error instanceof NoConnectionError) {
-                            showToast(DashboardActivity.this, getResources().getString(R.string.oops_connect_your_internet));
+                            showToast(getActivity(), getResources().getString(R.string.oops_connect_your_internet));
                         } else if (error instanceof NetworkError) {
-                            showToast(DashboardActivity.this, getResources().getString(R.string.oops_connect_your_internet));
+                            showToast(getActivity(), getResources().getString(R.string.oops_connect_your_internet));
                         } else if (error instanceof TimeoutError) {
                             try {
                                 if (error.networkResponse == null) {
                                     if (error.getClass().equals(TimeoutError.class)) {
                                         // Show timeout error message
-                                        showToast(DashboardActivity.this, getResources().getString(R.string.timed_out));
+                                        showToast(getActivity(), getResources().getString(R.string.timed_out));
                                     }
                                 }
                             } catch (Exception e) {
@@ -341,7 +337,7 @@ public class DashboardActivity extends AppCompatActivity {
                 }
             };
             jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            RequestQueue queue = Volley.newRequestQueue(this);
+            RequestQueue queue = Volley.newRequestQueue(getActivity());
             queue.add(jsonObjectRequest);
         } catch (Error e) {
             if (pd != null && pd.isShowing()) {
@@ -357,7 +353,6 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void getPortFolio() {
-        Utils.hideKeyboard(this);
         try {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, GER_PORTFOLIO, null, new Response.Listener<JSONObject>() {
                 @Override
@@ -442,20 +437,13 @@ public class DashboardActivity extends AppCompatActivity {
                             Portfoliolist.addAll(arrears_3);
                             Portfoliolist.addAll(arrears_4);
                             Portfoliolist.addAll(reserved);
-
-
                             if (Portfoliolist.size() > 0) {
-                                tvNoRecordPortFolio.setVisibility(View.GONE);
-                                recyclerViewPortFolio.setVisibility(View.VISIBLE);
-                                portFolioAdapter = new PortFolioAdapter(DashboardActivity.this, Portfoliolist);
-                                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(DashboardActivity.this);
-                                recyclerViewPortFolio.setLayoutManager(mLayoutManager);
-                                recyclerViewPortFolio.setItemAnimator(new DefaultItemAnimator());
-                                recyclerViewPortFolio.setAdapter(portFolioAdapter);
+                                portFolioAdapter = new PortFolioAdapter(getActivity(), Portfoliolist);
+                                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+                                binding.recyViewPortFolio.setLayoutManager(mLayoutManager);
+                                binding.recyViewPortFolio.setItemAnimator(new DefaultItemAnimator());
+                                binding.recyViewPortFolio.setAdapter(portFolioAdapter);
                                 portFolioAdapter.notifyDataSetChanged();
-                            } else {
-                                tvNoRecordPortFolio.setVisibility(View.VISIBLE);
-                                recyclerViewPortFolio.setVisibility(View.GONE);
                             }
                         }
                     } catch (JSONException e) {
@@ -465,7 +453,7 @@ public class DashboardActivity extends AppCompatActivity {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    showToast(DashboardActivity.this, getResources().getString(R.string.something_went));
+                    showToast(getActivity(), getResources().getString(R.string.something_went));
                     String json = null;
                     String Message;
                     NetworkResponse response = error.networkResponse;
@@ -473,7 +461,7 @@ public class DashboardActivity extends AppCompatActivity {
                         try {
                             JSONObject errorObj = new JSONObject(new String(response.data));
                             if (response.statusCode == 400 || response.statusCode == 405 || response.statusCode == 500) {
-                                showToast(DashboardActivity.this, getResources().getString(R.string.something_went));
+                                showToast(getActivity(), getResources().getString(R.string.something_went));
                             } else if (response.statusCode == 401) {
 
                             } else if (response.statusCode == 422) {
@@ -481,27 +469,27 @@ public class DashboardActivity extends AppCompatActivity {
                                 if (json != "" && json != null) {
                                     // displayMessage(json);
                                 } else {
-                                    showToast(DashboardActivity.this, getResources().getString(R.string.please_try_again));
+                                    showToast(getActivity(), getResources().getString(R.string.please_try_again));
                                 }
                             } else if (response.statusCode == 503) {
-                                showToast(DashboardActivity.this, getResources().getString(R.string.server_down));
+                                showToast(getActivity(), getResources().getString(R.string.server_down));
                             } else {
-                                showToast(DashboardActivity.this, getResources().getString(R.string.please_try_again));
+                                showToast(getActivity(), getResources().getString(R.string.please_try_again));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     } else {
                         if (error instanceof NoConnectionError) {
-                            showToast(DashboardActivity.this, getResources().getString(R.string.oops_connect_your_internet));
+                            showToast(getActivity(), getResources().getString(R.string.oops_connect_your_internet));
                         } else if (error instanceof NetworkError) {
-                            showToast(DashboardActivity.this, getResources().getString(R.string.oops_connect_your_internet));
+                            showToast(getActivity(), getResources().getString(R.string.oops_connect_your_internet));
                         } else if (error instanceof TimeoutError) {
                             try {
                                 if (error.networkResponse == null) {
                                     if (error.getClass().equals(TimeoutError.class)) {
                                         // Show timeout error message
-                                        showToast(DashboardActivity.this, getResources().getString(R.string.timed_out));
+                                        showToast(getActivity(), getResources().getString(R.string.timed_out));
                                     }
                                 }
                             } catch (Exception e) {
@@ -526,26 +514,12 @@ public class DashboardActivity extends AppCompatActivity {
                 }
             };
             jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            RequestQueue queue = Volley.newRequestQueue(this);
+            RequestQueue queue = Volley.newRequestQueue(getActivity());
             queue.add(jsonObjectRequest);
         } catch (Error e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-   /* @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE) {
-            Log.d(TAG, "onActivityResult: " + "OnActivity calling");
-        }
-    }*/
-
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 }

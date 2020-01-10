@@ -94,7 +94,7 @@
     <string name="downloadAgain">Download Again</string>
     <string name="noSdcard">Oops!! There is no SD Card.</string>
     <string name="title_activity_home">HomeActivity</string>
-    <string name="nav_header_title">Android Studio</string>
+
     <string name="action_settings">Settings</string>
     <string name="clear">Clear</string>
     <string name="filter">Filter</string>
@@ -105,7 +105,9 @@
     <string name="enter_company">Please enter company name</string>
     <string name="enter_from">Please enter from</string>
     <string name="enter_to">Please enter to</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+
+
+   <!-- <string name="nav_header_subtitle">android.studio@android.com</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
@@ -113,5 +115,8 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+-->
+
+
 
 </resources>

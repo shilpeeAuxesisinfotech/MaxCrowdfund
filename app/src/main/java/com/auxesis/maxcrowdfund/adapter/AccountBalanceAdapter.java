@@ -54,6 +54,7 @@ public class AccountBalanceAdapter extends RecyclerView.Adapter<AccountBalanceAd
             holder.btn_deposited.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     Intent intent = new Intent(mContext, DashboardDepositActivity.class);
                     mContext.startActivity(intent);
                 }
