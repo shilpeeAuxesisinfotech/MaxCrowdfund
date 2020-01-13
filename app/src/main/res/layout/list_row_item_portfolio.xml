@@ -16,13 +16,12 @@
             android:id="@+id/tvCompanyName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="@font/roboto_medium"
             android:layout_alignParentStart="true"
             android:gravity="left"
             android:text=""
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/_12sdp" />
-
 
         <TextView
             android:id="@+id/tv_invested"
@@ -30,14 +29,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:paddingLeft="@dimen/_2sdp"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="@font/roboto_medium"
             android:gravity="right"
             android:text=""
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/_12sdp" />
     </RelativeLayout>
-
-
-
 
 </RelativeLayout>

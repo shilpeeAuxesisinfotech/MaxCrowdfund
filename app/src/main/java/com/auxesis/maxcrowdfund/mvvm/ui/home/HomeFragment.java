@@ -6,15 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
@@ -30,24 +26,18 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.activity.MainActivity;
 import com.auxesis.maxcrowdfund.adapter.MyListAdapter;
 import com.auxesis.maxcrowdfund.constant.APIUrl;
 import com.auxesis.maxcrowdfund.constant.PaginationListener;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
-import com.auxesis.maxcrowdfund.constant.Utils;
 import com.auxesis.maxcrowdfund.model.MyListModel;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import static com.auxesis.maxcrowdfund.constant.PaginationListener.PAGE_START;
 import static com.auxesis.maxcrowdfund.constant.PaginationListener.VISIBLE_THRESHOLD;
-import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
 import static com.auxesis.maxcrowdfund.constant.Utils.showToast;
 
@@ -71,6 +61,12 @@ public class HomeFragment extends Fragment {
     String mUrl = "";
     private int TOTAL_PAGES = 0;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(false);
+    }
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -82,7 +78,7 @@ public class HomeFragment extends Fragment {
             recyclerView.setHasFixedSize(true);
             layoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(layoutManager);
-            adapter = new MyListAdapter(getActivity(), new ArrayList<>());
+            adapter = new MyListAdapter(getActivity(),getActivity(), new ArrayList<>());
             recyclerView.setAdapter(adapter);
             APIUrl.investStatus = "active";
             getListingApi();
@@ -294,5 +290,6 @@ public class HomeFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
 
 }

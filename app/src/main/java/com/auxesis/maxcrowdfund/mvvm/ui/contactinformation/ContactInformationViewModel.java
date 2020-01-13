@@ -1,16 +1,16 @@
-package com.auxesis.maxcrowdfund.mvvm.ui.slideshow;
+package com.auxesis.maxcrowdfund.mvvm.ui.contactinformation;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class SlideshowViewModel extends ViewModel {
+public class ContactInformationViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public SlideshowViewModel() {
+    public ContactInformationViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is slideshow fragment");
+        mText.setValue("Contact Information");
     }
 
     public LiveData<String> getText() {

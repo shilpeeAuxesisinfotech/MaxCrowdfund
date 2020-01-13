@@ -1,14 +1,14 @@
-package com.auxesis.maxcrowdfund.mvvm.ui.tools;
+package com.auxesis.maxcrowdfund.mvvm.ui.myprofile;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class ToolsViewModel extends ViewModel {
+public class MyProfileViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public ToolsViewModel() {
+    public MyProfileViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is tools fragment");
     }

@@ -1,12 +1,9 @@
 package com.auxesis.maxcrowdfund.adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -14,9 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.activity.MyInvestmentDetailActivity;
-import com.auxesis.maxcrowdfund.model.AccountBalanceModel;
-import com.auxesis.maxcrowdfund.model.PortfolioModel;
+import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboardmodel.PortfolioModel;
 
 import java.util.List;
 

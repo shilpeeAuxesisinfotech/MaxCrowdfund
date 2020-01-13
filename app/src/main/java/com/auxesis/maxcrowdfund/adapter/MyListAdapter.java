@@ -1,7 +1,7 @@
 package com.auxesis.maxcrowdfund.adapter;
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +13,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.activity.MaxPropertyGroupDetailActivity;
 import com.auxesis.maxcrowdfund.constant.BaseViewHolder;
 import com.auxesis.maxcrowdfund.model.MyListModel;
 import java.util.ArrayList;
@@ -29,14 +30,12 @@ public class MyListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final String TAG = "MyListAdapter";
     public ArrayList<MyListModel> arrayList, filterList;
     Context mContext;
-    //CustomFilter filter;
-    // flag for footer ProgressBar (i.e. last item of list)
-    private boolean isLoadingAdded = false;
+    Activity mActivity;
 
-    public MyListAdapter(Context context, ArrayList<MyListModel> arrayList) {
+    public MyListAdapter(Context context,Activity mActivity, ArrayList<MyListModel> arrayList) {
         this.mContext = context;
+        this.mActivity = mActivity;
         this.arrayList = arrayList;
-        // this.filterList = arrayList;
     }
 
     @NonNull
@@ -71,16 +70,15 @@ public class MyListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         return arrayList == null ? 0 : arrayList.size();
     }
 
-
     public void addItems(List<MyListModel> postItems) {
         arrayList.addAll(postItems);
         notifyDataSetChanged();
     }
 
-    public void addItem2(List<MyListModel> item) {
+  /*  public void addItem2(List<MyListModel> item) {
         arrayList.addAll(arrayList.size() - 1, item);
         notifyDataSetChanged();
-    }
+    }*/
 
     public void addLoading() {
         isLoaderVisible = true;
@@ -136,19 +134,16 @@ public class MyListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             iv_location_img = itemView.findViewById(R.id.iv_location_img);
             lLayoutFooter = itemView.findViewById(R.id.lLayoutFooter);
             cardView = itemView.findViewById(R.id.cardView);
-
             tv_cur_total_rsd = itemView.findViewById(R.id.tv_cur_total_rsd);
             tv_raised_amount = itemView.findViewById(R.id.tv_raised_amount);
             tv_active_investor = itemView.findViewById(R.id.tv_active_investor);
             tv_cur_avr_return = itemView.findViewById(R.id.tv_cur_avr_return);
             tv_avr_return = itemView.findViewById(R.id.tv_avr_return);
             tv_active_invest_2 = itemView.findViewById(R.id.tv_active_invest_2);
-
         }
 
         @Override
         protected void clear() {
-
         }
 
         public void onBind(int position) {
@@ -189,8 +184,8 @@ public class MyListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, MaxPropertyGroupDetailActivity.class);
-                    mContext.startActivity(intent);
+                    NavController navController = Navigation.findNavController(mActivity, R.id.nav_host_fragment);
+                    navController.navigate(R.id.action_nav_investment_opp_to_homeDetailFragment);
                 }
             });
         }
@@ -198,15 +193,12 @@ public class MyListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     public class ProgressHolder extends BaseViewHolder {
         ProgressBar mProgressbar;
-
         ProgressHolder(View itemView) {
             super(itemView);
             mProgressbar = itemView.findViewById(R.id.mProgressbar);
         }
-
         @Override
         protected void clear() {
         }
     }
-
 }

@@ -16,7 +16,7 @@
             android:id="@+id/tvCompanyName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="@font/roboto_medium"
             android:layout_alignParentStart="true"
             android:gravity="left"
             android:text=""
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/tv_invested"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="@font/roboto_medium"
             android:text=""
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/_12sdp" />
@@ -39,13 +39,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:paddingLeft="@dimen/_2sdp"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="@font/roboto_medium"
             android:gravity="right"
             android:text=""
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/_12sdp" />
     </RelativeLayout>
-
 
     <Button
         android:visibility="gone"
@@ -55,13 +54,11 @@
         android:layout_height="@dimen/_35sdp"
         android:layout_margin="@dimen/_10sdp"
         android:background="@drawable/button_ripple_green"
-        android:fontFamily="sans-serif"
+        android:fontFamily="@font/roboto_light"
         android:gravity="center"
         android:text="@string/deposit"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_12sdp" />
-
-
 
 </RelativeLayout>

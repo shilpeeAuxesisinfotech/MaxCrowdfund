@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.custommvvm.DashboardDepositActivity;
-import com.auxesis.maxcrowdfund.model.AccountBalanceModel;
+import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboardmodel.AccountBalanceModel;
 import java.util.List;
 
 public class AccountBalanceAdapter extends RecyclerView.Adapter<AccountBalanceAdapter.MyHolder> {

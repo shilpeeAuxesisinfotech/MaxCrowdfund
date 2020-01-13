@@ -1,4 +1,4 @@
-package com.auxesis.maxcrowdfund.activity;
+package com.auxesis.maxcrowdfund.mvvm.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -33,6 +33,7 @@ import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.constant.APIUrl;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import static com.auxesis.maxcrowdfund.constant.Utils.hideKeyboard;
@@ -147,7 +148,7 @@ public class LoginActivity extends AppCompatActivity {
                                     setPreference(LoginActivity.this, "mCsrf_token", csrf_token);
                                     setPreference(LoginActivity.this, "mLogout_token", logout_token);
                                     showToast(LoginActivity.this, message);
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                                     overridePendingTransition(R.anim.enter, R.anim.exit);
                                     edt_email.setText("");
                                     edt_pssword.setText("");

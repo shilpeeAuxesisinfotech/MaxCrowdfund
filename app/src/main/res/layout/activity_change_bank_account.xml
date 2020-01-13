@@ -35,7 +35,7 @@
                     android:id="@+id/tv_mTittle"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_35sdp"
-                    android:fontFamily="sans-serif-medium"
+                    android:fontFamily="@font/roboto_medium"
                     android:gravity="center"
                     android:padding="@dimen/_5sdp"
                     android:text="Default bank account number"
@@ -62,7 +62,7 @@
                         android:layout_height="wrap_content"
                         android:checked="true"
                         android:text="NL69RAB00185205569"
-                        android:fontFamily="sans-serif"
+                        android:fontFamily="@font/roboto_light"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/_12sdp" />
@@ -74,7 +74,7 @@
                         android:checked="false"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:text="NL12ABNA0123456789"
-                        android:fontFamily="sans-serif"
+                        android:fontFamily="@font/roboto_light"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/_12sdp" />
                 </RadioGroup>
@@ -87,15 +87,13 @@
                     android:layout_marginTop="@dimen/_20sdp"
                     android:layout_marginRight="@dimen/_60sdp"
                     android:background="@drawable/button_ripple_green"
-                    android:fontFamily="sans-serif"
+                    android:fontFamily="@font/roboto_light"
                     android:gravity="center"
                     android:text="@string/submit"
                     android:textAllCaps="false"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/_12sdp" />
-
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </RelativeLayout>
-
 </RelativeLayout>

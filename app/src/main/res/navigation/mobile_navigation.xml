@@ -9,7 +9,11 @@
         android:id="@+id/nav_investment_opp"
         android:name="com.auxesis.maxcrowdfund.mvvm.ui.home.HomeFragment"
         android:label="@string/investments_opportunity"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_investment_opp_to_homeDetailFragment"
+            app:destination="@id/homeDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_dashboard"
@@ -19,26 +23,34 @@
 
     <fragment
         android:id="@+id/nav_my_investments"
-        android:name="com.auxesis.maxcrowdfund.mvvm.ui.slideshow.SlideshowFragment"
+        android:name="com.auxesis.maxcrowdfund.mvvm.ui.myinvestments.MyInvestmentsFragment"
         android:title="@string/menu_my_investments"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_my_investments" >
+        <action
+            android:id="@+id/action_nav_my_investments_to_nav_send"
+            app:destination="@id/nav_my_investment_detail" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_my_profile"
-        android:name="com.auxesis.maxcrowdfund.mvvm.ui.tools.ToolsFragment"
+        android:name="com.auxesis.maxcrowdfund.mvvm.ui.myprofile.MyProfileFragment"
         android:title="@string/menu_my_profile"
-        tools:layout="@layout/fragment_tools" />
+        tools:layout="@layout/fragment_my_profile" />
 
     <fragment
         android:id="@+id/nav_contact_information"
-        android:name="com.auxesis.maxcrowdfund.mvvm.ui.share.ShareFragment"
+        android:name="com.auxesis.maxcrowdfund.mvvm.ui.contactinformation.ContactInformation"
         android:title="@string/menu_contact_information"
-        tools:layout="@layout/fragment_share" />
+        tools:layout="@layout/fragment_contact_information" />
 
-
-    <!--<fragment
-        android:id="@+id/nav_send"
-        android:name="com.auxesis.maxcrowdfund.mvvm.ui.send.SendFragment"
-        android:label="@string/menu_send"
-        tools:layout="@layout/fragment_send" />-->
+   <fragment
+        android:id="@+id/nav_my_investment_detail"
+        android:name="com.auxesis.maxcrowdfund.mvvm.ui.myinvestmentdetail.MyInvestmentDetailFragment"
+        android:label="@string/my_investments_detail"
+        tools:layout="@layout/fragment_my_investment_detail" />
+    <fragment
+        android:id="@+id/homeDetailFragment"
+        android:name="com.auxesis.maxcrowdfund.HomeDetailFragment"
+        android:label="@string/max_property_group"
+        tools:layout="@layout/fragment_home_detail" />
 </navigation>

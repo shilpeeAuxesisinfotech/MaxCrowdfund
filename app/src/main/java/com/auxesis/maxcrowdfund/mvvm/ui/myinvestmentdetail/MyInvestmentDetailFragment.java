@@ -1,43 +1,44 @@
-package com.auxesis.maxcrowdfund.activity;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+package com.auxesis.maxcrowdfund.mvvm.ui.myinvestmentdetail;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.auxesis.maxcrowdfund.R;
+import com.auxesis.maxcrowdfund.activity.MaxPropertyGroupDetailActivity;
 import com.auxesis.maxcrowdfund.activity.customInterface.OnDownloadClickListener;
 import com.auxesis.maxcrowdfund.adapter.InvestmentDocumentAdapter;
 import com.auxesis.maxcrowdfund.adapter.MyInvestmentDetailAdapter;
 import com.auxesis.maxcrowdfund.adapter.MyInvestmentDetailRepayAdapter;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
+import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.myinvestmentdetail.MyInvestmentDetailResponse;
+import com.auxesis.maxcrowdfund.mvvm.activity.HomeActivity;
 import com.auxesis.maxcrowdfund.restapi.ApiClient;
 import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
-import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.myinvestmentdetail.MyInvestmentDetailResponse;
 import com.google.gson.Gson;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 import static com.auxesis.maxcrowdfund.constant.Utils.showToast;
 
-
-public class MyInvestmentDetailActivity extends AppCompatActivity implements OnDownloadClickListener {
-    private static final String TAG = "MyInvestmentDetailActiv";
-    TextView tv_back_arrow, tvHeaderTitle, tv_arrow_document, tv_arrow_repayment_schedule, tvInvestment, tv_investment_amount,
-            tvInvested, tv_invested_amount, tv_document, tv_repayment_schedule;
+public class MyInvestmentDetailFragment extends Fragment implements OnDownloadClickListener {
+    private static final String TAG = "MyInvestmentDetailFragm";
+    private MyInvestmentDetail sendViewModel;
+    TextView tv_arrow_document, tv_arrow_repayment_schedule, tvInvestment, tv_investment_amount, tvInvested, tv_invested_amount, tv_document, tv_repayment_schedule;
     RelativeLayout rl_document_click, rl_repayment_schedule_click;
     LinearLayout ll_contant_document, ll_repayment_schedule_content;
     ProgressDialog pd;
@@ -49,79 +50,69 @@ public class MyInvestmentDetailActivity extends AppCompatActivity implements OnD
     MyInvestmentDetailRepayAdapter repaymentadapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_investment_detail);
-        init();
+        setHasOptionsMenu(false);
     }
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        sendViewModel = ViewModelProviders.of(this).get(MyInvestmentDetail.class);
+        View root = inflater.inflate(R.layout.fragment_my_investment_detail, container, false);
 
-    private void init() {
-        tv_back_arrow = findViewById(R.id.tv_back_arrow);
-        tvHeaderTitle = findViewById(R.id.tvHeaderTitle);
-        tvHeaderTitle.setText(R.string.max_property_group);
-        tv_back_arrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        rl_document_click = root.findViewById(R.id.rl_document_click);
+        rl_repayment_schedule_click = root.findViewById(R.id.rl_repayment_schedule_click);
 
-        rl_document_click = findViewById(R.id.rl_document_click);
-        rl_repayment_schedule_click = findViewById(R.id.rl_repayment_schedule_click);
+        ll_contant_document = root.findViewById(R.id.ll_contant_document);
+        ll_repayment_schedule_content = root.findViewById(R.id.ll_repayment_schedule_content);
 
-        ll_contant_document = findViewById(R.id.ll_contant_document);
-        ll_repayment_schedule_content = findViewById(R.id.ll_repayment_schedule_content);
-
-        tv_arrow_document = findViewById(R.id.tv_arrow_document);
-        tv_arrow_repayment_schedule = findViewById(R.id.tv_arrow_repayment_schedule);
+        tv_arrow_document = root.findViewById(R.id.tv_arrow_document);
+        tv_arrow_repayment_schedule = root.findViewById(R.id.tv_arrow_repayment_schedule);
 
         ll_contant_document.setVisibility(View.GONE);
         ll_repayment_schedule_content.setVisibility(View.GONE);
 
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerViewDocment = findViewById(R.id.recyclerViewDocment);
-        recyclerViewRepayment = findViewById(R.id.recyclerViewRepayment);
+        recyclerView = root.findViewById(R.id.recyclerView);
+        recyclerViewDocment = root.findViewById(R.id.recyclerViewDocment);
+        recyclerViewRepayment = root.findViewById(R.id.recyclerViewRepayment);
 
-        tvInvestment = findViewById(R.id.tvInvestment);
-        tv_investment_amount = findViewById(R.id.tv_investment_amount);
-        tvInvested = findViewById(R.id.tvInvested);
-        tv_invested_amount = findViewById(R.id.tv_invested_amount);
-        tv_document = findViewById(R.id.tv_document);
-        tv_repayment_schedule = findViewById(R.id.tv_repayment_schedule);
+        tvInvestment = root.findViewById(R.id.tvInvestment);
+        tv_investment_amount = root.findViewById(R.id.tv_investment_amount);
+        tvInvested = root.findViewById(R.id.tvInvested);
+        tv_invested_amount = root.findViewById(R.id.tv_invested_amount);
+        tv_document = root.findViewById(R.id.tv_document);
+        tv_repayment_schedule = root.findViewById(R.id.tv_repayment_schedule);
 
-        btn_change = findViewById(R.id.btn_change);
-        btn_view_pinch = findViewById(R.id.btn_view_pinch);
-
+        btn_change = root.findViewById(R.id.btn_change);
+        btn_view_pinch = root.findViewById(R.id.btn_view_pinch);
 
         btn_change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ChangeEmailActivity.class));
+                //startActivity(new Intent(getActivity(), ChangeEmailActivity.class));
             }
         });
         btn_view_pinch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), MaxPropertyGroupDetailActivity.class));
+                startActivity(new Intent(getActivity(), MaxPropertyGroupDetailActivity.class));
             }
         });
 
-        if (Utils.isInternetConnected(getApplicationContext())) {
+        if (Utils.isInternetConnected(getActivity())) {
             getMyInvestmentDetail();
         } else {
-            showToast(MyInvestmentDetailActivity.this, getResources().getString(R.string.oops_connect_your_internet));
+            showToast(getActivity(), getResources().getString(R.string.oops_connect_your_internet));
         }
 
         rl_document_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (ll_contant_document.isShown()) {
-                    Utils.slide_up(MyInvestmentDetailActivity.this, ll_contant_document);
+                    Utils.slide_up(getActivity(), ll_contant_document);
                     tv_arrow_document.setBackgroundResource(R.drawable.ic_arrow_down);
                     ll_contant_document.setVisibility(View.GONE);
                 } else {
                     ll_contant_document.setVisibility(View.VISIBLE);
-                    Utils.slide_down(MyInvestmentDetailActivity.this, ll_contant_document);
+                    Utils.slide_down(getActivity(), ll_contant_document);
                     tv_arrow_document.setBackgroundResource(R.drawable.ic_arrow_up);
                 }
             }
@@ -131,20 +122,22 @@ public class MyInvestmentDetailActivity extends AppCompatActivity implements OnD
             @Override
             public void onClick(View v) {
                 if (ll_repayment_schedule_content.isShown()) {
-                    Utils.slide_up(MyInvestmentDetailActivity.this, ll_repayment_schedule_content);
+                    Utils.slide_up(getActivity(), ll_repayment_schedule_content);
                     tv_arrow_repayment_schedule.setBackgroundResource(R.drawable.ic_arrow_down);
                     ll_repayment_schedule_content.setVisibility(View.GONE);
                 } else {
                     ll_repayment_schedule_content.setVisibility(View.VISIBLE);
-                    Utils.slide_down(MyInvestmentDetailActivity.this, ll_repayment_schedule_content);
+                    Utils.slide_down(getActivity(), ll_repayment_schedule_content);
                     tv_arrow_repayment_schedule.setBackgroundResource(R.drawable.ic_arrow_up);
                 }
             }
         });
+
+        return root;
     }
 
     private void getMyInvestmentDetail() {
-        pd = ProgressDialog.show(MyInvestmentDetailActivity.this, "Please Wait...");
+        pd = ProgressDialog.show(getActivity(), "Please Wait...");
         EndPointInterface git = ApiClient.getClient().create(EndPointInterface.class);
         Call<MyInvestmentDetailResponse> call = git.getMyInvestmentDetail();
         call.enqueue(new Callback<MyInvestmentDetailResponse>() {
@@ -162,8 +155,8 @@ public class MyInvestmentDetailActivity extends AppCompatActivity implements OnD
                     tv_document.setText(response.body().getDetails().getDocuments().getHeading());
 
                     if (response.body().getDetails().getLoanTerms().getData().size() > 0) {
-                        adapter = new MyInvestmentDetailAdapter(getApplicationContext(), response.body().getDetails().getLoanTerms().getData());
-                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MyInvestmentDetailActivity.this, LinearLayoutManager.VERTICAL, false);
+                        adapter = new MyInvestmentDetailAdapter(getActivity(), response.body().getDetails().getLoanTerms().getData());
+                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                         recyclerView.setLayoutManager(mLayoutManager);
                         recyclerView.setItemAnimator(new DefaultItemAnimator());
                         recyclerView.setAdapter(adapter);
@@ -171,8 +164,8 @@ public class MyInvestmentDetailActivity extends AppCompatActivity implements OnD
                     }
                     //for document
                     if (response.body().getDetails().getDocuments().getData().size() > 0) {
-                        documentadapter = new InvestmentDocumentAdapter(getApplicationContext(), MyInvestmentDetailActivity.this, response.body().getDetails().getDocuments().getData());
-                        RecyclerView.LayoutManager mdLayoutManager = new LinearLayoutManager(MyInvestmentDetailActivity.this, LinearLayoutManager.VERTICAL, false);
+                        documentadapter = new InvestmentDocumentAdapter(getActivity(), MyInvestmentDetailFragment.this, response.body().getDetails().getDocuments().getData());
+                        RecyclerView.LayoutManager mdLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                         recyclerViewDocment.setLayoutManager(mdLayoutManager);
                         recyclerViewDocment.setItemAnimator(new DefaultItemAnimator());
                         recyclerViewDocment.setAdapter(documentadapter);
@@ -181,8 +174,8 @@ public class MyInvestmentDetailActivity extends AppCompatActivity implements OnD
                     //For repayment_schedule
                     tv_repayment_schedule.setText(response.body().getDetails().getRepaymentSchedule().getHeading());
                     if (response.body().getDetails().getRepaymentSchedule().getData().size() > 0) {
-                        repaymentadapter = new MyInvestmentDetailRepayAdapter(getApplicationContext(), response.body().getDetails().getRepaymentSchedule().getData());
-                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MyInvestmentDetailActivity.this, LinearLayoutManager.VERTICAL, false);
+                        repaymentadapter = new MyInvestmentDetailRepayAdapter(getActivity(), response.body().getDetails().getRepaymentSchedule().getData());
+                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                         recyclerViewRepayment.setLayoutManager(mLayoutManager);
                         recyclerViewRepayment.setItemAnimator(new DefaultItemAnimator());
                         recyclerViewRepayment.setAdapter(repaymentadapter);
@@ -197,18 +190,20 @@ public class MyInvestmentDetailActivity extends AppCompatActivity implements OnD
                 if (pd != null && pd.isShowing()) {
                     pd.dismiss();
                 }
-                Toast.makeText(MyInvestmentDetailActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    public void onMyDownloadClick(String mdownload) {
+
     }
 
-    @Override
-    public void onMyDownloadClick(String mdownload) {
-        //Toast.makeText(this, "hiiiii", Toast.LENGTH_SHORT).show();
+    public void onResume(){
+        super.onResume();
+        // Set title bar
+        ((HomeActivity) getActivity()).setActionBarTitle(getString(R.string.my_investments_detail));
     }
 }
+

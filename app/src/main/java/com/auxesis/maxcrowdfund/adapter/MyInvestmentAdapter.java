@@ -1,29 +1,30 @@
 package com.auxesis.maxcrowdfund.adapter;
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.activity.MyInvestmentDetailActivity;
 import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.Datum;
 import java.util.List;
-
 import static com.auxesis.maxcrowdfund.constant.Utils.getCustomReplaceFormat;
 
 public class MyInvestmentAdapter extends RecyclerView.Adapter<MyInvestmentAdapter.MyHolder> {
     private static final String TAG = "MyInvestmentAdapter";
     private List<Datum> arrayList;
     Context mContext;
+    Activity mActivity;
 
-    public MyInvestmentAdapter(Context mContext, List<Datum> arrayList) {
+    public MyInvestmentAdapter(Context mContext,Activity mActivity, List<Datum> arrayList) {
         this.mContext = mContext;
+        this.mActivity = mActivity;
         this.arrayList = arrayList;
     }
 
@@ -42,16 +43,8 @@ public class MyInvestmentAdapter extends RecyclerView.Adapter<MyInvestmentAdapte
         holder.rlMainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, MyInvestmentDetailActivity.class);
-               /* Bundle bundle = new Bundle();
-                bundle.putString("name", arrayList.get(position).getName());
-                bundle.putString("cate_name", arrayList.get(position).getCategory_name());
-                bundle.putString("material_Name", arrayList.get(position).getMaterial_name());
-                bundle.putString("size_name", arrayList.get(position).getSize_name());
-                bundle.putString("description", arrayList.get(position).getDescription());
-                bundle.putString("banner_path", banner_path);
-                intent.putExtras(bundle);*/
-                mContext.startActivity(intent);
+                NavController navController = Navigation.findNavController(mActivity, R.id.nav_host_fragment);
+                navController.navigate(R.id.action_nav_my_investments_to_nav_send);
             }
         });
     }

@@ -9,8 +9,7 @@
             android:title="@string/investments_opportunity" />
         <item
             android:id="@+id/nav_dashboard"
-            android:title="@string/menu_dashboard"
-            />
+            android:title="@string/menu_dashboard"/>
         <item
             android:id="@+id/nav_my_investments"
             android:title="@string/menu_my_investments" />
@@ -23,12 +22,5 @@
        <item
            android:id="@+id/nav_logout"
            android:title="@string/menu_logout" />
-        <!-- <item
-            android:id="@+id/nav_send"
-            android:icon="@drawable/ic_menu_send"
-            android:title="@string/menu_send" />-->
     </group>
-
-
-
 </menu>

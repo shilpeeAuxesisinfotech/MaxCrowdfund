@@ -31,7 +31,7 @@
                     android:id="@+id/tv_mTittle"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_35sdp"
-                    android:fontFamily="sans-serif-medium"
+                    android:fontFamily="@font/roboto_medium"
                     android:gravity="center"
                     android:text=""
                     android:textColor="@color/colorPrimaryDark"
@@ -58,7 +58,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif"
+                            android:fontFamily="@font/roboto_light"
                             android:gravity="left"
                             android:text="@string/interest_per_annual"
                             android:textColor="@color/light_gray_text"
@@ -73,12 +73,11 @@
                                 android:id="@+id/tv_interest_pr"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="sans-serif-medium"
+                                android:fontFamily="@font/roboto_medium"
                                 android:gravity="left"
                                 android:text=""
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textSize="@dimen/_14sdp" />
-
                         </LinearLayout>
                     </LinearLayout>
 
@@ -91,7 +90,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif"
+                            android:fontFamily="@font/roboto_light"
                             android:gravity="center"
                             android:text="@string/risk_cla"
                             android:textColor="@color/light_gray_text"
@@ -101,12 +100,11 @@
                             android:id="@+id/tv_risk_c"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-medium"
+                            android:fontFamily="@font/roboto_medium"
                             android:gravity="center"
                             android:text=""
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="@dimen/_14sdp" />
-
                     </LinearLayout>
 
                     <LinearLayout
@@ -119,7 +117,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif"
+                            android:fontFamily="@font/roboto_light"
                             android:gravity="right"
                             android:text="@string/loan_amount"
                             android:textColor="@color/light_gray_text"
@@ -136,7 +134,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_toLeftOf="@+id/tvAmount"
-                                android:fontFamily="sans-serif-medium"
+                                android:fontFamily="@font/roboto_medium"
                                 android:text=""
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textSize="@dimen/_14sdp" />
@@ -146,13 +144,12 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
-                                android:fontFamily="sans-serif-medium"
+                                android:fontFamily="@font/roboto_medium"
                                 android:gravity="right"
                                 android:paddingLeft="@dimen/_1sdp"
                                 android:text=""
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textSize="@dimen/_14sdp" />
-
                         </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -206,7 +203,7 @@
                             android:id="@+id/tv_filled"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif"
+                            android:fontFamily="@font/roboto_light"
                             android:gravity="left"
                             android:text=""
                             android:textColor="@color/light_gray_text"
@@ -215,7 +212,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif"
+                            android:fontFamily="@font/roboto_light"
                             android:gravity="left"
                             android:paddingLeft="@dimen/_2sdp"
                             android:text="@string/filled"
@@ -226,7 +223,7 @@
                             android:id="@+id/tv_investors"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif"
+                            android:fontFamily="@font/roboto_light"
                             android:gravity="left"
                             android:paddingLeft="@dimen/_3sdp"
                             android:text=""
@@ -236,7 +233,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif"
+                            android:fontFamily="@font/roboto_light"
                             android:gravity="left"
                             android:paddingLeft="@dimen/_2sdp"
                             android:text="@string/investors"
@@ -262,7 +259,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_toLeftOf="@+id/tv_left_amount"
-                                android:fontFamily="sans-serif"
+                                android:fontFamily="@font/roboto_light"
                                 android:text=""
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textSize="@dimen/_10sdp" />
@@ -272,7 +269,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_toLeftOf="@+id/tv_left"
-                                android:fontFamily="sans-serif"
+                                android:fontFamily="@font/roboto_light"
                                 android:paddingLeft="@dimen/_1sdp"
                                 android:text=""
                                 android:textColor="@color/colorPrimaryDark"
@@ -283,13 +280,12 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
-                                android:fontFamily="sans-serif"
+                                android:fontFamily="@font/roboto_light"
                                 android:gravity="right"
                                 android:paddingLeft="@dimen/_2sdp"
                                 android:text="@string/left"
                                 android:textColor="@color/light_gray_text"
                                 android:textSize="@dimen/_10sdp" />
-
                         </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -312,7 +308,7 @@
                             android:id="@+id/tv_months"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-medium"
+                            android:fontFamily="@font/roboto_medium"
                             android:gravity="left"
                             android:text=""
                             android:textColor="@color/colorPrimaryDark"
@@ -321,12 +317,11 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif"
+                            android:fontFamily="@font/roboto_light"
                             android:gravity="left"
                             android:text="@string/months"
                             android:textColor="@color/light_gray_text"
                             android:textSize="@dimen/_10sdp" />
-
                     </LinearLayout>
 
                     <LinearLayout
@@ -339,7 +334,7 @@
                             android:id="@+id/tv_type"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-medium"
+                            android:fontFamily="@font/roboto_medium"
                             android:gravity="center"
                             android:text=""
                             android:textColor="@color/colorPrimaryDark"
@@ -348,12 +343,11 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif"
+                            android:fontFamily="@font/roboto_light"
                             android:gravity="center"
                             android:text="@string/type"
                             android:textColor="@color/light_gray_text"
                             android:textSize="@dimen/_10sdp" />
-
                     </LinearLayout>
 
                     <LinearLayout
@@ -425,7 +419,7 @@
                             android:id="@+id/tv_location"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-medium"
+                            android:fontFamily="@font/roboto_medium"
                             android:gravity="right"
                             android:text=""
                             android:textColor="@color/colorPrimaryDark"
@@ -434,7 +428,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif"
+                            android:fontFamily="@font/roboto_light"
                             android:gravity="right"
                             android:text="@string/location"
                             android:textColor="@color/light_gray_text"
@@ -472,7 +466,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif"
+                        android:fontFamily="@font/roboto_light"
                         android:gravity="center"
                         android:text="@string/total_raised"
                         android:textColor="@color/colorPrimaryDark"
@@ -488,7 +482,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_toLeftOf="@+id/tv_raised_amount"
-                            android:fontFamily="sans-serif-medium"
+                            android:fontFamily="@font/roboto_medium"
                             android:text=""
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="@dimen/_16sdp" />
@@ -498,7 +492,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:fontFamily="sans-serif-medium"
+                            android:fontFamily="@font/roboto_medium"
                             android:paddingLeft="@dimen/_1sdp"
                             android:text=""
                             android:textColor="@color/colorPrimaryDark"
@@ -518,7 +512,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif"
+                        android:fontFamily="@font/roboto_light"
                         android:gravity="center"
                         android:text="@string/active_investores"
                         android:textColor="@color/colorPrimaryDark"
@@ -528,7 +522,7 @@
                         android:id="@+id/tv_active_investor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-medium"
+                        android:fontFamily="@font/roboto_medium"
                         android:gravity="center"
                         android:text=""
                         android:textColor="@color/colorPrimaryDark"
@@ -557,7 +551,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif"
+                        android:fontFamily="@font/roboto_light"
                         android:gravity="center"
                         android:text="@string/average_return"
                         android:textColor="@color/colorPrimaryDark"
@@ -573,7 +567,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_toLeftOf="@+id/tv_avr_return"
-                            android:fontFamily="sans-serif-medium"
+                            android:fontFamily="@font/roboto_medium"
                             android:text=""
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="@dimen/_16sdp" />
@@ -583,7 +577,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:fontFamily="sans-serif-medium"
+                            android:fontFamily="@font/roboto_medium"
                             android:gravity="center"
                             android:paddingLeft="@dimen/_1sdp"
                             android:text=""
@@ -591,7 +585,6 @@
                             android:textSize="@dimen/_16sdp" />
 
                     </RelativeLayout>
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -604,7 +597,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif"
+                        android:fontFamily="@font/roboto_light"
                         android:gravity="center"
                         android:text="@string/active_investores"
                         android:textColor="@color/colorPrimaryDark"
@@ -614,7 +607,7 @@
                         android:id="@+id/tv_active_invest_2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-medium"
+                        android:fontFamily="@font/roboto_medium"
                         android:gravity="center"
                         android:text=""
                         android:textColor="@color/colorPrimaryDark"

@@ -22,10 +22,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".mvvm.HomeActivity"
+            android:name=".mvvm.activity.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".activity.MyInvestmentDetailActivity" />
         <activity android:name=".activity.ChangePreferenceActivity" />
         <activity android:name=".activity.ChangeBankAccountActivity" />
         <activity android:name=".activity.SendVerificationCodeActivity" />
@@ -34,25 +33,18 @@
         <activity android:name=".activity.ChangeEmailActivity" />
         <activity android:name=".activity.UploadImageActivity" />
         <activity android:name=".custommvvm.DashboardDepositActivity" />
-        <activity android:name=".activity.ContactInformationActivity" />
-        <activity android:name=".activity.MyProfileActivity" />
-        <activity android:name=".custommvvm.myinvestmentmodel.MyInvestmentsActivity" />
-        <activity android:name=".activity.DashboardActivity" />
+
         <activity android:name=".activity.MaxPropertyGroupDetailActivity" />
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".mvvm.activity.LoginActivity"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".activity.SplashActivity">
+        <activity android:name=".mvvm.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activity.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="preloaded_fonts"

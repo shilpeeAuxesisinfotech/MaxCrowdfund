@@ -56,7 +56,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="sans-serif-medium"
+                                android:fontFamily="@font/roboto_medium"
                                 android:gravity="left"
                                 android:text="Balance"
                                 android:textColor="@color/colorPrimaryDark"
@@ -81,7 +81,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_toLeftOf="@+id/tv_trustly"
-                                    android:fontFamily="sans-serif-medium"
+                                    android:fontFamily="@font/roboto_medium"
                                     android:paddingRight="@dimen/_3sdp"
                                     android:text="€"
                                     android:textColor="@color/colorPrimaryDark"
@@ -92,7 +92,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
-                                    android:fontFamily="sans-serif-medium"
+                                    android:fontFamily="@font/roboto_medium"
                                     android:gravity="right"
                                     android:text="123.45"
                                     android:textColor="@color/colorPrimaryDark"
@@ -115,7 +115,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif"
+                            android:fontFamily="@font/roboto_light"
                             android:gravity="left"
                             android:text="Enter the amount you wish to deposit"
                             android:textColor="@color/colorPrimaryDark"
@@ -128,7 +128,7 @@
                             android:layout_marginTop="@dimen/_10sdp"
                             android:backgroundTint="@color/colorAccent"
                             android:drawablePadding="@dimen/_10sdp"
-                            android:fontFamily="sans-serif"
+                            android:fontFamily="@font/roboto_light"
                             android:inputType="number"
                             android:maxLength="20"
                             android:textColor="@color/colorPrimaryDark"
@@ -141,7 +141,7 @@
                             android:layout_marginTop="@dimen/_10sdp"
                             android:layout_marginBottom="@dimen/_5sdp"
                             android:background="@drawable/button_ripple_green"
-                            android:fontFamily="sans-serif"
+                            android:fontFamily="@font/roboto_light"
                             android:gravity="center"
                             android:text="@string/trustly"
                             android:textAllCaps="false"
@@ -149,7 +149,6 @@
                             android:textSize="@dimen/_14sdp" />
 
                     </LinearLayout>
-
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -194,7 +193,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="sans-serif-medium"
+                                android:fontFamily="@font/roboto_medium"
                                 android:gravity="left"
                                 android:text="Balance"
                                 android:textColor="@color/colorPrimaryDark"
@@ -219,7 +218,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_toLeftOf="@+id/tv_balance"
-                                    android:fontFamily="sans-serif-medium"
+                                    android:fontFamily="@font/roboto_medium"
                                     android:paddingRight="@dimen/_3sdp"
                                     android:text="€"
                                     android:textColor="@color/colorPrimaryDark"
@@ -230,7 +229,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
-                                    android:fontFamily="sans-serif-medium"
+                                    android:fontFamily="@font/roboto_medium"
                                     android:gravity="right"
                                     android:text="123.45"
                                     android:textColor="@color/colorPrimaryDark"
@@ -253,7 +252,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif"
+                            android:fontFamily="@font/roboto_light"
                             android:gravity="left"
                             android:text="Enter the amount you wish to deposit"
                             android:textColor="@color/colorPrimaryDark"
@@ -267,7 +266,7 @@
                             android:backgroundTint="@color/colorAccent"
                             android:drawableLeft="@drawable/ic_euro"
                             android:drawablePadding="@dimen/_10sdp"
-                            android:fontFamily="sans-serif"
+                            android:fontFamily="@font/roboto_light"
                             android:inputType="number"
                             android:maxLength="20"
                             android:textColor="@color/colorPrimaryDark"
@@ -280,7 +279,7 @@
                             android:layout_marginTop="@dimen/_10sdp"
                             android:layout_marginBottom="@dimen/_5sdp"
                             android:background="@drawable/button_ripple_pink"
-                            android:fontFamily="sans-serif"
+                            android:fontFamily="@font/roboto_light"
                             android:gravity="center"
                             android:text="@string/ideal"
                             android:textAllCaps="false"
@@ -290,8 +289,6 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-
         </androidx.cardview.widget.CardView>
-
     </RelativeLayout>
 </RelativeLayout>

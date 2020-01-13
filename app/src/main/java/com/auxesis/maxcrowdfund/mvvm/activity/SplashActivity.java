@@ -1,4 +1,4 @@
-package com.auxesis.maxcrowdfund.activity;
+package com.auxesis.maxcrowdfund.mvvm.activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,11 +16,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.constant.Utils;
+
 import java.util.HashMap;
 import java.util.Map;
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
-
 
 public class SplashActivity extends AppCompatActivity {
     private static final String TAG = "SplashActivity";
@@ -79,7 +79,7 @@ public class SplashActivity extends AppCompatActivity {
                     if (getPreference(SplashActivity.this, "isRememberMe") != null && !getPreference(SplashActivity.this, "isRememberMe").isEmpty()) {
                         if (getPreference(SplashActivity.this, "isRememberMe").equals("true")) {
                             Log.d(TAG, "run: " + getPreference(SplashActivity.this, "isRememberMe"));
-                            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                            Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
                             startActivity(intent);
                             overridePendingTransition(R.anim.enter, R.anim.exit);
                             finish();

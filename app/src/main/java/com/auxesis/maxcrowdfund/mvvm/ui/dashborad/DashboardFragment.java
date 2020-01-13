@@ -6,16 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
@@ -36,8 +33,8 @@ import com.auxesis.maxcrowdfund.adapter.PortFolioAdapter;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
 import com.auxesis.maxcrowdfund.databinding.FragmentDashboardBinding;
-import com.auxesis.maxcrowdfund.model.AccountBalanceModel;
-import com.auxesis.maxcrowdfund.model.PortfolioModel;
+import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboardmodel.AccountBalanceModel;
+import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboardmodel.PortfolioModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -72,10 +69,14 @@ public class DashboardFragment extends Fragment {
     List<PortfolioModel> arrears_3 = new ArrayList<>();
     List<PortfolioModel> arrears_4 = new ArrayList<>();
     List<PortfolioModel> reserved = new ArrayList<>();
-
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(false);
+    }
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
-        binding = DataBindingUtil.inflate( inflater,R.layout.fragment_dashboard, container, false);
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_dashboard, container, false);
         View root = binding.getRoot();
          //here data must be an instance of the class DashboardViewModel
         binding.setDashboard(dashboardViewModel);
