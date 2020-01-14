@@ -1,4 +1,4 @@
-package com.auxesis.maxcrowdfund;
+package com.auxesis.maxcrowdfund.mvvm.ui.homedetail;
 
 
 import android.os.Build;
@@ -33,6 +33,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.activity.customInterface.OnDownloadClickListener;
 import com.auxesis.maxcrowdfund.activity.customInterface.OnImageClickListener;
 import com.auxesis.maxcrowdfund.adapter.CollateralAdapter;

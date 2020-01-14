@@ -7,6 +7,8 @@ import com.auxesis.maxcrowdfund.custommvvm.profile.profileModel.ProfileResponse;
 import com.auxesis.maxcrowdfund.custommvvm.dashboardDetail.DashboardDetailModel.DashboardDetailModelResponce;
 import com.auxesis.maxcrowdfund.custommvvm.dashboardDetail.DashboardDetailModel.DashboardSignatureResponce;
 import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.MyInvestmentResponce;
+import com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankaccountmodel.ActiveBankAccountResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankaccountmodel.ChangeBankAccountResponse;
 import com.google.gson.JsonObject;
 import org.json.JSONObject;
 import retrofit2.Call;
@@ -35,9 +37,6 @@ public interface EndPointInterface {
     @GET("api/investments/listing")
     Call<MyInvestmentResponce> getMyInvestment();
 
-
-    //https://test.maxcrowdfund.com/api/investments/listing/?company=abc&from=2234567&to=2234567
-
     @GET("api/investments/listing/")
     Call<MyInvestmentSearchResponse> getMyInvestmentSearch(@Query("company") String company,
                                                            @Query("from") String from,
@@ -51,6 +50,14 @@ public interface EndPointInterface {
     Call<ChangeEmailResponse> changeEmail(@Header("Content-Type") String content,
                                           @Header("X-CSRF-Token") String xcsrf,
                                           @Body JsonObject jsonObject);
+    @GET("api/bank-accounts")
+    Call<ChangeBankAccountResponse> getChangeBankAccount();
+
+    @POST("api/change-active-bank-account")
+    Call<ActiveBankAccountResponse> getActiveBankAccount(@Header("Content-Type") String content,
+                                                         @Body JsonObject jsonObject);
+
+
 
 
    /* @GET("api/account-balance")

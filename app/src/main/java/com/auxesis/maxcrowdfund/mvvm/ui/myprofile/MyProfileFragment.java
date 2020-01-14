@@ -12,8 +12,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.activity.ChangeBankAccountActivity;
 import com.auxesis.maxcrowdfund.activity.ChangeEmailActivity;
 import com.auxesis.maxcrowdfund.activity.ChangeMobileNumberActivity;
 import com.auxesis.maxcrowdfund.activity.ChangePasswordActivity;
@@ -22,6 +23,7 @@ import com.auxesis.maxcrowdfund.activity.UploadImageActivity;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
 import com.auxesis.maxcrowdfund.custommvvm.profile.profileModel.ProfileResponse;
+import com.auxesis.maxcrowdfund.mvvm.activity.HomeActivity;
 import com.auxesis.maxcrowdfund.restapi.ApiClient;
 import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.bumptech.glide.Glide;
@@ -30,7 +32,6 @@ import com.google.gson.Gson;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
-
 
 public class MyProfileFragment extends Fragment {
     private static final String TAG = "MyProfileFragment";
@@ -46,7 +47,7 @@ public class MyProfileFragment extends Fragment {
         setHasOptionsMenu(false);
     }
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        myProfileViewModel = ViewModelProviders.of(this).get(MyProfileViewModel.class);
+       // myProfileViewModel = ViewModelProviders.of(this).get(MyProfileViewModel.class);
         View root = inflater.inflate(R.layout.fragment_my_profile, container, false);
 
         tv_user_name = root.findViewById(R.id.tv_user_name);
@@ -98,7 +99,8 @@ public class MyProfileFragment extends Fragment {
         btn_change_default_bankA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), ChangeBankAccountActivity.class));
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                navController.navigate(R.id.action_nav_my_profile_to_changeBankAccountFragment);
             }
         });
         btn_change_preference.setOnClickListener(new View.OnClickListener() {
@@ -163,6 +165,7 @@ public class MyProfileFragment extends Fragment {
                 @Override
                 public void onFailure(@NonNull Call<ProfileResponse> call, @NonNull Throwable t) {
                     Log.e("response", "error " + t.getMessage());
+                    Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
                     if (pd != null && pd.isShowing()) {
                         pd.dismiss();
                     }
@@ -171,5 +174,12 @@ public class MyProfileFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    public void onResume(){
+        super.onResume();
+        // Set title bar
+        ((HomeActivity) getActivity()).setActionBarTitle(getString(R.string.menu_my_profile));
     }
 }

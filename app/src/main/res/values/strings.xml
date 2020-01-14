@@ -14,8 +14,6 @@
 
     <string name="menu_logout">Logout</string>
 
-
-
     <!--Main Activity-->
     <!--For Investment and investment detail-->
     <string name="interest_per_annual">Interest per annual</string>
@@ -74,6 +72,9 @@
     <string name="change_default_bank_account">Change default bank account</string>
     <string name="change_preference">Change preference</string>
 
+    <string name="save_changes">Save changes</string>
+
+
     <!--For camera dialog-->
     <string name="choose_photo">Choose photo</string>
     <string name="gallery">Gallery</string>
@@ -107,19 +108,7 @@
     <string name="enter_from">Please enter from</string>
     <string name="enter_to">Please enter to</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
-
-    <!-- <string name="nav_header_subtitle">android.studio@android.com</string>
-
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_tools">Tools</string>
-    <string name="menu_share">Share</string>
-    <string name="menu_send">Send</string>
--->
 
 
 </resources>
