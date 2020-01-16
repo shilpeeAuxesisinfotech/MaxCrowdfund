@@ -11,14 +11,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.activity.ChangeMobileNumberActivity;
-import com.auxesis.maxcrowdfund.activity.ChangePasswordActivity;
-import com.auxesis.maxcrowdfund.activity.ChangePreferenceActivity;
-import com.auxesis.maxcrowdfund.activity.UploadImageActivity;
+import com.auxesis.maxcrowdfund.mvvm.activity.UploadImageActivity;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
 import com.auxesis.maxcrowdfund.custommvvm.profile.profileModel.ProfileResponse;
@@ -87,14 +83,17 @@ public class MyProfileFragment extends Fragment {
         btn_change_mobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                startActivity(new Intent(getActivity(), ChangeMobileNumberActivity.class));
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                navController.navigate(R.id.action_nav_my_profile_to_changeMobileNumberFragment);
             }
         });
         btn_change_pass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), ChangePasswordActivity.class));
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                navController.navigate(R.id.action_nav_my_profile_to_changePasswordFragment);
+
+              //  startActivity(new Intent(getActivity(), ChangePasswordActivity.class));
             }
         });
         btn_change_default_bankA.setOnClickListener(new View.OnClickListener() {
@@ -107,19 +106,21 @@ public class MyProfileFragment extends Fragment {
         btn_change_preference.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), ChangePreferenceActivity.class));
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                navController.navigate(R.id.action_nav_my_profile_to_changePreferenceFragment);
+               // startActivity(new Intent(getActivity(), ChangePreferenceActivity.class));
             }
         });
 
         if (Utils.isInternetConnected(getActivity())) {
-            getMyData();
+            getMyProfile();
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
         }
         return root;
     }
 
-    private void getMyData() {
+    private void getMyProfile() {
         try {
             pd = ProgressDialog.show(getActivity(), "Please Wait...");
             EndPointInterface git = ApiClient.getClient().create(EndPointInterface.class);

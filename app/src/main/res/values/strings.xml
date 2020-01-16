@@ -4,15 +4,18 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">Navigation header</string>
 
-    <string name="investments_opportunity">Investment Opportunities</string>
-    <string name="max_property_group">Max Property Group</string>
-    <string name="menu_my_investments">My Investments</string>
+    <!--For navigation drawer-->
+    <string name="menu_investments_opportunity">Investment Opportunities</string>
     <string name="menu_dashboard">Dashboard</string>
+    <string name="menu_my_investments">My Investments</string>
     <string name="menu_my_profile">My Profile</string>
     <string name="menu_contact_information">Contact Information</string>
+    <string name="menu_logout">Logout</string>
+
+    <!--For Details page-->
+    <string name="max_property_group">Max Property Group</string>
     <string name="my_investments_detail">My Investment detail</string>
 
-    <string name="menu_logout">Logout</string>
 
     <!--Main Activity-->
     <!--For Investment and investment detail-->
@@ -64,15 +67,17 @@
 
     <string name="enter_amount">Please enter your amount</string>
 
+
+    <!--For profile page-->
     <string name="change_avatar">Change avatar</string>
     <string name="change_email">Change E-mail</string>
     <string name="change_mobile_no">Change mobile number</string>
-    <string name="submit">Submit</string>
     <string name="change_password">Change password</string>
     <string name="change_default_bank_account">Change default bank account</string>
     <string name="change_preference">Change preference</string>
 
     <string name="save_changes">Save changes</string>
+    <string name="submit">Submit</string>
 
 
     <!--For camera dialog-->
@@ -81,6 +86,8 @@
     <string name="camera">Camera</string>
     <string name="remove">Remove</string>
     <string name="cancel">Cancel</string>
+
+
     <string name="no_data_found">No data found</string>
 
 
@@ -107,6 +114,17 @@
     <string name="enter_company">Please enter company name</string>
     <string name="enter_from">Please enter from</string>
     <string name="enter_to">Please enter to</string>
+
+
+    <!--For Change Phone number-->
+    <string name="enter_the_mobile_number_you_wish_to_verify">Enter the mobile number you wish to verify</string>
+    <string name="enter_mobile_number">Enter mobile number</string>
+    <string name="send_verification_code">Send verification code</string>
+    <string name="the_mobile_number_you_have_submitted_to_verify">The mobile number you have submitted to verify.</string>
+    <string name="change">Change</string>
+    <string name="resend">Resend</string>
+    <string name="enter_code_to_verify">Enter OTP to verify</string>
+    <string name="verify">Verify</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

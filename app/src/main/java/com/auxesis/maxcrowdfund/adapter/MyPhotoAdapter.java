@@ -10,7 +10,7 @@ import android.widget.VideoView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.activity.customClickListener.OnCustomClickListener;
+import com.auxesis.maxcrowdfund.customClickListener.OnCustomClickListener;
 import com.auxesis.maxcrowdfund.model.PhotosVideosModel;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;

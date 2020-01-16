@@ -297,6 +297,6 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // Set title bar
-        ((HomeActivity) getActivity()).setActionBarTitle(getString(R.string.investments_opportunity));
+        ((HomeActivity) getActivity()).setActionBarTitle(getString(R.string.menu_investments_opportunity));
     }
 }

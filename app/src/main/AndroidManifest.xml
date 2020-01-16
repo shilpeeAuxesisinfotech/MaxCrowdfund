@@ -25,15 +25,11 @@
             android:name=".mvvm.activity.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.ChangePreferenceActivity" />
-        <activity android:name=".activity.SendVerificationCodeActivity" />
-        <activity android:name=".activity.ChangePasswordActivity" />
-        <activity android:name=".activity.ChangeMobileNumberActivity" />
-        <activity android:name=".activity.ChangeEmailActivity" />
-        <activity android:name=".activity.UploadImageActivity" />
+
+        <activity android:name=".mvvm.activity.UploadImageActivity" />
         <activity android:name=".custommvvm.DashboardDepositActivity" />
 
-        <activity android:name=".activity.MaxPropertyGroupDetailActivity" />
+        <activity android:name=".mvvm.activity.MaxPropertyGroupDetailActivity" />
         <activity
             android:name=".mvvm.activity.LoginActivity"
             android:windowSoftInputMode="stateAlwaysHidden" />

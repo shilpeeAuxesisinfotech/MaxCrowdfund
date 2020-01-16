@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.activity.customClickListener.OnDownloadClickListener;
+import com.auxesis.maxcrowdfund.customClickListener.OnDownloadClickListener;
 import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.myinvestmentdetail.Datum_;
 
 import java.util.ArrayList;

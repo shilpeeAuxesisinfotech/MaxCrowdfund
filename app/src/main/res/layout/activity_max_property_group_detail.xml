@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/light_gray_bg"
     android:fitsSystemWindows="true"
-    tools:context=".activity.MaxPropertyGroupDetailActivity">
+    tools:context=".mvvm.activity.MaxPropertyGroupDetailActivity">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"

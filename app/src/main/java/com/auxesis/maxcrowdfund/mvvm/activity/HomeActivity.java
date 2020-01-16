@@ -90,22 +90,16 @@ public class HomeActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 int id = menuItem.getItemId();
                 if (id == R.id.nav_investment_opp) {
-                    setActionBarTitle(getString(R.string.investments_opportunity));
-                    //item.setVisible(false);
+                    setActionBarTitle(getString(R.string.menu_investments_opportunity));
                 } else if (id == R.id.nav_dashboard) {
                     setActionBarTitle(getString(R.string.menu_dashboard));
-                    //item.setVisible(false);
                 } else if (id == R.id.nav_my_investments) {
                     setActionBarTitle(getString(R.string.menu_my_investments));
-                    //item.setVisible(true);
                 } else if (id == R.id.nav_my_profile) {
                     setActionBarTitle(getString(R.string.menu_my_profile));
-                    //item.setVisible(false);
                 } else if (id == R.id.nav_contact_information) {
                     setActionBarTitle(getString(R.string.menu_contact_information));
-                   // item.setVisible(false);
                 } else if (id == R.id.nav_logout) {
-                   // item.setVisible(false);
                     if (isInternetConnected(getApplicationContext())) {
                         getCheckUser();
                     } else {

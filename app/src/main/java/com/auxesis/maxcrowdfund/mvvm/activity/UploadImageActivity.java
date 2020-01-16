@@ -1,4 +1,4 @@
-package com.auxesis.maxcrowdfund.activity;
+package com.auxesis.maxcrowdfund.mvvm.activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;

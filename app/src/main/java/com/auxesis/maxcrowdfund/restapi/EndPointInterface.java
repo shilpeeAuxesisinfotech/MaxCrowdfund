@@ -7,6 +7,8 @@ import com.auxesis.maxcrowdfund.custommvvm.profile.profileModel.ProfileResponse;
 import com.auxesis.maxcrowdfund.custommvvm.dashboardDetail.DashboardDetailModel.DashboardDetailModelResponce;
 import com.auxesis.maxcrowdfund.custommvvm.dashboardDetail.DashboardDetailModel.DashboardSignatureResponce;
 import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.MyInvestmentResponce;
+import com.auxesis.maxcrowdfund.mvvm.ui.changeMobileNumber.changeMobileModel.SendOTPResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.changeMobileNumber.changeMobileModel.UpdatePhoneNumberResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankaccountmodel.ActiveBankAccountResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankaccountmodel.ChangeBankAccountResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.home.homemodel.InvestmentOppResponse;
@@ -20,7 +22,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
-
 
 public interface EndPointInterface {
 
@@ -68,7 +69,20 @@ public interface EndPointInterface {
                                                          @Body JsonObject jsonObject);
 
 
+    @POST("api/sendotp")
+    Call<SendOTPResponse> getSendOTP(@Header("Content-Type") String content,
+                                     @Body JsonObject jsonObject);
 
+    @POST("api/update-phone")
+    Call<UpdatePhoneNumberResponse> getUpdatePhone(@Header("Content-Type") String content,
+                                                   @Body JsonObject jsonObject);
+
+
+
+    /* @POST("api/sendotp")
+    Call<SendOTPResponse> getSendOTP(@Header("Content-Type") String content,
+                                     @Body JsonObject jsonObject);
+*/
 
    /* @GET("api/account-balance")
     Call<AccountBalanceResponse> getAccountBalance(@Header("Content-Type") String content);

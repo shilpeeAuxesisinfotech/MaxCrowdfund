@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.activity.customClickListener.OnCustomClickListener;
+import com.auxesis.maxcrowdfund.customClickListener.OnCustomClickListener;
 import com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankaccountmodel.Datum;
 import java.util.List;
 

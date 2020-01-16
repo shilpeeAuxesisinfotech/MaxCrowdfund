@@ -1,4 +1,4 @@
-package com.auxesis.maxcrowdfund.activity;
+package com.auxesis.maxcrowdfund.mvvm.activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,8 +40,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.activity.customClickListener.OnCustomClickListener;
-import com.auxesis.maxcrowdfund.activity.customClickListener.OnDownloadClickListener;
+import com.auxesis.maxcrowdfund.customClickListener.OnCustomClickListener;
+import com.auxesis.maxcrowdfund.customClickListener.OnDownloadClickListener;
 import com.auxesis.maxcrowdfund.adapter.CollateralAdapter;
 import com.auxesis.maxcrowdfund.adapter.DocumentAdapter;
 import com.auxesis.maxcrowdfund.adapter.FundraiserAdapter;

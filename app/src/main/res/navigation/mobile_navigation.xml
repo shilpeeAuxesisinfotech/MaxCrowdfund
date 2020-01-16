@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/nav_investment_opp"
         android:name="com.auxesis.maxcrowdfund.mvvm.ui.home.HomeFragment"
-        android:label="@string/investments_opportunity"
+        android:label="@string/menu_investments_opportunity"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_nav_investment_opp_to_homeDetailFragment"
@@ -42,6 +42,15 @@
         <action
             android:id="@+id/action_nav_my_profile_to_changeEmailFragment"
             app:destination="@id/changeEmailFragment" />
+        <action
+            android:id="@+id/action_nav_my_profile_to_changeMobileNumberFragment"
+            app:destination="@id/changeMobileNumberFragment" />
+        <action
+            android:id="@+id/action_nav_my_profile_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
+        <action
+            android:id="@+id/action_nav_my_profile_to_changePreferenceFragment"
+            app:destination="@id/changePreferenceFragment" />
     </fragment>
 
     <fragment
@@ -72,6 +81,22 @@
         android:label="@string/change_email"
         tools:layout="@layout/fragment_change_email" />
 
+    <fragment
+        android:id="@+id/changeMobileNumberFragment"
+        android:name="com.auxesis.maxcrowdfund.mvvm.ui.changeMobileNumber.ChangeMobileNumberFragment"
+        android:label="fragment_change_mobile_number"
+        tools:layout="@layout/fragment_change_mobile_number" />
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.auxesis.maxcrowdfund.mvvm.ui.changePassword.ChangePasswordFragment"
+        android:label="@string/change_password"
+        tools:layout="@layout/fragment_change_password" />
+
+    <fragment
+        android:id="@+id/changePreferenceFragment"
+        android:name="com.auxesis.maxcrowdfund.mvvm.ui.changePreference.ChangePreferenceFragment"
+        android:label="@string/change_preference"
+        tools:layout="@layout/fragment_change_preference" />
 
 
 </navigation>

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.auxesis.maxcrowdfund.R;
+import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.custommvvm.changeemail.ChangeEmailResponse;
 import com.auxesis.maxcrowdfund.mvvm.activity.HomeActivity;
 import com.auxesis.maxcrowdfund.restapi.ApiClient;
@@ -28,6 +29,7 @@ public class ChangeEmailFragment extends Fragment {
     EditText edt_email;
     Button btn_submit;
     String error_msg = "";
+    ProgressDialog pd;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class ChangeEmailFragment extends Fragment {
     }
 
     private void getChangeEmail() {
+        pd = ProgressDialog.show(getActivity(), "Please Wait...");
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("email", edt_email.getText().toString().trim());
         String XCSRF = getPreference(getActivity(), "mCsrf_token");
@@ -60,15 +63,24 @@ public class ChangeEmailFragment extends Fragment {
         call.enqueue(new Callback<ChangeEmailResponse>() {
             @Override
             public void onResponse(Call<ChangeEmailResponse> call, Response<ChangeEmailResponse> response) {
-                if (response != null && response.isSuccessful()) {
-                    Log.d(TAG, "onResponse: " + "><><" + new Gson().toJson(response.body()));
-                    Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                try {
+                    if (pd != null && pd.isShowing()) {
+                        pd.dismiss();
+                    }
+                    if (response != null && response.isSuccessful()) {
+                        Log.d(TAG, "onResponse: " + "><><" + new Gson().toJson(response.body()));
+                        Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
-
             @Override
             public void onFailure(Call<ChangeEmailResponse> call, Throwable t) {
                 Log.e("", "error " + t.getMessage());
+                if (pd != null && pd.isShowing()) {
+                    pd.dismiss();
+                }
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -84,7 +96,7 @@ public class ChangeEmailFragment extends Fragment {
         }
     }
 
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         // Set title bar
         ((HomeActivity) getActivity()).setActionBarTitle(getString(R.string.change_email));

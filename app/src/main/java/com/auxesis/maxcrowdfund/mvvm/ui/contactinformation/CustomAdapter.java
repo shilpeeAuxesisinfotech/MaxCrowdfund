@@ -18,7 +18,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.activity.MaxPropertyGroupDetailActivity;
+import com.auxesis.maxcrowdfund.mvvm.activity.MaxPropertyGroupDetailActivity;
 import com.auxesis.maxcrowdfund.constant.BaseViewHolder;
 import com.auxesis.maxcrowdfund.model.MyListModel;
 

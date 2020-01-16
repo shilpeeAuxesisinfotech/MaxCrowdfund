@@ -1,4 +1,4 @@
-package com.auxesis.maxcrowdfund.activity.customClickListener;
+package com.auxesis.maxcrowdfund.customClickListener;
 
 public interface OnDownloadClickListener {
     void onMyDownloadClick(String mdownload);
