@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.model.InvestmentPlanModel;
-import com.auxesis.maxcrowdfund.model.LoanTermModel;
 
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class InvestmentPlanAdapter extends RecyclerView.Adapter<InvestmentPlanAd
     @NonNull
     @Override
     public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.loan_term_row_item, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_item_loan_term_, parent, false);
         return new MyHolder(itemView);
     }
 

@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.activity.customInterface.OnCustomClickListener;
+import com.auxesis.maxcrowdfund.activity.customClickListener.OnCustomClickListener;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
 import com.auxesis.maxcrowdfund.mvvm.activity.HomeActivity;

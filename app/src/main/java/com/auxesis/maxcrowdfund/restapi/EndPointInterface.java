@@ -9,8 +9,11 @@ import com.auxesis.maxcrowdfund.custommvvm.dashboardDetail.DashboardDetailModel.
 import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.MyInvestmentResponce;
 import com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankaccountmodel.ActiveBankAccountResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankaccountmodel.ChangeBankAccountResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.home.homemodel.InvestmentOppResponse;
 import com.google.gson.JsonObject;
+
 import org.json.JSONObject;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -42,6 +45,12 @@ public interface EndPointInterface {
                                                            @Query("from") String from,
                                                            @Query("to") String to);
 
+    @GET("api/fundraiser/listing")
+    Call<InvestmentOppResponse> getMyInvestmentOpp(@Query("_format") String _format,
+                                                   @Query("investment_status") String investment_status,
+                                                   @Query("page") int page);
+
+
     @GET("api/investment/details")
     Call<MyInvestmentDetailResponse> getMyInvestmentDetail();
 
@@ -50,6 +59,7 @@ public interface EndPointInterface {
     Call<ChangeEmailResponse> changeEmail(@Header("Content-Type") String content,
                                           @Header("X-CSRF-Token") String xcsrf,
                                           @Body JsonObject jsonObject);
+
     @GET("api/bank-accounts")
     Call<ChangeBankAccountResponse> getChangeBankAccount();
 

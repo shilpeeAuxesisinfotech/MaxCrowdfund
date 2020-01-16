@@ -25,7 +25,7 @@ public class MyInvestmentDetailAdapter extends RecyclerView.Adapter<MyInvestment
     @NonNull
     @Override
     public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_row_item_investment_detail, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_item_investment_detail, parent, false);
         return new MyHolder(itemView);
     }
 

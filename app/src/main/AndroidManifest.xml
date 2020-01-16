@@ -24,7 +24,7 @@
         <activity
             android:name=".mvvm.activity.HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.ChangePreferenceActivity" />
         <activity android:name=".activity.SendVerificationCodeActivity" />
         <activity android:name=".activity.ChangePasswordActivity" />

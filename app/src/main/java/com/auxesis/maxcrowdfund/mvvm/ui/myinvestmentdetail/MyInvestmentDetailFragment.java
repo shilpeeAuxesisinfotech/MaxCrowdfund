@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.activity.MaxPropertyGroupDetailActivity;
-import com.auxesis.maxcrowdfund.activity.customInterface.OnDownloadClickListener;
+import com.auxesis.maxcrowdfund.activity.customClickListener.OnDownloadClickListener;
 import com.auxesis.maxcrowdfund.adapter.InvestmentDocumentAdapter;
 import com.auxesis.maxcrowdfund.adapter.MyInvestmentDetailAdapter;
 import com.auxesis.maxcrowdfund.adapter.MyInvestmentDetailRepayAdapter;

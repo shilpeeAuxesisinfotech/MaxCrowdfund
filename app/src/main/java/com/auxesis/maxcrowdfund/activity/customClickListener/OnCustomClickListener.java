@@ -1,4 +1,4 @@
-package com.auxesis.maxcrowdfund.activity.customInterface;
+package com.auxesis.maxcrowdfund.activity.customClickListener;
 
 public interface OnCustomClickListener {
     void onCustomClick(String data);

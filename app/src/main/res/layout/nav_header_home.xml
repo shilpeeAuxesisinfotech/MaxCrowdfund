@@ -28,5 +28,5 @@
         android:fontFamily="@font/roboto_medium"
         android:text=""
         android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp" />
+        android:textSize="@dimen/_12sdp" />
 </LinearLayout>

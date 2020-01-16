@@ -40,8 +40,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.activity.customInterface.OnDownloadClickListener;
-import com.auxesis.maxcrowdfund.activity.customInterface.OnImageClickListener;
+import com.auxesis.maxcrowdfund.activity.customClickListener.OnCustomClickListener;
+import com.auxesis.maxcrowdfund.activity.customClickListener.OnDownloadClickListener;
 import com.auxesis.maxcrowdfund.adapter.CollateralAdapter;
 import com.auxesis.maxcrowdfund.adapter.DocumentAdapter;
 import com.auxesis.maxcrowdfund.adapter.FundraiserAdapter;
@@ -79,7 +79,7 @@ import java.util.Map;
 import static com.auxesis.maxcrowdfund.constant.APIUrl.GER_MY_INVEST_DETAILS;
 import static com.auxesis.maxcrowdfund.constant.Utils.showToast;
 
-public class MaxPropertyGroupDetailActivity extends AppCompatActivity implements OnImageClickListener, OnDownloadClickListener {
+public class MaxPropertyGroupDetailActivity extends AppCompatActivity implements OnCustomClickListener, OnDownloadClickListener {
     private static final String TAG = "MaxPropertyGroupDetailA";
     TextView tv_back_arrow, tvHeaderTitle, tv_mTittle, tv_interest_pr, tv_risk_c, tv_currency_left_amt, tv_cur_symbol_amt, tvAmount, tv_filled, tv_investors,
             tv_left_amount, tv_left, tv_months, tvType, tv_location, tvNoRecord, tv_summary, txt_summary_content, tv_loan_terms, tvNoRecord_loan_term, tv_investment_plan,
@@ -786,7 +786,7 @@ public class MaxPropertyGroupDetailActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onImageClick(String imageData) {
+    public void onCustomClick(String imageData) {
         try {
             if (imageData != null && !imageData.isEmpty() && !imageData.equals("null")) {
                 Glide.with(MaxPropertyGroupDetailActivity.this).load(imageData)

@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.model.DocumentModel;
 import com.auxesis.maxcrowdfund.model.LastInvestmentModel;
 
 import java.util.List;
@@ -28,7 +27,7 @@ public class LastInvestmentAdapter extends RecyclerView.Adapter<LastInvestmentAd
     @NonNull
     @Override
     public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.last_investment_row_item, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_item_last_investment, parent, false);
         return new MyHolder(itemView);
     }
 

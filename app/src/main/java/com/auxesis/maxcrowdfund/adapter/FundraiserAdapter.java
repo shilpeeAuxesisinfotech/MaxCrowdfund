@@ -1,7 +1,6 @@
 package com.auxesis.maxcrowdfund.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,7 @@ public class FundraiserAdapter extends RecyclerView.Adapter<FundraiserAdapter.My
     @NonNull
     @Override
     public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.found_raiser_row_item, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_item_fundraiser, parent, false);
         return new MyHolder(itemView);
     }
 

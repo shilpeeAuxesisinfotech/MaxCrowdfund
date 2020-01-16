@@ -25,7 +25,7 @@ public class CollateralAdapter extends RecyclerView.Adapter<CollateralAdapter.My
     @NonNull
     @Override
     public MyHolder  onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.collateral_row_item, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_item_collateral, parent, false);
         return new MyHolder(itemView);
     }
 

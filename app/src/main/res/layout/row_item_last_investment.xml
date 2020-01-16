@@ -9,7 +9,7 @@
         android:id="@+id/tv_name_tittle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto_medium"
+        android:fontFamily="@font/roboto_light"
         android:layout_alignParentLeft="true"
         android:gravity="left"
         android:text=""

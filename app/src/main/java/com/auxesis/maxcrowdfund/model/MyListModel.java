@@ -21,6 +21,24 @@ public class MyListModel {
     int average_return;
     String investment_status;
 
+  /*  public static final int TEXT_TYPE=0;
+    public static final int IMAGE_TYPE=1;
+    public static final int AUDIO_TYPE=2;*/
+
+    public static final int VIEW_TYPE_NORMAL = 0;
+    public static final int VIEW_TYPE_TOTAL = 1;
+    public static final int VIEW_TYPE_LOADING=2;
+
+    public int mViewHolderType;
+
+    public int getmViewHolderType() {
+        return mViewHolderType;
+    }
+
+    public void setmViewHolderType(int mViewHolderType) {
+        this.mViewHolderType = mViewHolderType;
+    }
+
     public String getInvestment_status() {
         return investment_status;
     }

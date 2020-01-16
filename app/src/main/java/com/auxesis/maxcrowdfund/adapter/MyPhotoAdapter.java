@@ -1,19 +1,16 @@
 package com.auxesis.maxcrowdfund.adapter;
 
 import android.content.Context;
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.activity.customInterface.OnImageClickListener;
+import com.auxesis.maxcrowdfund.activity.customClickListener.OnCustomClickListener;
 import com.auxesis.maxcrowdfund.model.PhotosVideosModel;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -23,18 +20,18 @@ public class MyPhotoAdapter extends RecyclerView.Adapter<MyPhotoAdapter.MyHolder
     private static final String TAG = "MyPhotoAdapter";
     private List<PhotosVideosModel> arrayList;
     Context mContext;
-    public OnImageClickListener onImageClickListener;
+    public OnCustomClickListener onCustomClickListener;
 
-    public MyPhotoAdapter(Context mContext, List<PhotosVideosModel> arrayList, OnImageClickListener onImageClickListener) {
+    public MyPhotoAdapter(Context mContext, List<PhotosVideosModel> arrayList, OnCustomClickListener onCustomClickListener) {
         this.mContext = mContext;
         this.arrayList = arrayList;
-        this.onImageClickListener = onImageClickListener;
+        this.onCustomClickListener = onCustomClickListener;
     }
 
     @NonNull
     @Override
     public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_photo_row_item, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_item_photo, parent, false);
         return new MyHolder(itemView);
     }
 
@@ -74,7 +71,7 @@ public class MyPhotoAdapter extends RecyclerView.Adapter<MyPhotoAdapter.MyHolder
                     holder.iv_photo.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            onImageClickListener.onImageClick(mUrl);
+                            onCustomClickListener.onCustomClick(mUrl);
                         }
                     });
                 }
@@ -82,14 +79,6 @@ public class MyPhotoAdapter extends RecyclerView.Adapter<MyPhotoAdapter.MyHolder
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-       /* holder.rlMainLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-        });*/
-
-
     }
 
     @Override

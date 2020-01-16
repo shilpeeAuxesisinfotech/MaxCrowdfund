@@ -21,13 +21,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            android:padding="@dimen/_5sdp"
+            app:contentPadding="@dimen/_10sdp"
             app:cardCornerRadius="@dimen/_5sdp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_10sdp"
                 android:gravity="center">
 
                 <RelativeLayout
@@ -68,58 +67,14 @@
                     android:layout_height="@dimen/_35sdp"
                     android:layout_margin="@dimen/_25sdp"
                     android:background="@drawable/button_ripple_green"
-                    android:fontFamily="sans-serif-medium"
+                    android:fontFamily="@font/roboto_light"
                     android:gravity="center"
                     android:text="Update avatar"
                     android:textAllCaps="false"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/_12sdp" />
 
-
             </RelativeLayout>
-
-
-
-
-            <!--   <RelativeLayout
-                   android:visibility="gone"
-                   android:id="@+id/rllayout"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:padding="@dimen/_10sdp">
-
-                   <de.hdodenhof.circleimageview.CircleImageView
-                       android:layout_width="@dimen/_150sdp"
-                       android:layout_height="@dimen/_150sdp"
-                       android:src="@drawable/user"
-                       android:gravity="center"
-                       app:civ_border_color="@color/dark_gray"
-                       app:civ_border_width="2dp" />
-
-
-                   <Button
-                       android:id="@+id/btn_trustly"
-                       android:layout_width="match_parent"
-                       android:layout_below="@+id/ivUserProfile"
-                       android:layout_height="@dimen/_38sdp"
-                       android:layout_marginTop="@dimen/_10sdp"
-                       android:layout_marginBottom="@dimen/_5sdp"
-                       android:background="@drawable/button_ripple_green"
-                       android:fontFamily="sans-serif"
-                       android:gravity="center"
-                       android:text="Update avatar"
-                       android:textAllCaps="false"
-                       android:textColor="@color/white"
-                       android:textSize="@dimen/_14sdp" />
-
-               </RelativeLayout>
-
-
-   -->
-
         </androidx.cardview.widget.CardView>
-
-
     </RelativeLayout>
-
 </RelativeLayout>

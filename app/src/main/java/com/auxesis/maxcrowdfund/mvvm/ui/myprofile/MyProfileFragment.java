@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.activity.ChangeEmailActivity;
 import com.auxesis.maxcrowdfund.activity.ChangeMobileNumberActivity;
 import com.auxesis.maxcrowdfund.activity.ChangePasswordActivity;
 import com.auxesis.maxcrowdfund.activity.ChangePreferenceActivity;
@@ -81,12 +80,14 @@ public class MyProfileFragment extends Fragment {
         btn_change_email.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), ChangeEmailActivity.class));
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                navController.navigate(R.id.action_nav_my_profile_to_changeEmailFragment);
             }
         });
         btn_change_mobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 startActivity(new Intent(getActivity(), ChangeMobileNumberActivity.class));
             }
         });

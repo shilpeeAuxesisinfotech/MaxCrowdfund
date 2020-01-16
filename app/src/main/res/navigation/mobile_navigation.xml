@@ -39,6 +39,9 @@
         <action
             android:id="@+id/action_nav_my_profile_to_changeBankAccountFragment"
             app:destination="@id/changeBankAccountFragment" />
+        <action
+            android:id="@+id/action_nav_my_profile_to_changeEmailFragment"
+            app:destination="@id/changeEmailFragment" />
     </fragment>
 
     <fragment
@@ -62,4 +65,13 @@
         android:name="com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankaccountview.ChangeBankAccountFragment"
         android:label="@string/change_default_bank_account"
         tools:layout="@layout/fragment_change_bank_account" />
+
+    <fragment
+        android:id="@+id/changeEmailFragment"
+        android:name="com.auxesis.maxcrowdfund.mvvm.ui.changeemail.ChangeEmailFragment"
+        android:label="@string/change_email"
+        tools:layout="@layout/fragment_change_email" />
+
+
+
 </navigation>

@@ -1,95 +1,75 @@
-package com.auxesis.maxcrowdfund.activity;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.auxesis.maxcrowdfund.mvvm.ui.changeemail;
 
 import android.os.Bundle;
+import androidx.fragment.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.custommvvm.DashboardDepositActivity;
 import com.auxesis.maxcrowdfund.custommvvm.changeemail.ChangeEmailResponse;
+import com.auxesis.maxcrowdfund.mvvm.activity.HomeActivity;
 import com.auxesis.maxcrowdfund.restapi.ApiClient;
 import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
-import static com.auxesis.maxcrowdfund.constant.Utils.showToast;
 
-
-public class ChangeEmailActivity extends AppCompatActivity {
-    private static final String TAG = "ChangeEmailActivity";
-    TextView tv_back_arrow, tvHeaderTitle;
+public class ChangeEmailFragment extends Fragment {
+    private static final String TAG = "ChangeEmailFragment";
     EditText edt_email;
     Button btn_submit;
     String error_msg = "";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_email);
-        init();
-    }
-
-    private void init() {
-        tv_back_arrow = findViewById(R.id.tv_back_arrow);
-        tvHeaderTitle = findViewById(R.id.tvHeaderTitle);
-        tvHeaderTitle.setText(R.string.change_email);
-        tv_back_arrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
-        edt_email = findViewById(R.id.edt_email);
-        btn_submit = findViewById(R.id.btn_submit);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_change_email, container, false);
+        edt_email = root.findViewById(R.id.edt_email);
+        btn_submit = root.findViewById(R.id.btn_submit);
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isInternetConnected(getApplicationContext())) {
+                if (isInternetConnected(getActivity())) {
                     if (Validation()) {
                         getChangeEmail();
                     } else {
-                        showToast(ChangeEmailActivity.this, error_msg);
+                        Toast.makeText(getActivity(), error_msg, Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    showToast(ChangeEmailActivity.this, getResources().getString(R.string.oops_connect_your_internet));
+                    Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
                 }
             }
         });
+        return root;
     }
 
     private void getChangeEmail() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("email", edt_email.getText().toString().trim());
-        String XCSRF = getPreference(ChangeEmailActivity.this, "mCsrf_token");
+        String XCSRF = getPreference(getActivity(), "mCsrf_token");
         EndPointInterface git = ApiClient.getClient().create(EndPointInterface.class);
         Call<ChangeEmailResponse> call = git.changeEmail("application/json", XCSRF, jsonObject);
         call.enqueue(new Callback<ChangeEmailResponse>() {
             @Override
             public void onResponse(Call<ChangeEmailResponse> call, Response<ChangeEmailResponse> response) {
-                if (response!= null && response.isSuccessful()) {
+                if (response != null && response.isSuccessful()) {
                     Log.d(TAG, "onResponse: " + "><><" + new Gson().toJson(response.body()));
-                    Toast.makeText(ChangeEmailActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ChangeEmailResponse> call, Throwable t) {
                 Log.e("", "error " + t.getMessage());
-                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -104,8 +84,9 @@ public class ChangeEmailActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    public void onResume(){
+        super.onResume();
+        // Set title bar
+        ((HomeActivity) getActivity()).setActionBarTitle(getString(R.string.change_email));
     }
 }

@@ -1,23 +1,16 @@
 package com.auxesis.maxcrowdfund.adapter;
 
 import android.content.Context;
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.model.LoanTermModel;
-import com.auxesis.maxcrowdfund.model.PhotosVideosModel;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
@@ -34,7 +27,7 @@ public class LoanTermAdapter extends RecyclerView.Adapter<LoanTermAdapter.MyHold
     @NonNull
     @Override
     public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.loan_term_row_item, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_item_loan_term_, parent, false);
         return new MyHolder(itemView);
     }
 
