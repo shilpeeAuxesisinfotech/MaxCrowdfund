@@ -124,6 +124,7 @@
     <string name="change">Change</string>
     <string name="resend">Resend</string>
     <string name="enter_code_to_verify">Enter OTP to verify</string>
+    <string name="enter_valid">OTP is not correct</string>
     <string name="verify">Verify</string>
 
     <!-- TODO: Remove or change this placeholder text -->

@@ -39,7 +39,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
 import static com.auxesis.maxcrowdfund.constant.Utils.showToast;
 
-
 public class UploadImageActivity extends AppCompatActivity {
     private static final String TAG = "UploadImageActivity";
     TextView tv_back_arrow, tvHeaderTitle;

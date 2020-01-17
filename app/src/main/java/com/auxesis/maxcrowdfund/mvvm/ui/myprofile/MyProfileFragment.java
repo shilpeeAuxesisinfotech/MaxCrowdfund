@@ -92,8 +92,6 @@ public class MyProfileFragment extends Fragment {
             public void onClick(View v) {
                 NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
                 navController.navigate(R.id.action_nav_my_profile_to_changePasswordFragment);
-
-              //  startActivity(new Intent(getActivity(), ChangePasswordActivity.class));
             }
         });
         btn_change_default_bankA.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +106,6 @@ public class MyProfileFragment extends Fragment {
             public void onClick(View v) {
                 NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
                 navController.navigate(R.id.action_nav_my_profile_to_changePreferenceFragment);
-               // startActivity(new Intent(getActivity(), ChangePreferenceActivity.class));
             }
         });
 

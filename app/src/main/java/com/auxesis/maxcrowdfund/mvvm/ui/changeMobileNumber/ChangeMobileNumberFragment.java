@@ -45,7 +45,7 @@ public class ChangeMobileNumberFragment extends Fragment {
     TextView tv_mobile;
     CountryCodePicker ccp_countryCode;
     String countryCode = "";
-
+    String mOTP="";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_change_mobile_number, container, false);
@@ -96,7 +96,11 @@ public class ChangeMobileNumberFragment extends Fragment {
             public void onClick(View v) {
                 if (isInternetConnected(getActivity())) {
                     if (edt_verifyCode.getText().toString().trim() != null && !edt_verifyCode.getText().toString().trim().isEmpty()) {
-                        getVerifyMobile();
+                        if (edt_verifyCode.getText().toString().trim().equals(mOTP)) {
+                            getVerifyMobile();
+                        }else {
+                            Toast.makeText(getActivity(), getResources().getString(R.string.enter_valid), Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         Toast.makeText(getActivity(), getResources().getString(R.string.enter_code_to_verify), Toast.LENGTH_SHORT).show();
                     }
@@ -152,6 +156,7 @@ public class ChangeMobileNumberFragment extends Fragment {
                             Toast.makeText(getActivity(), "OTP Send Successfully..", Toast.LENGTH_SHORT).show();
                             setPreference(getActivity(), "countryCode", countryCode);
                             setPreference(getActivity(), "enteredPhone", enteredPhone);
+                            mOTP =response.body().getOtp();
                             cardViewSend.setVisibility(View.GONE);
                             cardViewVerify.setVisibility(View.VISIBLE);
                             edt_mobile.setText("");
