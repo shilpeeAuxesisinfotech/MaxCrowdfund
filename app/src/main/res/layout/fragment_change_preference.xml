@@ -1,371 +1,409 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/light_gray_bg"
     android:padding="@dimen/_10sdp"
     tools:context=".mvvm.ui.changePreference.ChangePreferenceFragment">
 
-    <androidx.cardview.widget.CardView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        app:contentPadding="@dimen/_10sdp"
-        app:cardCornerRadius="@dimen/_5sdp">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:padding="@dimen/_10sdp">
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <TextView
-                android:id="@+id/tvlanguagePre"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:fontFamily="@font/roboto_light"
-                android:gravity="left"
-                android:text="Language preference"
-                android:textColor="@color/light_gray_text"
-                android:textSize="@dimen/_12sdp" />
+                android:background="@color/colorPrimary"
+                app:cardCornerRadius="@dimen/_5sdp"
+                app:contentPadding="@dimen/_10sdp">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_marginTop="@dimen/_3sdp"
-                android:background="@drawable/custom_spinner_bg"
-                android:orientation="horizontal">
-
-                <Spinner
-                    android:id="@+id/spinnerAddproduct"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
-                    android:dropDownWidth="fill_parent"
-                    android:spinnerMode="dropdown" />
-
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/tvActiveAccount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:fontFamily="@font/roboto_light"
-                android:gravity="left"
-                android:text="Active account"
-                android:textColor="@color/light_gray_text"
-                android:textSize="@dimen/_12sdp" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_marginTop="@dimen/_3sdp"
-                android:background="@drawable/custom_spinner_bg"
-                android:orientation="horizontal">
-
-                <Spinner
-                    android:id="@+id/spinnerActiveAccount"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
-                    android:dropDownWidth="fill_parent"
-                    android:spinnerMode="dropdown" />
-
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/tvNotifications"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:fontFamily="@font/roboto_medium"
-                android:gravity="left"
-                android:text="Notifications"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/_12sdp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="horizontal"
-                android:weightSum="1">
-
-                <LinearLayout
-                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight=".6">
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tvAccountLogin"
+                        android:id="@+id/tvLanguage"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_light"
                         android:gravity="left"
-                        android:text="Account Login"
+                        android:text=""
                         android:textColor="@color/light_gray_text"
                         android:textSize="@dimen/_12sdp" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".4">
-
-                    <RadioGroup
-                        android:id="@+id/radioButton"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_25sdp"
-                        android:background="@drawable/radio_outline"
-                        android:checkedButton="@+id/off"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:background="@drawable/custom_spinner_bg"
                         android:orientation="horizontal">
 
-                        <RadioButton
-                            android:id="@+id/off"
+                        <Spinner
+                            android:id="@+id/spinnerLanguage"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@drawable/radio_button_bg"
-                            android:button="@null"
-                            android:checked="false"
-                            android:gravity="center"
-                            android:text="Off"
-                            android:textColor="@drawable/radio_text" />
+                            android:layout_height="@dimen/_40sdp"
+                            android:dropDownWidth="fill_parent"
+                            android:spinnerMode="dropdown" />
 
-                        <RadioButton
-                            android:id="@+id/on"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@drawable/radio_button_bg"
-                            android:button="@null"
-                            android:checked="true"
-                            android:gravity="center"
-                            android:text="ON"
-                            android:textColor="@drawable/radio_text" />
-                    </RadioGroup>
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="horizontal"
-                android:weightSum="1">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight=".6">
+                    </RelativeLayout>
 
                     <TextView
-                        android:id="@+id/tvInvestmentOpp"
+                        android:id="@+id/tvActiveAccount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:fontFamily="@font/roboto_light"
                         android:gravity="left"
-                        android:text="Investment opportunities"
+                        android:text=""
                         android:textColor="@color/light_gray_text"
                         android:textSize="@dimen/_12sdp" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".4">
-
-                    <RadioGroup
-                        android:id="@+id/radioInvestment"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_25sdp"
-                        android:background="@drawable/radio_outline"
-                        android:checkedButton="@+id/off"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:background="@drawable/custom_spinner_bg"
                         android:orientation="horizontal">
 
-                        <RadioButton
-                            android:id="@+id/investment_off"
+                        <Spinner
+                            android:id="@+id/spinnerActiveAccount"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@drawable/radio_button_bg"
-                            android:button="@null"
-                            android:checked="false"
-                            android:gravity="center"
-                            android:text="Off"
-                            android:textColor="@drawable/radio_text" />
+                            android:layout_height="@dimen/_40sdp"
+                            android:dropDownWidth="fill_parent"
+                            android:spinnerMode="dropdown" />
 
-                        <RadioButton
-                            android:id="@+id/investment_on"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@drawable/radio_button_bg"
-                            android:button="@null"
-                            android:checked="true"
-                            android:gravity="center"
-                            android:text="ON"
-                            android:textColor="@drawable/radio_text" />
-                    </RadioGroup>
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="horizontal"
-                android:weightSum="1">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight=".6">
+                    </RelativeLayout>
 
                     <TextView
-                        android:id="@+id/tvInvestmentUpdate"
+                        android:id="@+id/tvTransaction_signing"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:fontFamily="@font/roboto_light"
                         android:gravity="left"
-                        android:text="Investment updates"
+                        android:text=""
                         android:textColor="@color/light_gray_text"
                         android:textSize="@dimen/_12sdp" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".4">
-
-                    <RadioGroup
-                        android:id="@+id/radioInvestmentUpdate"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_25sdp"
-                        android:background="@drawable/radio_outline"
-                        android:checkedButton="@+id/off"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:background="@drawable/custom_spinner_bg"
                         android:orientation="horizontal">
 
-                        <RadioButton
-                            android:id="@+id/investUpdate_off"
+                        <Spinner
+                            android:id="@+id/spinnerTranSigning"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@drawable/radio_button_bg"
-                            android:button="@null"
-                            android:checked="false"
-                            android:gravity="center"
-                            android:text="Off"
-                            android:textColor="@drawable/radio_text" />
+                            android:layout_height="@dimen/_40sdp"
+                            android:dropDownWidth="fill_parent"
+                            android:spinnerMode="dropdown" />
 
-                        <RadioButton
-                            android:id="@+id/investUpdate_on"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@drawable/radio_button_bg"
-                            android:button="@null"
-                            android:checked="true"
-                            android:gravity="center"
-                            android:text="ON"
-                            android:textColor="@drawable/radio_text" />
-                    </RadioGroup>
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="horizontal"
-                android:weightSum="1">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight=".6">
+                    </RelativeLayout>
 
                     <TextView
-                        android:id="@+id/tvNewslatter"
+                        android:id="@+id/tvNotifications"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_light"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:paddingTop="@dimen/_5sdp"
+                        android:paddingBottom="@dimen/_5sdp"
                         android:gravity="left"
-                        android:text="NewsLatter(every 2-4weeks)"
-                        android:textColor="@color/light_gray_text"
+                        android:text=""
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/_12sdp" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".4">
-
-                    <RadioGroup
-                        android:id="@+id/radioNewslatter"
+                    <View
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_25sdp"
-                        android:background="@drawable/radio_outline"
-                        android:checkedButton="@+id/off"
-                        android:orientation="horizontal">
+                        android:layout_height="@dimen/_1sdp"
+                        android:background="@color/light_gray_text"/>
 
-                        <RadioButton
-                            android:id="@+id/newslatter_off"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@drawable/radio_button_bg"
-                            android:button="@null"
-                            android:checked="false"
-                            android:gravity="center"
-                            android:text="Off"
-                            android:textColor="@drawable/radio_text" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
 
-                        <RadioButton
-                            android:id="@+id/newslatter_on"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@drawable/radio_button_bg"
-                            android:button="@null"
-                            android:checked="true"
-                            android:gravity="center"
-                            android:text="ON"
-                            android:textColor="@drawable/radio_text" />
-                    </RadioGroup>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight=".6">
 
+                            <TextView
+                                android:id="@+id/tvAccountLogin"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_light"
+                                android:gravity="left"
+                                android:text=""
+                                android:textColor="@color/light_gray_text"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".4">
+
+                            <RadioGroup
+                                android:id="@+id/radioGroupLogin"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_25sdp"
+                                android:background="@drawable/radio_outline"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/loginOff"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/radio_button_bg_on"
+                                    android:button="@null"
+                                    android:checked="false"
+                                    android:gravity="center"
+                                    android:text="@string/off"
+                                    android:textColor="@drawable/radio_text" />
+
+                                <RadioButton
+                                    android:id="@+id/loginOn"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/radio_button_bg_on"
+                                    android:button="@null"
+                                    android:checked="false"
+                                    android:gravity="center"
+                                    android:text="@string/on"
+                                    android:textColor="@drawable/radio_text" />
+                            </RadioGroup>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight=".6">
+
+                            <TextView
+                                android:id="@+id/tvInvestmentOpp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_light"
+                                android:gravity="left"
+                                android:text=""
+                                android:textColor="@color/light_gray_text"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".4">
+
+                            <RadioGroup
+                                android:id="@+id/radioGroupInvestment"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_25sdp"
+                                android:background="@drawable/radio_outline"
+                                android:checkedButton="@+id/off"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/investment_off"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/radio_button_bg_on"
+                                    android:button="@null"
+                                    android:checked="false"
+                                    android:gravity="center"
+                                    android:text="@string/off"
+                                    android:textColor="@drawable/radio_text" />
+
+                                <RadioButton
+                                    android:id="@+id/investment_on"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/radio_button_bg_on"
+                                    android:button="@null"
+                                    android:checked="false"
+                                    android:gravity="center"
+                                    android:text="@string/on"
+                                    android:textColor="@drawable/radio_text" />
+                            </RadioGroup>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight=".6">
+
+                            <TextView
+                                android:id="@+id/tvInvestmentUpdate"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_light"
+                                android:gravity="left"
+                                android:text=""
+                                android:textColor="@color/light_gray_text"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".4">
+
+                            <RadioGroup
+                                android:id="@+id/radioGroupInvestUpdate"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_25sdp"
+                                android:background="@drawable/radio_outline"
+                                android:checkedButton="@+id/off"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/investUpdate_off"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/radio_button_bg_on"
+                                    android:button="@null"
+                                    android:checked="false"
+                                    android:gravity="center"
+                                    android:text="@string/off"
+                                    android:textColor="@drawable/radio_text" />
+
+                                <RadioButton
+                                    android:id="@+id/investUpdate_on"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/radio_button_bg_on"
+                                    android:button="@null"
+                                    android:checked="false"
+                                    android:gravity="center"
+                                    android:text="@string/on"
+                                    android:textColor="@drawable/radio_text" />
+                            </RadioGroup>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight=".6">
+
+                            <TextView
+                                android:id="@+id/tvNewslatter"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_light"
+                                android:gravity="left"
+                                android:text=""
+                                android:textColor="@color/light_gray_text"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".4">
+
+                            <RadioGroup
+                                android:id="@+id/radioGroupNewslatter"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_25sdp"
+                                android:background="@drawable/radio_outline"
+                                android:checkedButton="@+id/off"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/newslatter_off"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/radio_button_bg_on"
+                                    android:button="@null"
+                                    android:checked="false"
+                                    android:gravity="center"
+                                    android:text="@string/off"
+                                    android:textColor="@drawable/radio_text" />
+
+                                <RadioButton
+                                    android:id="@+id/newslatter_on"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/radio_button_bg_on"
+                                    android:button="@null"
+                                    android:checked="false"
+                                    android:gravity="center"
+                                    android:text="@string/on"
+                                    android:textColor="@drawable/radio_text" />
+                            </RadioGroup>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btn_update_preference"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:background="@drawable/button_ripple_green"
+                        android:fontFamily="@font/roboto_light"
+                        android:gravity="center"
+                        android:text="Update preferences"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp" />
                 </LinearLayout>
-
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/btn_send_verify"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_35sdp"
-                android:layout_marginLeft="@dimen/_40sdp"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_marginRight="@dimen/_40sdp"
-                android:background="@drawable/button_ripple_green"
-                android:fontFamily="@font/roboto_light"
-                android:gravity="center"
-                android:text="Update preferences"
-                android:textAllCaps="false"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/_12sdp" />
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </RelativeLayout>

@@ -1,6 +1,7 @@
 package com.auxesis.maxcrowdfund.restapi;
 
-import com.auxesis.maxcrowdfund.custommvvm.changeemail.ChangeEmailResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.changePreferenceModel.ChangePreferenceResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.changeemail.ChangeEmailResponse;
 import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.MyInvestmentSearchResponse;
 import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.myinvestmentdetail.MyInvestmentDetailResponse;
 import com.auxesis.maxcrowdfund.custommvvm.profile.profileModel.ProfileResponse;
@@ -11,11 +12,10 @@ import com.auxesis.maxcrowdfund.mvvm.ui.changeMobileNumber.changeMobileModel.Sen
 import com.auxesis.maxcrowdfund.mvvm.ui.changeMobileNumber.changeMobileModel.UpdatePhoneNumberResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankaccountmodel.ActiveBankAccountResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankaccountmodel.ChangeBankAccountResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.contactinformation.contactInformationModel.ContactInformationResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.home.homemodel.InvestmentOppResponse;
 import com.google.gson.JsonObject;
-
 import org.json.JSONObject;
-
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -68,7 +68,6 @@ public interface EndPointInterface {
     Call<ActiveBankAccountResponse> getActiveBankAccount(@Header("Content-Type") String content,
                                                          @Body JsonObject jsonObject);
 
-
     @POST("api/sendotp")
     Call<SendOTPResponse> getSendOTP(@Header("Content-Type") String content,
                                      @Body JsonObject jsonObject);
@@ -77,25 +76,12 @@ public interface EndPointInterface {
     Call<UpdatePhoneNumberResponse> getUpdatePhone(@Header("Content-Type") String content,
                                                    @Body JsonObject jsonObject);
 
+    @GET("api/get-preferences")
+    Call<ChangePreferenceResponse> getChangePreferenceAPI(@Header("Content-Type") String content);
 
+    @GET("api/contact-information")
+    Call<ContactInformationResponse> getContactInformation(@Header("Content-Type") String content);
 
-    /* @POST("api/sendotp")
-    Call<SendOTPResponse> getSendOTP(@Header("Content-Type") String content,
-                                     @Body JsonObject jsonObject);
-*/
-
-   /* @GET("api/account-balance")
-    Call<AccountBalanceResponse> getAccountBalance(@Header("Content-Type") String content);
-
-    @GET("api/portfolio")
-    Call<PortfolioResponse> getPortfolio(@Header("Content-Type") String content);
-
-*/
-
-
-    /*For fragment*/
-
-    //public final static String GER_ACCOUNT_BALANCE = BASE_URL + "api/account-balance";
 
 
 /*

@@ -1,6 +1,5 @@
 
-package com.auxesis.maxcrowdfund.custommvvm.changeemail;
-
+package com.auxesis.maxcrowdfund.mvvm.ui.changeemail;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

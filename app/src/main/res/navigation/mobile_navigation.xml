@@ -55,7 +55,7 @@
 
     <fragment
         android:id="@+id/nav_contact_information"
-        android:name="com.auxesis.maxcrowdfund.mvvm.ui.contactinformation.ContactInformation"
+        android:name="com.auxesis.maxcrowdfund.mvvm.ui.contactinformation.ContactInformationFragement"
         android:title="@string/menu_contact_information"
         tools:layout="@layout/fragment_contact_information" />
 

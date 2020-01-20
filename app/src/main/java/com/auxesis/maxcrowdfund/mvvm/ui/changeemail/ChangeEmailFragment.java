@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
-import com.auxesis.maxcrowdfund.custommvvm.changeemail.ChangeEmailResponse;
 import com.auxesis.maxcrowdfund.mvvm.activity.HomeActivity;
 import com.auxesis.maxcrowdfund.restapi.ApiClient;
 import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
@@ -36,6 +35,7 @@ public class ChangeEmailFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_change_email, container, false);
         edt_email = root.findViewById(R.id.edt_email);
         btn_submit = root.findViewById(R.id.btn_submit);
+
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,7 +95,6 @@ public class ChangeEmailFragment extends Fragment {
             return true;
         }
     }
-
     public void onResume() {
         super.onResume();
         // Set title bar
