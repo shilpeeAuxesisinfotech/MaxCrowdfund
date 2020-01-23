@@ -33,7 +33,6 @@ import com.google.gson.Gson;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import static com.auxesis.maxcrowdfund.constant.Utils.showToast;
 
 public class MyInvestmentDetailFragment extends Fragment implements OnDownloadClickListener {
     private static final String TAG = "MyInvestmentDetailFragm";
@@ -100,7 +99,7 @@ public class MyInvestmentDetailFragment extends Fragment implements OnDownloadCl
         if (Utils.isInternetConnected(getActivity())) {
             getMyInvestmentDetail();
         } else {
-            showToast(getActivity(), getResources().getString(R.string.oops_connect_your_internet));
+            Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
         }
 
         rl_document_click.setOnClickListener(new View.OnClickListener() {

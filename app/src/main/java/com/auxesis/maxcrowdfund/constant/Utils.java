@@ -41,7 +41,7 @@ public class Utils {
     private final static int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
 
     public static boolean isInternetConnected(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE) ;
 
         NetworkInfo wifiNetwork = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         if (wifiNetwork != null && wifiNetwork.isConnectedOrConnecting()) {
@@ -59,13 +59,6 @@ public class Utils {
         }
         return false;
     }
-
-   /* public boolean isNetworkAvialable ( Context context ) {
-        ConnectivityManager cm =
-                ( ConnectivityManager ) context.getSystemService ( Context.CONNECTIVITY_SERVICE );
-        NetworkInfo netInfo = cm.getActiveNetworkInfo ( );
-        return netInfo != null && netInfo.isConnectedOrConnecting ( );
-    }*/
 
     public static void setPreference(Context mContext, String key, String value) {
         SharedPreferences.Editor editor = mContext.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
@@ -86,7 +79,6 @@ public class Utils {
         else
             activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
-
 
     public static void slide_down(Context ctx, View v) {
         Animation a = AnimationUtils.loadAnimation(ctx, R.anim.slide_down);
@@ -111,7 +103,6 @@ public class Utils {
     }
 
     // for replace <br>
-
     public static String getCustomRepalce(String[] message) {
         String mMessage = "";
         //match HTML tags
@@ -133,21 +124,6 @@ public class Utils {
         return moneyString;
     }
 
-    // for Custom toast
-    public static void showToast(Activity activity, String message) {
-        LayoutInflater li = activity.getLayoutInflater();
-        //Getting the View object as defined in the customtoast.xml file
-        View layout = li.inflate(R.layout.custom_toast_layout, (ViewGroup) activity.findViewById(R.id.custom_toast_layout));
-        TextView textView = layout.findViewById(R.id.custom_toast_message);
-        textView.setText(message);
-        Toast toast = new Toast(activity);
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 50, 50);
-        toast.setView(layout);//setting the view of custom toast layout
-        toast.show();
-    }
-
-
     public static String getRandomNO() {
         Random random = new Random();
         String mRandom = "";
@@ -156,9 +132,6 @@ public class Utils {
         }
         return (uUid+mRandom);
     }
-
-
-
 
     public static boolean checkRequestPermiss(Context mContext, Activity mActivity) {
         int cameraPer = ContextCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA);

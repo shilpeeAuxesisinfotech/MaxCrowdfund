@@ -1,6 +1,4 @@
 package com.auxesis.maxcrowdfund.mvvm.ui.myprofile;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.mvvm.activity.UploadImageActivity;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
 import com.auxesis.maxcrowdfund.custommvvm.profile.profileModel.ProfileResponse;
@@ -70,7 +67,9 @@ public class MyProfileFragment extends Fragment {
         btn_addChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), UploadImageActivity.class));
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                navController.navigate(R.id.action_nav_my_profile_to_uploadImageFragment);
+               // startActivity(new Intent(getActivity(), UploadImageActivity.class));
             }
         });
         btn_change_email.setOnClickListener(new View.OnClickListener() {
@@ -130,6 +129,7 @@ public class MyProfileFragment extends Fragment {
                         if (pd != null && pd.isShowing()) {
                             pd.dismiss();
                         }
+                        if (response != null && response.isSuccessful()) {
                         ProfileResponse profileResponse = response.body();
                         if (profileResponse != null && profileResponse.getProfile() != null) {
                             tv_user_name.setText(profileResponse.getProfile().getData().getName().getValue());
@@ -140,7 +140,7 @@ public class MyProfileFragment extends Fragment {
                             tvEmail.setText(profileResponse.getProfile().getData().getEmail().getTitle());
                             tv_email.setText(profileResponse.getProfile().getData().getEmail().getValue());
                             tvAddress.setText(profileResponse.getProfile().getData().getAddress().getTitle());
-                            tv_Address.setText(profileResponse.getProfile().getData().getAddress().getValue().replaceAll("<br>",""));
+                            tv_Address.setText(profileResponse.getProfile().getData().getAddress().getValue().replaceAll("<br>", ""));
                             tvInvestorId.setText(profileResponse.getProfile().getData().getInvestorid().getTitle());
                             tv_investorId.setText(profileResponse.getProfile().getData().getInvestorid().getValue());
                             tvAccountId.setText(profileResponse.getProfile().getData().getAccountid().getTitle());
@@ -157,6 +157,7 @@ public class MyProfileFragment extends Fragment {
                                 e.printStackTrace();
                             }
                         }
+                    }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -174,7 +175,6 @@ public class MyProfileFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
 
     public void onResume(){
         super.onResume();

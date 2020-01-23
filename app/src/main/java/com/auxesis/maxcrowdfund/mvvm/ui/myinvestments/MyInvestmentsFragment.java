@@ -160,7 +160,6 @@ public class MyInvestmentsFragment extends Fragment {
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<MyInvestmentResponce> call, Throwable t) {
                 Log.e("response", "error " + t.getMessage());

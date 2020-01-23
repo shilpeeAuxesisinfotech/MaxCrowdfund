@@ -46,7 +46,6 @@ import java.util.Map;
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
 import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
-import static com.auxesis.maxcrowdfund.constant.Utils.showToast;
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
@@ -114,35 +113,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
-
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
-       // item = menu.findItem(R.id.filter).setVisible(false);
-        return true;
-    }
-*/
-   /* @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.filter:
-               // newGame();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-       *//* switch (item.getItemId()) {
-            case R.id.filter:
-                Toast.makeText(HomeActivity.this, "Menu Item with clicked: " + item.getTitle(), Toast.LENGTH_SHORT).show();
-                break;
-        }
-        return super.onOptionsItemSelected(item);*//*
-    }*/
-
-
-
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -167,7 +137,7 @@ public class HomeActivity extends AppCompatActivity {
                         Log.d(TAG, "onResponse: " + status);
                         setPreference(HomeActivity.this, "user_id", "");
                         setPreference(HomeActivity.this, "mLogout_token", "");
-                        showToast(HomeActivity.this, "Logout Successfully..");
+                        Toast.makeText(HomeActivity.this, getResources().getString(R.string.logout_succ), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
@@ -192,10 +162,8 @@ public class HomeActivity extends AppCompatActivity {
                                 // Now you can use any deserializer to make sense of data
                                 JSONObject obj = new JSONObject(res);
                                 mMessage = obj.getString("message");
-                                Log.d(TAG, "onErrorResponse: " + res);
                                 Log.d(TAG, "onErrorResponse: " + obj.getString("message"));
-                                showToast(HomeActivity.this, mMessage);
-                                //use this json as you want
+                                Toast.makeText(HomeActivity.this, mMessage, Toast.LENGTH_SHORT).show();
                             } catch (UnsupportedEncodingException e1) {
                                 // Couldn't properly decode data to string
                                 e1.printStackTrace();
@@ -204,39 +172,35 @@ public class HomeActivity extends AppCompatActivity {
                                 e2.printStackTrace();
                             }
                             if (response.statusCode == 404) {
-                                showToast(HomeActivity.this, mMessage);
+                                Toast.makeText(HomeActivity.this, mMessage, Toast.LENGTH_SHORT).show();
                             } else if (response.statusCode == 400 || response.statusCode == 405 || response.statusCode == 500) {
-                                Log.d(TAG, "onErrorResponse: " + "statusCode:--400-------" + response.statusCode + "mMessage-------" + mMessage);
-                                showToast(HomeActivity.this, mMessage);
+                                Toast.makeText(HomeActivity.this, mMessage, Toast.LENGTH_SHORT).show();
                             } else if (response.statusCode == 401) {
-                                Log.d(TAG, "onErrorResponse: " + "statusCode:---401------" + response.statusCode);
-                                showToast(HomeActivity.this, mMessage);
+                                Toast.makeText(HomeActivity.this, mMessage, Toast.LENGTH_SHORT).show();
                             } else if (response.statusCode == 403) {
-                                showToast(HomeActivity.this, mMessage);
-                                Log.d(TAG, "onErrorResponse: " + "statusCode:---403------" + response.statusCode + "mMessage------" + mMessage);
+                                Toast.makeText(HomeActivity.this, mMessage, Toast.LENGTH_SHORT).show();
                             } else if (response.statusCode == 422) {
-                                showToast(HomeActivity.this, mMessage);
-                                Log.d(TAG, "onErrorResponse: " + "statusCode:---422---String---" + new String(response.data));
+                                Toast.makeText(HomeActivity.this, mMessage, Toast.LENGTH_SHORT).show();
                             } else if (response.statusCode == 503) {
-                                showToast(HomeActivity.this, getResources().getString(R.string.server_down));
+                                Toast.makeText(HomeActivity.this, getResources().getString(R.string.server_down), Toast.LENGTH_SHORT).show();
                             } else if (response.statusCode == 204) {
                                 Log.d(TAG, "onErrorResponse: " + "statusCode:---204---String---");
                             } else if (response.statusCode == 200) {
                                 Log.d(TAG, "onErrorResponse: " + "statusCode:---200---String---");
                             } else {
-                                showToast(HomeActivity.this, getResources().getString(R.string.please_try_again));
+                                Toast.makeText(HomeActivity.this, getResources().getString(R.string.please_try_again), Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             if (error instanceof NoConnectionError) {
-                                showToast(HomeActivity.this, getResources().getString(R.string.oops_connect_your_internet));
+                                Toast.makeText(HomeActivity.this, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
                             } else if (error instanceof NetworkError) {
-                                showToast(HomeActivity.this, getResources().getString(R.string.oops_connect_your_internet));
+                                Toast.makeText(HomeActivity.this, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
                             } else if (error instanceof TimeoutError) {
                                 try {
                                     if (error.networkResponse == null) {
                                         if (error.getClass().equals(TimeoutError.class)) {
                                             // Show timeout error message
-                                            showToast(HomeActivity.this, getResources().getString(R.string.timed_out));
+                                            Toast.makeText(HomeActivity.this, getResources().getString(R.string.timed_out), Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 } catch (Exception e) {
@@ -295,13 +259,13 @@ public class HomeActivity extends AppCompatActivity {
                         if (jobj != null) {
                             message = jobj.getString("message");
                             if (message.equalsIgnoreCase("'csrf_token' URL query argument is invalid.")) {
-                                showToast(HomeActivity.this, message);
+                                Toast.makeText(HomeActivity.this, message, Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             setPreference(HomeActivity.this, "isRememberMe", "");
                             setPreference(HomeActivity.this, "user_id", "");
                             setPreference(HomeActivity.this, "mLogout_token", "");
-                            showToast(HomeActivity.this, "Logout Successfully..");
+                            Toast.makeText(HomeActivity.this, getResources().getString(R.string.logout_succ), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                             startActivity(intent);
                             finish();
@@ -329,45 +293,33 @@ public class HomeActivity extends AppCompatActivity {
                                 JSONObject errorObj = new JSONObject(new String(response.data));
                                 mMessage = errorObj.getString("message");
                                 if (response.statusCode == 400 || response.statusCode == 405 || response.statusCode == 500) {
-                                    Log.d(TAG, "onErrorResponse: " + "statusCode:--400-------" + response.statusCode + "mMessage-------" + mMessage);
-                                    showToast(HomeActivity.this, mMessage);
+                                    Toast.makeText(HomeActivity.this, mMessage, Toast.LENGTH_SHORT).show();
                                 } else if (response.statusCode == 401) {
-                                    Log.d(TAG, "onErrorResponse: " + "statusCode:---401------" + response.statusCode);
-                                    showToast(HomeActivity.this, mMessage);
+                                    Toast.makeText(HomeActivity.this, mMessage, Toast.LENGTH_SHORT).show();
                                 } else if (response.statusCode == 403) {
-                                    showToast(HomeActivity.this, mMessage);
-                                    Log.d(TAG, "onErrorResponse: " + "statusCode:---403------" + response.statusCode + "mMessage------" + mMessage);
+                                    Toast.makeText(HomeActivity.this, mMessage, Toast.LENGTH_SHORT).show();
                                 } else if (response.statusCode == 422) {
-                                    showToast(HomeActivity.this, mMessage);
-                                    Log.d(TAG, "onErrorResponse: " + "statusCode:---422---String---" + new String(response.data));
-                                    //  json = trimMessage(new String(response.data));
-                                    if (json != "" && json != null) {
-                                        // displayMessage(json);
-                                    } else {
-                                        showToast(HomeActivity.this, getResources().getString(R.string.please_try_again));
-                                    }
+                                    Toast.makeText(HomeActivity.this, mMessage, Toast.LENGTH_SHORT).show();
                                 } else if (response.statusCode == 503) {
-                                    showToast(HomeActivity.this, getResources().getString(R.string.server_down));
+                                    Toast.makeText(HomeActivity.this, getResources().getString(R.string.server_down), Toast.LENGTH_SHORT).show();
                                 } else if (response.statusCode == 204) {
-                                    showToast(HomeActivity.this, mMessage);
-                                    Log.d(TAG, "onErrorResponse: " + "statusCode:---204---String---");
+                                    Toast.makeText(HomeActivity.this, mMessage, Toast.LENGTH_SHORT).show();
                                 } else {
-                                    showToast(HomeActivity.this, getResources().getString(R.string.please_try_again));
+                                    Toast.makeText(HomeActivity.this, getResources().getString(R.string.please_try_again), Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         } else {
                             if (error instanceof NoConnectionError) {
-                                showToast(HomeActivity.this, getResources().getString(R.string.oops_connect_your_internet));
+                                Toast.makeText(HomeActivity.this, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
                             } else if (error instanceof NetworkError) {
-                                showToast(HomeActivity.this, getResources().getString(R.string.oops_connect_your_internet));
+                                Toast.makeText(HomeActivity.this, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
                             } else if (error instanceof TimeoutError) {
                                 try {
                                     if (error.networkResponse == null) {
                                         if (error.getClass().equals(TimeoutError.class)) {
-                                            // Show timeout error message
-                                            showToast(HomeActivity.this, getResources().getString(R.string.timed_out));
+                                            Toast.makeText(HomeActivity.this, getResources().getString(R.string.timed_out), Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 } catch (Exception e) {
@@ -410,7 +362,6 @@ public class HomeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
     public void setActionBarTitle(String title) {
         getSupportActionBar().setTitle(title);
     }

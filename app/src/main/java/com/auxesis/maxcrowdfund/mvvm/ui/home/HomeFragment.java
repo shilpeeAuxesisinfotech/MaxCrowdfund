@@ -41,7 +41,7 @@ import java.util.List;
 import static com.auxesis.maxcrowdfund.constant.PaginationListener.PAGE_START;
 import static com.auxesis.maxcrowdfund.constant.PaginationListener.VISIBLE_THRESHOLD;
 import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
-import static com.auxesis.maxcrowdfund.constant.Utils.showToast;
+
 
 public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
@@ -87,7 +87,7 @@ public class HomeFragment extends Fragment {
             //APICount = 0;
             getListingApi();
         } else {
-            showToast(getActivity(), getResources().getString(R.string.oops_connect_your_internet));
+            Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
         }
 
         // add scroll listener while user reach in bottom load more will call
@@ -100,7 +100,7 @@ public class HomeFragment extends Fragment {
                 if (isInternetConnected(getActivity())) {
                     getListingApi();
                 } else {
-                    showToast(getActivity(), getResources().getString(R.string.oops_connect_your_internet));
+                    Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -226,35 +226,30 @@ public class HomeFragment extends Fragment {
                         try {
                             JSONObject errorObj = new JSONObject(new String(response.data));
                             if (response.statusCode == 400 || response.statusCode == 405 || response.statusCode == 500) {
-                                showToast(getActivity(), getResources().getString(R.string.something_went));
+                                Toast.makeText(getActivity(), getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
                             } else if (response.statusCode == 401) {
 
                             } else if (response.statusCode == 422) {
-                                //  json = trimMessage(new String(response.data));
-                                if (json != "" && json != null) {
-                                    // displayMessage(json);
-                                } else {
-                                    showToast(getActivity(), getResources().getString(R.string.please_try_again));
-                                }
+                                Toast.makeText(getActivity(), getResources().getString(R.string.please_try_again), Toast.LENGTH_SHORT).show();
                             } else if (response.statusCode == 503) {
-                                showToast(getActivity(), getResources().getString(R.string.server_down));
+                                Toast.makeText(getActivity(), getResources().getString(R.string.server_down), Toast.LENGTH_SHORT).show();
                             } else {
-                                showToast(getActivity(), getResources().getString(R.string.please_try_again));
+                                Toast.makeText(getActivity(), getResources().getString(R.string.please_try_again), Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     } else {
                         if (error instanceof NoConnectionError) {
-                            showToast(getActivity(), getResources().getString(R.string.oops_connect_your_internet));
+                            Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
                         } else if (error instanceof NetworkError) {
-                            showToast(getActivity(), getResources().getString(R.string.oops_connect_your_internet));
+                            Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
                         } else if (error instanceof TimeoutError) {
                             try {
                                 if (error.networkResponse == null) {
                                     if (error.getClass().equals(TimeoutError.class)) {
                                         // Show timeout error message
-                                        showToast(getActivity(), getResources().getString(R.string.timed_out));
+                                        Toast.makeText(getActivity(), getResources().getString(R.string.timed_out), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             } catch (Exception e) {

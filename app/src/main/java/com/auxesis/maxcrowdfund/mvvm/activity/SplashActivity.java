@@ -16,7 +16,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.constant.Utils;
-
 import java.util.HashMap;
 import java.util.Map;
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
@@ -24,10 +23,9 @@ import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
 
 public class SplashActivity extends AppCompatActivity {
     private static final String TAG = "SplashActivity";
-    private static int SPLASH_SCREEN_TIME_OUT = 1500; //3000
+    private static int SPLASH_SCREEN_TIME_OUT = 1500;
     Animation zoom_in;
     TextView tvMax, tv_crowdfund, tvVersion;
-    String versionName = "";
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
 
     @Override

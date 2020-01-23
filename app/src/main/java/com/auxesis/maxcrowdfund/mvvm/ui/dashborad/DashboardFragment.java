@@ -7,9 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,7 +30,6 @@ import com.auxesis.maxcrowdfund.adapter.AccountBalanceAdapter;
 import com.auxesis.maxcrowdfund.adapter.PortFolioAdapter;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
-import com.auxesis.maxcrowdfund.databinding.FragmentDashboardBinding;
 import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboardmodel.AccountBalanceModel;
 import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboardmodel.PortfolioModel;
 import org.json.JSONException;
@@ -41,13 +38,10 @@ import java.util.ArrayList;
 import java.util.List;
 import static com.auxesis.maxcrowdfund.constant.APIUrl.GER_ACCOUNT_BALANCE;
 import static com.auxesis.maxcrowdfund.constant.APIUrl.GER_PORTFOLIO;
-import static com.auxesis.maxcrowdfund.constant.Utils.showToast;
 
 public class DashboardFragment extends Fragment {
     private static final String TAG = "DashboardFragment";
-    private DashboardViewModel dashboardViewModel;
     ProgressDialog pd;
-    FragmentDashboardBinding binding;
     AccountBalanceAdapter accountbalanceadapter;
     PortFolioAdapter portFolioAdapter;
     List<AccountBalanceModel> accountlist = new ArrayList<>();
@@ -69,18 +63,17 @@ public class DashboardFragment extends Fragment {
     List<PortfolioModel> arrears_3 = new ArrayList<>();
     List<PortfolioModel> arrears_4 = new ArrayList<>();
     List<PortfolioModel> reserved = new ArrayList<>();
+    RecyclerView recyViewAccBalance,recyViewPortFolio;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(false);
     }
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_dashboard, container, false);
-        View root = binding.getRoot();
-         //here data must be an instance of the class DashboardViewModel
-        binding.setDashboard(dashboardViewModel);
-        binding.setLifecycleOwner(this);
+        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        recyViewAccBalance =root.findViewById(R.id.recyViewAccBalance);
+        recyViewPortFolio =root.findViewById(R.id.recyViewPortFolio);
 
         if (Utils.isInternetConnected(getActivity())) {
             getAccountBalance();
@@ -239,9 +232,9 @@ public class DashboardFragment extends Fragment {
                             if (accountlist.size() > 0) {
                                 accountbalanceadapter = new AccountBalanceAdapter(getActivity(), accountlist);
                                 RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-                                binding.recyViewAccBalance.setLayoutManager(mLayoutManager);
-                                binding.recyViewAccBalance.setItemAnimator(new DefaultItemAnimator());
-                                binding.recyViewAccBalance.setAdapter(accountbalanceadapter);
+                                recyViewAccBalance.setLayoutManager(mLayoutManager);
+                                recyViewAccBalance.setItemAnimator(new DefaultItemAnimator());
+                                recyViewAccBalance.setAdapter(accountbalanceadapter);
                                 accountbalanceadapter.notifyDataSetChanged();
                             }
                         }
@@ -263,35 +256,30 @@ public class DashboardFragment extends Fragment {
                         try {
                             JSONObject errorObj = new JSONObject(new String(response.data));
                             if (response.statusCode == 400 || response.statusCode == 405 || response.statusCode == 500) {
-                                showToast(getActivity(), getResources().getString(R.string.something_went));
+                                Toast.makeText(getActivity(), getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
                             } else if (response.statusCode == 401) {
 
                             } else if (response.statusCode == 422) {
-                                //  json = trimMessage(new String(response.data));
-                                if (json != "" && json != null) {
-                                    // displayMessage(json);
-                                } else {
-                                    showToast(getActivity(), getResources().getString(R.string.please_try_again));
-                                }
+                                Toast.makeText(getActivity(), getResources().getString(R.string.please_try_again), Toast.LENGTH_SHORT).show();
                             } else if (response.statusCode == 503) {
-                                showToast(getActivity(), getResources().getString(R.string.server_down));
+                                Toast.makeText(getActivity(), getResources().getString(R.string.server_down), Toast.LENGTH_SHORT).show();
                             } else {
-                                showToast(getActivity(), getResources().getString(R.string.please_try_again));
+                                Toast.makeText(getActivity(), getResources().getString(R.string.please_try_again), Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     } else {
                         if (error instanceof NoConnectionError) {
-                            showToast(getActivity(), getResources().getString(R.string.oops_connect_your_internet));
+                            Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
                         } else if (error instanceof NetworkError) {
-                            showToast(getActivity(), getResources().getString(R.string.oops_connect_your_internet));
+                            Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
                         } else if (error instanceof TimeoutError) {
                             try {
                                 if (error.networkResponse == null) {
                                     if (error.getClass().equals(TimeoutError.class)) {
                                         // Show timeout error message
-                                        showToast(getActivity(), getResources().getString(R.string.timed_out));
+                                        Toast.makeText(getActivity(), getResources().getString(R.string.timed_out), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             } catch (Exception e) {
@@ -419,9 +407,9 @@ public class DashboardFragment extends Fragment {
                             if (Portfoliolist.size() > 0) {
                                 portFolioAdapter = new PortFolioAdapter(getActivity(), Portfoliolist);
                                 RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-                                binding.recyViewPortFolio.setLayoutManager(mLayoutManager);
-                                binding.recyViewPortFolio.setItemAnimator(new DefaultItemAnimator());
-                                binding.recyViewPortFolio.setAdapter(portFolioAdapter);
+                                recyViewPortFolio.setLayoutManager(mLayoutManager);
+                                recyViewPortFolio.setItemAnimator(new DefaultItemAnimator());
+                                recyViewPortFolio.setAdapter(portFolioAdapter);
                                 portFolioAdapter.notifyDataSetChanged();
                             }
                         }
@@ -432,7 +420,7 @@ public class DashboardFragment extends Fragment {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    showToast(getActivity(), getResources().getString(R.string.something_went));
+                    Toast.makeText(getActivity(), getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
                     String json = null;
                     String Message;
                     NetworkResponse response = error.networkResponse;
@@ -440,35 +428,30 @@ public class DashboardFragment extends Fragment {
                         try {
                             JSONObject errorObj = new JSONObject(new String(response.data));
                             if (response.statusCode == 400 || response.statusCode == 405 || response.statusCode == 500) {
-                                showToast(getActivity(), getResources().getString(R.string.something_went));
+                                Toast.makeText(getActivity(), getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
                             } else if (response.statusCode == 401) {
 
                             } else if (response.statusCode == 422) {
-                                //  json = trimMessage(new String(response.data));
-                                if (json != "" && json != null) {
-                                    // displayMessage(json);
-                                } else {
-                                    showToast(getActivity(), getResources().getString(R.string.please_try_again));
-                                }
+                                Toast.makeText(getActivity(), getResources().getString(R.string.please_try_again), Toast.LENGTH_SHORT).show();
                             } else if (response.statusCode == 503) {
-                                showToast(getActivity(), getResources().getString(R.string.server_down));
+                                Toast.makeText(getActivity(), getResources().getString(R.string.server_down), Toast.LENGTH_SHORT).show();
                             } else {
-                                showToast(getActivity(), getResources().getString(R.string.please_try_again));
+                                Toast.makeText(getActivity(), getResources().getString(R.string.please_try_again), Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     } else {
                         if (error instanceof NoConnectionError) {
-                            showToast(getActivity(), getResources().getString(R.string.oops_connect_your_internet));
+                            Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
                         } else if (error instanceof NetworkError) {
-                            showToast(getActivity(), getResources().getString(R.string.oops_connect_your_internet));
+                            Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
                         } else if (error instanceof TimeoutError) {
                             try {
                                 if (error.networkResponse == null) {
                                     if (error.getClass().equals(TimeoutError.class)) {
                                         // Show timeout error message
-                                        showToast(getActivity(), getResources().getString(R.string.timed_out));
+                                        Toast.makeText(getActivity(), getResources().getString(R.string.timed_out), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             } catch (Exception e) {

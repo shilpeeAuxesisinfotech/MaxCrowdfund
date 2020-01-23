@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.restapi.ApiClient;
@@ -16,21 +17,16 @@ import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.auxesis.maxcrowdfund.custommvvm.dashboardDetail.DashboardDetailModel.DashboardDetailModelResponce;
 import com.auxesis.maxcrowdfund.custommvvm.dashboardDetail.DashboardDetailModel.DashboardSignatureResponce;
 import com.google.gson.Gson;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 import static com.auxesis.maxcrowdfund.constant.APIUrl.mMethod_deposit;
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.getRandomNO;
 import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
-import static com.auxesis.maxcrowdfund.constant.Utils.showToast;
-
 
 public class DashboardDepositActivity extends AppCompatActivity {
     private static final String TAG = "DashboardDeposit";
@@ -75,8 +71,7 @@ public class DashboardDepositActivity extends AppCompatActivity {
             //we will load it asynchronously from server in this method
             getDashboardDetail();
         } else {
-            showToast(DashboardDepositActivity.this, getResources().getString(R.string.oops_connect_your_internet));
-
+            Toast.makeText(this, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
         }
 
         findViewById(R.id.btn_trustly).setOnClickListener(new View.OnClickListener() {
@@ -86,10 +81,10 @@ public class DashboardDepositActivity extends AppCompatActivity {
                     if (Validation()) {
                         getTrustly();
                     } else {
-                        showToast(DashboardDepositActivity.this, error_msg);
+                        Toast.makeText(DashboardDepositActivity.this, error_msg, Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    showToast(DashboardDepositActivity.this, getResources().getString(R.string.oops_connect_your_internet));
+                    Toast.makeText(DashboardDepositActivity.this, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -126,7 +121,7 @@ public class DashboardDepositActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<DashboardDetailModelResponce> call, Throwable t) {
                 Log.d("response", "error " + t.getMessage());
-                showToast(DashboardDepositActivity.this, t.getMessage());
+                Toast.makeText(DashboardDepositActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -175,7 +170,7 @@ public class DashboardDepositActivity extends AppCompatActivity {
                     //we will load it asynchronously from server in this method
                     getDashboardSignature(jobjMain);
                 } else {
-                    showToast(DashboardDepositActivity.this, getResources().getString(R.string.oops_connect_your_internet));
+                    Toast.makeText(this, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -225,7 +220,7 @@ public class DashboardDepositActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<DashboardSignatureResponce> call, Throwable t) {
                 Log.d("response", "error " + t.getMessage());
-                showToast(DashboardDepositActivity.this, t.getMessage());
+                //showToast(DashboardDepositActivity.this, t.getMessage());
             }
         });
     }

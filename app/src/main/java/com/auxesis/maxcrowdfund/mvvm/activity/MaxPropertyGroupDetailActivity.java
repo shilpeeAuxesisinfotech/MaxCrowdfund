@@ -25,6 +25,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
@@ -77,7 +79,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import static com.auxesis.maxcrowdfund.constant.APIUrl.GER_MY_INVEST_DETAILS;
-import static com.auxesis.maxcrowdfund.constant.Utils.showToast;
 
 public class MaxPropertyGroupDetailActivity extends AppCompatActivity implements OnCustomClickListener, OnDownloadClickListener {
     private static final String TAG = "MaxPropertyGroupDetailA";
@@ -373,7 +374,7 @@ public class MaxPropertyGroupDetailActivity extends AppCompatActivity implements
             Log.d(TAG, "init: " + "Calling My Investment");
             getInvestedDetailsList();
         } else {
-            showToast(MaxPropertyGroupDetailActivity.this, getResources().getString(R.string.oops_connect_your_internet));
+            Toast.makeText(this, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -711,35 +712,30 @@ public class MaxPropertyGroupDetailActivity extends AppCompatActivity implements
                         try {
                             JSONObject errorObj = new JSONObject(new String(response.data));
                             if (response.statusCode == 400 || response.statusCode == 405 || response.statusCode == 500) {
-                                showToast(MaxPropertyGroupDetailActivity.this, getResources().getString(R.string.something_went));
+                                Toast.makeText(MaxPropertyGroupDetailActivity.this, getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
                             } else if (response.statusCode == 401) {
 
                             } else if (response.statusCode == 422) {
-                                //  json = trimMessage(new String(response.data));
-                                if (json != "" && json != null) {
-                                    // displayMessage(json);
-                                } else {
-                                    showToast(MaxPropertyGroupDetailActivity.this, getResources().getString(R.string.please_try_again));
-                                }
+                                Toast.makeText(MaxPropertyGroupDetailActivity.this, getResources().getString(R.string.please_try_again), Toast.LENGTH_SHORT).show();
                             } else if (response.statusCode == 503) {
-                                showToast(MaxPropertyGroupDetailActivity.this, getResources().getString(R.string.server_down));
+                                Toast.makeText(MaxPropertyGroupDetailActivity.this, getResources().getString(R.string.server_down), Toast.LENGTH_SHORT).show();
                             } else {
-                                showToast(MaxPropertyGroupDetailActivity.this, getResources().getString(R.string.please_try_again));
+                                Toast.makeText(MaxPropertyGroupDetailActivity.this, getResources().getString(R.string.please_try_again), Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     } else {
                         if (error instanceof NoConnectionError) {
-                            showToast(MaxPropertyGroupDetailActivity.this, getResources().getString(R.string.oops_connect_your_internet));
+                            Toast.makeText(MaxPropertyGroupDetailActivity.this,  getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
                         } else if (error instanceof NetworkError) {
-                            showToast(MaxPropertyGroupDetailActivity.this, getResources().getString(R.string.oops_connect_your_internet));
+                            Toast.makeText(MaxPropertyGroupDetailActivity.this,  getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
                         } else if (error instanceof TimeoutError) {
                             try {
                                 if (error.networkResponse == null) {
                                     if (error.getClass().equals(TimeoutError.class)) {
                                         // Show timeout error message
-                                        showToast(MaxPropertyGroupDetailActivity.this, getResources().getString(R.string.timed_out));
+                                        Toast.makeText(MaxPropertyGroupDetailActivity.this,  getResources().getString(R.string.timed_out), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             } catch (Exception e) {
@@ -808,12 +804,10 @@ public class MaxPropertyGroupDetailActivity extends AppCompatActivity implements
                     doPermissionGranted();
                 }
             } else {
-                showToast(MaxPropertyGroupDetailActivity.this, getResources().getString(R.string.oops_connect_your_internet));
+                Toast.makeText(this, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
             }
         }
         /* if (isInternetConnected(mContext)) {
-
-
                     list.clear();
                     downloadManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
                     Download_Uri = Uri.parse(arrayList.get(position).getmDocumentUrl());
@@ -888,7 +882,7 @@ public class MaxPropertyGroupDetailActivity extends AppCompatActivity implements
                 if (new CheckForSDCard().isSDCardPresent()) {
                     apkStorage = new File(Environment.getExternalStorageDirectory() + "/"+ APIUrl.downloadDirectory);
                 } else
-                    showToast(MaxPropertyGroupDetailActivity.this,getResources().getString(R.string.noSdcard));
+                    Toast.makeText(MaxPropertyGroupDetailActivity.this, getResources().getString(R.string.noSdcard), Toast.LENGTH_SHORT).show();
 
                 //If File is not present create directory
                 if (!apkStorage.exists()) {
@@ -937,7 +931,7 @@ public class MaxPropertyGroupDetailActivity extends AppCompatActivity implements
                         public void run() {
                             //  buttonText.setEnabled(true);
                             // buttonText.setText(R.string.downloadAgain);//Change button text again after 3sec
-                            showToast(MaxPropertyGroupDetailActivity.this,getResources().getString(R.string.downloadAgain));
+                            Toast.makeText(MaxPropertyGroupDetailActivity.this, getResources().getString(R.string.downloadAgain), Toast.LENGTH_SHORT).show();
                         }
                     }, 3000);
                     Log.e(TAG, "Download Failed");
@@ -946,26 +940,22 @@ public class MaxPropertyGroupDetailActivity extends AppCompatActivity implements
                 e.printStackTrace();
                 //Change button text if exception occurs
                 // buttonText.setText(R.string.downloadFailed);
-                showToast(MaxPropertyGroupDetailActivity.this,getResources().getString(R.string.downloadFailed));
+                Toast.makeText(MaxPropertyGroupDetailActivity.this, getResources().getString(R.string.downloadFailed), Toast.LENGTH_SHORT).show();
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         // buttonText.setEnabled(true);
                         //buttonText.setText(R.string.downloadAgain);
-                        showToast(MaxPropertyGroupDetailActivity.this,getResources().getString(R.string.downloadAgain));
+                        Toast.makeText(MaxPropertyGroupDetailActivity.this, getResources().getString(R.string.downloadAgain), Toast.LENGTH_SHORT).show();
                     }
                 }, 3000);
                 Log.e(TAG, "Download Failed with Exception - " + e.getLocalizedMessage());
 
             }
-
             super.onPostExecute(result);
         }
-
-
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
@@ -1039,5 +1029,4 @@ public class MaxPropertyGroupDetailActivity extends AppCompatActivity implements
                 });
         dialog.show();
     }
-
 }

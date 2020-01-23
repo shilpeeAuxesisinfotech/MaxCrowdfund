@@ -3,11 +3,13 @@ package com.auxesis.maxcrowdfund.mvvm.ui.homedetail;
 
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
@@ -57,13 +61,16 @@ import com.auxesis.maxcrowdfund.model.RiskModel;
 import com.auxesis.maxcrowdfund.mvvm.activity.HomeActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import static com.auxesis.maxcrowdfund.constant.APIUrl.GER_MY_INVEST_DETAILS;
-import static com.auxesis.maxcrowdfund.constant.Utils.showToast;
+
 
 public class HomeDetailFragment extends Fragment implements OnCustomClickListener, OnDownloadClickListener {
     private static final String TAG = "HomeDetailFragment";
@@ -347,11 +354,11 @@ public class HomeDetailFragment extends Fragment implements OnCustomClickListene
             Log.d(TAG, "init: " + "Calling My Investment");
             getInvestedDetailsList();
         } else {
-            showToast(getActivity(), getResources().getString(R.string.oops_connect_your_internet));
+            Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
         }
-
         return root;
     }
+
     private void getInvestedDetailsList() {
         pd = ProgressDialog.show(getActivity(), "Please Wait...");
         try {
@@ -677,7 +684,6 @@ public class HomeDetailFragment extends Fragment implements OnCustomClickListene
                     if (pd != null && pd.isShowing()) {
                         pd.dismiss();
                     }
-                    //showToast(MyInvestmentDetailActivity.this, getResources().getString(R.string.something_went));
                     String json = null;
                     String Message;
                     NetworkResponse response = error.networkResponse;
@@ -685,35 +691,30 @@ public class HomeDetailFragment extends Fragment implements OnCustomClickListene
                         try {
                             JSONObject errorObj = new JSONObject(new String(response.data));
                             if (response.statusCode == 400 || response.statusCode == 405 || response.statusCode == 500) {
-                                showToast(getActivity(), getResources().getString(R.string.something_went));
+                                Toast.makeText(getActivity(), getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
                             } else if (response.statusCode == 401) {
 
                             } else if (response.statusCode == 422) {
-                                //  json = trimMessage(new String(response.data));
-                                if (json != "" && json != null) {
-                                    // displayMessage(json);
-                                } else {
-                                    showToast(getActivity(), getResources().getString(R.string.please_try_again));
-                                }
+                                Toast.makeText(getActivity(), getResources().getString(R.string.please_try_again), Toast.LENGTH_SHORT).show();
                             } else if (response.statusCode == 503) {
-                                showToast(getActivity(), getResources().getString(R.string.server_down));
+                                Toast.makeText(getActivity(), getResources().getString(R.string.server_down), Toast.LENGTH_SHORT).show();
                             } else {
-                                showToast(getActivity(), getResources().getString(R.string.please_try_again));
+                                Toast.makeText(getActivity(), getResources().getString(R.string.please_try_again), Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     } else {
                         if (error instanceof NoConnectionError) {
-                            showToast(getActivity(), getResources().getString(R.string.oops_connect_your_internet));
+                            Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
                         } else if (error instanceof NetworkError) {
-                            showToast(getActivity(), getResources().getString(R.string.oops_connect_your_internet));
+                            Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
                         } else if (error instanceof TimeoutError) {
                             try {
                                 if (error.networkResponse == null) {
                                     if (error.getClass().equals(TimeoutError.class)) {
                                         // Show timeout error message
-                                        showToast(getActivity(), getResources().getString(R.string.timed_out));
+                                        Toast.makeText(getActivity(), getResources().getString(R.string.timed_out), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             } catch (Exception e) {
@@ -772,7 +773,7 @@ public class HomeDetailFragment extends Fragment implements OnCustomClickListene
         }
     }
 
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         // Set title bar
         ((HomeActivity) getActivity()).setActionBarTitle(getString(R.string.max_property_group));

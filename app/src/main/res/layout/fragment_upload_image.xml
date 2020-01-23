@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/light_gray_bg"
+    android:padding="@dimen/_10sdp"
+    tools:context=".mvvm.ui.uploadImage.UploadImageFragment">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:contentPadding="@dimen/_10sdp"
+        app:cardCornerRadius="@dimen/_5sdp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <RelativeLayout
+                android:id="@+id/rl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/ivUserProfile"
+                        android:layout_width="@dimen/_150sdp"
+                        android:layout_height="@dimen/_150sdp"
+                        android:src="@drawable/user"
+                        android:gravity="center"
+                        app:civ_border_color="@color/light_gray_bg"
+                        app:civ_border_width="1dp" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/cirIv_ChooseImg"
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:layout_gravity="right|bottom"
+                        android:src="@drawable/ic_photo_camera">
+
+                    </de.hdodenhof.circleimageview.CircleImageView>
+                </FrameLayout>
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/btnUpdated"
+                android:layout_width="match_parent"
+                android:layout_below="@+id/rl"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_margin="@dimen/_25sdp"
+                android:background="@drawable/button_ripple_green"
+                android:fontFamily="@font/roboto_light"
+                android:gravity="center"
+                android:text="@string/update_avatar"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/_12sdp" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tvNoRecordFound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_light"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:text="@string/no_data_found"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/_12sdp"/>
+
+</RelativeLayout>

@@ -1,8 +1,5 @@
-package com.auxesis.maxcrowdfund.mvvm.activity;
+package com.auxesis.maxcrowdfund.mvvm.ui.uploadImage;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -14,81 +11,142 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import com.auxesis.maxcrowdfund.constant.ImageFilePath;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.constant.ImageFilePath;
+import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
+import com.auxesis.maxcrowdfund.mvvm.activity.HomeActivity;
+import com.auxesis.maxcrowdfund.mvvm.ui.myprofile.ChangeAvtarResponse;
+import com.auxesis.maxcrowdfund.restapi.ApiClient;
+import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import static android.app.Activity.RESULT_OK;
 import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
 
-public class UploadImageActivity extends AppCompatActivity {
-    private static final String TAG = "UploadImageActivity";
-    TextView tv_back_arrow, tvHeaderTitle;
-    Button btnCancel;
+public class UploadImageFragment extends Fragment {
+    private static final String TAG = "UploadImageFragment";
+    Button btnCancel, btnUpdated;
     CircleImageView ivUserProfile, cirIv_ChooseImg;
     BottomSheetDialog dialog_1;
     LinearLayout lLayGallery, lLayCamera, lLayRemove;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
     private static final int PERMISSION_REQUEST_CODE_1 = 100;
     public static final int PICK_IMAGE_GALLERY_1 = 1;
-
     String mConvertedImg1;
     String imgExtension;
-
+    ProgressDialog pd;
     byte[] byteArray_photo_1;
+
+    CardView cardView;
+    TextView tvNoRecordFound;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_upload_image);
-        init();
-    }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_upload_image, container, false);
 
-    private void init() {
-        tv_back_arrow = findViewById(R.id.tv_back_arrow);
-        tvHeaderTitle = findViewById(R.id.tvHeaderTitle);
-        tvHeaderTitle.setText(R.string.change_avatar);
-        tv_back_arrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        cardView = root.findViewById(R.id.cardView);
+        tvNoRecordFound = root.findViewById(R.id.tvNoRecordFound);
 
-        ivUserProfile = findViewById(R.id.ivUserProfile);
-        cirIv_ChooseImg = findViewById(R.id.cirIv_ChooseImg);
+        ivUserProfile = root.findViewById(R.id.ivUserProfile);
+        cirIv_ChooseImg = root.findViewById(R.id.cirIv_ChooseImg);
+        btnUpdated = root.findViewById(R.id.btnUpdated);
 
         cirIv_ChooseImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isInternetConnected(getApplicationContext())) {
+                if (isInternetConnected(getActivity())) {
                     getBottomSheet();
                 } else {
-                    Toast.makeText(UploadImageActivity.this, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+        btnUpdated.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Utils.isInternetConnected(getActivity())) {
+                    if (mConvertedImg1!=null) {
+                        getUploadImage();
+                    }else {
+                        Toast.makeText(getActivity(), "Please select image", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        return root;
     }
+
+    private void getUploadImage() {
+            try {
+                pd = ProgressDialog.show(getActivity(), "Please Wait...");
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("avatar",mConvertedImg1);
+                EndPointInterface git = ApiClient.getClient().create(EndPointInterface.class);
+                Call<ChangeAvtarResponse> call = git.getChangeAvtar("application/json", jsonObject);
+                call.enqueue(new Callback<ChangeAvtarResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ChangeAvtarResponse> call, @NonNull retrofit2.Response<ChangeAvtarResponse> response) {
+                        Log.d(TAG, "onResponse: " + "><><" + new Gson().toJson(response.body()));
+                        try {
+                            if (pd != null && pd.isShowing()) {
+                                pd.dismiss();
+                            }
+                            if (response != null && response.isSuccessful()) {
+                                if (response.body().getResult().equals("success")){
+                                    Toast.makeText(getActivity(), "Image upload successfully", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    public void onFailure(@NonNull Call<ChangeAvtarResponse> call, @NonNull Throwable t) {
+                        Log.e("response", "error " + t.getMessage());
+                        Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                        if (pd != null && pd.isShowing()) {
+                            pd.dismiss();
+                        }
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
     //For Camera 1
     private void getBottomSheet() {
         View view = getLayoutInflater().inflate(R.layout.camera_bottom_sheet, null);
-        dialog_1 = new BottomSheetDialog(this);
+        dialog_1 = new BottomSheetDialog(getActivity());
         dialog_1.setContentView(view);
         lLayGallery = dialog_1.findViewById(R.id.lLayGallery);
         lLayCamera = dialog_1.findViewById(R.id.lLayCamera);
@@ -106,10 +164,10 @@ public class UploadImageActivity extends AppCompatActivity {
         lLayCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Utils.checkRequestPermiss(getApplicationContext(), UploadImageActivity.this)) {
+                if (Utils.checkRequestPermiss(getContext(), getActivity())) {
                     Log.d(TAG, "onClick: " + "permission already granted");
                     //showToast(UploadImageActivity.this, "Comming soon");
-                     doPermissionGranted();
+                    doPermissionGranted();
                 }
             }
         });
@@ -118,6 +176,8 @@ public class UploadImageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog_1.dismiss();
+                ivUserProfile.setImageDrawable(getResources().getDrawable(R.drawable.user));
+                mConvertedImg1=null;
                /* if (byteArray_photo_1 == null) {
                     showToast(SavePhotoesActivity.this, "Please choose photo 1");
                 } else {
@@ -126,6 +186,8 @@ public class UploadImageActivity extends AppCompatActivity {
                     showToast(SavePhotoesActivity.this, "Successfully Removed photo 1");
                     dialog_1.dismiss();
                 }*/
+
+
             }
         });
 
@@ -135,7 +197,6 @@ public class UploadImageActivity extends AppCompatActivity {
                 dialog_1.dismiss();
             }
         });
-
         dialog_1.show();
     }
 
@@ -147,9 +208,8 @@ public class UploadImageActivity extends AppCompatActivity {
     }
 
     private void doPermissionGranted() {
-        Log.d(TAG, "doPermissionGranted: " + "1 clicked");
         Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (pictureIntent.resolveActivity(getPackageManager()) != null) {
+        if (pictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivityForResult(pictureIntent, PERMISSION_REQUEST_CODE_1);
         }
     }
@@ -173,16 +233,16 @@ public class UploadImageActivity extends AppCompatActivity {
                         doPermissionGranted();
                     } else {
                         Log.d(TAG, "Camera Permission are not granted ask again ");
-                        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)
-                                || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA)
+                                || ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                || ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
                             showDialogOK("Camera Permission required for this app",
                                     new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             switch (which) {
                                                 case DialogInterface.BUTTON_POSITIVE:
-                                                    Utils.checkRequestPermiss(getApplicationContext(), UploadImageActivity.this);
+                                                    Utils.checkRequestPermiss(getContext(), getActivity());
                                                     break;
                                                 case DialogInterface.BUTTON_NEGATIVE:
                                                     // proceed with logic by disabling the related features or quit the app.
@@ -200,7 +260,7 @@ public class UploadImageActivity extends AppCompatActivity {
     }
 
     private void showDialogOK(String message, DialogInterface.OnClickListener okListener) {
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(getActivity())
                 .setMessage(message)
                 .setPositiveButton("OK", okListener)
                 .setNegativeButton("Cancel", okListener)
@@ -209,7 +269,7 @@ public class UploadImageActivity extends AppCompatActivity {
     }
 
     private void explain(String msg) {
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
         dialog.setMessage(msg)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
@@ -221,12 +281,11 @@ public class UploadImageActivity extends AppCompatActivity {
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                        finish();
+                        //finish();
                     }
                 });
         dialog.show();
     }
-
 
     @SuppressLint("MissingSuperCall")
     @Override
@@ -235,7 +294,7 @@ public class UploadImageActivity extends AppCompatActivity {
         if (requestCode == PICK_IMAGE_GALLERY_1 && resultCode == RESULT_OK) {
             if (data != null && data.getData() != null) {
                 final Uri imageUri = data.getData();
-                String path = ImageFilePath.getPath(UploadImageActivity.this, imageUri);
+                String path = ImageFilePath.getPath(getContext(), imageUri);
                 Log.d(TAG, "onActivityResult: " + path);
                 imgExtension = path.substring(path.lastIndexOf("."));
                 if (imgExtension.equalsIgnoreCase(".jpg")) {
@@ -244,18 +303,18 @@ public class UploadImageActivity extends AppCompatActivity {
                     mConvertedImg1 = convertToBase64(resizedBitmap);
                     ivUserProfile.setImageBitmap(bitmap);
                 } else {
-                    Toast.makeText(this, "Please select jpg image only", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please select jpg image only", Toast.LENGTH_SHORT).show();
                 }
                 dialog_1.dismiss();
             } else {
-                Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "You haven't picked Image", Toast.LENGTH_SHORT).show();
             }
         } else if (requestCode == PERMISSION_REQUEST_CODE_1 && resultCode == RESULT_OK) {
             //for camera Image 1
             if (data != null && data.getExtras() != null) {
                 Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
                 // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
-                Uri tempUriImg1 = getImageUri(getApplicationContext(), imageBitmap);
+                Uri tempUriImg1 = getImageUri(getContext(), imageBitmap);
                 // CALL THIS METHOD TO GET THE ACTUAL PATH
                 File finalFileImg = new File(getRealPathFromURI(tempUriImg1));
                 String fileEx = String.valueOf(finalFileImg);
@@ -303,8 +362,8 @@ public class UploadImageActivity extends AppCompatActivity {
     // For Image path
     public String getRealPathFromURI(Uri uri) {
         String path = "";
-        if (getContentResolver() != null) {
-            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        if (getActivity().getContentResolver() != null) {
+            Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
             if (cursor != null) {
                 cursor.moveToFirst();
                 int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
@@ -334,8 +393,9 @@ public class UploadImageActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    public void onResume() {
+        super.onResume();
+        // Set title bar
+        ((HomeActivity) getActivity()).setActionBarTitle(getString(R.string.change_avatar));
     }
 }

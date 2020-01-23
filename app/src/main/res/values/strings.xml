@@ -50,6 +50,7 @@
 
     <string name="enter_email">Please enter your E-mail</string>
     <string name="enter_password">Please enter your password</string>
+    <string name="logout_succ">Logout Successfully..</string>
 
     <string name="yes">Yes</string>
     <string name="no_internet">No internet Connection</string>
@@ -79,15 +80,16 @@
     <string name="save_changes">Save changes</string>
     <string name="submit">Submit</string>
 
-
     <!--For camera dialog-->
     <string name="choose_photo">Choose photo</string>
     <string name="gallery">Gallery</string>
     <string name="camera">Camera</string>
     <string name="remove">Remove</string>
     <string name="cancel">Cancel</string>
+    <string name="update_avatar">Update avatar</string>
 
 
+   <!--for data not found-->
     <string name="no_data_found">No data found</string>
 
 
@@ -131,6 +133,12 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="off">Off</string>
     <string name="on">ON</string>
+    <string name="enter_old_password">Enter old password</string>
+    <string name="enter_new_password">Enter new password</string>
+    <string name="enter_confirm_password">Enter confirm password</string>
+    <string name="confirm_password">New password and confirm password didn?"'"t match.</string>
+    <string name="update_password">Password update successfully...</string>
+    <string name="submit_new_e_mail_address">Submit new e-mail address</string>
 
 
 </resources>

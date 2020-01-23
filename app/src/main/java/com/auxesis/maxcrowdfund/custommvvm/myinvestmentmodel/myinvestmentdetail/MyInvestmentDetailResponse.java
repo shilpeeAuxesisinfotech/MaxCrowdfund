@@ -18,4 +18,5 @@ public class MyInvestmentDetailResponse {
         this.details = details;
     }
 
+
 }

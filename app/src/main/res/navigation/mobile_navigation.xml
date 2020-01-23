@@ -51,6 +51,9 @@
         <action
             android:id="@+id/action_nav_my_profile_to_changePreferenceFragment"
             app:destination="@id/changePreferenceFragment" />
+        <action
+            android:id="@+id/action_nav_my_profile_to_uploadImageFragment"
+            app:destination="@id/uploadImageFragment" />
     </fragment>
 
     <fragment
@@ -97,6 +100,11 @@
         android:name="com.auxesis.maxcrowdfund.mvvm.ui.changePreference.ChangePreferenceFragment"
         android:label="@string/change_preference"
         tools:layout="@layout/fragment_change_preference" />
+    <fragment
+        android:id="@+id/uploadImageFragment"
+        android:name="com.auxesis.maxcrowdfund.mvvm.ui.uploadImage.UploadImageFragment"
+        android:label="fragment_upload_image"
+        tools:layout="@layout/fragment_upload_image" />
 
 
 </navigation>

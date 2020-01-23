@@ -1,5 +1,6 @@
 package com.auxesis.maxcrowdfund.restapi;
 
+import com.auxesis.maxcrowdfund.mvvm.ui.changePassword.changePassModel.ChangePasswordResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.changePreferenceModel.ChangePreferenceResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.changeemail.ChangeEmailResponse;
 import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.MyInvestmentSearchResponse;
@@ -14,8 +15,11 @@ import com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankaccountmodel
 import com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankaccountmodel.ChangeBankAccountResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.contactinformation.contactInformationModel.ContactInformationResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.home.homemodel.InvestmentOppResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.myprofile.ChangeAvtarResponse;
 import com.google.gson.JsonObject;
+
 import org.json.JSONObject;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -81,6 +85,15 @@ public interface EndPointInterface {
 
     @GET("api/contact-information")
     Call<ContactInformationResponse> getContactInformation(@Header("Content-Type") String content);
+
+
+    @POST("api/change-password")
+    Call<ChangePasswordResponse> getChangePassword(@Header("Content-Type") String content, @Body JsonObject jsonObject);
+
+    @POST("api/change-avatar")
+    Call<ChangeAvtarResponse> getChangeAvtar(@Header("Content-Type") String content, @Body JsonObject jsonObject);
+
+
 
 
 
