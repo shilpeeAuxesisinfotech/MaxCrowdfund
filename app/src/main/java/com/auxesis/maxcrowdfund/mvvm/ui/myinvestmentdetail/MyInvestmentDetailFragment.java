@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.auxesis.maxcrowdfund.R;
+import com.auxesis.maxcrowdfund.customClickListener.OnCustomClickListener;
 import com.auxesis.maxcrowdfund.mvvm.activity.MaxPropertyGroupDetailActivity;
 import com.auxesis.maxcrowdfund.customClickListener.OnDownloadClickListener;
 import com.auxesis.maxcrowdfund.adapter.InvestmentDocumentAdapter;
@@ -131,6 +132,7 @@ public class MyInvestmentDetailFragment extends Fragment implements OnDownloadCl
                 }
             }
         });
+
 
         return root;
     }
