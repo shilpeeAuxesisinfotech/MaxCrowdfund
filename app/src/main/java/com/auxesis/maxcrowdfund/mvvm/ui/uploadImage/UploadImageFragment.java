@@ -392,7 +392,6 @@ public class UploadImageFragment extends Fragment {
         return encodedStr;
     }
 
-
     public void onResume() {
         super.onResume();
         // Set title bar
