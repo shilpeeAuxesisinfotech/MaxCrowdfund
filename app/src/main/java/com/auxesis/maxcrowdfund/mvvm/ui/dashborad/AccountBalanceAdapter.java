@@ -1,19 +1,21 @@
-package com.auxesis.maxcrowdfund.adapter;
+package com.auxesis.maxcrowdfund.mvvm.ui.dashborad;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.custommvvm.DashboardDepositActivity;
 import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboardmodel.AccountBalanceModel;
+
 import java.util.List;
 
 public class AccountBalanceAdapter extends RecyclerView.Adapter<AccountBalanceAdapter.MyHolder> {
@@ -35,9 +37,13 @@ public class AccountBalanceAdapter extends RecyclerView.Adapter<AccountBalanceAd
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         if (position == 0) {
-            holder.tvCompanyName.setText(arrayList.get(position).getmTitle());
-            holder.tvCompanyName.setTextColor(mContext.getResources().getColor(R.color.colorPrimaryDark));
+            holder.tvTittle.setVisibility(View.VISIBLE);
+            holder.rlBalanceAccount.setVisibility(View.GONE);
+            holder.tvTittle.setText(arrayList.get(position).getmTitle());
+            holder.tvTittle.setTextColor(mContext.getResources().getColor(R.color.colorPrimaryDark));
         } else {
+            holder.tvTittle.setVisibility(View.GONE);
+            holder.rlBalanceAccount.setVisibility(View.VISIBLE);
             holder.tvCompanyName.setText(arrayList.get(position).getmTitle());
             holder.tvCompanyName.setTextColor(mContext.getResources().getColor(R.color.light_gray_text));
             if (arrayList.get(position).getmType().equals("C")) {
@@ -47,20 +53,17 @@ public class AccountBalanceAdapter extends RecyclerView.Adapter<AccountBalanceAd
                 holder.tv_type.setText("-");
                 holder.tv_invested.setText(arrayList.get(position).getmValue());
             }
-        }
-        if (position==arrayList.size()-1){
-            holder.btn_deposited.setVisibility(View.VISIBLE);
-            Log.d("mSize", "onBindViewHolder: " + String.valueOf(position)+"><><"+String.valueOf(arrayList.size()-1));
-            holder.btn_deposited.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(mContext, DashboardDepositActivity.class);
-                    mContext.startActivity(intent);
-                }
-            });
-        }else {
-            holder.btn_deposited.setVisibility(View.GONE);
-            Log.d("mSize", "Else: " + String.valueOf(position)+"><><"+String.valueOf(arrayList.size()-1));
+            if (position == arrayList.size()-1) {
+                holder.rlLayout.setVisibility(View.GONE);
+                holder.btn_deposited.setVisibility(View.VISIBLE);
+                holder.btn_deposited.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mContext, DashboardDepositActivity.class);
+                        mContext.startActivity(intent);
+                    }
+                });
+            }
         }
     }
 
@@ -70,16 +73,18 @@ public class AccountBalanceAdapter extends RecyclerView.Adapter<AccountBalanceAd
     }
 
     public class MyHolder extends RecyclerView.ViewHolder {
-        TextView tvCompanyName, tv_invested, tv_type;
-        RelativeLayout rlMainLayout;
+        TextView tvTittle,tvCompanyName, tv_invested, tv_type;
+        RelativeLayout rlBalanceAccount,rlLayout;
         Button btn_deposited;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
+            tvTittle = itemView.findViewById(R.id.tvTittle);
             tvCompanyName = itemView.findViewById(R.id.tvCompanyName);
             tv_invested = itemView.findViewById(R.id.tv_invested);
             tv_type = itemView.findViewById(R.id.tv_type);
-            rlMainLayout = itemView.findViewById(R.id.rlMainLayout);
+            rlBalanceAccount = itemView.findViewById(R.id.rlBalanceAccount);
+            rlLayout = itemView.findViewById(R.id.rlLayout);
             btn_deposited = itemView.findViewById(R.id.btn_deposited);
         }
     }

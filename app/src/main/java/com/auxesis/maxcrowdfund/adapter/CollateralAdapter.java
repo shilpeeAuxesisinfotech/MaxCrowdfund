@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.model.CollateralModelP;
+import com.auxesis.maxcrowdfund.mvvm.ui.MaxPropertyGroupDetail.model.CollateralModelP;
 import java.util.ArrayList;
 import java.util.List;
 

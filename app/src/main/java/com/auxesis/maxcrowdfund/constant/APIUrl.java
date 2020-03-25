@@ -18,17 +18,15 @@ public class APIUrl {
     public final static String GER_PROFILE = BASE_URL + "api/profile";
 
     //For Dashboard deposit
-   // public final static String GET_ACTIVE_ACCOUNT_DETAILS = BASE_URL+"api/active-account-details";
+    // public final static String GET_ACTIVE_ACCOUNT_DETAILS = BASE_URL+"api/active-account-details";
 
     public final static String uUid ="258a2184-2842-b485-25ca-";
     public final static String mMethod_deposit ="Deposit";
-
-
     public final static String DASHBOARD_DEPOSIT_LOGIN_API = "https://test.trustly.com/api/1";
 
    /* public final static String SUCCESS_URL = BASE_URL+"deposit-amount/success";
     public final static String FAIL_URL = BASE_URL+"profile/";
-*/
+   */
 
     //String Values to be Used in App
     public static final String downloadDirectory = "Androhub Downloads";
@@ -38,4 +36,8 @@ public class APIUrl {
     public static final String downloadZipUrl = "http://androhub.com/demo/demo.zip";
     public static final String downloadVideoUrl = "http://androhub.com/demo/demo.mp4";
     public static final String downloadMp3Url = "http://androhub.com/demo/demo.mp3";
+
+    //For dyanamic Api
+
+
 }

@@ -9,7 +9,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.AuthFailureError;
@@ -27,11 +26,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.adapter.MyListAdapter;
+import com.auxesis.maxcrowdfund.mvvm.ui.home.homeAdapter.InvestmentOppHomeAdapter;
 import com.auxesis.maxcrowdfund.constant.APIUrl;
 import com.auxesis.maxcrowdfund.constant.PaginationListener;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
-import com.auxesis.maxcrowdfund.model.MyListModel;
+import com.auxesis.maxcrowdfund.mvvm.ui.home.homemodel.InvestmentOppHomeModel;
 import com.auxesis.maxcrowdfund.mvvm.activity.HomeActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,16 +41,14 @@ import static com.auxesis.maxcrowdfund.constant.PaginationListener.PAGE_START;
 import static com.auxesis.maxcrowdfund.constant.PaginationListener.VISIBLE_THRESHOLD;
 import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
 
-
 public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
-    private HomeViewModel homeViewModel;
     TextView tvNoRecordFound;
     RecyclerView recyclerView;
-    MyListAdapter adapter;
+    InvestmentOppHomeAdapter adapter;
     ProgressDialog pd;
-    List<MyListModel> list_1 = new ArrayList<>();
-    List<MyListModel> list_2 = new ArrayList<>();
+    List<InvestmentOppHomeModel> list_1 = new ArrayList<>();
+    List<InvestmentOppHomeModel> list_2 = new ArrayList<>();
     private int currentPage = PAGE_START;
     private boolean isLastPage = false;
     private int totalPage = 2;
@@ -71,9 +68,7 @@ public class HomeFragment extends Fragment {
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-
         tvNoRecordFound = root.findViewById(R.id.tvNoRecordFound);
         recyclerView = root.findViewById(R.id.recyclerView);
 
@@ -81,17 +76,15 @@ public class HomeFragment extends Fragment {
             recyclerView.setHasFixedSize(true);
             layoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(layoutManager);
-            adapter = new MyListAdapter(getContext(), getActivity(), new ArrayList<>());
+            adapter = new InvestmentOppHomeAdapter(getContext(), getActivity(), new ArrayList<>());
             recyclerView.setAdapter(adapter);
             APIUrl.investStatus = "active";
-            //APICount = 0;
             getListingApi();
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
         }
 
         // add scroll listener while user reach in bottom load more will call
-
         recyclerView.addOnScrollListener(new PaginationListener(layoutManager) {
             @Override
             protected void loadMoreItems() {
@@ -145,7 +138,7 @@ public class HomeFragment extends Fragment {
                             list_1.clear();
                             if (jsonArray.length() > 0) {
                                 for (int i = 0; i < jsonArray.length(); i++) {
-                                    MyListModel myListModel = new MyListModel();
+                                    InvestmentOppHomeModel myListModel = new InvestmentOppHomeModel();
                                     myListModel.setId(jsonArray.getJSONObject(i).getInt("id"));
                                     myListModel.setmTitle(jsonArray.getJSONObject(i).getString("title"));
                                     myListModel.setInterest_pa(jsonArray.getJSONObject(i).getString("interest_pa"));
@@ -174,7 +167,7 @@ public class HomeFragment extends Fragment {
                                 } else if (currentPage == totalPage) {
                                     list_1.clear();
                                     list_2.clear();
-                                    MyListModel myListModel = new MyListModel();
+                                    InvestmentOppHomeModel myListModel = new InvestmentOppHomeModel();
                                     myListModel.setAverage_return(jsonObject.getInt("average_return"));
                                     myListModel.setTotal_raised(jsonObject.getInt("total_raised"));
                                     myListModel.setActive_investors(jsonObject.getInt("active_investors"));
@@ -183,23 +176,12 @@ public class HomeFragment extends Fragment {
                                     list_1.addAll(list_2);
                                     adapter.addItems(list_1);
                                     APIUrl.investStatus = "expired";
-                                    /*list_2.clear();
-                                    MyListModel myListModel = new MyListModel();
-                                    myListModel.setAverage_return(jsonObject.getInt("average_return"));
-                                    myListModel.setTotal_raised(jsonObject.getInt("total_raised"));
-                                    myListModel.setActive_investors(jsonObject.getInt("active_investors"));
-                                    myListModel.setInvestment_status("expired");
-                                    list_2.add(myListModel);
-                                    list_1.addAll(list_2);
-                                    adapter.addItems(list_1);
-                                    APIUrl.investStatus = "expired";*/
                                     APICount = 0;
                                     mUrl = APIUrl.GER_LISTING + APIUrl.investment_status + APIUrl.investStatus + APIUrl.page + APICount;
                                     adapter.addLoading();
                                 } else if (currentPage <= 3) {
                                     mUrl = APIUrl.GER_LISTING + APIUrl.investment_status + APIUrl.investStatus + APIUrl.page + APICount;
                                     adapter.addLoading();
-                                    // APICount = 0;
                                 } else {
                                     isLastPage = true;
                                 }
@@ -207,6 +189,9 @@ public class HomeFragment extends Fragment {
                             } else {
                                 Toast.makeText(getActivity(), getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
                             }
+                        }else {
+                            tvNoRecordFound.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.GONE);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -218,7 +203,6 @@ public class HomeFragment extends Fragment {
                     if (pd != null && pd.isShowing()) {
                         pd.dismiss();
                     }
-                    //showToast(MainActivity.this, getResources().getString(R.string.something_went));
                     String json = null;
                     String Message;
                     NetworkResponse response = error.networkResponse;
@@ -256,13 +240,8 @@ public class HomeFragment extends Fragment {
                                 e.printStackTrace();
                             }
                         } else if (error instanceof AuthFailureError) {
-                            Log.d(TAG, "onErrorResponse: " + "AuthFailureError" + AuthFailureError.class);
                         } else if (error instanceof ServerError) {
-                            Log.d(TAG, "onErrorResponse: " + "ServerError" + ServerError.class);
-                            //Indicates that the server responded with a error response
                         } else if (error instanceof ParseError) {
-                            Log.d(TAG, "onErrorResponse: " + "ParseError" + ParseError.class);
-                            // Indicates that the server response could not be parsed
                         }
                     }
                     error.printStackTrace();

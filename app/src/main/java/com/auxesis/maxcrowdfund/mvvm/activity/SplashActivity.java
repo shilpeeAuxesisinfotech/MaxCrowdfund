@@ -35,7 +35,6 @@ public class SplashActivity extends AppCompatActivity {
         zoom_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoom_in);
         init();
     }
-
     private void init() {
         tvMax = findViewById(R.id.tvMax);
         tv_crowdfund = findViewById(R.id.tv_crowdfund);
@@ -68,7 +67,6 @@ public class SplashActivity extends AppCompatActivity {
             alert.show();
         }
     }
-
     private void doPermissionGranted() {
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -98,6 +96,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, SPLASH_SCREEN_TIME_OUT);
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {

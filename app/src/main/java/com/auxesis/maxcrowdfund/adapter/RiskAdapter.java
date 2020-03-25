@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.model.RiskModel;
+import com.auxesis.maxcrowdfund.mvvm.ui.MaxPropertyGroupDetail.model.RiskModel;
 import java.util.List;
 
 public class RiskAdapter extends RecyclerView.Adapter<RiskAdapter.MyHolder> {

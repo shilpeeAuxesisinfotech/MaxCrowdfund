@@ -1,4 +1,4 @@
-package com.auxesis.maxcrowdfund.adapter;
+package com.auxesis.maxcrowdfund.mvvm.ui.home.homeAdapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,23 +16,23 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.mvvm.activity.MaxPropertyGroupDetailActivity;
+import com.auxesis.maxcrowdfund.mvvm.ui.MaxPropertyGroupDetail.MaxPropertyGroupDetailActivity;
 import com.auxesis.maxcrowdfund.constant.BaseViewHolder;
-import com.auxesis.maxcrowdfund.model.MyListModel;
+import com.auxesis.maxcrowdfund.mvvm.ui.home.homemodel.InvestmentOppHomeModel;
 import java.util.ArrayList;
 import java.util.List;
 import static com.auxesis.maxcrowdfund.constant.Utils.getCustomReplaceFormat;
 
-public class MyListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
+public class InvestmentOppHomeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int VIEW_TYPE_LOADING = 0;
     private static final int VIEW_TYPE_NORMAL = 1;
     private boolean isLoaderVisible = false;
     private static final String TAG = "MyListAdapter";
-    public ArrayList<MyListModel> arrayList, filterList;
+    public ArrayList<InvestmentOppHomeModel> arrayList, filterList;
     Context mContext;
     Context mActivity;
 
-    public MyListAdapter(Context context,Activity mActivity, ArrayList<MyListModel> arrayList) {
+    public InvestmentOppHomeAdapter(Context context, Activity mActivity, ArrayList<InvestmentOppHomeModel> arrayList) {
         this.mContext = context;
         this.mActivity = mActivity;
         this.arrayList = arrayList;
@@ -70,21 +70,21 @@ public class MyListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         return arrayList == null ? 0 : arrayList.size();
     }
 
-    public void addItems(List<MyListModel> postItems) {
+    public void addItems(List<InvestmentOppHomeModel> postItems) {
         arrayList.addAll(postItems);
         notifyDataSetChanged();
     }
 
     public void addLoading() {
         isLoaderVisible = true;
-        arrayList.add(new MyListModel());
+        arrayList.add(new InvestmentOppHomeModel());
         notifyItemInserted(arrayList.size() - 1);
     }
 
     public void removeLoading() {
         isLoaderVisible = false;
         int position = arrayList.size() - 1;
-        MyListModel item = getItem(position);
+        InvestmentOppHomeModel item = getItem(position);
         if (item != null) {
             arrayList.remove(position);
             notifyItemRemoved(position);
@@ -96,7 +96,7 @@ public class MyListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         notifyDataSetChanged();
     }
 
-    MyListModel getItem(int position) {
+    InvestmentOppHomeModel getItem(int position) {
         return arrayList.get(position);
     }
 
@@ -144,7 +144,7 @@ public class MyListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         public void onBind(int position) {
             super.onBind(position);
 
-            MyListModel item = arrayList.get(position);
+            InvestmentOppHomeModel item = arrayList.get(position);
             cardView.setVisibility(View.VISIBLE);
             tv_mTittle.setText(item.getmTitle());
             tv_interest_pr.setText(item.getInterest_pa() + "%");
@@ -175,7 +175,6 @@ public class MyListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 lLayoutFooter.setVisibility(View.GONE);
                 cardView.setVisibility(View.VISIBLE);
             }
-
             Log.d(TAG, "onBind: " + arrayList.size());
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -185,48 +184,6 @@ public class MyListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 }
             });
         }
-            //////////
-           /* MyListModel item = arrayList.get(position);
-            cardView.setVisibility(View.VISIBLE);
-            tv_mTittle.setText(item.getmTitle());
-            tv_interest_pr.setText(item.getInterest_pa() + "%");
-            tv_risk_c.setText(item.getRisk_class());
-            String currencyBymbol = item.getCurrency_symbol();
-            //tv_cur_symbol_amt.setText(currencyBymbol);
-            tvAmount.setText(String.valueOf(getCustomReplaceFormat(item.getAmount())+".00"));
-            int mFilled = item.getFilled();
-            tv_filled.setText(String.valueOf(mFilled) + "%");
-            tv_currency_left_amt.setText(currencyBymbol);
-            tv_investors.setText(String.valueOf(item.getNo_of_investors()));
-            tv_left_amount.setText(String.valueOf(item.getAmount_left()));
-            tv_months.setText(String.valueOf(item.getMonths()));
-            tv_type.setText(item.getType());
-            tv_location.setText(item.getLocation());
-            progessBar.setProgress(mFilled);
-
-           *//* if (item.getInvestment_status().equals("expired")) {
-                cardView.setVisibility(View.GONE);
-                lLayoutFooter.setVisibility(View.VISIBLE);
-                tv_cur_total_rsd.setText(currencyBymbol);
-                tv_raised_amount.setText(String.valueOf(item.getTotal_raised()));
-                tv_active_investor.setText(String.valueOf(item.getActive_investors()));
-                tv_cur_avr_return.setText(currencyBymbol);
-                tv_avr_return.setText(String.valueOf(item.getAverage_return()));
-                tv_active_invest_2.setText(String.valueOf(item.getActive_investors()));
-            } else {
-                lLayoutFooter.setVisibility(View.GONE);
-                cardView.setVisibility(View.VISIBLE);
-            }*//*
-
-            Log.d(TAG, "onBind: " + arrayList.size());
-            cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    NavController navController = Navigation.findNavController((Activity) mActivity, R.id.nav_host_fragment);
-                    navController.navigate(R.id.action_nav_investment_opp_to_homeDetailFragment);
-                }
-            });
-        }*/
     }
 
     public class ProgressHolder extends BaseViewHolder {

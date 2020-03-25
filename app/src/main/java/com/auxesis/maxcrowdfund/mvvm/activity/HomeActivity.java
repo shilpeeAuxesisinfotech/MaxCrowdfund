@@ -51,7 +51,6 @@ public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
     private AppBarConfiguration mAppBarConfiguration;
     TextView tv_user_name;
-    MenuItem item;
     ProgressDialog pd;
     String logOutUrl = "";
     String message = "";
@@ -73,8 +72,7 @@ public class HomeActivity extends AppCompatActivity {
             String userName = mName.substring(0, 1).toUpperCase() + mName.substring(1);
             tv_user_name.setText(userName);
         }
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_investment_opp, R.id.nav_dashboard, R.id.nav_my_investments,
                 R.id.nav_my_profile, R.id.nav_contact_information, R.id.nav_logout)
@@ -150,25 +148,17 @@ public class HomeActivity extends AppCompatActivity {
                         if (pd != null && pd.isShowing()) {
                             pd.dismiss();
                         }
-                        Log.d(TAG, "onErrorResponse: " + error.getMessage());
-                        Log.d(TAG, "" + error.getMessage() + "," + error.toString());
                         NetworkResponse response = error.networkResponse;
-                        // String json = null;
                         String mMessage = "";
-                        Log.d(TAG, "onErrorResponse: " + response.statusCode);
                         if (response != null && response.data != null) {
                             try {
                                 String res = new String(response.data, HttpHeaderParser.parseCharset(response.headers, "utf-8"));
-                                // Now you can use any deserializer to make sense of data
                                 JSONObject obj = new JSONObject(res);
                                 mMessage = obj.getString("message");
-                                Log.d(TAG, "onErrorResponse: " + obj.getString("message"));
                                 Toast.makeText(HomeActivity.this, mMessage, Toast.LENGTH_SHORT).show();
                             } catch (UnsupportedEncodingException e1) {
-                                // Couldn't properly decode data to string
                                 e1.printStackTrace();
                             } catch (JSONException e2) {
-                                // returned data is not JSONObject?
                                 e2.printStackTrace();
                             }
                             if (response.statusCode == 404) {
@@ -184,9 +174,7 @@ public class HomeActivity extends AppCompatActivity {
                             } else if (response.statusCode == 503) {
                                 Toast.makeText(HomeActivity.this, getResources().getString(R.string.server_down), Toast.LENGTH_SHORT).show();
                             } else if (response.statusCode == 204) {
-                                Log.d(TAG, "onErrorResponse: " + "statusCode:---204---String---");
                             } else if (response.statusCode == 200) {
-                                Log.d(TAG, "onErrorResponse: " + "statusCode:---200---String---");
                             } else {
                                 Toast.makeText(HomeActivity.this, getResources().getString(R.string.please_try_again), Toast.LENGTH_SHORT).show();
                             }
@@ -199,7 +187,6 @@ public class HomeActivity extends AppCompatActivity {
                                 try {
                                     if (error.networkResponse == null) {
                                         if (error.getClass().equals(TimeoutError.class)) {
-                                            // Show timeout error message
                                             Toast.makeText(HomeActivity.this, getResources().getString(R.string.timed_out), Toast.LENGTH_SHORT).show();
                                         }
                                     }
@@ -210,10 +197,8 @@ public class HomeActivity extends AppCompatActivity {
                                 Log.d(TAG, "onErrorResponse: " + "AuthFailureError" + AuthFailureError.class);
                             } else if (error instanceof ServerError) {
                                 Log.d(TAG, "onErrorResponse: " + "ServerError" + ServerError.class);
-                                //Indicates that the server responded with a error response
                             } else if (error instanceof ParseError) {
                                 Log.d(TAG, "onErrorResponse: " + "ParseError" + ParseError.class);
-                                // Indicates that the server response could not be parsed
                             }
                         }
                         error.printStackTrace();
@@ -243,7 +228,6 @@ public class HomeActivity extends AppCompatActivity {
         try {
             if (logoutToken != null && !logoutToken.isEmpty()) {
                 logOutUrl = APIUrl.GER_LOG_OUT + logoutToken;
-                Log.d(TAG, "getLogOut: " + logOutUrl);
             }
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, logOutUrl, null, new Response.Listener<JSONObject>() {
                 @Override
@@ -251,7 +235,6 @@ public class HomeActivity extends AppCompatActivity {
                     if (pd != null && pd.isShowing()) {
                         pd.dismiss();
                     }
-                    Log.d("getLogOut RESPONCE:::", response.toString());
                     JSONObject jobj = null;
                     try {
                         //==================For Creating JSONObject =============================
@@ -284,7 +267,6 @@ public class HomeActivity extends AppCompatActivity {
                         if (pd != null && pd.isShowing()) {
                             pd.dismiss();
                         }
-                        Log.d(TAG, "onErrorResponse: " + error.getMessage());
                         String json = null;
                         String mMessage = "";
                         NetworkResponse response = error.networkResponse;
@@ -326,13 +308,8 @@ public class HomeActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
                             } else if (error instanceof AuthFailureError) {
-                                Log.d(TAG, "onErrorResponse: " + "AuthFailureError" + AuthFailureError.class);
                             } else if (error instanceof ServerError) {
-                                Log.d(TAG, "onErrorResponse: " + "ServerError" + ServerError.class);
-                                //Indicates that the server responded with a error response
                             } else if (error instanceof ParseError) {
-                                Log.d(TAG, "onErrorResponse: " + "ParseError" + ParseError.class);
-                                // Indicates that the server response could not be parsed
                             }
                         }
                         error.printStackTrace();
@@ -362,6 +339,7 @@ public class HomeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
     public void setActionBarTitle(String title) {
         getSupportActionBar().setTitle(title);
     }

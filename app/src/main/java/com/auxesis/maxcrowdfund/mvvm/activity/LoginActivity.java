@@ -58,7 +58,6 @@ public class LoginActivity extends AppCompatActivity {
         hideKeyboard(LoginActivity.this);
         init();
     }
-
     private void init() {
         edt_email = findViewById(R.id.edt_email);
         edt_pssword = findViewById(R.id.edt_pssword);
@@ -71,10 +70,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (checkBoxRMe.isChecked()) {
                     isRememberMe = checkBoxRMe.isChecked();
-                    Log.d(TAG, "onCheckedChanged: " + isRememberMe);
                 } else {
                     isRememberMe = checkBoxRMe.isChecked();
-                    Log.d(TAG, "onCheckedChanged: " + "Else-------" + isRememberMe);
                 }
             }
         });
@@ -93,7 +90,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
 
         tv_max_crowd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,8 +110,6 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 mainJson.put("name", edt_email.getText().toString().trim());
                 mainJson.put("pass", edt_pssword.getText().toString().trim());
-                Log.d(TAG, "FINAL JSON" + String.valueOf(mainJson));
-                Log.d(TAG, "getLogin: " + loginUrl);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

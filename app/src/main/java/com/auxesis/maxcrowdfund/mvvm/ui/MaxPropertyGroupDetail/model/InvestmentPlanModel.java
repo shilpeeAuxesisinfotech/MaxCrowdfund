@@ -1,4 +1,4 @@
-package com.auxesis.maxcrowdfund.model;
+package com.auxesis.maxcrowdfund.mvvm.ui.MaxPropertyGroupDetail.model;
 
 public class InvestmentPlanModel {
     String mInvestmentPlanTitle;

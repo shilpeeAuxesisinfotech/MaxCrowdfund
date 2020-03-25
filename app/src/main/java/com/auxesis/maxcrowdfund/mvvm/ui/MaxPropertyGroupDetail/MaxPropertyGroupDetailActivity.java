@@ -1,4 +1,4 @@
-package com.auxesis.maxcrowdfund.mvvm.activity;
+package com.auxesis.maxcrowdfund.mvvm.ui.MaxPropertyGroupDetail;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,14 +56,14 @@ import com.auxesis.maxcrowdfund.constant.APIUrl;
 import com.auxesis.maxcrowdfund.constant.CheckForSDCard;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
-import com.auxesis.maxcrowdfund.model.CollateralModelP;
-import com.auxesis.maxcrowdfund.model.DocumentModel;
-import com.auxesis.maxcrowdfund.model.FundraiserModel;
-import com.auxesis.maxcrowdfund.model.InvestmentPlanModel;
-import com.auxesis.maxcrowdfund.model.LastInvestmentModel;
-import com.auxesis.maxcrowdfund.model.LoanTermModel;
-import com.auxesis.maxcrowdfund.model.PhotosVideosModel;
-import com.auxesis.maxcrowdfund.model.RiskModel;
+import com.auxesis.maxcrowdfund.mvvm.ui.MaxPropertyGroupDetail.model.CollateralModelP;
+import com.auxesis.maxcrowdfund.mvvm.ui.MaxPropertyGroupDetail.model.DocumentModel;
+import com.auxesis.maxcrowdfund.mvvm.ui.MaxPropertyGroupDetail.model.FundraiserModel;
+import com.auxesis.maxcrowdfund.mvvm.ui.MaxPropertyGroupDetail.model.InvestmentPlanModel;
+import com.auxesis.maxcrowdfund.mvvm.ui.MaxPropertyGroupDetail.model.LastInvestmentModel;
+import com.auxesis.maxcrowdfund.mvvm.ui.MaxPropertyGroupDetail.model.LoanTermModel;
+import com.auxesis.maxcrowdfund.mvvm.ui.MaxPropertyGroupDetail.model.PhotosVideosModel;
+import com.auxesis.maxcrowdfund.mvvm.ui.MaxPropertyGroupDetail.model.RiskModel;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import org.json.JSONArray;

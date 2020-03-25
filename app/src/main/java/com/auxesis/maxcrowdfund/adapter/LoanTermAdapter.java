@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.model.LoanTermModel;
+import com.auxesis.maxcrowdfund.mvvm.ui.MaxPropertyGroupDetail.model.LoanTermModel;
 
 import java.util.List;
 

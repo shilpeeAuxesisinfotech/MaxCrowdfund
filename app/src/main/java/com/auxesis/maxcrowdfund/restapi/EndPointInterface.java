@@ -14,7 +14,6 @@ import com.auxesis.maxcrowdfund.mvvm.ui.changeMobileNumber.changeMobileModel.Upd
 import com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankaccountmodel.ActiveBankAccountResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankaccountmodel.ChangeBankAccountResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.contactinformation.contactInformationModel.ContactInformationResponse;
-import com.auxesis.maxcrowdfund.mvvm.ui.home.homemodel.InvestmentOppResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.myprofile.ChangeAvtarResponse;
 import com.google.gson.JsonObject;
 
@@ -49,11 +48,13 @@ public interface EndPointInterface {
     Call<MyInvestmentSearchResponse> getMyInvestmentSearch(@Query("company") String company,
                                                            @Query("from") String from,
                                                            @Query("to") String to);
+/*
 
     @GET("api/fundraiser/listing")
     Call<InvestmentOppResponse> getMyInvestmentOpp(@Query("_format") String _format,
                                                    @Query("investment_status") String investment_status,
                                                    @Query("page") int page);
+*/
 
 
     @GET("api/investment/details")

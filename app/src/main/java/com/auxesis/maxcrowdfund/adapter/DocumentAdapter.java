@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.customClickListener.OnDownloadClickListener;
-import com.auxesis.maxcrowdfund.model.DocumentModel;
+import com.auxesis.maxcrowdfund.mvvm.ui.MaxPropertyGroupDetail.model.DocumentModel;
 
 import java.util.ArrayList;
 import java.util.List;

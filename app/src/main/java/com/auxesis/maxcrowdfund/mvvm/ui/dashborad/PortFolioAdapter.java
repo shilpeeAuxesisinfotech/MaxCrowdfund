@@ -1,4 +1,4 @@
-package com.auxesis.maxcrowdfund.adapter;
+package com.auxesis.maxcrowdfund.mvvm.ui.dashborad;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -1,6 +1,4 @@
-package com.auxesis.maxcrowdfund.model;
-
-import java.util.List;
+package com.auxesis.maxcrowdfund.mvvm.ui.MaxPropertyGroupDetail.model;
 
 public class CollateralModelP {
     String mCollateralSubHeading;

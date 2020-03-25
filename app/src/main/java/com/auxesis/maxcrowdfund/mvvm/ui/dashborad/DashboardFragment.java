@@ -26,8 +26,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.adapter.AccountBalanceAdapter;
-import com.auxesis.maxcrowdfund.adapter.PortFolioAdapter;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
 import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboardmodel.AccountBalanceModel;
@@ -55,6 +53,8 @@ public class DashboardFragment extends Fragment {
     List<AccountBalanceModel> reservedlist = new ArrayList<>();
     List<AccountBalanceModel> written_offlist = new ArrayList<>();
     List<AccountBalanceModel> mpg_purchaselist = new ArrayList<>();
+    List<AccountBalanceModel> mpgsPurchaseList = new ArrayList<>();
+    List<AccountBalanceModel> lastButtonList = new ArrayList<>();
 
     List<PortfolioModel> Portfoliolist = new ArrayList<>();
     List<PortfolioModel> no_arrears = new ArrayList<>();
@@ -94,7 +94,6 @@ public class DashboardFragment extends Fragment {
                             pd.dismiss();
                         }
                         Log.d(TAG, "onResponse: " + response);
-
                         JSONObject jsonObjMain = new JSONObject(response.toString());
                         if (jsonObjMain != null) {
                             JSONObject jsonObject = jsonObjMain.getJSONObject("balance");
@@ -109,6 +108,8 @@ public class DashboardFragment extends Fragment {
                             reservedlist.clear();
                             written_offlist.clear();
                             mpg_purchaselist.clear();
+                            mpgsPurchaseList.clear();
+                            lastButtonList.clear();
 
                             //For deposit
                             if (jsonObject != null) {
@@ -166,7 +167,6 @@ public class DashboardFragment extends Fragment {
                                 feeslistModel.setmType(jsonfeeslist.getString("type"));
                                 feeslist.add(feeslistModel);
                             }
-
                             //For repaidlist
                             JSONObject jsonrepaidlist = jsonData.getJSONObject("repaid");
                             if (jsonrepaidlist != null) {
@@ -176,7 +176,6 @@ public class DashboardFragment extends Fragment {
                                 repaidModel.setmType(jsonrepaidlist.getString("type"));
                                 repaidlist.add(repaidModel);
                             }
-
                             //For invested
                             JSONObject jsoninterest_paid = jsonData.getJSONObject("interest_paid");
                             if (jsoninterest_paid != null) {
@@ -197,8 +196,7 @@ public class DashboardFragment extends Fragment {
                                 reservedlist.add(reservedModel);
                             }
 
-
-                            //For reserved
+                            //For written
                             JSONObject jsonwritten_off = jsonData.getJSONObject("written_off");
                             if (jsonwritten_off != null) {
                                 AccountBalanceModel written_offModel = new AccountBalanceModel();
@@ -208,7 +206,7 @@ public class DashboardFragment extends Fragment {
                                 written_offlist.add(written_offModel);
                             }
 
-                            //For reserved
+                            //For mpg_purchage
                             JSONObject jsonmpg_purchase = jsonData.getJSONObject("mpg_purchase");
                             if (jsonmpg_purchase != null) {
                                 AccountBalanceModel mpg_purchaseModel = new AccountBalanceModel();
@@ -217,6 +215,22 @@ public class DashboardFragment extends Fragment {
                                 mpg_purchaseModel.setmType(jsonmpg_purchase.getString("type"));
                                 mpg_purchaselist.add(mpg_purchaseModel);
                             }
+
+                            //For mpgs_purchage
+                            JSONObject mpgsPurchaseObj = jsonData.getJSONObject("mpgs_purchase");
+                            if (mpgsPurchaseObj != null) {
+                                AccountBalanceModel mpgs_purchaseModel = new AccountBalanceModel();
+                                mpgs_purchaseModel.setmTitle(mpgsPurchaseObj.getString("title"));
+                                mpgs_purchaseModel.setmValue(mpgsPurchaseObj.getString("value"));
+                                mpgs_purchaseModel.setmType(mpgsPurchaseObj.getString("type"));
+                                mpgsPurchaseList.add(mpgs_purchaseModel);
+                            }
+
+                            AccountBalanceModel buttonModel = new AccountBalanceModel();
+                            buttonModel.setmTitle("");
+                            buttonModel.setmValue("");
+                            buttonModel.setmType("");
+                            lastButtonList.add(buttonModel);
 
                             accountlist.addAll(depositedlist);
                             accountlist.addAll(withdrawnlist);
@@ -228,7 +242,10 @@ public class DashboardFragment extends Fragment {
                             accountlist.addAll(reservedlist);
                             accountlist.addAll(written_offlist);
                             accountlist.addAll(mpg_purchaselist);
+                            accountlist.addAll(mpgsPurchaseList);
+                            accountlist.addAll(lastButtonList);
 
+                            Log.d(TAG, "onResponse: "+accountlist.size());
                             if (accountlist.size() > 0) {
                                 accountbalanceadapter = new AccountBalanceAdapter(getActivity(), accountlist);
                                 RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
