@@ -13,16 +13,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.mvvm.ui.MaxPropertyGroupDetail.MaxPropertyGroupDetailActivity;
+import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.MaxPropertyGroupDetailActivity;
 import com.auxesis.maxcrowdfund.customClickListener.OnDownloadClickListener;
-import com.auxesis.maxcrowdfund.adapter.InvestmentDocumentAdapter;
-import com.auxesis.maxcrowdfund.adapter.MyInvestmentDetailAdapter;
-import com.auxesis.maxcrowdfund.adapter.MyInvestmentDetailRepayAdapter;
+import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.adapter.InvestmentDocumentAdapter;
+import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.adapter.MyInvestmentDetailAdapter;
+import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.adapter.MyInvestmentDetailRepayAdapter;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
 import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.myinvestmentdetail.MyInvestmentDetailResponse;
@@ -36,7 +35,6 @@ import retrofit2.Response;
 
 public class MyInvestmentDetailFragment extends Fragment implements OnDownloadClickListener {
     private static final String TAG = "MyInvestmentDetailFragm";
-    private MyInvestmentDetail sendViewModel;
     TextView tv_arrow_document, tv_arrow_repayment_schedule, tvInvestment, tv_investment_amount, tvInvested, tv_invested_amount, tv_document, tv_repayment_schedule;
     RelativeLayout rl_document_click, rl_repayment_schedule_click;
     LinearLayout ll_contant_document, ll_repayment_schedule_content;
@@ -54,7 +52,6 @@ public class MyInvestmentDetailFragment extends Fragment implements OnDownloadCl
         setHasOptionsMenu(false);
     }
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        sendViewModel = ViewModelProviders.of(this).get(MyInvestmentDetail.class);
         View root = inflater.inflate(R.layout.fragment_my_investment_detail, container, false);
 
         rl_document_click = root.findViewById(R.id.rl_document_click);
@@ -138,7 +135,7 @@ public class MyInvestmentDetailFragment extends Fragment implements OnDownloadCl
 
     private void getMyInvestmentDetail() {
         pd = ProgressDialog.show(getActivity(), "Please Wait...");
-        EndPointInterface git = ApiClient.getClient().create(EndPointInterface.class);
+        EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
         Call<MyInvestmentDetailResponse> call = git.getMyInvestmentDetail();
         call.enqueue(new Callback<MyInvestmentDetailResponse>() {
             @Override

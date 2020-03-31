@@ -58,7 +58,7 @@ public class ChangeEmailFragment extends Fragment {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("email", edt_email.getText().toString().trim());
         String XCSRF = getPreference(getActivity(), "mCsrf_token");
-        EndPointInterface git = ApiClient.getClient().create(EndPointInterface.class);
+        EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
         Call<ChangeEmailResponse> call = git.changeEmail("application/json", XCSRF, jsonObject);
         call.enqueue(new Callback<ChangeEmailResponse>() {
             @Override

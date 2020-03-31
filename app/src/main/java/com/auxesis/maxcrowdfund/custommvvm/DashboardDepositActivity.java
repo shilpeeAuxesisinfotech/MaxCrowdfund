@@ -91,7 +91,7 @@ public class DashboardDepositActivity extends AppCompatActivity {
     }
 
     private void getDashboardDetail() {
-        EndPointInterface endPointInterface = ApiClient.getClient().create(EndPointInterface.class);
+        EndPointInterface endPointInterface = ApiClient.getClient1(DashboardDepositActivity.this).create(EndPointInterface.class);
         Call<DashboardDetailModelResponce> call = endPointInterface.DashboardDetail();
         call.enqueue(new Callback<DashboardDetailModelResponce>() {
             @Override
@@ -182,7 +182,7 @@ public class DashboardDepositActivity extends AppCompatActivity {
     private void getDashboardSignature(JSONObject jobjMain) {
         String XCSRF = getPreference(DashboardDepositActivity.this, "mCsrf_token");
         Log.d(TAG, "getTrustly: " + "<><XCSRF><><" + XCSRF);
-        EndPointInterface endPointInterface = ApiClient.getClient().create(EndPointInterface.class);
+        EndPointInterface endPointInterface = ApiClient.getClient1(DashboardDepositActivity.this).create(EndPointInterface.class);
         Call<DashboardSignatureResponce> call = endPointInterface.DashboardDetailSignature("application/json", XCSRF, mMethod_deposit, getRandomNO(), jobjMain);
         call.enqueue(new Callback<DashboardSignatureResponce>() {
             @Override

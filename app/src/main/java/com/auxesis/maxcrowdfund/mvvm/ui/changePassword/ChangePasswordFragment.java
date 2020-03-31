@@ -1,8 +1,6 @@
 package com.auxesis.maxcrowdfund.mvvm.ui.changePassword;
 
-
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import android.text.TextUtils;
@@ -24,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import retrofit2.Call;
 import retrofit2.Callback;
+import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 
 public class ChangePasswordFragment extends Fragment {
     private static final String TAG = "ChangePasswordFragment";
@@ -67,12 +66,13 @@ public class ChangePasswordFragment extends Fragment {
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("old_pass", edtOldPass.getText().toString().trim());
             jsonObject.addProperty("new_pass", edtNPass.getText().toString().trim());
-            EndPointInterface git = ApiClient.getClient().create(EndPointInterface.class);
-            Call<ChangePasswordResponse> call = git.getChangePassword("application/json", jsonObject);
+            String XCSRF = getPreference(getActivity(), "mCsrf_token");
+            EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
+            Call<ChangePasswordResponse> call = git.getChangePassword("application/json",XCSRF, jsonObject);
             call.enqueue(new Callback<ChangePasswordResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<ChangePasswordResponse> call, @NonNull retrofit2.Response<ChangePasswordResponse> response) {
-                    Log.d(TAG, "onResponse: " + "><><" + new Gson().toJson(response.body()));
+                    Log.d(TAG, "onResponse:" + "><><" + new Gson().toJson(response.body()));
                     try {
                         if (pd != null && pd.isShowing()) {
                             pd.dismiss();
@@ -89,7 +89,6 @@ public class ChangePasswordFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
-
                 @Override
                 public void onFailure(@NonNull Call<ChangePasswordResponse> call, @NonNull Throwable t) {
                     Log.e("response", "error " + t.getMessage());
@@ -103,7 +102,6 @@ public class ChangePasswordFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
     private boolean getValidation() {
         error_msg = "";
         if (TextUtils.isEmpty(edtOldPass.getText().toString().trim())) {
@@ -122,7 +120,6 @@ public class ChangePasswordFragment extends Fragment {
 
     public void onResume() {
         super.onResume();
-        // Set title bar
         ((HomeActivity) getActivity()).setActionBarTitle(getString(R.string.change_password));
     }
 }

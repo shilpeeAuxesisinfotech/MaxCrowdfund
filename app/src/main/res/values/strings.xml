@@ -93,7 +93,7 @@
     <string name="cancel">Cancel</string>
     <string name="update_avatar">Update avatar</string>
 
-   <!--for data not found-->
+    <!--for data not found-->
     <string name="no_data_found">No data found</string>
 
 
@@ -140,10 +140,15 @@
     <string name="enter_old_password">Enter old password</string>
     <string name="enter_new_password">Enter new password</string>
     <string name="enter_confirm_password">Enter confirm password</string>
-    <string name="confirm_password">New password and confirm password didn?"'"t match.</string>
+    <string name="confirm_password">New password and confirm password didn"'"t match.</string>
+    <!--<string name="confirm_password">New password and confirm password didn"'"t match.</string>-->
     <string name="update_password">Password update successfully...</string>
     <string name="submit_new_e_mail_address">Submit new e-mail address</string>
 
-
+    <!--for change preference-->
+    <string name="hint_language">Please select language</string>
+    <string name="hint_active_account">Please select active account</string>
+    <string name="hint_trans_signing">Please select transaction signing</string>
+    <string name="hint_updated_succ">Update successfully...</string>
 
 </resources>

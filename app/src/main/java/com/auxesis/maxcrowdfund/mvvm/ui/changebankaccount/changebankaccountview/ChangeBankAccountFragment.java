@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 
 public class ChangeBankAccountFragment extends Fragment implements OnCustomClickListener {
     private static final String TAG = "ChangeBankAccountFragme";
@@ -38,20 +39,20 @@ public class ChangeBankAccountFragment extends Fragment implements OnCustomClick
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_change_bank_account, container, false);
-        recyclerView =root.findViewById(R.id.recyclerView);
-        tvNoRecord =root.findViewById(R.id.tvNoRecord);
+        recyclerView = root.findViewById(R.id.recyclerView);
+        tvNoRecord = root.findViewById(R.id.tvNoRecord);
 
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        adapter = new ChangeBankAccountAdapter(getActivity(),ChangeBankAccountFragment.this, new ArrayList<>());
+
+        adapter = new ChangeBankAccountAdapter(getActivity(), ChangeBankAccountFragment.this, new ArrayList<>());
         recyclerView.setAdapter(adapter);
 
         if (Utils.isInternetConnected(getActivity())) {
-            getChangeBankAccount();
+            getChangeBankAccountApi();
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
         }
@@ -60,15 +61,16 @@ public class ChangeBankAccountFragment extends Fragment implements OnCustomClick
 
     @Override
     public void onCustomClick(String data) {
-        Log.d(TAG, "onCustomClick: "+"<<<<data<<<<<<<<<<<"+data);
+        Log.d(TAG, "onCustomClick: " + "<<<<data<<<<<<<<<<<" + data);
         if (Utils.isInternetConnected(getActivity())) {
             pd = ProgressDialog.show(getActivity(), "Please Wait...");
-            EndPointInterface git = ApiClient.getClient().create(EndPointInterface.class);
+            EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
             JsonObject jsonObject = new JsonObject();
-            if (data!=null) {
+            if (data != null) {
                 jsonObject.addProperty("bank_account", data);
             }
-            Call<ActiveBankAccountResponse> call =git.getActiveBankAccount("application/json",jsonObject);
+            String XCSRF = getPreference(getActivity(), "mCsrf_token");
+            Call<ActiveBankAccountResponse> call = git.getActiveBankAccount("application/json", XCSRF, jsonObject);
             call.enqueue(new Callback<ActiveBankAccountResponse>() {
                 @Override
                 public void onResponse(Call<ActiveBankAccountResponse> call, Response<ActiveBankAccountResponse> response) {
@@ -77,14 +79,14 @@ public class ChangeBankAccountFragment extends Fragment implements OnCustomClick
                         pd.dismiss();
                     }
                     if (response != null && response.isSuccessful()) {
-                        if (response.body().getResult().equals("success")){
+                        if (response.body().getResult().equals("success")) {
                             Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                             if (Utils.isInternetConnected(getActivity())) {
-                                getChangeBankAccount();
+                                 getChangeBankAccountApi();
                             } else {
                                 Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
                             }
-                        }else {
+                        } else {
                             Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -102,12 +104,12 @@ public class ChangeBankAccountFragment extends Fragment implements OnCustomClick
             Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
         }
     }
-
-    private void getChangeBankAccount() {
+    private void getChangeBankAccountApi() {
         try {
             pd = ProgressDialog.show(getActivity(), "Please Wait...");
-            EndPointInterface git = ApiClient.getClient().create(EndPointInterface.class);
-            Call<ChangeBankAccountResponse> call = git.getChangeBankAccount();
+            EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
+            String XCSRF = getPreference(getActivity(), "mCsrf_token");
+            Call<ChangeBankAccountResponse> call = git.getChangeBankAccount("application/json", XCSRF);
             call.enqueue(new Callback<ChangeBankAccountResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<ChangeBankAccountResponse> call, @NonNull retrofit2.Response<ChangeBankAccountResponse> response) {
@@ -116,8 +118,8 @@ public class ChangeBankAccountFragment extends Fragment implements OnCustomClick
                             pd.dismiss();
                         }
                         if (response != null && response.isSuccessful()) {
-                            Log.d(TAG, "onResponse: " + "><><" + new Gson().toJson(response.body()));
-                            if (response.body().getBankAccounts().getData().size()>0) {
+                            Log.d(TAG, "onResponse:" + "><Bank><" + new Gson().toJson(response.body()));
+                            if (response.body().getBankAccounts().getData().size() > 0) {
                                 tvNoRecord.setVisibility(View.GONE);
                                 recyclerView.setVisibility(View.VISIBLE);
                                 adapter.clear();
@@ -128,7 +130,7 @@ public class ChangeBankAccountFragment extends Fragment implements OnCustomClick
                                     recyclerView.setItemAnimator(new DefaultItemAnimator());
                                     recyclerView.setAdapter(adapter);
                                     adapter.notifyDataSetChanged();*/
-                            }else {
+                            } else {
                                 recyclerView.setVisibility(View.GONE);
                                 tvNoRecord.setVisibility(View.VISIBLE);
                             }
@@ -151,8 +153,7 @@ public class ChangeBankAccountFragment extends Fragment implements OnCustomClick
         }
     }
 
-
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         // Set title bar
         ((HomeActivity) getActivity()).setActionBarTitle(getString(R.string.change_default_bank_account));

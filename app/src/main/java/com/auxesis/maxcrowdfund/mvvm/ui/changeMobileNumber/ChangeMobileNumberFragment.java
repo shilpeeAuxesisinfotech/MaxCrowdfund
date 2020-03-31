@@ -1,10 +1,8 @@
 package com.auxesis.maxcrowdfund.mvvm.ui.changeMobileNumber;
 
 import android.os.Bundle;
-
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.mvvm.activity.HomeActivity;
@@ -25,11 +22,9 @@ import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.hbb20.CountryCodePicker;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
 import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
@@ -46,19 +41,17 @@ public class ChangeMobileNumberFragment extends Fragment {
     CountryCodePicker ccp_countryCode;
     String countryCode = "";
     String mOTP="";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_change_mobile_number, container, false);
-
         cardViewSend = root.findViewById(R.id.cardViewSend);
         cardViewVerify = root.findViewById(R.id.cardViewVerify);
         cardViewSend.setVisibility(View.VISIBLE);
         cardViewVerify.setVisibility(View.GONE);
-
         btn_change = root.findViewById(R.id.btn_change);
         btn_resend = root.findViewById(R.id.btn_resend);
         btn_verify = root.findViewById(R.id.btn_verify);
-
         tv_mobile = root.findViewById(R.id.tv_mobile);
         edt_verifyCode = root.findViewById(R.id.edt_verifyCode);
         /*For Country code*/
@@ -71,7 +64,6 @@ public class ChangeMobileNumberFragment extends Fragment {
                 Log.d(TAG, "onCountrySelected: " + ">>>>>>>>>>" + countryCode);
             }
         });
-
         edt_mobile = root.findViewById(R.id.edt_mobile);
         //For Send Otp
         btn_send_verify = root.findViewById(R.id.btn_send_verify);
@@ -141,8 +133,9 @@ public class ChangeMobileNumberFragment extends Fragment {
         JsonObject jsonObject = new JsonObject();
         enteredPhone = edt_mobile.getText().toString().trim();
         jsonObject.addProperty("phone", enteredPhone);
-        EndPointInterface git = ApiClient.getClient().create(EndPointInterface.class);
-        Call<SendOTPResponse> call = git.getSendOTP("application/json", jsonObject);
+        String XCSRF = getPreference(getActivity(), "mCsrf_token");
+        EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
+        Call<SendOTPResponse> call = git.getSendOTP("application/json",XCSRF,jsonObject);
         call.enqueue(new Callback<SendOTPResponse>() {
             @Override
             public void onResponse(Call<SendOTPResponse> call, Response<SendOTPResponse> response) {
@@ -185,8 +178,9 @@ public class ChangeMobileNumberFragment extends Fragment {
         pd = ProgressDialog.show(getActivity(), "Please Wait...");
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("phone", getPreference(getActivity(), "enteredPhone"));
-        EndPointInterface git = ApiClient.getClient().create(EndPointInterface.class);
-        Call<SendOTPResponse> call = git.getSendOTP("application/json", jsonObject);
+        String XCSRF = getPreference(getActivity(), "mCsrf_token");
+        EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
+        Call<SendOTPResponse> call = git.getSendOTP("application/json",XCSRF,jsonObject);
         call.enqueue(new Callback<SendOTPResponse>() {
             @Override
             public void onResponse(Call<SendOTPResponse> call, Response<SendOTPResponse> response) {
@@ -214,14 +208,14 @@ public class ChangeMobileNumberFragment extends Fragment {
             }
         });
     }
-    
     /*For verify otp*/
     private void getVerifyMobile() {
         pd = ProgressDialog.show(getActivity(), "Please Wait...");
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("phone", edt_verifyCode.getText().toString().trim());
-        EndPointInterface git = ApiClient.getClient().create(EndPointInterface.class);
-        Call<UpdatePhoneNumberResponse> call = git.getUpdatePhone("application/json", jsonObject);
+        String XCSRF = getPreference(getActivity(), "mCsrf_token");
+        EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
+        Call<UpdatePhoneNumberResponse> call = git.getUpdatePhone("application/json",XCSRF,jsonObject);
         call.enqueue(new Callback<UpdatePhoneNumberResponse>() {
             @Override
             public void onResponse(Call<UpdatePhoneNumberResponse> call, Response<UpdatePhoneNumberResponse> response) {

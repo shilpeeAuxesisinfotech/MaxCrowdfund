@@ -1,5 +1,4 @@
 package com.auxesis.maxcrowdfund.mvvm.ui.home;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,9 +35,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import static com.auxesis.maxcrowdfund.constant.PaginationListener.PAGE_START;
 import static com.auxesis.maxcrowdfund.constant.PaginationListener.VISIBLE_THRESHOLD;
+import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
 
 public class HomeFragment extends Fragment {
@@ -71,7 +73,6 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         tvNoRecordFound = root.findViewById(R.id.tvNoRecordFound);
         recyclerView = root.findViewById(R.id.recyclerView);
-
         if (isInternetConnected(getActivity())) {
             recyclerView.setHasFixedSize(true);
             layoutManager = new LinearLayoutManager(getActivity());
@@ -83,7 +84,6 @@ public class HomeFragment extends Fragment {
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
         }
-
         // add scroll listener while user reach in bottom load more will call
         recyclerView.addOnScrollListener(new PaginationListener(layoutManager) {
             @Override
@@ -96,7 +96,6 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public int getTotalPageCount() {
                 return TOTAL_PAGES;
@@ -148,7 +147,8 @@ public class HomeFragment extends Fragment {
                                     myListModel.setCurrency_symbol(jsonArray.getJSONObject(i).getString("currency_symbol"));
                                     myListModel.setFilled(jsonArray.getJSONObject(i).getInt("filled"));
                                     myListModel.setNo_of_investors(jsonArray.getJSONObject(i).getInt("no_of_investors"));
-                                    myListModel.setAmount_left(jsonArray.getJSONObject(i).getInt("amount_left"));
+                                   // myListModel.setAmount_left(jsonArray.getJSONObject(i).getInt("amount_left"));
+                                    myListModel.setAmount_left(jsonArray.getJSONObject(i).getString("amount_left"));
                                     myListModel.setMonths(jsonArray.getJSONObject(i).getInt("months"));
                                     myListModel.setType(jsonArray.getJSONObject(i).getString("type"));
                                     myListModel.setLocation(jsonArray.getJSONObject(i).getString("location"));
@@ -232,7 +232,6 @@ public class HomeFragment extends Fragment {
                             try {
                                 if (error.networkResponse == null) {
                                     if (error.getClass().equals(TimeoutError.class)) {
-                                        // Show timeout error message
                                         Toast.makeText(getActivity(), getResources().getString(R.string.timed_out), Toast.LENGTH_SHORT).show();
                                     }
                                 }
@@ -250,6 +249,17 @@ public class HomeFragment extends Fragment {
                 @Override
                 public String getBodyContentType() {
                     return "application/json";
+                }
+                @Override
+                public Map getHeaders() throws AuthFailureError {
+                    HashMap headers = new HashMap();
+                    String mCsrfToken =getPreference(getActivity(), "mCsrf_token");
+                    Log.d(TAG, "getHeaders: "+mCsrfToken);
+                    if (mCsrfToken!=null && !mCsrfToken.isEmpty()){
+                        headers.put("X-CSRF-TOKEN", mCsrfToken);
+                    }
+                    headers.put("Content-Type", "application/json");
+                    return headers;
                 }
             };
             jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
@@ -270,7 +280,6 @@ public class HomeFragment extends Fragment {
 
     public void onResume() {
         super.onResume();
-        // Set title bar
         ((HomeActivity) getActivity()).setActionBarTitle(getString(R.string.menu_investments_opportunity));
     }
 }

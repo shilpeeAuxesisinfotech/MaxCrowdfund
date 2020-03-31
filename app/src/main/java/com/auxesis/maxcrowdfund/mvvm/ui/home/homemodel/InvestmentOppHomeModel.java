@@ -10,7 +10,8 @@ public class InvestmentOppHomeModel {
     String currency_symbol;
     int filled;
     int no_of_investors;
-    int amount_left;
+    //int amount_left;
+    String amount_left;
     int months;
     String type;
     String location;
@@ -118,11 +119,11 @@ public class InvestmentOppHomeModel {
         this.no_of_investors = no_of_investors;
     }
 
-    public int getAmount_left() {
+    public String getAmount_left() {
         return amount_left;
     }
 
-    public void setAmount_left(int amount_left) {
+    public void setAmount_left(String amount_left) {
         this.amount_left = amount_left;
     }
 

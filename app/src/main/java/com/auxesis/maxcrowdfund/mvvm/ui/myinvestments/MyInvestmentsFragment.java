@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.adapter.MyInvestmentAdapter;
+import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.adapter.MyInvestmentAdapter;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
 import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.MyInvestmentResponce;
@@ -37,7 +37,6 @@ import retrofit2.Response;
 
 public class MyInvestmentsFragment extends Fragment {
     private static final String TAG = "MyInvestmentsFragment";
-    private MyInvestmentsViewModel myInvestmentsViewModel;
     RecyclerView recyclerView;
     MyInvestmentAdapter adapter;
     LinearLayout lLayoutFilter;
@@ -53,7 +52,6 @@ public class MyInvestmentsFragment extends Fragment {
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        myInvestmentsViewModel = ViewModelProviders.of(this).get(MyInvestmentsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_my_investments, container, false);
 
         edtCompany = root.findViewById(R.id.edtCompany);
@@ -121,7 +119,7 @@ public class MyInvestmentsFragment extends Fragment {
         String mFrom =edtFrom.getText().toString().trim();
         String mTo =edtTo.getText().toString().trim();
 
-        EndPointInterface git = ApiClient.getClient().create(EndPointInterface.class);
+        EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
         Call<MyInvestmentSearchResponse> call =git.getMyInvestmentSearch(mCompany,mFrom,mTo);
         call.enqueue(new Callback<MyInvestmentSearchResponse>() {
             @Override
@@ -140,7 +138,7 @@ public class MyInvestmentsFragment extends Fragment {
 
     private void getMyInvestment() {
         pd = ProgressDialog.show(getActivity(), "Please Wait...");
-        EndPointInterface git = ApiClient.getClient().create(EndPointInterface.class);
+        EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
         Call<MyInvestmentResponce> call = git.getMyInvestment();
         call.enqueue(new Callback<MyInvestmentResponce>() {
             @Override

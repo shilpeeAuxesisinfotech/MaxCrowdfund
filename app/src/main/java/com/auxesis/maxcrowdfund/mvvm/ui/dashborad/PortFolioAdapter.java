@@ -9,7 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboardmodel.PortfolioModel;
+import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dd.PortfolioModel;
+
 import java.util.List;
 
 public class PortFolioAdapter extends RecyclerView.Adapter<PortFolioAdapter.MyHolder> {

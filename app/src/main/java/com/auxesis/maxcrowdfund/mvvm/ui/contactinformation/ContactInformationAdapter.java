@@ -8,15 +8,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.mvvm.ui.contactinformation.contactInformationModel.Datum;
+import com.auxesis.maxcrowdfund.mvvm.ui.contactinformation.contactInformationModel.ContactInfoModel;
 import java.util.List;
 
 public class ContactInformationAdapter extends RecyclerView.Adapter<ContactInformationAdapter.MyHolder> {
     private static final String TAG = "DocumentAdapter";
-    private List<Datum> arrayList;
+    private List<ContactInfoModel> arrayList;
     Context mContext;
 
-    public ContactInformationAdapter(Context mContext, List<Datum> arrayList) {
+    public ContactInformationAdapter(Context mContext, List<ContactInfoModel> arrayList) {
         this.mContext = mContext;
         this.arrayList = arrayList;
     }
@@ -30,15 +30,15 @@ public class ContactInformationAdapter extends RecyclerView.Adapter<ContactInfor
 
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
-        holder.tvTittle.setText(arrayList.get(position).getTitle());
-        holder.tvValue.setText(arrayList.get(position).getValue());
+        holder.tvTittle.setText(arrayList.get(position).getmTitle());
+        holder.tvValue.setText(arrayList.get(position).getmValue());
         if (position == 1) {
-            holder.tvTittle.setText(arrayList.get(position).getTitle());
-            holder.tvValue.setText(arrayList.get(position).getValue());
+            holder.tvTittle.setText(arrayList.get(position).getmTitle());
+            holder.tvValue.setText(arrayList.get(position).getmValue());
             holder.tvValue.setTextColor(mContext.getResources().getColor(R.color.green));
         } else if (position==2){
-            holder.tvTittle.setText(arrayList.get(position).getTitle());
-            holder.tvValue.setText(arrayList.get(position).getValue());
+            holder.tvTittle.setText(arrayList.get(position).getmTitle());
+            holder.tvValue.setText(arrayList.get(position).getmValue());
             holder.tvValue.setTextColor(mContext.getResources().getColor(R.color.green));
         }
     }

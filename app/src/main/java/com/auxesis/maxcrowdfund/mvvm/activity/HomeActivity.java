@@ -3,6 +3,7 @@ package com.auxesis.maxcrowdfund.mvvm.activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
@@ -20,29 +21,37 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.auxesis.maxcrowdfund.R;
+
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
 import com.auxesis.maxcrowdfund.constant.APIUrl;
+import com.auxesis.maxcrowdfund.constant.MaxCrowdFund;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
 import com.google.android.material.navigation.NavigationView;
+
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
 import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
@@ -111,6 +120,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -119,6 +129,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void getCheckUser() {
+        Log.d("GER_CHECK_USER", APIUrl.GER_CHECK_USER);
         try {
             StringRequest stringRequest = new StringRequest(Request.Method.GET, APIUrl.GER_CHECK_USER, new Response.Listener<String>() {
                 @Override
@@ -135,6 +146,7 @@ public class HomeActivity extends AppCompatActivity {
                         Log.d(TAG, "onResponse: " + status);
                         setPreference(HomeActivity.this, "user_id", "");
                         setPreference(HomeActivity.this, "mLogout_token", "");
+                        MaxCrowdFund.getClearCookies(HomeActivity.this, "cookies", "");
                         Toast.makeText(HomeActivity.this, getResources().getString(R.string.logout_succ), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                         startActivity(intent);
@@ -151,7 +163,7 @@ public class HomeActivity extends AppCompatActivity {
                         NetworkResponse response = error.networkResponse;
                         String mMessage = "";
                         if (response != null && response.data != null) {
-                            try {
+                            /*try {
                                 String res = new String(response.data, HttpHeaderParser.parseCharset(response.headers, "utf-8"));
                                 JSONObject obj = new JSONObject(res);
                                 mMessage = obj.getString("message");
@@ -160,7 +172,7 @@ public class HomeActivity extends AppCompatActivity {
                                 e1.printStackTrace();
                             } catch (JSONException e2) {
                                 e2.printStackTrace();
-                            }
+                            }*/
                             if (response.statusCode == 404) {
                                 Toast.makeText(HomeActivity.this, mMessage, Toast.LENGTH_SHORT).show();
                             } else if (response.statusCode == 400 || response.statusCode == 405 || response.statusCode == 500) {
@@ -213,6 +225,18 @@ public class HomeActivity extends AppCompatActivity {
                     params.put("_format", "json");
                     return params;
                 }
+
+                /** Passing some request headers* */
+                @Override
+                public Map getHeaders() throws AuthFailureError {
+                    HashMap headers = new HashMap();
+                    String mCsrfToken = getPreference(HomeActivity.this, "mCsrf_token");
+                    if (mCsrfToken != null && !mCsrfToken.isEmpty()) {
+                        headers.put("X-CSRF-TOKEN", mCsrfToken);
+                    }
+                    headers.put("Content-Type", "application/json");
+                    return headers;
+                }
             };
             stringRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             RequestQueue queue = Volley.newRequestQueue(this);
@@ -229,6 +253,7 @@ public class HomeActivity extends AppCompatActivity {
             if (logoutToken != null && !logoutToken.isEmpty()) {
                 logOutUrl = APIUrl.GER_LOG_OUT + logoutToken;
             }
+            Log.d("logOutUrl", logOutUrl);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, logOutUrl, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
@@ -248,6 +273,7 @@ public class HomeActivity extends AppCompatActivity {
                             setPreference(HomeActivity.this, "isRememberMe", "");
                             setPreference(HomeActivity.this, "user_id", "");
                             setPreference(HomeActivity.this, "mLogout_token", "");
+                            MaxCrowdFund.getClearCookies(HomeActivity.this, "cookies", "");
                             Toast.makeText(HomeActivity.this, getResources().getString(R.string.logout_succ), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                             startActivity(intent);
@@ -321,6 +347,17 @@ public class HomeActivity extends AppCompatActivity {
                 @Override
                 public String getBodyContentType() {
                     return "application/json";
+                }
+
+                @Override
+                public Map getHeaders() throws AuthFailureError {
+                    HashMap headers = new HashMap();
+                    String mCsrfToken = getPreference(HomeActivity.this, "mCsrf_token");
+                    if (mCsrfToken != null && !mCsrfToken.isEmpty()) {
+                        headers.put("X-CSRF-TOKEN", mCsrfToken);
+                    }
+                    headers.put("Content-Type", "application/json");
+                    return headers;
                 }
             };
             jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));

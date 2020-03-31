@@ -1,6 +1,9 @@
 package com.auxesis.maxcrowdfund.mvvm.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -15,7 +18,9 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.volley.AuthFailureError;
+import com.android.volley.Cache;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NetworkResponse;
@@ -27,14 +32,32 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.constant.APIUrl;
+import com.auxesis.maxcrowdfund.constant.MaxCrowdFund;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
+import com.auxesis.maxcrowdfund.mvvm.ui.login.LoginResponse;
+import com.auxesis.maxcrowdfund.restapi.ApiClient;
+import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+
+import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.hideKeyboard;
 import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
 import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
@@ -47,17 +70,20 @@ public class LoginActivity extends AppCompatActivity {
     boolean doubleBackToExitPressedOnce = false;
     String error_msg = "";
     ProgressDialog pd;
-    String message = "";
     CheckBox checkBoxRMe;
     boolean isRememberMe = false;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        // Get the application context
+        mContext = getApplicationContext();
         hideKeyboard(LoginActivity.this);
         init();
     }
+
     private void init() {
         edt_email = findViewById(R.id.edt_email);
         edt_pssword = findViewById(R.id.edt_pssword);
@@ -81,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (isInternetConnected(getApplicationContext())) {
                     if (Validation()) {
-                        getLogin();
+                        getLoginAPI();
                     } else {
                         Toast.makeText(LoginActivity.this, error_msg, Toast.LENGTH_SHORT).show();
                     }
@@ -101,45 +127,36 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void getLogin() {
-        Utils.hideKeyboard(this);
-        pd = ProgressDialog.show(LoginActivity.this, "Please Wait...");
-        String loginUrl = APIUrl.GER_LOGIN;
+    private void getLoginAPI() {
         try {
-            JSONObject mainJson = new JSONObject();
-            try {
-                mainJson.put("name", edt_email.getText().toString().trim());
-                mainJson.put("pass", edt_pssword.getText().toString().trim());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, loginUrl, mainJson, new Response.Listener<JSONObject>() {
+            pd = ProgressDialog.show(LoginActivity.this, "Please Wait...");
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("name", edt_email.getText().toString().trim());
+            jsonObject.addProperty("pass", edt_pssword.getText().toString().trim());
+            EndPointInterface git = ApiClient.getClient1(LoginActivity.this).create(EndPointInterface.class);
+            Call<LoginResponse> call = git.getLoginUser("application/json", jsonObject);
+            call.enqueue(new Callback<LoginResponse>() {
                 @Override
-                public void onResponse(JSONObject response) {
-                    if (pd != null && pd.isShowing()) {
-                        pd.dismiss();
-                    }
-                    Log.d("Login RESPONCE:::", response.toString());
-                    JSONObject jobj = null;
+                public void onResponse(@NonNull Call<LoginResponse> call, @NonNull retrofit2.Response<LoginResponse> response) {
+                    Log.d(TAG, "onResponse:" + "><><" + new Gson().toJson(response.body()));
                     try {
-                        //==================For Creating JSONObject =============================
-                        jobj = new JSONObject(response.toString());
-                        if (jobj != null) {
-                            message = jobj.getString("message");
-                            if (message.equals("Succesfully Logged In")) {
-                                String mSattus = jobj.getString("status");
+                        if (pd != null && pd.isShowing()) {
+                            pd.dismiss();
+                        }
+                        if (response != null && response.isSuccessful()) {
+                            if (response.body().getMessage().equals("Succesfully Logged In")) {
+                                String mSattus = response.body().getStatus();
                                 if (mSattus.equals("200")) {
-                                    JSONObject obj = jobj.getJSONObject("current_user");
-                                    String uid = obj.getString("uid");
-                                    String name = obj.getString("name");
-                                    String csrf_token = obj.getString("csrf_token");
-                                    String logout_token = obj.getString("logout_token");
+                                    String name = response.body().getCurrentUser().getName();
+                                    String uid = response.body().getCurrentUser().getUid();
+                                    String csrf_token = response.body().getCurrentUser().getCsrfToken();
+                                    String logout_token = response.body().getCurrentUser().getLogoutToken();
                                     setPreference(LoginActivity.this, "isRememberMe", String.valueOf(isRememberMe));
                                     setPreference(LoginActivity.this, "user_id", uid);
                                     setPreference(LoginActivity.this, "mName", name);
                                     setPreference(LoginActivity.this, "mCsrf_token", csrf_token);
                                     setPreference(LoginActivity.this, "mLogout_token", logout_token);
-                                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                                     overridePendingTransition(R.anim.enter, R.anim.exit);
                                     edt_email.setText("");
@@ -148,99 +165,24 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             }
                         } else {
-                            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                            MaxCrowdFund.getClearCookies(LoginActivity.this, "cookies", "");
+                            Toast.makeText(LoginActivity.this, "This route can only be accessed by anonymous users.", Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(LoginActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
-                        if (pd != null && pd.isShowing()) {
-                            pd.dismiss();
-                        }
-                        Toast.makeText(LoginActivity.this, getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, "onResponse: " + e.getMessage());
                         e.printStackTrace();
                     }
                 }
-            }, new Response.ErrorListener() {
                 @Override
-                public void onErrorResponse(VolleyError error) {
-                    try {
-                        if (pd != null && pd.isShowing()) {
-                            pd.dismiss();
-                        }
-                        Log.d(TAG, "onErrorResponse: " + error.getMessage());
-                        String json = null;
-                        String mMessage = "";
-                        NetworkResponse response = error.networkResponse;
-                        if (response != null && response.data != null) {
-                            try {
-                                JSONObject errorObj = new JSONObject(new String(response.data));
-                                mMessage = errorObj.getString("message");
-                                if (response.statusCode == 400 || response.statusCode == 405 || response.statusCode == 500) {
-                                    Toast.makeText(LoginActivity.this, mMessage, Toast.LENGTH_SHORT).show();
-                                } else if (response.statusCode == 401) {
-                                    Toast.makeText(LoginActivity.this, mMessage, Toast.LENGTH_SHORT).show();
-                                } else if (response.statusCode == 403) {
-                                    Toast.makeText(LoginActivity.this, mMessage, Toast.LENGTH_SHORT).show();
-                                    Log.d(TAG, "onErrorResponse: " + "statusCode:---403------" + response.statusCode + "mMessage------" + mMessage);
-                                } else if (response.statusCode == 422) {
-                                    Toast.makeText(LoginActivity.this, getResources().getString(R.string.please_try_again), Toast.LENGTH_SHORT).show();
-                                } else if (response.statusCode == 503) {
-                                    Toast.makeText(LoginActivity.this, getResources().getString(R.string.server_down), Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(LoginActivity.this, getResources().getString(R.string.please_try_again), Toast.LENGTH_SHORT).show();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            if (error instanceof NoConnectionError) {
-                                Toast.makeText(LoginActivity.this, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
-                            } else if (error instanceof NetworkError) {
-                                Toast.makeText(LoginActivity.this, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
-                            } else if (error instanceof TimeoutError) {
-                                try {
-                                    if (error.networkResponse == null) {
-                                        if (error.getClass().equals(TimeoutError.class)) {
-                                            // Show timeout error message
-                                            Toast.makeText(LoginActivity.this, getResources().getString(R.string.timed_out), Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            } else if (error instanceof AuthFailureError) {
-                                Log.d(TAG, "onErrorResponse: " + "AuthFailureError" + AuthFailureError.class);
-                            } else if (error instanceof ServerError) {
-                                Log.d(TAG, "onErrorResponse: " + "ServerError" + ServerError.class);
-                                //Indicates that the server responded with a error response
-                            } else if (error instanceof ParseError) {
-                                Log.d(TAG, "onErrorResponse: " + "ParseError" + ParseError.class);
-                                // Indicates that the server response could not be parsed
-                            }
-                        }
-                        error.printStackTrace();
-                    } catch (Resources.NotFoundException e) {
-                        e.printStackTrace();
+                public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
+                    Log.e("response", "error " + t.getMessage());
+                    Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    if (pd != null && pd.isShowing()) {
+                        pd.dismiss();
                     }
                 }
-            }) {
-                @Override
-                public String getBodyContentType() {
-                    return "application/json";
-                }
-            };
-
-            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            RequestQueue queue = Volley.newRequestQueue(this);
-            queue.add(jsonObjectRequest);
-        } catch (Error e) {
-            if (pd != null && pd.isShowing()) {
-                pd.dismiss();
-            }
-            e.printStackTrace();
+            });
         } catch (Exception e) {
-            if (pd != null && pd.isShowing()) {
-                pd.dismiss();
-            }
             e.printStackTrace();
         }
     }

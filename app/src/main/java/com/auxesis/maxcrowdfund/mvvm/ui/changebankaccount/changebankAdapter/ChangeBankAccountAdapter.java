@@ -1,18 +1,24 @@
 package com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankAdapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.customClickListener.OnCustomClickListener;
 import com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankaccountmodel.Datum;
+
 import java.util.List;
 
 public class ChangeBankAccountAdapter extends RecyclerView.Adapter<ChangeBankAccountAdapter.MyHolder> {
@@ -20,11 +26,12 @@ public class ChangeBankAccountAdapter extends RecyclerView.Adapter<ChangeBankAcc
     Context mContext;
     String account = "";
     OnCustomClickListener onCustomClickListener;
+    RadioButton lastCheckedRB = null;
 
-    public ChangeBankAccountAdapter(Context mContext,OnCustomClickListener onCustomClickListener, List<Datum> arrayList) {
+    public ChangeBankAccountAdapter(Context mContext, OnCustomClickListener onCustomClickListener, List<Datum> arrayList) {
         this.mContext = mContext;
         this.arrayList = arrayList;
-        this.onCustomClickListener =onCustomClickListener;
+        this.onCustomClickListener = onCustomClickListener;
     }
 
     @NonNull
@@ -42,25 +49,29 @@ public class ChangeBankAccountAdapter extends RecyclerView.Adapter<ChangeBankAcc
         } else {
             holder.radioAccount.setChecked(false);
         }
+
         holder.radioAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (arrayList.get(position).getActive() == 1) {
                     holder.radioAccount.setChecked(true);
-                    Toast.makeText(mContext, "Selected Bank Account is "+arrayList.get(position).getAccount(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Selected Bank Account is " + arrayList.get(position).getAccount(), Toast.LENGTH_SHORT).show();
+                    Log.d(">>>>>>", "onClick: " + arrayList.get(position).getAccount());
                     account = arrayList.get(position).getAccount();
                 } else {
                     holder.radioAccount.setChecked(false);
-                    Toast.makeText(mContext, "Selected Bank Account is "+arrayList.get(position).getAccount(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Selected Bank Account is " + arrayList.get(position).getAccount(), Toast.LENGTH_SHORT).show();
+                    Log.d(">>>>>>", "onClick: " + arrayList.get(position).getAccount());
                     account = arrayList.get(position).getAccount();
                 }
-                if (account!=null){
+                if (account != null) {
                     onCustomClickListener.onCustomClick(account);
-                }else {
+                } else {
                     Toast.makeText(mContext, "Please select bank account", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
         if (position == arrayList.size() - 1) {
             holder.btn_saveChanges.setVisibility(View.VISIBLE);
             holder.btn_saveChanges.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +83,15 @@ public class ChangeBankAccountAdapter extends RecyclerView.Adapter<ChangeBankAcc
             holder.btn_saveChanges.setVisibility(View.GONE);
         }
     }
+
+
+      /* holder.radioAccount.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                holder.radioAccount.setChecked(isChecked);
+                Log.d(">>>>>>>>>>", "onCheckedChanged: "+isChecked);
+            }
+        });*/
 
     @Override
     public int getItemCount() {
@@ -87,6 +107,7 @@ public class ChangeBankAccountAdapter extends RecyclerView.Adapter<ChangeBankAcc
         arrayList.clear();
         notifyDataSetChanged();
     }
+
     public class MyHolder extends RecyclerView.ViewHolder {
         Button btn_saveChanges;
         RadioButton radioAccount;
