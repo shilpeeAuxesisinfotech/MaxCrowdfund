@@ -10,7 +10,7 @@
         android:id="@+id/tvTittle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto_light"
+        android:fontFamily="@font/roboto"
         android:gravity="left|center"
         android:text=""
         android:textColor="@color/light_gray_text"
@@ -20,10 +20,10 @@
         android:id="@+id/tvValue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto_medium"
+        android:fontFamily="@font/roboto"
         android:gravity="left|center"
         android:text=""
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="@dimen/_14sdp" />
+        android:textSize="@dimen/_12sdp" />
 
 </LinearLayout>

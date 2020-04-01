@@ -2,11 +2,11 @@ package com.auxesis.maxcrowdfund.constant;
 
 public class APIUrl {
     public final static String BASE_URL = "https://test.maxcrowdfund.com/";
-    //public final static String GER_LOGIN = BASE_URL + "api/user/login?_format=json";
-    public final static String GER_CONTECT_INFO = BASE_URL + "api/contact-information";  //done
-   // public final static String GER_BANK_ACCOUNT = BASE_URL + "api/bank-accounts";  //done
 
-    public final static String GER_ACCOUNT_BALANCE = BASE_URL + "api/account-balance";
+    //public final static String GER_LOGIN = BASE_URL + "api/user/login?_format=json";
+  //  public final static String GER_CONTECT_INFO = BASE_URL + "api/contact-information";  //done
+   // public final static String GER_BANK_ACCOUNT = BASE_URL + "api/bank-accounts";  //done
+   // public final static String GER_ACCOUNT_BALANCE = BASE_URL + "api/account-balance";
 
     public final static String GER_MY_INVEST_DETAILS = BASE_URL + "api/fundraiser/details?_format=json";
 
@@ -20,7 +20,7 @@ public class APIUrl {
     public final static String GER_CHECK_USER = BASE_URL + "user/login_status?_format=json";
 
    // public final static String GER_PORTFOLIO = BASE_URL + "api/portfolio";
-    public final static String GER_PROFILE = BASE_URL + "api/profile";
+   // public final static String GER_PROFILE = BASE_URL + "api/profile";
 
     //For Dashboard deposit
     // public final static String GET_ACTIVE_ACCOUNT_DETAILS = BASE_URL+"api/active-account-details";
@@ -41,7 +41,5 @@ public class APIUrl {
     public static final String downloadZipUrl = "http://androhub.com/demo/demo.zip";
     public static final String downloadVideoUrl = "http://androhub.com/demo/demo.mp4";
     public static final String downloadMp3Url = "http://androhub.com/demo/demo.mp3";
-
-
 
 }

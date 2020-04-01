@@ -1,29 +1,29 @@
 package com.auxesis.maxcrowdfund.mvvm.ui.dashborad;
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.custommvvm.DashboardDepositActivity;
 import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboardmodel.AccountBalanceModel;
-
 import java.util.List;
 
 public class AccountBalanceAdapter extends RecyclerView.Adapter<AccountBalanceAdapter.MyHolder> {
     private List<AccountBalanceModel> arrayList;
     Context mContext;
+    Activity mActivity;
 
-    public AccountBalanceAdapter(Context mContext, List<AccountBalanceModel> arrayList) {
+    public AccountBalanceAdapter(Context mContext,Activity mActivity,List<AccountBalanceModel> arrayList) {
         this.mContext = mContext;
+        this.mActivity = mActivity;
         this.arrayList = arrayList;
     }
 
@@ -59,8 +59,12 @@ public class AccountBalanceAdapter extends RecyclerView.Adapter<AccountBalanceAd
                 holder.btn_deposited.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(mContext, DashboardDepositActivity.class);
-                        mContext.startActivity(intent);
+                        //
+                        NavController navController = Navigation.findNavController(mActivity, R.id.nav_host_fragment);
+                        navController.navigate(R.id.action_nav_dashboard_to_dashboardDepositFragment);
+
+                        /*Intent intent = new Intent(mContext, DashboardDepositActivity.class);
+                        mContext.startActivity(intent);*/
                     }
                 });
             }

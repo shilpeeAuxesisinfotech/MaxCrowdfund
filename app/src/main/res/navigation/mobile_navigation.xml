@@ -19,7 +19,11 @@
         android:id="@+id/nav_dashboard"
         android:name="com.auxesis.maxcrowdfund.mvvm.ui.dashborad.DashboardFragment"
         android:label="@string/menu_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_nav_dashboard_to_dashboardDepositFragment"
+            app:destination="@id/dashboardDepositFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_my_investments"
@@ -51,9 +55,6 @@
         <action
             android:id="@+id/action_nav_my_profile_to_changePreferenceFragment"
             app:destination="@id/changePreferenceFragment" />
-       <!-- <action
-            android:id="@+id/action_nav_my_profile_to_uploadImageFragment"
-            app:destination="@id/uploadImageFragment" />-->
         <action
             android:id="@+id/action_nav_my_profile_to_uploadImgFragment"
             app:destination="@id/uploadImgFragment" />
@@ -71,13 +72,6 @@
         android:name="com.auxesis.maxcrowdfund.mvvm.ui.myinvestmentdetail.MyInvestmentDetailFragment"
         android:label="@string/my_investments_detail"
         tools:layout="@layout/fragment_my_investment_detail" />
-
-   <!-- <fragment
-        android:id="@+id/homeDetailFragment"
-        android:name="com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.HomeDetailFragment"
-        android:label="@string/max_property_group"
-        tools:layout="@layout/fragment_home_detail" />
--->
     <fragment
         android:id="@+id/changeBankAccountFragment"
         android:name="com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankaccountview.ChangeBankAccountFragment"
@@ -107,17 +101,16 @@
         android:label="@string/change_preference"
         tools:layout="@layout/fragment_change_preference" />
 
-    <!--<fragment
-        android:id="@+id/uploadImageFragment"
-        android:name="com.auxesis.maxcrowdfund.mvvm.ui.uploadImage.UploadImageFragment"
-        android:label="fragment_upload_image"
-        tools:layout="@layout/fragment_upload_image" />
--->
     <fragment
         android:id="@+id/uploadImgFragment"
         android:name="com.auxesis.maxcrowdfund.mvvm.ui.uploadImage.UploadImgFragment"
         android:label="fragment_upload_img"
         tools:layout="@layout/fragment_upload_image" />
+    <fragment
+        android:id="@+id/dashboardDepositFragment"
+        android:name="com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboarddeposit.DashboardDepositFragment"
+        android:label="@string/deposit"
+        tools:layout="@layout/fragment_dashboard_deposit" />
 
 
 </navigation>

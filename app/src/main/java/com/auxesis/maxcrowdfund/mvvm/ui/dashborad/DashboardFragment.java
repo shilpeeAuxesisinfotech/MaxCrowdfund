@@ -230,7 +230,7 @@ public class DashboardFragment extends Fragment {
                     accountlist.addAll(lastButtonList);
 
                     if (accountlist.size() > 0) {
-                        accountbalanceadapter = new AccountBalanceAdapter(getActivity(), accountlist);
+                        accountbalanceadapter = new AccountBalanceAdapter(getActivity(),getActivity(), accountlist);
                         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
                         recyViewAccBalance.setLayoutManager(mLayoutManager);
                         recyViewAccBalance.setItemAnimator(new DefaultItemAnimator());
@@ -238,7 +238,7 @@ public class DashboardFragment extends Fragment {
                         accountbalanceadapter.notifyDataSetChanged();
                     }
                 } else {
-                    Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                 }
             }
 
