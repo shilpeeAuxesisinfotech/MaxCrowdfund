@@ -16,7 +16,7 @@
             android:id="@+id/radioAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_light"
+            android:fontFamily="@font/roboto"
             android:checked="false"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/_12sdp" />
@@ -27,7 +27,7 @@
             android:layout_height="@dimen/_35sdp"
             android:layout_margin="@dimen/_10sdp"
             android:background="@drawable/button_ripple_green"
-            android:fontFamily="@font/roboto_light"
+            android:fontFamily="@font/roboto"
             android:gravity="center"
             android:text="@string/save_changes"
             android:textAllCaps="false"

@@ -1,5 +1,7 @@
 package com.auxesis.maxcrowdfund.mvvm.ui.changePassword;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -12,9 +14,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.auxesis.maxcrowdfund.R;
+import com.auxesis.maxcrowdfund.constant.MaxCrowdFund;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
 import com.auxesis.maxcrowdfund.mvvm.activity.HomeActivity;
+import com.auxesis.maxcrowdfund.mvvm.activity.LoginActivity;
 import com.auxesis.maxcrowdfund.mvvm.ui.changePassword.changePassModel.ChangePasswordResponse;
 import com.auxesis.maxcrowdfund.restapi.ApiClient;
 import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
@@ -23,6 +27,7 @@ import com.google.gson.JsonObject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
+import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
 
 public class ChangePasswordFragment extends Fragment {
     private static final String TAG = "ChangePasswordFragment";
@@ -30,11 +35,12 @@ public class ChangePasswordFragment extends Fragment {
     Button btnSubmit;
     ProgressDialog pd;
     String error_msg = "";
+    Activity mActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_change_password, container, false);
-
+        mActivity = getActivity();
         edtOldPass = root.findViewById(R.id.edtOldPass);
         edtNPass = root.findViewById(R.id.edtNPass);
         edtConfirmPass = root.findViewById(R.id.edtConfirmPass);
@@ -77,13 +83,29 @@ public class ChangePasswordFragment extends Fragment {
                         if (pd != null && pd.isShowing()) {
                             pd.dismiss();
                         }
-                        if (response != null && response.isSuccessful()) {
-                            if (response.body().getResult().equals("success")) {
-                                Toast.makeText(getActivity(), getResources().getString(R.string.update_password), Toast.LENGTH_SHORT).show();
-                                edtOldPass.setText("");
-                                edtNPass.setText("");
-                                edtConfirmPass.setText("");
+                        if (response!=null) {
+                            if (response != null && response.isSuccessful()) {
+                                if (response.body().getUserLoginStatus() == 1) {
+                                    if (response.body().getResult().equals("success")) {
+                                        Toast.makeText(getActivity(), getResources().getString(R.string.update_password), Toast.LENGTH_SHORT).show();
+                                        edtOldPass.setText("");
+                                        edtNPass.setText("");
+                                        edtConfirmPass.setText("");
+                                    }
+                                }else {
+                                    setPreference(getActivity(), "user_id", "");
+                                    setPreference(getActivity(), "mLogout_token", "");
+                                    MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                                    Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                    startActivity(intent);
+                                    mActivity.finish();
+                                }
+                            }else {
+                                Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                             }
+                        }else {
+                            Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

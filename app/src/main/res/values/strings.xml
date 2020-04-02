@@ -51,6 +51,8 @@
     <string name="enter_password">Please enter your password</string>
     <string name="logout_succ">Logout Successfully..</string>
 
+    <string name="session_expire">Session expired please login again...</string>
+
 
     <string name="invest">Invest</string>
     <string name="max_crowdfund">Max Crowdfund</string>

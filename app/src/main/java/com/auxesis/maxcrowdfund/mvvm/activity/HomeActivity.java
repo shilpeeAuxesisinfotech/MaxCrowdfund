@@ -33,7 +33,10 @@ import com.auxesis.maxcrowdfund.constant.APIUrl;
 import com.auxesis.maxcrowdfund.constant.MaxCrowdFund;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
+import com.auxesis.maxcrowdfund.restapi.ApiClient;
+import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,6 +54,9 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
@@ -107,7 +113,8 @@ public class HomeActivity extends AppCompatActivity {
                     setActionBarTitle(getString(R.string.menu_contact_information));
                 } else if (id == R.id.nav_logout) {
                     if (isInternetConnected(getApplicationContext())) {
-                        getCheckUser();
+                       // getCheckUserApi();
+                       getCheckUser();
                     } else {
                         Toast.makeText(HomeActivity.this, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
                     }
@@ -119,6 +126,30 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    private void getCheckUserApi() {
+        pd = ProgressDialog.show(HomeActivity.this, "Please Wait...");
+        EndPointInterface git = ApiClient.getClient1(HomeActivity.this).create(EndPointInterface.class);
+        Call<?> call = git.getCheckUser("json");
+        call.enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, retrofit2.Response response) {
+                Log.d(TAG, "onResponse: " + "><Logout><" + new Gson().toJson(response.body()));
+                if (pd != null && pd.isShowing()) {
+                    pd.dismiss();
+                }
+            }
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                Log.e("response", "error " + t.getMessage());
+                Toast.makeText(HomeActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                if (pd != null && pd.isShowing()) {
+                    pd.dismiss();
+                }
+            }
+        });
+
     }
 
     @Override
@@ -134,7 +165,7 @@ public class HomeActivity extends AppCompatActivity {
             StringRequest stringRequest = new StringRequest(Request.Method.GET, APIUrl.GER_CHECK_USER, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    Log.d(TAG, "onResponse:" + response.toString());
+                    Log.d(TAG, "onResponse:" + "Logout ----"+response.toString());
                     String status = response.toString();
                     if (status.equals("1")) {
                         if (isInternetConnected(getApplicationContext())) {

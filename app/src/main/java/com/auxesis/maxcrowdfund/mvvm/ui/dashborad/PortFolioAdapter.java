@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dd.PortfolioModel;
+import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.pendingmodel.PortfolioModel;
 
 import java.util.List;
 

@@ -1,5 +1,7 @@
 package com.auxesis.maxcrowdfund.mvvm.ui.myinvestments;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -16,24 +18,27 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.auxesis.maxcrowdfund.R;
+import com.auxesis.maxcrowdfund.constant.MaxCrowdFund;
+import com.auxesis.maxcrowdfund.mvvm.activity.LoginActivity;
 import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.adapter.MyInvestmentAdapter;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
-import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.MyInvestmentResponce;
 import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.MyInvestmentSearchResponse;
 import com.auxesis.maxcrowdfund.mvvm.activity.HomeActivity;
+import com.auxesis.maxcrowdfund.mvvm.ui.myinvestments.model.MyInvestmentResponce;
 import com.auxesis.maxcrowdfund.restapi.ApiClient;
 import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.google.gson.Gson;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
+import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
 
 public class MyInvestmentsFragment extends Fragment {
     private static final String TAG = "MyInvestmentsFragment";
@@ -44,6 +49,7 @@ public class MyInvestmentsFragment extends Fragment {
     Button btn_filter, btn_clear;
     String error_msg = "";
     ProgressDialog pd;
+    Activity mActivity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,7 +59,7 @@ public class MyInvestmentsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_my_investments, container, false);
-
+        mActivity = getActivity();
         edtCompany = root.findViewById(R.id.edtCompany);
         edtFrom = root.findViewById(R.id.edtFrom);
         edtTo = root.findViewById(R.id.edtTo);
@@ -139,23 +145,41 @@ public class MyInvestmentsFragment extends Fragment {
     private void getMyInvestment() {
         pd = ProgressDialog.show(getActivity(), "Please Wait...");
         EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
-        Call<MyInvestmentResponce> call = git.getMyInvestment();
+        String XCSRF = getPreference(getActivity(), "mCsrf_token");
+        Call<MyInvestmentResponce> call = git.getMyInvestment("application/json", XCSRF);
         call.enqueue(new Callback<MyInvestmentResponce>() {
             @Override
             public void onResponse(Call<MyInvestmentResponce> call, Response<MyInvestmentResponce> response) {
-                if (response != null && response.isSuccessful()) {
-                    if (pd != null && pd.isShowing()) {
-                        pd.dismiss();
+                Log.d(TAG, "onResponse: " + "><" + new Gson().toJson(response.body()));
+                if (pd != null && pd.isShowing()) {
+                    pd.dismiss();
+                }
+                if (response!=null) {
+                    if (response != null && response.isSuccessful()) {
+                        if (response.body().getUserLoginStatus() == 1) {
+                            if (response.body().getData().size() > 0) {
+                                adapter = new MyInvestmentAdapter(getActivity(), getActivity(), response.body().getData());
+                                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+                                recyclerView.setLayoutManager(mLayoutManager);
+                                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                                recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+                                recyclerView.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+                            }else {
+                                Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            setPreference(getActivity(), "user_id", "");
+                            setPreference(getActivity(), "mLogout_token", "");
+                            MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                            Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getActivity(), LoginActivity.class);
+                            startActivity(intent);
+                            mActivity.finish();
+                        }
                     }
-                    if (response.body().getData().size() > 0) {
-                        adapter = new MyInvestmentAdapter(getActivity(),getActivity(), response.body().getData());
-                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-                        recyclerView.setLayoutManager(mLayoutManager);
-                        recyclerView.setItemAnimator(new DefaultItemAnimator());
-                        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
-                        recyclerView.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
-                    }
+                }else {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                 }
             }
             @Override

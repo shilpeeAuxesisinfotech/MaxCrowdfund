@@ -1,5 +1,7 @@
 package com.auxesis.maxcrowdfund.mvvm.ui.changePreference;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -17,15 +19,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.auxesis.maxcrowdfund.R;
+import com.auxesis.maxcrowdfund.constant.MaxCrowdFund;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
 import com.auxesis.maxcrowdfund.mvvm.activity.HomeActivity;
-import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.changePreferenceModel.ChangePreferenceResponse;
-import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.changePreferenceModel.Option;
-import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.changePreferenceModel.Option_;
-import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.changePreferenceModel.Option__;
-import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.changePreferenceModel.TransactionSigningAdapter;
-import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.changePreferenceModel.UpdatePreferenceResponse;
+import com.auxesis.maxcrowdfund.mvvm.activity.LoginActivity;
+import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.adapter.ActiveAccountAdapter;
+import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.adapter.LanguagePreferenceAdapter;
+import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.adapter.TransactionSigningAdapter;
+import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.model.ChangePreferenceResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.model.Option;
+import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.model.Option_;
+import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.model.Option__;
+import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.model.UpdatePreferenceResponse;
 import com.auxesis.maxcrowdfund.restapi.ApiClient;
 import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.google.gson.Gson;
@@ -36,6 +42,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
+import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
 
 public class ChangePreferenceFragment extends Fragment {
     private static final String TAG = "ChangePreferenceFragmen";
@@ -58,11 +65,12 @@ public class ChangePreferenceFragment extends Fragment {
     int mInvestment_opportunities = 0;
     int mInvestment_updates = 0;
     int mNewsletter = 0;
+    Activity mActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_change_preference, container, false);
-
+        mActivity = getActivity();
         tvLanguage = root.findViewById(R.id.tvLanguage);
         tvActiveAccount = root.findViewById(R.id.tvActiveAccount);
         tvNotifications = root.findViewById(R.id.tvNotifications);
@@ -264,80 +272,96 @@ public class ChangePreferenceFragment extends Fragment {
             public void onResponse(Call<ChangePreferenceResponse> call, Response<ChangePreferenceResponse> response) {
                 Log.d(TAG, "onResponse: " + "><><" + new Gson().toJson(response.body()));
                 try {
-                    if (response != null && response.isSuccessful()) {
-                        if (pd != null && pd.isShowing()) {
-                            pd.dismiss();
-                        }
-                        /* For Language Preference */
-                        tvLanguage.setText(response.body().getPreferences().getData().getLanguage().getTitle());
-                        if (response.body().getPreferences().getData().getLanguage().getOptions().size() > 0) {
-                            languagePreferenceAdapter = new LanguagePreferenceAdapter(getActivity(), response.body().getPreferences().getData().getLanguage().getOptions());
-                            spinnerLanguage.setAdapter(languagePreferenceAdapter);
-                        }
-                        /*For Active account */
-                        tvActiveAccount.setText(response.body().getPreferences().getData().getActiveAccount().getTitle());
-                        if (response.body().getPreferences().getData().getActiveAccount().getOptions().size() > 0) {
-                            activeAccountAdapter = new ActiveAccountAdapter(getActivity(), response.body().getPreferences().getData().getActiveAccount().getOptions());
-                            spinnerActiveAccount.setAdapter(activeAccountAdapter);
-                        }
-                        //For Transation Sigining
-                        tvTransaction_signing.setText(response.body().getPreferences().getData().getTransactionSigning().getTitle());
-                        if (response.body().getPreferences().getData().getTransactionSigning().getOptions().size() > 0) {
-                            signingAdapter = new TransactionSigningAdapter(getActivity(), response.body().getPreferences().getData().getTransactionSigning().getOptions());
-                            spinnerTranSigning.setAdapter(signingAdapter);
-                        }
-                        //For Notification Preference
-                        tvNotifications.setText(response.body().getPreferences().getData().getNotificationPreferences().getHeading());
-                        //For Login Account
-                        tvAccountLogin.setText(response.body().getPreferences().getData().getNotificationPreferences().getData().get(0).getTitle());
-                        accountLogin = response.body().getPreferences().getData().getNotificationPreferences().getData().get(0).getValue();
+                    if(response!=null) {
+                        if (response != null && response.isSuccessful()) {
+                            if (pd != null && pd.isShowing()) {
+                                pd.dismiss();
+                            }
+                            if (response.body().getUserLoginStatus() ==1) {
+                                /* For Language Preference */
+                                tvLanguage.setText(response.body().getPreferences().getData().getLanguage().getTitle());
+                                if (response.body().getPreferences().getData().getLanguage().getOptions().size() > 0) {
+                                    languagePreferenceAdapter = new LanguagePreferenceAdapter(getActivity(), response.body().getPreferences().getData().getLanguage().getOptions());
+                                    spinnerLanguage.setAdapter(languagePreferenceAdapter);
+                                }
+                                /*For Active account */
+                                tvActiveAccount.setText(response.body().getPreferences().getData().getActiveAccount().getTitle());
+                                if (response.body().getPreferences().getData().getActiveAccount().getOptions().size() > 0) {
+                                    activeAccountAdapter = new ActiveAccountAdapter(getActivity(), response.body().getPreferences().getData().getActiveAccount().getOptions());
+                                    spinnerActiveAccount.setAdapter(activeAccountAdapter);
+                                }
+                                //For Transation Sigining
+                                tvTransaction_signing.setText(response.body().getPreferences().getData().getTransactionSigning().getTitle());
+                                if (response.body().getPreferences().getData().getTransactionSigning().getOptions().size() > 0) {
+                                    signingAdapter = new TransactionSigningAdapter(getActivity(), response.body().getPreferences().getData().getTransactionSigning().getOptions());
+                                    spinnerTranSigning.setAdapter(signingAdapter);
+                                }
+                                //For Notification Preference
+                                tvNotifications.setText(response.body().getPreferences().getData().getNotificationPreferences().getHeading());
+                                //For Login Account
+                                tvAccountLogin.setText(response.body().getPreferences().getData().getNotificationPreferences().getData().get(0).getTitle());
+                                accountLogin = response.body().getPreferences().getData().getNotificationPreferences().getData().get(0).getValue();
 
-                        if (response.body().getPreferences().getData().getNotificationPreferences().getData().get(0).getValue() == 1) {
-                            mAccount_login = response.body().getPreferences().getData().getNotificationPreferences().getData().get(0).getValue();
-                            loginOn.setChecked(true);
-                            loginOn.setBackgroundResource(R.drawable.radio_button_bg_on);
-                        } else {
-                            mAccount_login = response.body().getPreferences().getData().getNotificationPreferences().getData().get(0).getValue();
-                            loginOff.setChecked(false);
-                            loginOff.setBackgroundResource(R.drawable.radio_button_bg_off);
-                        }
-                        //For InvestmentOpp
-                        tvInvestmentOpp.setText(response.body().getPreferences().getData().getNotificationPreferences().getData().get(1).getTitle());
+                                if (response.body().getPreferences().getData().getNotificationPreferences().getData().get(0).getValue() == 1) {
+                                    mAccount_login = response.body().getPreferences().getData().getNotificationPreferences().getData().get(0).getValue();
+                                    loginOn.setChecked(true);
+                                    loginOn.setBackgroundResource(R.drawable.radio_button_bg_on);
+                                } else {
+                                    mAccount_login = response.body().getPreferences().getData().getNotificationPreferences().getData().get(0).getValue();
+                                    loginOff.setChecked(false);
+                                    loginOff.setBackgroundResource(R.drawable.radio_button_bg_off);
+                                }
+                                //For InvestmentOpp
+                                tvInvestmentOpp.setText(response.body().getPreferences().getData().getNotificationPreferences().getData().get(1).getTitle());
 
-                        if (response.body().getPreferences().getData().getNotificationPreferences().getData().get(1).getValue() == 1) {
-                            mInvestment_opportunities = response.body().getPreferences().getData().getNotificationPreferences().getData().get(1).getValue();
-                            investment_on.setChecked(true);
-                            investment_on.setBackgroundResource(R.drawable.radio_button_bg_on);
-                        } else {
-                            mInvestment_opportunities = response.body().getPreferences().getData().getNotificationPreferences().getData().get(1).getValue();
-                            investment_off.setChecked(false);
-                            investment_off.setBackgroundResource(R.drawable.radio_button_bg_off);
-                        }
-                        // for InvestmentUpdate
-                        tvInvestmentUpdate.setText(response.body().getPreferences().getData().getNotificationPreferences().getData().get(2).getTitle());
+                                if (response.body().getPreferences().getData().getNotificationPreferences().getData().get(1).getValue() == 1) {
+                                    mInvestment_opportunities = response.body().getPreferences().getData().getNotificationPreferences().getData().get(1).getValue();
+                                    investment_on.setChecked(true);
+                                    investment_on.setBackgroundResource(R.drawable.radio_button_bg_on);
+                                } else {
+                                    mInvestment_opportunities = response.body().getPreferences().getData().getNotificationPreferences().getData().get(1).getValue();
+                                    investment_off.setChecked(false);
+                                    investment_off.setBackgroundResource(R.drawable.radio_button_bg_off);
+                                }
+                                // for InvestmentUpdate
+                                tvInvestmentUpdate.setText(response.body().getPreferences().getData().getNotificationPreferences().getData().get(2).getTitle());
 
-                        if (response.body().getPreferences().getData().getNotificationPreferences().getData().get(2).getValue() == 1) {
-                            mInvestment_updates = response.body().getPreferences().getData().getNotificationPreferences().getData().get(2).getValue();
-                            investUpdate_on.setChecked(true);
-                            investUpdate_on.setBackgroundResource(R.drawable.radio_button_bg_on);
-                        } else {
-                            mInvestment_updates = response.body().getPreferences().getData().getNotificationPreferences().getData().get(2).getValue();
-                            investUpdate_off.setChecked(false);
-                            investUpdate_off.setBackgroundResource(R.drawable.radio_button_bg_off);
-                        }
-                        //For Newslatter
-                        tvNewslatter.setText(response.body().getPreferences().getData().getNotificationPreferences().getData().get(3).getTitle());
-                        Log.d(">>>>>>>>>", response.body().getPreferences().getData().getNotificationPreferences().getData().get(3).getTitle());
+                                if (response.body().getPreferences().getData().getNotificationPreferences().getData().get(2).getValue() == 1) {
+                                    mInvestment_updates = response.body().getPreferences().getData().getNotificationPreferences().getData().get(2).getValue();
+                                    investUpdate_on.setChecked(true);
+                                    investUpdate_on.setBackgroundResource(R.drawable.radio_button_bg_on);
+                                } else {
+                                    mInvestment_updates = response.body().getPreferences().getData().getNotificationPreferences().getData().get(2).getValue();
+                                    investUpdate_off.setChecked(false);
+                                    investUpdate_off.setBackgroundResource(R.drawable.radio_button_bg_off);
+                                }
+                                //For Newslatter
+                                tvNewslatter.setText(response.body().getPreferences().getData().getNotificationPreferences().getData().get(3).getTitle());
+                                Log.d(">>>>>>>>>", response.body().getPreferences().getData().getNotificationPreferences().getData().get(3).getTitle());
 
-                        if (response.body().getPreferences().getData().getNotificationPreferences().getData().get(3).getValue() == 1) {
-                            mNewsletter = response.body().getPreferences().getData().getNotificationPreferences().getData().get(3).getValue();
-                            newslatter_on.setChecked(true);
-                            newslatter_on.setBackgroundResource(R.drawable.radio_button_bg_on);
-                        } else {
-                            mNewsletter = response.body().getPreferences().getData().getNotificationPreferences().getData().get(3).getValue();
-                            newslatter_off.setChecked(false);
-                            newslatter_off.setBackgroundResource(R.drawable.radio_button_bg_off);
+                                if (response.body().getPreferences().getData().getNotificationPreferences().getData().get(3).getValue() == 1) {
+                                    mNewsletter = response.body().getPreferences().getData().getNotificationPreferences().getData().get(3).getValue();
+                                    newslatter_on.setChecked(true);
+                                    newslatter_on.setBackgroundResource(R.drawable.radio_button_bg_on);
+                                } else {
+                                    mNewsletter = response.body().getPreferences().getData().getNotificationPreferences().getData().get(3).getValue();
+                                    newslatter_off.setChecked(false);
+                                    newslatter_off.setBackgroundResource(R.drawable.radio_button_bg_off);
+                                }
+                            } else {
+                                setPreference(getActivity(), "user_id", "");
+                                setPreference(getActivity(), "mLogout_token", "");
+                                MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                                Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                startActivity(intent);
+                                mActivity.finish();
+                            }
+                        }else {
+                            Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                         }
+                    }else {
+                        Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -374,21 +398,37 @@ public class ChangePreferenceFragment extends Fragment {
             public void onResponse(Call<UpdatePreferenceResponse> call, Response<UpdatePreferenceResponse> response) {
                 Log.d(TAG, "onResponse: " + "><><" + new Gson().toJson(response.body()));
                 try {
-                    if (response != null && response.isSuccessful()) {
-                        if (pd != null && pd.isShowing()) {
-                            pd.dismiss();
+                    if (pd != null && pd.isShowing()) {
+                        pd.dismiss();
+                    }
+                    if (response!=null) {
+                        if (response != null && response.isSuccessful()) {
+                           if (response.body().getUserLoginStatus()==1) {
+                               if (response.body().getResult() != null) {
+                                   mLanguage = "";
+                                   mActive_account = "";
+                                   mTrans_signing = "";
+                                   mAccount_login = 0;
+                                   mInvestment_opportunities = 0;
+                                   mInvestment_updates = 0;
+                                   mNewsletter = 0;
+                                   Toast.makeText(getActivity(), getResources().getString(R.string.hint_updated_succ), Toast.LENGTH_SHORT).show();
+                                   Log.d(TAG, "onResponse: " + "><><" + response.body().getResult());
+                               }
+                           }else {
+                               setPreference(getActivity(), "user_id", "");
+                               setPreference(getActivity(), "mLogout_token", "");
+                               MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                               Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
+                               Intent intent = new Intent(getActivity(), LoginActivity.class);
+                               startActivity(intent);
+                               mActivity.finish();
+                           }
+                        }else {
+                            Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                         }
-                        if (response.body().getResult() != null) {
-                            mLanguage = "";
-                            mActive_account = "";
-                            mTrans_signing = "";
-                            mAccount_login = 0;
-                            mInvestment_opportunities = 0;
-                            mInvestment_updates = 0;
-                            mNewsletter = 0;
-                            Toast.makeText(getActivity(), getResources().getString(R.string.hint_updated_succ), Toast.LENGTH_SHORT).show();
-                            Log.d(TAG, "onResponse: " + "><><" + response.body().getResult());
-                        }
+                    }else {
+                        Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

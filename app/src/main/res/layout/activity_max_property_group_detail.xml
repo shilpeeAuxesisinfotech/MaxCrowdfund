@@ -456,7 +456,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:layout_marginBottom="@dimen/_10sdp"
-                            android:background="@drawable/rounded_white_outline"
+                            android:background="@drawable/outline_white"
                             android:orientation="vertical"
                             android:padding="@dimen/_5sdp">
 
@@ -479,7 +479,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_below="@+id/iv_main_ing"
-                                        android:background="@drawable/rounded_white_outline"
+                                        android:background="@drawable/outline_white"
                                         android:orientation="horizontal"
                                         android:padding="@dimen/_5sdp">
 

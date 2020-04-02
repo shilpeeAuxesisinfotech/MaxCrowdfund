@@ -138,7 +138,7 @@ public class LoginActivity extends AppCompatActivity {
             call.enqueue(new Callback<LoginResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<LoginResponse> call, @NonNull retrofit2.Response<LoginResponse> response) {
-                    Log.d(TAG, "onResponse:" + "><><" + new Gson().toJson(response.body()));
+                    Log.d(TAG, "onResponse:" + "><Login><" + new Gson().toJson(response.body()));
                     try {
                         if (pd != null && pd.isShowing()) {
                             pd.dismiss();
@@ -146,6 +146,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (response != null && response.isSuccessful()) {
                             if (response.body().getMessage().equals("Succesfully Logged In")) {
                                 String mSattus = response.body().getStatus();
+                                Log.d(">>>>>>>>",">>>>>mSattus>>>"+mSattus);
                                 if (mSattus.equals("200")) {
                                     String name = response.body().getCurrentUser().getName();
                                     String uid = response.body().getCurrentUser().getUid();

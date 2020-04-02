@@ -1,27 +1,26 @@
 package com.auxesis.maxcrowdfund.restapi;
 
+import com.auxesis.maxcrowdfund.mvvm.ui.changeMobileNumber.changeMobileModel.SendOTPResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.changeMobileNumber.changeMobileModel.UpdatePhoneNumberResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.changePassword.changePassModel.ChangePasswordResponse;
-import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.changePreferenceModel.ChangePreferenceResponse;
-import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.changePreferenceModel.UpdatePreferenceResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.model.ChangePreferenceResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.model.UpdatePreferenceResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.changeemail.ChangeEmailResponse;
 import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.MyInvestmentSearchResponse;
 import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.myinvestmentdetail.MyInvestmentDetailResponse;
-import com.auxesis.maxcrowdfund.custommvvm.profile.profileModel.ProfileResponse;
-import com.auxesis.maxcrowdfund.custommvvm.dashboardDetail.DashboardDetailModel.DashboardDetailModelResponce;
-import com.auxesis.maxcrowdfund.custommvvm.dashboardDetail.DashboardDetailModel.DashboardSignatureResponce;
-import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.MyInvestmentResponce;
-import com.auxesis.maxcrowdfund.mvvm.ui.changeMobileNumber.changeMobileModel.SendOTPResponse;
-import com.auxesis.maxcrowdfund.mvvm.ui.changeMobileNumber.changeMobileModel.UpdatePhoneNumberResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankaccountmodel.ActiveBankAccountResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankaccountmodel.ChangeBankAccountResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.contactinformation.contactInformationModel.ContactInfoResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboarddeposit.DashboardDepositResponse;
-import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboardmodel.AccountBalanceResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboardmodel.AccountResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.pendingmodel.PendingResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.home.homemodel.InvestmentOppResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.login.LoginResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.myinvestments.model.MyInvestmentResponce;
 import com.auxesis.maxcrowdfund.mvvm.ui.myprofile.ChangeAvtarResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.myprofile.model.ProfileResponse;
 import com.google.gson.JsonObject;
-import org.json.JSONObject;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -39,25 +38,25 @@ public interface EndPointInterface {
     Call<PendingResponse> getPendingAPI(@Header("Content-Type") String content);
 
     @GET("api/profile")
-    Call<ProfileResponse> UserProfile(@Header("Content-Type") String content, @Header("X-CSRF-Token") String xcsrf); //done
+    Call<ProfileResponse> UserProfile(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf); //done
 
-    @GET("api/active-account-details")
+   /* @GET("api/active-account-details")
     Call<DashboardDetailModelResponce> DashboardDetail();
 
     @POST("api/get-trustly-signature/")
     Call<DashboardSignatureResponce> DashboardDetailSignature(@Header("Content-Type") String content,
-                                                              @Header("X-CSRF-Token") String xcsrf,
+                                                              @Header("X-CSRF-TOKEN") String xcsrf,
                                                               @Query("method") String method,
                                                               @Query("uuid") String uuid,
-                                                              @Query("data") JSONObject data);
+                                                              @Query("data") JSONObject data);*/
     @GET("api/account-balance")
-    Call<AccountBalanceResponse> getBank(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);   //done for dashboard
+    Call<AccountResponse> getAccountBalance(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);   //done for dashboard
 
     @POST("api/create-deposit-entry")
     Call<DashboardDepositResponse> getDashboardDeposit(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf,@Body JsonObject jsonObject);  //done for dashboard
 
     @GET("api/investments/listing")
-    Call<MyInvestmentResponce> getMyInvestment();
+    Call<MyInvestmentResponce> getMyInvestment(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);
 
     @GET("api/investments/listing/")
     Call<MyInvestmentSearchResponse> getMyInvestmentSearch(@Query("company") String company, @Query("from") String from, @Query("to") String to);
@@ -66,7 +65,7 @@ public interface EndPointInterface {
     Call<MyInvestmentDetailResponse> getMyInvestmentDetail();
 
     @POST("api/change-email")
-    Call<ChangeEmailResponse> changeEmail(@Header("Content-Type") String content, @Header("X-CSRF-Token") String xcsrf, @Body JsonObject jsonObject);
+    Call<ChangeEmailResponse> changeEmail(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Body JsonObject jsonObject);
 
     /*For Bank Account */
     @GET("api/bank-accounts")
@@ -88,14 +87,19 @@ public interface EndPointInterface {
     Call<UpdatePreferenceResponse> getUpdatePreferenceAPI(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Body JsonObject jsonObject);
 
      @GET("api/contact-information")
-    Call<ContactInfoResponse> getContactInformation(@Header("Content-Type") String content,@Header("X-CSRF-TOKEN") String xcsrf);
+    Call<ContactInfoResponse> getContactInformation(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);
 
     @POST("api/change-password")
     Call<ChangePasswordResponse> getChangePassword(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Body JsonObject jsonObject);  //done
 
-    // Call<ChangePasswordResponse> getChangePassword(@Header("Content-Type") String content,@Header("X-CSRF-Token") String xcsrf, @Body JsonObject jsonObject);  //done
-
     @POST("api/change-avatar")
     Call<ChangeAvtarResponse> getChangeAvtar(@Header("Content-Type") String content, @Body JsonObject jsonObject);
 
+    @GET("api/fundraiser/listing")
+    Call<InvestmentOppResponse> getInvestmentOppHome(@Query("_format") String mFormate, @Query("investment_status") String investmentStatus, @Query("page") int mPage, @Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);  //done
+
+    @GET("api/user/login_status")
+    Call<?> getCheckUser(@Query("_format") String mFormate);
+
+    //https://test.maxcrowdfund.com/api/fundraiser/listing?_format=json&investment_status=expired&page=0
 }

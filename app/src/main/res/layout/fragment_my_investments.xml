@@ -57,7 +57,7 @@
                                     <TextView
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:fontFamily="@font/roboto_light"
+                                        android:fontFamily="@font/roboto"
                                         android:gravity="left"
                                         android:text="Company"
                                         android:textColor="@color/light_gray_text"
@@ -75,7 +75,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="@dimen/_35sdp"
                                         android:backgroundTint="@color/colorAccent"
-                                        android:fontFamily="@font/roboto_light"
+                                        android:fontFamily="@font/roboto"
                                         android:hint=""
                                         android:inputType="text"
                                         android:maxLength="20"
@@ -102,7 +102,7 @@
                                     <TextView
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:fontFamily="@font/roboto_light"
+                                        android:fontFamily="@font/roboto"
                                         android:gravity="left"
                                         android:text="From"
                                         android:textColor="@color/light_gray_text"
@@ -120,7 +120,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="@dimen/_35sdp"
                                         android:backgroundTint="@color/colorAccent"
-                                        android:fontFamily="@font/roboto_light"
+                                        android:fontFamily="@font/roboto"
                                         android:hint=""
                                         android:inputType="text"
                                         android:maxLength="20"
@@ -146,7 +146,7 @@
                                     <TextView
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:fontFamily="@font/roboto_light"
+                                        android:fontFamily="@font/roboto"
                                         android:gravity="left"
                                         android:text="To"
                                         android:textColor="@color/light_gray_text"
@@ -163,7 +163,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="@dimen/_35sdp"
                                         android:backgroundTint="@color/colorAccent"
-                                        android:fontFamily="@font/roboto_light"
+                                        android:fontFamily="@font/roboto"
                                         android:hint=""
                                         android:inputType="text"
                                         android:maxLength="20"
@@ -193,7 +193,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="@dimen/_35sdp"
                                         android:background="@drawable/button_ripple_green"
-                                        android:fontFamily="@font/roboto_light"
+                                        android:fontFamily="@font/roboto"
                                         android:gravity="center"
                                         android:text="@string/filter"
                                         android:textAllCaps="false"
@@ -212,7 +212,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="@dimen/_35sdp"
                                         android:background="@drawable/button_ripple_gray"
-                                        android:fontFamily="@font/roboto_light"
+                                        android:fontFamily="@font/roboto"
                                         android:gravity="center"
                                         android:text="@string/clear"
                                         android:textAllCaps="false"
@@ -240,7 +240,7 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_light"
+                                    android:fontFamily="@font/roboto"
                                     android:gravity="left"
                                     android:text="@string/company"
                                     android:textColor="@color/light_gray_text"
@@ -259,7 +259,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
-                                    android:fontFamily="@font/roboto_light"
+                                    android:fontFamily="@font/roboto"
                                     android:gravity="right|center"
                                     android:text="@string/invested"
                                     android:textColor="@color/light_gray_text"
@@ -281,8 +281,6 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </RelativeLayout>
-
         </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

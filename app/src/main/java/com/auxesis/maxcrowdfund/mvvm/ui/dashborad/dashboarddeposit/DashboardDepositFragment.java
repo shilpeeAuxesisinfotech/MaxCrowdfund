@@ -14,32 +14,24 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
-import com.auxesis.maxcrowdfund.constant.Utils;
-import com.auxesis.maxcrowdfund.custommvvm.DashboardDepositActivity;
-import com.auxesis.maxcrowdfund.custommvvm.dashboardDetail.DashboardDetailModel.DashboardDetailModelResponce;
-import com.auxesis.maxcrowdfund.custommvvm.dashboardDetail.DashboardDetailModel.DashboardSignatureResponce;
 import com.auxesis.maxcrowdfund.mvvm.activity.HomeActivity;
 import com.auxesis.maxcrowdfund.restapi.ApiClient;
 import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.auxesis.maxcrowdfund.constant.APIUrl.mMethod_deposit;
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
-import static com.auxesis.maxcrowdfund.constant.Utils.getRandomNO;
 import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
+import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
 
 public class DashboardDepositFragment extends Fragment {
     private static final String TAG = "DashboardDeposit";
@@ -67,10 +59,12 @@ public class DashboardDepositFragment extends Fragment {
     EditText edt_trustly;
     CardView cv_trustly;
     WebView webView;
+    TextView tvTrustly;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_dashboard_deposit, container, false);
+        tvTrustly = root.findViewById(R.id.tvTrustly);
         edt_trustly = root.findViewById(R.id.edt_trustly);
         btn_trustly = root.findViewById(R.id.btn_trustly);
         cv_trustly = root.findViewById(R.id.cv_trustly);
@@ -81,6 +75,10 @@ public class DashboardDepositFragment extends Fragment {
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
         }*/
+
+        if (getPreference(getActivity(), "totalBalance") != null && !getPreference(getActivity(), "totalBalance").isEmpty()) {
+            tvTrustly.setText(getPreference(getActivity(), "totalBalance"));
+        }
         cv_trustly.setVisibility(View.VISIBLE);
         webView.setVisibility(View.GONE);
         btn_trustly.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +122,7 @@ public class DashboardDepositFragment extends Fragment {
                         if (response != null && response.isSuccessful()) {
                             Log.d(TAG, "onResponse: " + "><><" + new Gson().toJson(response.body()));
                             if (response.body().getResult().equals("success")) {
-                                mTrustlyUrl = response.body().getTrustlyUrl();
+                                mTrustlyUrl = response.body().getTrustlyUrl().toString();
                                 Log.d("><>mTrustlyUrl", mTrustlyUrl);
                                 if (mTrustlyUrl != null) {
                                     edt_trustly.setText("");
@@ -132,6 +130,7 @@ public class DashboardDepositFragment extends Fragment {
                                     webView.setVisibility(View.VISIBLE);
                                     webView.loadUrl(mTrustlyUrl);
                                     webView.getSettings().setJavaScriptEnabled(true);
+                                    webView.setWebViewClient(new WebClient());
 
                                   /* mWebview.setWebViewClient(new WebClient());
                                    mWebview.loadUrl(mTrustlyUrl);
@@ -171,6 +170,7 @@ public class DashboardDepositFragment extends Fragment {
         }
 
     }
+
 
     /* private void getDashboardDetail() {
          EndPointInterface endPointInterface = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
@@ -323,4 +323,5 @@ public class DashboardDepositFragment extends Fragment {
         // Set title bar
         ((HomeActivity) getActivity()).setActionBarTitle(getString(R.string.deposit));
     }
+
 }

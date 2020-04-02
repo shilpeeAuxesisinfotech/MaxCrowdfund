@@ -6,6 +6,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class Data {
 
+    @SerializedName("total_balance")
+    @Expose
+    private TotalBalance totalBalance;
     @SerializedName("deposited")
     @Expose
     private Deposited deposited;
@@ -39,6 +42,14 @@ public class Data {
     @SerializedName("mpgs_purchase")
     @Expose
     private MpgsPurchase mpgsPurchase;
+
+    public TotalBalance getTotalBalance() {
+        return totalBalance;
+    }
+
+    public void setTotalBalance(TotalBalance totalBalance) {
+        this.totalBalance = totalBalance;
+    }
 
     public Deposited getDeposited() {
         return deposited;

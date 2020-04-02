@@ -1,4 +1,5 @@
 package com.auxesis.maxcrowdfund.mvvm.ui.home;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +32,10 @@ import com.auxesis.maxcrowdfund.constant.PaginationListener;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.mvvm.ui.home.homemodel.InvestmentOppHomeModel;
 import com.auxesis.maxcrowdfund.mvvm.activity.HomeActivity;
+import com.auxesis.maxcrowdfund.mvvm.ui.home.homemodel.InvestmentOppResponse;
+import com.auxesis.maxcrowdfund.restapi.ApiClient;
+import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
+import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,6 +43,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import retrofit2.Call;
+import retrofit2.Callback;
 import static com.auxesis.maxcrowdfund.constant.PaginationListener.PAGE_START;
 import static com.auxesis.maxcrowdfund.constant.PaginationListener.VISIBLE_THRESHOLD;
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
@@ -96,6 +103,7 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public int getTotalPageCount() {
                 return TOTAL_PAGES;
@@ -112,7 +120,49 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        ///
+        /*if (isInternetConnected(getActivity())) {
+            getInvestmentOpp();
+        } else {
+            Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
+        }
+       */
         return root;
+    }
+
+    private void getInvestmentOpp() {
+          pd = ProgressDialog.show(getActivity(), "Please Wait...");
+        String XCSRF = getPreference(getActivity(), "mCsrf_token");
+        EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
+        Call<InvestmentOppResponse> call = git.getInvestmentOppHome("json", APIUrl.investStatus, APICount, "application/json", XCSRF);
+        call.enqueue(new Callback<InvestmentOppResponse>() {
+            @Override
+            public void onResponse(Call<InvestmentOppResponse> call, retrofit2.Response<InvestmentOppResponse> response) {
+                Log.d(TAG, "onResponse: " + "><list><" + new Gson().toJson(response.body()));
+                if (pd != null && pd.isShowing()) {
+                    pd.dismiss();
+                }
+                if (response!=null){
+                    if (response != null && response.isSuccessful()) {
+                        Log.d(">>>>>>>>",">>>>>list>>>>>>"+response.body().getFundraiserType());
+                        Log.d(">>>>>>>>",">>>>>list>>>>>>"+response.body().getTotal());
+                    }else {
+                        Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InvestmentOppResponse> call, Throwable t) {
+                Log.e("response", "error " + t.getMessage());
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                if (pd != null && pd.isShowing()) {
+                    pd.dismiss();
+                }
+            }
+        });
     }
 
     private void getListingApi() {
@@ -147,7 +197,7 @@ public class HomeFragment extends Fragment {
                                     myListModel.setCurrency_symbol(jsonArray.getJSONObject(i).getString("currency_symbol"));
                                     myListModel.setFilled(jsonArray.getJSONObject(i).getInt("filled"));
                                     myListModel.setNo_of_investors(jsonArray.getJSONObject(i).getInt("no_of_investors"));
-                                   // myListModel.setAmount_left(jsonArray.getJSONObject(i).getInt("amount_left"));
+                                    // myListModel.setAmount_left(jsonArray.getJSONObject(i).getInt("amount_left"));
                                     myListModel.setAmount_left(jsonArray.getJSONObject(i).getString("amount_left"));
                                     myListModel.setMonths(jsonArray.getJSONObject(i).getInt("months"));
                                     myListModel.setType(jsonArray.getJSONObject(i).getString("type"));
@@ -162,7 +212,7 @@ public class HomeFragment extends Fragment {
                                 }
                                 adapter.addItems(list_1);
                                 if (currentPage < totalPage) {
-                                    Log.d(TAG, "onResponse: "+"current---------"+String.valueOf(currentPage));
+                                    Log.d(TAG, "onResponse: " + "current---------" + String.valueOf(currentPage));
                                     adapter.addLoading();
                                 } else if (currentPage == totalPage) {
                                     list_1.clear();
@@ -189,7 +239,7 @@ public class HomeFragment extends Fragment {
                             } else {
                                 Toast.makeText(getActivity(), getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
                             }
-                        }else {
+                        } else {
                             tvNoRecordFound.setVisibility(View.VISIBLE);
                             recyclerView.setVisibility(View.GONE);
                         }
@@ -250,12 +300,13 @@ public class HomeFragment extends Fragment {
                 public String getBodyContentType() {
                     return "application/json";
                 }
+
                 @Override
                 public Map getHeaders() throws AuthFailureError {
                     HashMap headers = new HashMap();
-                    String mCsrfToken =getPreference(getActivity(), "mCsrf_token");
-                    Log.d(TAG, "getHeaders: "+mCsrfToken);
-                    if (mCsrfToken!=null && !mCsrfToken.isEmpty()){
+                    String mCsrfToken = getPreference(getActivity(), "mCsrf_token");
+                    Log.d(TAG, "getHeaders: " + mCsrfToken);
+                    if (mCsrfToken != null && !mCsrfToken.isEmpty()) {
                         headers.put("X-CSRF-TOKEN", mCsrfToken);
                     }
                     headers.put("Content-Type", "application/json");

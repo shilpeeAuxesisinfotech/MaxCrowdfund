@@ -1,5 +1,7 @@
 package com.auxesis.maxcrowdfund.mvvm.ui.myprofile;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,10 +15,12 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.auxesis.maxcrowdfund.R;
+import com.auxesis.maxcrowdfund.constant.MaxCrowdFund;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
-import com.auxesis.maxcrowdfund.custommvvm.profile.profileModel.ProfileResponse;
 import com.auxesis.maxcrowdfund.mvvm.activity.HomeActivity;
+import com.auxesis.maxcrowdfund.mvvm.activity.LoginActivity;
+import com.auxesis.maxcrowdfund.mvvm.ui.myprofile.model.ProfileResponse;
 import com.auxesis.maxcrowdfund.restapi.ApiClient;
 import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.bumptech.glide.Glide;
@@ -26,6 +30,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
+import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
 
 public class MyProfileFragment extends Fragment {
     private static final String TAG = "MyProfileFragment";
@@ -33,6 +38,7 @@ public class MyProfileFragment extends Fragment {
     Button btn_addChange, btn_change_email, btn_change_mobile, btn_change_pass, btn_change_default_bankA, btn_change_preference;
     ProgressDialog pd;
     CircleImageView iv_user_img;
+    Activity mActivity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,7 +48,7 @@ public class MyProfileFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_my_profile, container, false);
-
+        mActivity = getActivity();
         tv_user_name = root.findViewById(R.id.tv_user_name);
         tvName = root.findViewById(R.id.tvName);
         tv_name = root.findViewById(R.id.tv_name);
@@ -110,7 +116,7 @@ public class MyProfileFragment extends Fragment {
                 navController.navigate(R.id.action_nav_my_profile_to_changePreferenceFragment);
             }
         });
-        if (Utils.isInternetConnected(getActivity())){
+        if (Utils.isInternetConnected(getActivity())) {
             getMyProfile();
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
@@ -132,45 +138,56 @@ public class MyProfileFragment extends Fragment {
                         if (pd != null && pd.isShowing()) {
                             pd.dismiss();
                         }
-                        if (response!=null) {
+                        if (response != null) {
                             if (response != null && response.isSuccessful()) {
-                                ProfileResponse profileResponse = response.body();
-                                if (profileResponse != null && profileResponse.getProfile() != null) {
-                                    tv_user_name.setText(profileResponse.getProfile().getData().getName().getValue());
-                                    tvName.setText(profileResponse.getProfile().getData().getGivenname().getTitle());
-                                    tv_name.setText(profileResponse.getProfile().getData().getGivenname().getValue());
-                                    tvSurName.setText(profileResponse.getProfile().getData().getSurname().getTitle());
-                                    tv_sur_name.setText(profileResponse.getProfile().getData().getSurname().getValue());
-                                    tvEmail.setText(profileResponse.getProfile().getData().getEmail().getTitle());
-                                    tv_email.setText(profileResponse.getProfile().getData().getEmail().getValue());
-                                    tvAddress.setText(profileResponse.getProfile().getData().getAddress().getTitle());
-                                    tv_Address.setText(profileResponse.getProfile().getData().getAddress().getValue().replaceAll("<br>", ""));
-                                    tvInvestorId.setText(profileResponse.getProfile().getData().getInvestorid().getTitle());
-                                    tv_investorId.setText(profileResponse.getProfile().getData().getInvestorid().getValue());
-                                    tvAccountId.setText(profileResponse.getProfile().getData().getAccountid().getTitle());
-                                    tv_accountId.setText(profileResponse.getProfile().getData().getAccountid().getValue());
+                                if (response.body().getUserLoginStatus() == 1) {
+                                    ProfileResponse profileResponse = response.body();
+                                    if (profileResponse != null && profileResponse.getProfile() != null) {
+                                        tv_user_name.setText(profileResponse.getProfile().getData().getName().getValue());
+                                        tvName.setText(profileResponse.getProfile().getData().getGivenname().getTitle());
+                                        tv_name.setText(profileResponse.getProfile().getData().getGivenname().getValue());
+                                        tvSurName.setText(profileResponse.getProfile().getData().getSurname().getTitle());
+                                        tv_sur_name.setText(profileResponse.getProfile().getData().getSurname().getValue());
+                                        tvEmail.setText(profileResponse.getProfile().getData().getEmail().getTitle());
+                                        tv_email.setText(profileResponse.getProfile().getData().getEmail().getValue());
+                                        tvAddress.setText(profileResponse.getProfile().getData().getAddress().getTitle());
+                                        tv_Address.setText(profileResponse.getProfile().getData().getAddress().getValue().replaceAll("<br>", ""));
+                                        tvInvestorId.setText(profileResponse.getProfile().getData().getInvestorid().getTitle());
+                                        tv_investorId.setText(profileResponse.getProfile().getData().getInvestorid().getValue());
+                                        tvAccountId.setText(profileResponse.getProfile().getData().getAccountid().getTitle());
+                                        tv_accountId.setText(profileResponse.getProfile().getData().getAccountid().getValue());
 
-                                    try {
-                                        if (profileResponse.getProfile().getData().getAvatar().getValue() != null && !profileResponse.getProfile().getData().getAvatar().getValue().isEmpty() && !profileResponse.getProfile().getData().getAvatar().getValue().equals("null")) {
-                                            Glide.with(getActivity()).load(profileResponse.getProfile().getData().getAvatar().getValue())
-                                                    .thumbnail(0.5f)
-                                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                                    .into(iv_user_img);
+                                        try {
+                                            if (profileResponse.getProfile().getData().getAvatar().getValue() != null && !profileResponse.getProfile().getData().getAvatar().getValue().isEmpty() && !profileResponse.getProfile().getData().getAvatar().getValue().equals("null")) {
+                                                Glide.with(getActivity()).load(profileResponse.getProfile().getData().getAvatar().getValue())
+                                                        .thumbnail(0.5f)
+                                                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                                        .into(iv_user_img);
+                                            }
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
                                         }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
                                     }
+                                } else {
+                                    setPreference(getActivity(), "user_id", "");
+                                    setPreference(getActivity(), "mLogout_token", "");
+                                    MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                                    Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                    startActivity(intent);
+                                    mActivity.finish();
                                 }
                             } else {
                                 Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                             }
-                        }else {
+                        } else {
                             Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
+
                 @Override
                 public void onFailure(@NonNull Call<ProfileResponse> call, @NonNull Throwable t) {
                     Log.e("response", "error " + t.getMessage());

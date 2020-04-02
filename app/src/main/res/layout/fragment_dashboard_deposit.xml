@@ -71,7 +71,7 @@
                                 android:id="@+id/tv_euro_trustly"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_toLeftOf="@+id/tv_trustly"
+                                android:layout_toLeftOf="@+id/tvTrustly"
                                 android:fontFamily="@font/roboto_medium"
                                 android:paddingRight="@dimen/_3sdp"
                                 android:text="€"
@@ -79,13 +79,13 @@
                                 android:textSize="@dimen/_14sdp" />
 
                             <TextView
-                                android:id="@+id/tv_trustly"
+                                android:id="@+id/tvTrustly"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:fontFamily="@font/roboto_medium"
                                 android:gravity="right"
-                                android:text="123.45"
+                                android:text=""
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textSize="@dimen/_14sdp" />
                         </RelativeLayout>
@@ -106,7 +106,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_light"
+                        android:fontFamily="@font/roboto"
                         android:gravity="left"
                         android:text="Enter the amount you wish to deposit"
                         android:textColor="@color/colorPrimaryDark"
@@ -119,7 +119,7 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:backgroundTint="@color/colorAccent"
                         android:drawablePadding="@dimen/_10sdp"
-                        android:fontFamily="@font/roboto_light"
+                        android:fontFamily="@font/roboto"
                         android:inputType="number"
                         android:maxLength="20"
                         android:textColor="@color/colorPrimaryDark"
@@ -132,7 +132,7 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:background="@drawable/button_ripple_green"
-                        android:fontFamily="@font/roboto_light"
+                        android:fontFamily="@font/roboto"
                         android:gravity="center"
                         android:text="@string/trustly"
                         android:textAllCaps="false"
@@ -249,7 +249,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_light"
+                        android:fontFamily="@font/roboto"
                         android:gravity="left"
                         android:text="Enter the amount you wish to deposit"
                         android:textColor="@color/colorPrimaryDark"
@@ -263,7 +263,7 @@
                         android:backgroundTint="@color/colorAccent"
                         android:drawableLeft="@drawable/ic_euro"
                         android:drawablePadding="@dimen/_10sdp"
-                        android:fontFamily="@font/roboto_light"
+                        android:fontFamily="@font/roboto"
                         android:inputType="number"
                         android:maxLength="20"
                         android:textColor="@color/colorPrimaryDark"
@@ -276,7 +276,7 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:background="@drawable/button_ripple_pink"
-                        android:fontFamily="@font/roboto_light"
+                        android:fontFamily="@font/roboto"
                         android:gravity="center"
                         android:text="@string/ideal"
                         android:textAllCaps="false"
