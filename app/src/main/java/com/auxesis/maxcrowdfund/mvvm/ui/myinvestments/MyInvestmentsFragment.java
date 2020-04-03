@@ -73,7 +73,6 @@ public class MyInvestmentsFragment extends Fragment {
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
         }
-
         btn_filter = root.findViewById(R.id.btn_filter);
         btn_clear = root.findViewById(R.id.btn_clear);
         btn_filter.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +80,7 @@ public class MyInvestmentsFragment extends Fragment {
             public void onClick(View v) {
                 if (Utils.isInternetConnected(getActivity())) {
                     if (Validation()) {
-                        getMyInvestmentSearch();
+                       // getMyInvestmentSearch();
                     }else {
                         Toast.makeText(getActivity(), error_msg, Toast.LENGTH_SHORT).show();
                     }
@@ -94,13 +93,12 @@ public class MyInvestmentsFragment extends Fragment {
         btn_clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                edtCompany.setText("");
+                /*edtCompany.setText("");
                 edtFrom.setText("");
                 edtTo.setText("");
-                Toast.makeText(getActivity(), "Data cleared successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Data cleared successfully", Toast.LENGTH_SHORT).show();*/
             }
         });
-
         return root;
     }
 

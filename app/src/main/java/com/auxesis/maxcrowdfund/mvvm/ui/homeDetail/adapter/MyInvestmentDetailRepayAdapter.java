@@ -8,7 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.myinvestmentdetail.Datum__;
+import com.auxesis.maxcrowdfund.mvvm.ui.myinvestmentdetail.myinvestmentdetailmodel.Datum__;
+
 import java.util.List;
 
 public class MyInvestmentDetailRepayAdapter extends RecyclerView.Adapter<MyInvestmentDetailRepayAdapter.MyHolder> {
@@ -30,6 +31,7 @@ public class MyInvestmentDetailRepayAdapter extends RecyclerView.Adapter<MyInves
 
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+
         holder.tvName.setText(String.valueOf(arrayList.get(position).getData().getPeriod()));
         holder.tv_invested.setText(arrayList.get(position).getData().getAmount());
 

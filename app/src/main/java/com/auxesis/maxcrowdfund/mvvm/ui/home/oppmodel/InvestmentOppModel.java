@@ -1,6 +1,6 @@
-package com.auxesis.maxcrowdfund.mvvm.ui.home.homemodel;
+package com.auxesis.maxcrowdfund.mvvm.ui.home.oppmodel;
 
-public class InvestmentOppHomeModel {
+public class InvestmentOppModel {
     String id;
     String mTitle;
     String interest_pa;
@@ -51,7 +51,7 @@ public class InvestmentOppHomeModel {
         this.investment_status = investment_status;
     }
 
-    public InvestmentOppHomeModel() {
+    public InvestmentOppModel() {
     }
 
     public String getId() {

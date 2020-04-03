@@ -5,6 +5,7 @@ public class APIUrl {
     public final static String GER_MY_INVEST_DETAILS = BASE_URL + "api/fundraiser/details?_format=json";
 
     public static String investStatus = "active";
+
     public static String investment_status = "investment_status=";
     public static String page = "&page=";
     public final static String GER_LISTING = BASE_URL + "api/fundraiser/listing?_format=json&";

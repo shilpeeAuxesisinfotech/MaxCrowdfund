@@ -1,17 +1,17 @@
 
-package com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.myinvestmentdetail;
+package com.auxesis.maxcrowdfund.mvvm.ui.myinvestmentdetail.myinvestmentdetailmodel;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Invested {
+public class Datum_ {
 
     @SerializedName("title")
     @Expose
     private String title;
-    @SerializedName("data")
+    @SerializedName("url")
     @Expose
-    private String data;
+    private String url;
 
     public String getTitle() {
         return title;
@@ -21,12 +21,12 @@ public class Invested {
         this.title = title;
     }
 
-    public String getData() {
-        return data;
+    public String getUrl() {
+        return url;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
 }

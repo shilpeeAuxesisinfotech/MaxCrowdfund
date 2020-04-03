@@ -7,18 +7,18 @@ import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.model.ChangePreferenceR
 import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.model.UpdatePreferenceResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.changeemail.ChangeEmailResponse;
 import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.MyInvestmentSearchResponse;
-import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.myinvestmentdetail.MyInvestmentDetailResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankaccountmodel.ActiveBankAccountResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankaccountmodel.ChangeBankAccountResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.contactinformation.contactInformationModel.ContactInfoResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboarddeposit.DashboardDepositResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboardmodel.AccountResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.pendingmodel.PendingResponse;
-import com.auxesis.maxcrowdfund.mvvm.ui.home.homemodel.InvestmentOppResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.home.oppmodel.InvestmentOppRes;
 import com.auxesis.maxcrowdfund.mvvm.ui.login.LoginResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.myinvestmentdetail.myinvestmentdetailmodel.MyInvestmentDetailResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.myinvestments.model.MyInvestmentResponce;
-import com.auxesis.maxcrowdfund.mvvm.ui.myprofile.ChangeAvtarResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.myprofile.model.ProfileResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.uploadImage.ChangeAvatarResponce;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -62,7 +62,7 @@ public interface EndPointInterface {
     Call<MyInvestmentSearchResponse> getMyInvestmentSearch(@Query("company") String company, @Query("from") String from, @Query("to") String to);
 
     @GET("api/investment/details")
-    Call<MyInvestmentDetailResponse> getMyInvestmentDetail();
+    Call<MyInvestmentDetailResponse> getMyInvestmentDetail(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf,@Query("investment_id") String investment_id);
 
     @POST("api/change-email")
     Call<ChangeEmailResponse> changeEmail(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Body JsonObject jsonObject);
@@ -93,10 +93,10 @@ public interface EndPointInterface {
     Call<ChangePasswordResponse> getChangePassword(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Body JsonObject jsonObject);  //done
 
     @POST("api/change-avatar")
-    Call<ChangeAvtarResponse> getChangeAvtar(@Header("Content-Type") String content, @Body JsonObject jsonObject);
+    Call<ChangeAvatarResponce> getChangeAvtar(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Body JsonObject jsonObject);
 
     @GET("api/fundraiser/listing")
-    Call<InvestmentOppResponse> getInvestmentOppHome(@Query("_format") String mFormate, @Query("investment_status") String investmentStatus, @Query("page") int mPage, @Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);  //done
+    Call<InvestmentOppRes> getInvestmentOppHome(@Query("_format") String mFormate, @Query("investment_status") String investmentStatus, @Query("page") int mPage, @Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);  //done
 
     @GET("api/user/login_status")
     Call<?> getCheckUser(@Query("_format") String mFormate);

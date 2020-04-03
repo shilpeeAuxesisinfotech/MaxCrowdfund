@@ -9,6 +9,9 @@ public class Datum {
     @SerializedName("loanid")
     @Expose
     private String loanid;
+    @SerializedName("investment_id")
+    @Expose
+    private String investmentId;
     @SerializedName("loan")
     @Expose
     private String loan;
@@ -28,6 +31,14 @@ public class Datum {
 
     public void setLoanid(String loanid) {
         this.loanid = loanid;
+    }
+
+    public String getInvestmentId() {
+        return investmentId;
+    }
+
+    public void setInvestmentId(String investmentId) {
+        this.investmentId = investmentId;
     }
 
     public String getLoan() {

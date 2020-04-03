@@ -2,24 +2,21 @@ package com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.mvvm.ui.myinvestments.model.Datum;
-
 import java.util.List;
-
 import static com.auxesis.maxcrowdfund.constant.Utils.getCustomReplaceFormat;
+import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
 
 public class MyInvestmentAdapter extends RecyclerView.Adapter<MyInvestmentAdapter.MyHolder> {
     private static final String TAG = "MyInvestmentAdapter";
@@ -49,8 +46,8 @@ public class MyInvestmentAdapter extends RecyclerView.Adapter<MyInvestmentAdapte
             @Override
             public void onClick(View v) {
                 NavController navController = Navigation.findNavController(mActivity, R.id.nav_host_fragment);
-                /*Bundle bumdle = new Bundle();
-                bumdle.putString("loanid",arrayList.get(position).getLoanid());*/
+                Log.d("><><><",arrayList.get(position).getInvestmentId());
+                setPreference(mContext, "investment_id", arrayList.get(position).getInvestmentId());
                 navController.navigate(R.id.action_nav_my_investments_to_nav_send);
             }
         });

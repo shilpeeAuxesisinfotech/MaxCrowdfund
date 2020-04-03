@@ -1,5 +1,5 @@
 
-package com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.myinvestmentdetail;
+package com.auxesis.maxcrowdfund.mvvm.ui.myinvestmentdetail.myinvestmentdetailmodel;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -8,7 +8,7 @@ public class Details {
 
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private String id;
     @SerializedName("mainheading")
     @Expose
     private Mainheading mainheading;
@@ -28,11 +28,11 @@ public class Details {
     @Expose
     private RepaymentSchedule repaymentSchedule;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

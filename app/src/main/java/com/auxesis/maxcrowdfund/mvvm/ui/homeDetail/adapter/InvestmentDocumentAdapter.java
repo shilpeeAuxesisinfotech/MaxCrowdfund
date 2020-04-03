@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.customClickListener.OnDownloadClickListener;
-import com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.myinvestmentdetail.Datum_;
+import com.auxesis.maxcrowdfund.mvvm.ui.myinvestmentdetail.myinvestmentdetailmodel.Datum_;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,6 @@ public class InvestmentDocumentAdapter extends RecyclerView.Adapter<InvestmentDo
     ArrayList<Long> list = new ArrayList<>();
 
     public OnDownloadClickListener onDownloadClickListener;
-
 
     public InvestmentDocumentAdapter(Context mContext, OnDownloadClickListener onDownloadClickListener, List<Datum_> arrayList) {
         this.mContext = mContext;

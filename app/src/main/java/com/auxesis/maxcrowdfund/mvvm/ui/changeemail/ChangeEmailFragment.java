@@ -67,9 +67,13 @@ public class ChangeEmailFragment extends Fragment {
                     if (pd != null && pd.isShowing()) {
                         pd.dismiss();
                     }
-                    if (response != null && response.isSuccessful()) {
-                        Log.d(TAG, "onResponse: " + "><><" + new Gson().toJson(response.body()));
-                        Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    if (response!=null) {
+                        if (response != null && response.isSuccessful()) {
+                            Log.d(TAG, "onResponse:" + "><><" + new Gson().toJson(response.body()));
+                            Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

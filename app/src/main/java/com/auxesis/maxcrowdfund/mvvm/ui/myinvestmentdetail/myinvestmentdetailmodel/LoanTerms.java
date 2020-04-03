@@ -1,5 +1,5 @@
 
-package com.auxesis.maxcrowdfund.custommvvm.myinvestmentmodel.myinvestmentdetail;
+package com.auxesis.maxcrowdfund.mvvm.ui.myinvestmentdetail.myinvestmentdetailmodel;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;

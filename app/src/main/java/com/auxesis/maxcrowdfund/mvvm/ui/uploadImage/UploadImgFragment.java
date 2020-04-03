@@ -34,7 +34,6 @@ import com.auxesis.maxcrowdfund.constant.ImageFilePath;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
 import com.auxesis.maxcrowdfund.mvvm.activity.HomeActivity;
-import com.auxesis.maxcrowdfund.mvvm.ui.myprofile.ChangeAvtarResponse;
 import com.auxesis.maxcrowdfund.restapi.ApiClient;
 import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -52,6 +51,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 import static android.app.Activity.RESULT_OK;
+import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
 
 public class UploadImgFragment extends Fragment {
@@ -115,11 +115,12 @@ public class UploadImgFragment extends Fragment {
             pd = ProgressDialog.show(getActivity(), "Please Wait...");
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("avatar",mConvertedImg1);
+            String XCSRF = getPreference(getActivity(), "mCsrf_token");
             EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
-            Call<ChangeAvtarResponse> call = git.getChangeAvtar("application/json", jsonObject);
-            call.enqueue(new Callback<ChangeAvtarResponse>() {
+            Call<ChangeAvatarResponce> call = git.getChangeAvtar("application/json",XCSRF,jsonObject);
+            call.enqueue(new Callback<ChangeAvatarResponce>() {
                 @Override
-                public void onResponse(@NonNull Call<ChangeAvtarResponse> call, @NonNull retrofit2.Response<ChangeAvtarResponse> response) {
+                public void onResponse(@NonNull Call<ChangeAvatarResponce> call, @NonNull retrofit2.Response<ChangeAvatarResponce> response) {
                     Log.d(TAG, "onResponse: " + "><><" + new Gson().toJson(response.body()));
                     try {
                         if (pd != null && pd.isShowing()) {
@@ -135,7 +136,7 @@ public class UploadImgFragment extends Fragment {
                     }
                 }
                 @Override
-                public void onFailure(@NonNull Call<ChangeAvtarResponse> call, @NonNull Throwable t) {
+                public void onFailure(@NonNull Call<ChangeAvatarResponce> call, @NonNull Throwable t) {
                     Log.e("response", "error " + t.getMessage());
                     Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
                     if (pd != null && pd.isShowing()) {

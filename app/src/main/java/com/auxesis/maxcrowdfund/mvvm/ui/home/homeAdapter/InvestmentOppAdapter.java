@@ -12,27 +12,30 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.MaxPropertyGroupDetailActivity;
 import com.auxesis.maxcrowdfund.constant.BaseViewHolder;
 import com.auxesis.maxcrowdfund.mvvm.ui.home.homemodel.InvestmentOppHomeModel;
+import com.auxesis.maxcrowdfund.mvvm.ui.home.oppmodel.InvestmentOppModel;
+import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.MaxPropertyGroupDetailActivity;
+
 import java.util.ArrayList;
 import java.util.List;
-import static com.auxesis.maxcrowdfund.constant.Utils.getCustomReplaceFormat;
 
-public class InvestmentOppHomeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
+public class InvestmentOppAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int VIEW_TYPE_LOADING = 0;
     private static final int VIEW_TYPE_NORMAL = 1;
     private boolean isLoaderVisible = false;
     private static final String TAG = "MyListAdapter";
-    public ArrayList<InvestmentOppHomeModel> arrayList, filterList;
+    public ArrayList<InvestmentOppModel> arrayList, filterList;
     Context mContext;
     Context mActivity;
 
-    public InvestmentOppHomeAdapter(Context context, Activity mActivity, ArrayList<InvestmentOppHomeModel> arrayList) {
+    public InvestmentOppAdapter(Context context, Activity mActivity, ArrayList<InvestmentOppModel> arrayList) {
         this.mContext = context;
         this.mActivity = mActivity;
         this.arrayList = arrayList;
@@ -70,21 +73,21 @@ public class InvestmentOppHomeAdapter extends RecyclerView.Adapter<BaseViewHolde
         return arrayList == null ? 0 : arrayList.size();
     }
 
-    public void addItems(List<InvestmentOppHomeModel> postItems) {
+    public void addItems(List<InvestmentOppModel> postItems) {
         arrayList.addAll(postItems);
         notifyDataSetChanged();
     }
 
     public void addLoading() {
         isLoaderVisible = true;
-        arrayList.add(new InvestmentOppHomeModel());
+        arrayList.add(new InvestmentOppModel());
         notifyItemInserted(arrayList.size() - 1);
     }
 
     public void removeLoading() {
         isLoaderVisible = false;
         int position = arrayList.size() - 1;
-        InvestmentOppHomeModel item = getItem(position);
+        InvestmentOppModel item = getItem(position);
         if (item != null) {
             arrayList.remove(position);
             notifyItemRemoved(position);
@@ -96,7 +99,7 @@ public class InvestmentOppHomeAdapter extends RecyclerView.Adapter<BaseViewHolde
         notifyDataSetChanged();
     }
 
-    InvestmentOppHomeModel getItem(int position) {
+    InvestmentOppModel getItem(int position) {
         return arrayList.get(position);
     }
 
@@ -144,7 +147,7 @@ public class InvestmentOppHomeAdapter extends RecyclerView.Adapter<BaseViewHolde
         public void onBind(int position) {
             super.onBind(position);
 
-            InvestmentOppHomeModel item = arrayList.get(position);
+            InvestmentOppModel item = arrayList.get(position);
             cardView.setVisibility(View.VISIBLE);
             tv_mTittle.setText(item.getmTitle());
             tv_interest_pr.setText(item.getInterest_pa() + "%");

@@ -2,10 +2,7 @@ package com.auxesis.maxcrowdfund.mvvm.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,46 +15,16 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.Cache;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkError;
-import com.android.volley.NetworkResponse;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.auxesis.maxcrowdfund.R;
-import com.auxesis.maxcrowdfund.constant.APIUrl;
 import com.auxesis.maxcrowdfund.constant.MaxCrowdFund;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
-import com.auxesis.maxcrowdfund.constant.Utils;
 import com.auxesis.maxcrowdfund.mvvm.ui.login.LoginResponse;
 import com.auxesis.maxcrowdfund.restapi.ApiClient;
 import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import retrofit2.Call;
 import retrofit2.Callback;
-
-import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.hideKeyboard;
 import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
 import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
@@ -72,14 +39,11 @@ public class LoginActivity extends AppCompatActivity {
     ProgressDialog pd;
     CheckBox checkBoxRMe;
     boolean isRememberMe = false;
-    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // Get the application context
-        mContext = getApplicationContext();
         hideKeyboard(LoginActivity.this);
         init();
     }
@@ -143,32 +107,35 @@ public class LoginActivity extends AppCompatActivity {
                         if (pd != null && pd.isShowing()) {
                             pd.dismiss();
                         }
-                        if (response != null && response.isSuccessful()) {
-                            if (response.body().getMessage().equals("Succesfully Logged In")) {
-                                String mSattus = response.body().getStatus();
-                                Log.d(">>>>>>>>",">>>>>mSattus>>>"+mSattus);
-                                if (mSattus.equals("200")) {
-                                    String name = response.body().getCurrentUser().getName();
-                                    String uid = response.body().getCurrentUser().getUid();
-                                    String csrf_token = response.body().getCurrentUser().getCsrfToken();
-                                    String logout_token = response.body().getCurrentUser().getLogoutToken();
-                                    setPreference(LoginActivity.this, "isRememberMe", String.valueOf(isRememberMe));
-                                    setPreference(LoginActivity.this, "user_id", uid);
-                                    setPreference(LoginActivity.this, "mName", name);
-                                    setPreference(LoginActivity.this, "mCsrf_token", csrf_token);
-                                    setPreference(LoginActivity.this, "mLogout_token", logout_token);
-                                    Toast.makeText(LoginActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                                    overridePendingTransition(R.anim.enter, R.anim.exit);
-                                    edt_email.setText("");
-                                    edt_pssword.setText("");
-                                    finish();
+                        if (response != null) {
+                            if (response != null && response.isSuccessful()) {
+                                if (response.body().getMessage().equals("Succesfully Logged In")) {
+                                    String mSattus = response.body().getStatus();
+                                    Log.d(">>>>>>>>", ">>>>>mSattus>>>" + mSattus);
+                                    if (mSattus.equals("200")) {
+                                        String name = response.body().getCurrentUser().getName();
+                                        String uid = response.body().getCurrentUser().getUid();
+                                        String csrf_token = response.body().getCurrentUser().getCsrfToken();
+                                        String logout_token = response.body().getCurrentUser().getLogoutToken();
+                                        setPreference(LoginActivity.this, "isRememberMe", String.valueOf(isRememberMe));
+                                        setPreference(LoginActivity.this, "user_id", uid);
+                                        setPreference(LoginActivity.this, "mName", name);
+                                        setPreference(LoginActivity.this, "mCsrf_token", csrf_token);
+                                        setPreference(LoginActivity.this, "mLogout_token", logout_token);
+                                        Toast.makeText(LoginActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                                        overridePendingTransition(R.anim.enter, R.anim.exit);
+                                        edt_email.setText("");
+                                        edt_pssword.setText("");
+                                        finish();
+                                    }
                                 }
+                            } else {
+                                MaxCrowdFund.getClearCookies(LoginActivity.this, "cookies", "");
+                                Toast.makeText(LoginActivity.this, "This route can only be accessed by anonymous users.", Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            MaxCrowdFund.getClearCookies(LoginActivity.this, "cookies", "");
-                            Toast.makeText(LoginActivity.this, "This route can only be accessed by anonymous users.", Toast.LENGTH_SHORT).show();
-                           // Toast.makeText(LoginActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(LoginActivity.this, getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
