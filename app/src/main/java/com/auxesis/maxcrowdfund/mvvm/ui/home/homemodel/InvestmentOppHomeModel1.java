@@ -1,6 +1,6 @@
-package com.auxesis.maxcrowdfund.mvvm.ui.home.oppmodel;
+package com.auxesis.maxcrowdfund.mvvm.ui.home.homemodel;
 
-public class InvestmentOppModel {
+public class InvestmentOppHomeModel1 {
     String id;
     String mTitle;
     String interest_pa;
@@ -10,6 +10,7 @@ public class InvestmentOppModel {
     String currency_symbol;
     int filled;
     int no_of_investors;
+    //int amount_left;
     String amount_left;
     String months;
     String type;
@@ -18,10 +19,6 @@ public class InvestmentOppModel {
     String main_img;
     int total_raised;
     int active_investors;
-    int average_return;
-    String fundraiser_type;
-    String investment_status;
-
 
     public String getFundraiser_type() {
         return fundraiser_type;
@@ -30,6 +27,12 @@ public class InvestmentOppModel {
     public void setFundraiser_type(String fundraiser_type) {
         this.fundraiser_type = fundraiser_type;
     }
+
+    int average_return;
+
+    String fundraiser_type;
+    String investment_status;
+
     public int mViewHolderType;
 
     public int getmViewHolderType() {
@@ -48,7 +51,7 @@ public class InvestmentOppModel {
         this.investment_status = investment_status;
     }
 
-    public InvestmentOppModel() {
+    public InvestmentOppHomeModel1() {
     }
 
     public String getId() {

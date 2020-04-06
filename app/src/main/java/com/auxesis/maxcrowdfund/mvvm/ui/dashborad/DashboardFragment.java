@@ -222,10 +222,9 @@ public class DashboardFragment extends Fragment {
                                     AccountBalanceModel totalBalance = new AccountBalanceModel();
                                     totalBalance.setmTitle(response.body().getBalance().getData().getTotalBalance().getTitle());
                                     totalBalance.setmValue(response.body().getBalance().getData().getTotalBalance().getValue());
-                                    totalBalance.setmType("");
+                                    totalBalance.setmType(response.body().getBalance().getData().getTotalBalance().getType());
                                     totalBalanceList.add(totalBalance);
                                 }
-
                             }
                             AccountBalanceModel buttonModel = new AccountBalanceModel();
                             buttonModel.setmTitle("");

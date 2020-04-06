@@ -2,6 +2,7 @@ package com.auxesis.maxcrowdfund.mvvm.ui.uploadImage;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,13 +12,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -28,31 +27,30 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.constant.ImageFilePath;
+import com.auxesis.maxcrowdfund.constant.MaxCrowdFund;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
 import com.auxesis.maxcrowdfund.mvvm.activity.HomeActivity;
+import com.auxesis.maxcrowdfund.mvvm.activity.LoginActivity;
 import com.auxesis.maxcrowdfund.restapi.ApiClient;
 import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
-
 import static android.app.Activity.RESULT_OK;
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
+import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
 
 public class UploadImgFragment extends Fragment {
     private static final String TAG = "UploadImageFragment";
@@ -67,14 +65,14 @@ public class UploadImgFragment extends Fragment {
     String imgExtension;
     ProgressDialog pd;
     byte[] byteArray_photo_1;
-
     CardView cardView;
     TextView tvNoRecordFound;
+    Activity mActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_upload_image, container, false);
-
+        mActivity = getActivity();
         cardView = root.findViewById(R.id.cardView);
         tvNoRecordFound = root.findViewById(R.id.tvNoRecordFound);
 
@@ -97,9 +95,9 @@ public class UploadImgFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (Utils.isInternetConnected(getActivity())) {
-                    if (mConvertedImg1!=null) {
+                    if (mConvertedImg1 != null) {
                         getUploadImage();
-                    }else {
+                    } else {
                         Toast.makeText(getActivity(), "Please select image", Toast.LENGTH_SHORT).show();
                     }
                 } else {
@@ -114,10 +112,11 @@ public class UploadImgFragment extends Fragment {
         try {
             pd = ProgressDialog.show(getActivity(), "Please Wait...");
             JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("avatar",mConvertedImg1);
+            jsonObject.addProperty("avatar", mConvertedImg1);
+            Log.d("avatar---------->>>", mConvertedImg1);
             String XCSRF = getPreference(getActivity(), "mCsrf_token");
             EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
-            Call<ChangeAvatarResponce> call = git.getChangeAvtar("application/json",XCSRF,jsonObject);
+            Call<ChangeAvatarResponce> call = git.getChangeAvtar("application/json", XCSRF, jsonObject);
             call.enqueue(new Callback<ChangeAvatarResponce>() {
                 @Override
                 public void onResponse(@NonNull Call<ChangeAvatarResponce> call, @NonNull retrofit2.Response<ChangeAvatarResponce> response) {
@@ -126,15 +125,30 @@ public class UploadImgFragment extends Fragment {
                         if (pd != null && pd.isShowing()) {
                             pd.dismiss();
                         }
-                        if (response != null && response.isSuccessful()) {
-                            if (response.body().getResult().equals("success")){
-                                Toast.makeText(getActivity(), "Image upload successfully", Toast.LENGTH_SHORT).show();
+                        if (response != null) {
+                            if (response != null && response.isSuccessful()) {
+                                if (response.body().getUserLoginStatus() == 1) {
+                                    if (response.body().getResult().equals("success")) {
+                                        Toast.makeText(getActivity(), "Image upload successfully", Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    setPreference(getActivity(), "user_id", "");
+                                    setPreference(getActivity(), "mLogout_token", "");
+                                    MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                                    Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                    startActivity(intent);
+                                    mActivity.finish();
+                                }
                             }
+                        } else {
+                            Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
+
                 @Override
                 public void onFailure(@NonNull Call<ChangeAvatarResponce> call, @NonNull Throwable t) {
                     Log.e("response", "error " + t.getMessage());
@@ -183,7 +197,7 @@ public class UploadImgFragment extends Fragment {
             public void onClick(View v) {
                 dialog_1.dismiss();
                 ivUserProfile.setImageDrawable(getResources().getDrawable(R.drawable.user));
-                mConvertedImg1=null;
+                mConvertedImg1 = null;
                /* if (byteArray_photo_1 == null) {
                     showToast(SavePhotoesActivity.this, "Please choose photo 1");
                 } else {
@@ -356,8 +370,6 @@ public class UploadImgFragment extends Fragment {
         } */
     }
 
-
-    //////////
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);

@@ -6,7 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 public abstract class PaginationListener extends RecyclerView.OnScrollListener {
-    public static final int PAGE_START = 1;
+    public static final int PAGE_START = 0;
+    //public static final int PAGE_START = 1;
     public static final int VISIBLE_THRESHOLD = 3;
 
 
@@ -37,7 +38,6 @@ public abstract class PaginationListener extends RecyclerView.OnScrollListener {
     /**
      * Supporting only LinearLayoutManager for now.
      */
-
 
     public PaginationListener(@NonNull LinearLayoutManager layoutManager) {
         this.layoutManager = layoutManager;

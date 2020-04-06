@@ -6,7 +6,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.Manifest;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -26,23 +28,13 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkError;
-import com.android.volley.NetworkResponse;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
+
 import com.auxesis.maxcrowdfund.R;
+import com.auxesis.maxcrowdfund.constant.MaxCrowdFund;
 import com.auxesis.maxcrowdfund.customClickListener.OnCustomClickListener;
 import com.auxesis.maxcrowdfund.customClickListener.OnDownloadClickListener;
+import com.auxesis.maxcrowdfund.mvvm.activity.InvestActivity;
+import com.auxesis.maxcrowdfund.mvvm.activity.LoginActivity;
 import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.adapter.CollateralAdapter;
 import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.adapter.DocumentAdapter;
 import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.adapter.FundraiserAdapter;
@@ -55,6 +47,7 @@ import com.auxesis.maxcrowdfund.constant.APIUrl;
 import com.auxesis.maxcrowdfund.constant.CheckForSDCard;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
+import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.detailmodel.FundDetailResponce;
 import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.model.CollateralModelP;
 import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.model.DocumentModel;
 import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.model.FundraiserModel;
@@ -63,11 +56,12 @@ import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.model.LastInvestmentModel;
 import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.model.LoanTermModel;
 import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.model.PhotosVideosModel;
 import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.model.RiskModel;
+import com.auxesis.maxcrowdfund.restapi.ApiClient;
+import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.Gson;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -77,8 +71,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import static com.auxesis.maxcrowdfund.constant.APIUrl.GER_MY_INVEST_DETAILS;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
+import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
 
 public class MaxPropertyGroupDetailActivity extends AppCompatActivity implements OnCustomClickListener, OnDownloadClickListener {
     private static final String TAG = "MaxPropertyGroupDetailA";
@@ -87,7 +86,7 @@ public class MaxPropertyGroupDetailActivity extends AppCompatActivity implements
             tvNoRecord_investment, tv_collateral, tvNoRecord_Collateral, tv_fundraiser, tvNoRecord_foundRaiser, tv_addnal_info_tittle, tv_addnal_content, tv_rik,
             tvNoRecord_Risk, tvNoRecord_Document, tvNoRecord_LastInvestment, tv_last_investment, tv_document;
     ImageView iv_main_ing, iv_logo;
-    Button btn_investment_plan;
+    // Button btn_investment_plan;
     TextView tv_arrow_summary, tv_arrow_loan_terms, tv_arrow_collateral, tv_arrow_fundraiser, tv_arrow_investment_plan, tv_arrow_risk, tv_arrow_document, tv_arrow_last_investment;
 
     LinearLayout ll_contant_summary, ll_contant_loan_terms, ll_contant_collateral, ll_contant_fundraiser, ll_contant_investment, ll_contant_risk, ll_contant_document, ll_contant_last_invest;
@@ -121,11 +120,15 @@ public class MaxPropertyGroupDetailActivity extends AppCompatActivity implements
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
     private String mdownloadFile;
     private long downloadID;
+    Activity mActivity;
+    Button btn_summary_invest, btn_investment_plan, btn_invest_risk, btn_invest_document, btn_last_invest;
+    TextView tvSummaryError, tvInvestmentPlanError, tvInvestRiskError, tvDocumentError, tvLastInvestError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_max_property_group_detail);
+        mActivity = MaxPropertyGroupDetailActivity.this;
         init();
     }
 
@@ -189,7 +192,18 @@ public class MaxPropertyGroupDetailActivity extends AppCompatActivity implements
         tv_investment_plan = findViewById(R.id.tv_investment_plan);
         tvNoRecord_investment = findViewById(R.id.tvNoRecord_investment);
         recyViewInvestment = findViewById(R.id.recyViewInvestment);
+
+        btn_summary_invest = findViewById(R.id.btn_summary_invest);
         btn_investment_plan = findViewById(R.id.btn_investment_plan);
+        btn_invest_risk = findViewById(R.id.btn_invest_risk);
+        btn_invest_document = findViewById(R.id.btn_invest_document);
+        btn_last_invest = findViewById(R.id.btn_last_invest);
+
+        tvSummaryError = findViewById(R.id.tvSummaryError);
+        tvInvestmentPlanError = findViewById(R.id.tvInvestmentPlanError);
+        tvInvestRiskError = findViewById(R.id.tvInvestRiskError);
+        tvDocumentError = findViewById(R.id.tvDocumentError);
+        tvLastInvestError = findViewById(R.id.tvLastInvestError);
 
         //for colletral
         tv_arrow_collateral = findViewById(R.id.tv_arrow_collateral);
@@ -371,416 +385,414 @@ public class MaxPropertyGroupDetailActivity extends AppCompatActivity implements
         });
 
         if (Utils.isInternetConnected(getApplicationContext())) {
-            getInvestedDetailsList();
+            if (getPreference(mActivity, "id") != null && !getPreference(mActivity, "id").isEmpty()) {
+                getInvestedDetailsList(getPreference(mActivity, "id"));
+            }
         } else {
             Toast.makeText(this, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
         }
     }
-    private void getInvestedDetailsList() {
-        Utils.hideKeyboard(this);
+
+    private void getInvestedDetailsList(String loanId) {
         pd = ProgressDialog.show(MaxPropertyGroupDetailActivity.this, "Please Wait...");
-        try {
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, GER_MY_INVEST_DETAILS, null, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    try {
-                        if (pd != null && pd.isShowing()) {
-                            pd.dismiss();
-                        }
-                        Log.d(TAG, "onResponse: " + response);
-
-                        JSONObject jsonObjMain = new JSONObject(response.toString());
-                        if (jsonObjMain != null) {
-                            JSONObject jsonObjDetails = jsonObjMain.getJSONObject("details");
-                            String currency_symbol = jsonObjDetails.getString("currency_symbol");
-                            int filled = jsonObjDetails.getInt("filled");
-                            String location_flag_img = jsonObjDetails.getString("location_flag_img");
-                            String main_img = jsonObjDetails.getString("main_img");
-                            String currency = jsonObjDetails.getString("currency");
-                            tv_mTittle.setText(jsonObjDetails.getString("title"));
-                            tv_interest_pr.setText(jsonObjDetails.getString("interest_pa") + "%");
-                            tv_risk_c.setText(jsonObjDetails.getString("risk_class"));
-                            tv_cur_symbol_amt.setText(currency_symbol);
-                            tvAmount.setText(String.valueOf(jsonObjDetails.getInt("amount")));
-                            tv_filled.setText(String.valueOf(filled) + "%");
-                            tv_investors.setText(String.valueOf(jsonObjDetails.getString("no_of_investors")));
-                            tv_currency_left_amt.setText(currency_symbol);
-                            tv_left_amount.setText(String.valueOf(jsonObjDetails.getInt("amount_left")));
-                            tv_months.setText(String.valueOf(jsonObjDetails.getInt("months")));
-                            tvType.setText(jsonObjDetails.getString("type"));
-                            tv_location.setText(jsonObjDetails.getString("location"));
-                            progessBar.setProgress(filled);
-
-                            try {
-                                if (main_img != null && !main_img.isEmpty() && !main_img.equals("null")) {
-                                    Glide.with(MaxPropertyGroupDetailActivity.this).load(main_img)
-                                            .thumbnail(0.5f)
-                                            .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                            .into(iv_main_ing);
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
-                            JSONArray other_photos_videos = jsonObjDetails.getJSONArray("other_photos_videos");
-                            photosVideosList.clear();
-                            photosVideosList_f.clear();
-
-                            if (other_photos_videos.length() > 0) {
-                                for (int i = 0; i < other_photos_videos.length(); i++) {
-                                    PhotosVideosModel photosVideosModel = new PhotosVideosModel();
-                                    photosVideosModel.setType(other_photos_videos.getJSONObject(i).getString("type"));
-                                    photosVideosModel.setUrl(other_photos_videos.getJSONObject(i).getString("url"));
-                                    photosVideosList.add(photosVideosModel);
-                                }
-                            }
-
-                            if (photosVideosList.size() > 0) {
-                                PhotosVideosModel model = new PhotosVideosModel();
-                                model.setUrl(main_img);
-                                model.setType("photo");
-                                photosVideosList_f.add(model);
-                                photosVideosList_f.addAll(photosVideosList);
-
-                                recyclerView.setVisibility(View.VISIBLE);
-                                tvNoRecord.setVisibility(View.GONE);
-                                adapter = new MyPhotoAdapter(MaxPropertyGroupDetailActivity.this, photosVideosList_f, MaxPropertyGroupDetailActivity.this);
-                                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MaxPropertyGroupDetailActivity.this, LinearLayoutManager.HORIZONTAL, false);
-                                recyclerView.setLayoutManager(mLayoutManager);
-                                recyclerView.setItemAnimator(new DefaultItemAnimator());
-                                recyclerView.setAdapter(adapter);
-                                adapter.notifyDataSetChanged();
-                            } else {
-                                recyclerView.setVisibility(View.GONE);
-                                tvNoRecord.setVisibility(View.VISIBLE);
-                            }
-                            //For Summary data
-                            JSONObject jsonObjSummary = jsonObjDetails.getJSONObject("summary");
-                            tv_summary.setText(jsonObjSummary.getString("heading"));
-
-                            // set Text in TextView using fromHtml() method with version check
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                txt_summary_content.setText(Html.fromHtml(jsonObjSummary.getString("data")));
-                                Log.d(TAG, "onResponse: " + "><><>" + Html.fromHtml(jsonObjSummary.getString("heading")));
-                            } else {
-                                txt_summary_content.setText(Html.fromHtml(jsonObjSummary.getString("data")));
-                            }
-                            Log.d(TAG, "onResponse: " + "><><>" + Html.fromHtml(jsonObjSummary.getString("data")));
-                            //For loan_terms
-                            JSONObject jsonObjLoanTerms = jsonObjDetails.getJSONObject("loan_terms");
-                            tv_loan_terms.setText(jsonObjLoanTerms.getString("heading"));
-                            JSONArray loanTermArray = jsonObjLoanTerms.getJSONArray("data");
-                            loanTermList.clear();
-                            if (loanTermArray.length() > 0) {
-                                for (int i = 0; i < loanTermArray.length(); i++) {
-                                    LoanTermModel loanTermModel = new LoanTermModel();
-                                    loanTermModel.setmLoanTermTitle(loanTermArray.getJSONObject(i).getString("title"));
-                                    loanTermModel.setmLoanTermValue(loanTermArray.getJSONObject(i).getString("value"));
-                                    loanTermList.add(loanTermModel);
-                                }
-                            }
-                            if (loanTermList.size() > 0) {
-                                recyViewLoanTerm.setVisibility(View.VISIBLE);
-                                tvNoRecord_loan_term.setVisibility(View.GONE);
-                                loanTermAdapter = new LoanTermAdapter(MaxPropertyGroupDetailActivity.this, loanTermList);
-                                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MaxPropertyGroupDetailActivity.this, LinearLayoutManager.VERTICAL, false);
-                                recyViewLoanTerm.setLayoutManager(mLayoutManager);
-                                recyViewLoanTerm.setItemAnimator(new DefaultItemAnimator());
-                                recyViewLoanTerm.setAdapter(loanTermAdapter);
-                                loanTermAdapter.notifyDataSetChanged();
-                            } else {
-                                recyViewLoanTerm.setVisibility(View.GONE);
-                                tvNoRecord_loan_term.setVisibility(View.VISIBLE);
-                            }
-                            //For collateral
-                            JSONObject jsonObjCollateral = jsonObjDetails.getJSONObject("collateral");
-                            tv_collateral.setText(jsonObjCollateral.getString("heading"));
-                            JSONArray collateralArray = jsonObjCollateral.getJSONArray("data");
-
-                            collateralListFirst.clear();
-                            collateralListSecond.clear();
-
-                            if (collateralArray.length() > 0) {
-                                for (int i = 0; i < collateralArray.length(); i++) {
-                                    CollateralModelP collateralModel = new CollateralModelP(collateralArray.getJSONObject(i).getString("heading"));
-                                    JSONArray jsonArraySub = collateralArray.getJSONObject(i).getJSONArray("data");
-                                    collateralListFirst.add(collateralModel);
-                                    collateralListSecond.clear();
-                                    for (int j = 0; j < jsonArraySub.length(); j++) {
-                                        CollateralModelP collateralModelCh = new CollateralModelP(jsonArraySub.getJSONObject(j).getString("title"), jsonArraySub.getJSONObject(j).getString("value"));
-                                        collateralListSecond.add(collateralModelCh);
-                                    }
-                                    collateralListFirst.addAll(collateralListSecond);
-                                }
-                            }
-
-                            if (collateralListFirst.size() > 0) {
-                                recyViewCollateral.setVisibility(View.VISIBLE);
-                                tvNoRecord_Collateral.setVisibility(View.GONE);
-                                collateralAdapter = new CollateralAdapter(MaxPropertyGroupDetailActivity.this, collateralListFirst);
-                                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MaxPropertyGroupDetailActivity.this, LinearLayoutManager.VERTICAL, false);
-                                recyViewCollateral.setLayoutManager(mLayoutManager);
-                                recyViewCollateral.setItemAnimator(new DefaultItemAnimator());
-                                recyViewCollateral.setAdapter(collateralAdapter);
-                                collateralAdapter.notifyDataSetChanged();
-                            } else {
-                                recyViewCollateral.setVisibility(View.GONE);
-                                tvNoRecord_Collateral.setVisibility(View.VISIBLE);
-                            }
-                            //For FoundRaiser
-                            try {
-                                JSONObject foundraiser = jsonObjDetails.getJSONObject("fundraiser");
-                                tv_fundraiser.setText(foundraiser.getString("heading"));
-                                JSONObject jsonObject = foundraiser.getJSONObject("data");
-                                String logoImg = jsonObject.getString("logo");
-                                try {
-                                    if (logoImg != null && !logoImg.isEmpty() && !logoImg.equals("null")) {
-                                        Glide.with(MaxPropertyGroupDetailActivity.this).load(logoImg)
-                                                .thumbnail(0.5f)
-                                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                                .into(iv_logo);
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-
-                                JSONArray foundraiserArray = jsonObject.getJSONArray("data");
-                                fundraiserModelList.clear();
-                                if (foundraiserArray.length() > 0) {
-                                    for (int i = 0; i < foundraiserArray.length(); i++) {
-                                        FundraiserModel foundraiserModel = new FundraiserModel(foundraiserArray.getJSONObject(i).getString("title"), foundraiserArray.getJSONObject(i).getString("value"));
-                                        fundraiserModelList.add(foundraiserModel);
-                                    }
-                                }
-
-                                if (fundraiserModelList.size() > 0) {
-                                    recyViewFoundRaiser.setVisibility(View.VISIBLE);
-                                    tvNoRecord_foundRaiser.setVisibility(View.GONE);
-                                    fundraiserAdapter = new FundraiserAdapter(MaxPropertyGroupDetailActivity.this, fundraiserModelList);
-                                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MaxPropertyGroupDetailActivity.this, LinearLayoutManager.VERTICAL, false);
-                                    recyViewFoundRaiser.setLayoutManager(mLayoutManager);
-                                    recyViewFoundRaiser.setItemAnimator(new DefaultItemAnimator());
-                                    recyViewFoundRaiser.setAdapter(fundraiserAdapter);
-                                    fundraiserAdapter.notifyDataSetChanged();
-                                } else {
-                                    recyViewFoundRaiser.setVisibility(View.GONE);
-                                    tvNoRecord_foundRaiser.setVisibility(View.VISIBLE);
-                                }
-
-                                JSONObject additionalInfo = jsonObject.getJSONObject("additional");
-                                tv_addnal_info_tittle.setText(additionalInfo.getString("title"));
-                                // tv_addnal_content.setText(additionalInfo.getString("value"));/
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                    tv_addnal_content.setText(Html.fromHtml(additionalInfo.getString("value")));
-                                    Log.d(TAG, "onResponse: " + "><><>" + Html.fromHtml(additionalInfo.getString("value")));
-                                } else {
-                                    tv_addnal_content.setText(Html.fromHtml(additionalInfo.getString("value")));
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                            //For Risk
-                            JSONObject jsonObjRisk = jsonObjDetails.getJSONObject("risk");
-                            tv_rik.setText(jsonObjRisk.getString("heading"));
-                            JSONArray riskArray = jsonObjRisk.getJSONArray("data");
-                            riskList.clear();
-                            if (riskArray.length() > 0) {
-                                for (int i = 0; i < riskArray.length(); i++) {
-                                    RiskModel riskModel = new RiskModel();
-                                    riskModel.setmRiskTitle(riskArray.getJSONObject(i).getJSONObject("risk").getString("title"));
-                                    riskModel.setmRiskValue(riskArray.getJSONObject(i).getJSONObject("risk").getString("value"));
-                                    riskModel.setmScoreTitle(riskArray.getJSONObject(i).getJSONObject("score").getString("title"));
-                                    riskModel.setmScoreValue(riskArray.getJSONObject(i).getJSONObject("score").getString("value"));
-                                    riskModel.setmMeasureTitle(riskArray.getJSONObject(i).getJSONObject("measure").getString("title"));
-                                    riskModel.setmMeasureValue(riskArray.getJSONObject(i).getJSONObject("measure").getString("value"));
-                                    riskList.add(riskModel);
-                                }
-                            }
-
-                            if (riskList.size() > 0) {
-                                recyViewRisk.setVisibility(View.VISIBLE);
-                                tvNoRecord_Risk.setVisibility(View.GONE);
-                                riskAdapter = new RiskAdapter(MaxPropertyGroupDetailActivity.this, riskList);
-                                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MaxPropertyGroupDetailActivity.this, LinearLayoutManager.VERTICAL, false);
-                                recyViewRisk.setLayoutManager(mLayoutManager);
-                                recyViewRisk.setItemAnimator(new DefaultItemAnimator());
-                                recyViewRisk.setAdapter(riskAdapter);
-                                riskAdapter.notifyDataSetChanged();
-                            } else {
-                                recyViewRisk.setVisibility(View.GONE);
-                                tvNoRecord_Risk.setVisibility(View.VISIBLE);
-                            }
-
-                            //For Investment plan
-                            JSONObject jsonObjinvestment_plan = jsonObjDetails.getJSONObject("investment_plan");
-                            tv_investment_plan.setText(jsonObjinvestment_plan.getString("heading"));
-                            JSONArray investment_planArray = jsonObjinvestment_plan.getJSONArray("data");
-                            investmentPlanList.clear();
-                            if (investment_planArray.length() > 0) {
-                                for (int i = 0; i < investment_planArray.length(); i++) {
-                                    InvestmentPlanModel investmentPlanModel = new InvestmentPlanModel();
-                                    investmentPlanModel.setmInvestmentPlanTitle(investment_planArray.getJSONObject(i).getString("title"));
-                                    investmentPlanModel.setmInvestmentPlanValue(investment_planArray.getJSONObject(i).getString("value"));
-                                    investmentPlanList.add(investmentPlanModel);
-                                }
-                            }
-
-                            if (investmentPlanList.size() > 0) {
-                                recyViewInvestment.setVisibility(View.VISIBLE);
-                                tvNoRecord_investment.setVisibility(View.GONE);
-                                investmentPlanAdapter = new InvestmentPlanAdapter(MaxPropertyGroupDetailActivity.this, investmentPlanList);
-                                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MaxPropertyGroupDetailActivity.this, LinearLayoutManager.VERTICAL, false);
-                                recyViewInvestment.setLayoutManager(mLayoutManager);
-                                recyViewInvestment.setItemAnimator(new DefaultItemAnimator());
-                                recyViewInvestment.setAdapter(investmentPlanAdapter);
-                                investmentPlanAdapter.notifyDataSetChanged();
-                            } else {
-                                recyViewInvestment.setVisibility(View.GONE);
-                                tvNoRecord_investment.setVisibility(View.VISIBLE);
-                            }
-
-                            //For Document
-                            JSONObject jsonObjDocument = jsonObjDetails.getJSONObject("documents");
-                            tv_document.setText(jsonObjDocument.getString("heading"));
-                            JSONArray documentArray = jsonObjDocument.getJSONArray("data");
-                            documentList.clear();
-                            if (documentArray.length() > 0) {
-                                for (int i = 0; i < documentArray.length(); i++) {
-                                    DocumentModel documentModel = new DocumentModel(documentArray.getJSONObject(i).getString("title"),
-                                            documentArray.getJSONObject(i).getString("url"));
-                                    documentList.add(documentModel);
-                                }
-                            }
-                            if (documentList.size() > 0) {
-                                recyViewDocument.setVisibility(View.VISIBLE);
-                                tvNoRecord_Document.setVisibility(View.GONE);
-                                documentAdapter = new DocumentAdapter(getApplicationContext(), MaxPropertyGroupDetailActivity.this, documentList);
-                                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MaxPropertyGroupDetailActivity.this, LinearLayoutManager.VERTICAL, false);
-                                recyViewDocument.setLayoutManager(mLayoutManager);
-                                recyViewDocument.setItemAnimator(new DefaultItemAnimator());
-                                recyViewDocument.setAdapter(documentAdapter);
-                                documentAdapter.notifyDataSetChanged();
-                            } else {
-                                recyViewDocument.setVisibility(View.GONE);
-                                tvNoRecord_Document.setVisibility(View.VISIBLE);
-                            }
-
-                            //For last Investment
-                            JSONObject jsonObjlastInvestment = jsonObjDetails.getJSONObject("last_investment");
-                            tv_last_investment.setText(jsonObjlastInvestment.getString("heading"));
-                            JSONArray lastInvestmentArray = jsonObjlastInvestment.getJSONArray("data");
-                            lastInvestmentList.clear();
-                            if (lastInvestmentArray.length() > 0) {
-                                for (int i = 0; i < lastInvestmentArray.length(); i++) {
-                                    LastInvestmentModel lastInvestmentModel = new LastInvestmentModel(lastInvestmentArray.getJSONObject(i).getString("data"));
-                                    lastInvestmentList.add(lastInvestmentModel);
-                                }
-                            }
-                            if (lastInvestmentList.size() > 0) {
-                                recyViewLastInvestment.setVisibility(View.VISIBLE);
-                                tvNoRecord_LastInvestment.setVisibility(View.GONE);
-                                lastInvestmentAdapter = new LastInvestmentAdapter(MaxPropertyGroupDetailActivity.this, lastInvestmentList);
-                                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MaxPropertyGroupDetailActivity.this, LinearLayoutManager.VERTICAL, false);
-                                recyViewLastInvestment.setLayoutManager(mLayoutManager);
-                                recyViewLastInvestment.setItemAnimator(new DefaultItemAnimator());
-                                recyViewLastInvestment.setAdapter(lastInvestmentAdapter);
-                                lastInvestmentAdapter.notifyDataSetChanged();
-                            } else {
-                                recyViewLastInvestment.setVisibility(View.GONE);
-                                tvNoRecord_LastInvestment.setVisibility(View.VISIBLE);
-                            }
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
+        String XCSRF = getPreference(MaxPropertyGroupDetailActivity.this, "mCsrf_token");
+        EndPointInterface git = ApiClient.getClient1(getApplicationContext()).create(EndPointInterface.class);
+        Call<FundDetailResponce> call = git.getInvestmentOppDetail(loanId, "application/json", XCSRF);
+        call.enqueue(new Callback<FundDetailResponce>() {
+            @Override
+            public void onResponse(Call<FundDetailResponce> call, Response<FundDetailResponce> response) {
+                Log.d(TAG, "onResponse: " + "><><" + new Gson().toJson(response.body()));
+                try {
                     if (pd != null && pd.isShowing()) {
                         pd.dismiss();
                     }
-                    //showToast(MyInvestmentDetailActivity.this, getResources().getString(R.string.something_went));
-                    String json = null;
-                    String Message;
-                    NetworkResponse response = error.networkResponse;
-                    if (response != null && response.data != null) {
-                        try {
-                            JSONObject errorObj = new JSONObject(new String(response.data));
-                            if (response.statusCode == 400 || response.statusCode == 405 || response.statusCode == 500) {
-                                Toast.makeText(MaxPropertyGroupDetailActivity.this, getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
-                            } else if (response.statusCode == 401) {
+                    if (response != null) {
+                        if (response != null && response.isSuccessful()) {
+                            if (response.body().getUserLoginStatus() == 1) {
+                                if (response.body().getDetails() != null) {
+                                    String currency_symbol = response.body().getDetails().getCurrencySymbol();
+                                    int filled = Integer.valueOf(response.body().getDetails().getFilled());
+                                    // String location_flag_img = jsonObjDetails.getString("location_flag_img");
+                                    String main_img = response.body().getDetails().getMainImg();
 
-                            } else if (response.statusCode == 422) {
-                                Toast.makeText(MaxPropertyGroupDetailActivity.this, getResources().getString(R.string.please_try_again), Toast.LENGTH_SHORT).show();
-                            } else if (response.statusCode == 503) {
-                                Toast.makeText(MaxPropertyGroupDetailActivity.this, getResources().getString(R.string.server_down), Toast.LENGTH_SHORT).show();
+                                    String currency = response.body().getDetails().getCurrency();
+                                    tv_mTittle.setText(response.body().getDetails().getTitle());
+                                    tv_interest_pr.setText(response.body().getDetails().getInterestPa() + "%");
+                                    tv_risk_c.setText(response.body().getDetails().getRiskClass());
+                                    tv_cur_symbol_amt.setText(currency_symbol);
+                                    tvAmount.setText(String.valueOf(response.body().getDetails().getAmount()));
+                                    tv_filled.setText(String.valueOf(filled) + "%");
+                                    tv_investors.setText(String.valueOf(response.body().getDetails().getNoOfInvestors()));
+                                    tv_currency_left_amt.setText(currency_symbol);
+                                    tv_left_amount.setText(String.valueOf(response.body().getDetails().getAmountLeft()));
+                                    tv_months.setText(String.valueOf(response.body().getDetails().getMonths()));
+                                    tvType.setText(response.body().getDetails().getType());
+                                    tv_location.setText(response.body().getDetails().getLocation());
+                                    progessBar.setProgress(filled);
+
+                                    if (response.body().getDetails().getInvestButtonCheck() == 1) {
+                                        btn_summary_invest.setVisibility(View.VISIBLE);
+                                        btn_investment_plan.setVisibility(View.VISIBLE);
+                                        btn_invest_risk.setVisibility(View.VISIBLE);
+                                        btn_invest_document.setVisibility(View.VISIBLE);
+                                        btn_last_invest.setVisibility(View.VISIBLE);
+
+                                        tvSummaryError.setVisibility(View.GONE);
+                                        tvInvestmentPlanError.setVisibility(View.GONE);
+                                        tvInvestRiskError.setVisibility(View.GONE);
+                                        tvDocumentError.setVisibility(View.GONE);
+                                        tvLastInvestError.setVisibility(View.GONE);
+
+                                        btn_summary_invest.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Intent intent =new Intent(mActivity, InvestActivity.class);
+                                                intent.putExtra("loan_id",response.body().getDetails().getId());
+                                                startActivity(intent);
+                                            }
+                                        });
+                                        btn_investment_plan.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Intent intent =new Intent(mActivity, InvestActivity.class);
+                                                intent.putExtra("loan_id",response.body().getDetails().getId());
+                                                startActivity(intent);                                            }
+                                        });
+                                        btn_invest_risk.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Intent intent =new Intent(mActivity, InvestActivity.class);
+                                                intent.putExtra("loan_id",response.body().getDetails().getId());
+                                                startActivity(intent);
+                                            }
+                                        });
+                                        btn_invest_document.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Intent intent =new Intent(mActivity, InvestActivity.class);
+                                                intent.putExtra("loan_id",response.body().getDetails().getId());
+                                                startActivity(intent);
+                                            }
+                                        });
+                                        btn_last_invest.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Intent intent =new Intent(mActivity, InvestActivity.class);
+                                                intent.putExtra("loan_id",response.body().getDetails().getId());
+                                                startActivity(intent);
+                                            }
+                                        });
+                                    } else {
+                                        btn_summary_invest.setVisibility(View.GONE);
+                                        btn_investment_plan.setVisibility(View.GONE);
+                                        btn_invest_risk.setVisibility(View.GONE);
+                                        btn_invest_document.setVisibility(View.GONE);
+                                        btn_last_invest.setVisibility(View.GONE);
+
+                                        tvSummaryError.setVisibility(View.VISIBLE);
+                                        tvInvestmentPlanError.setVisibility(View.VISIBLE);
+                                        tvInvestRiskError.setVisibility(View.VISIBLE);
+                                        tvDocumentError.setVisibility(View.VISIBLE);
+                                        tvLastInvestError.setVisibility(View.VISIBLE);
+
+                                        tvSummaryError.setText(response.body().getDetails().getErrorMsg());
+                                        tvInvestmentPlanError.setText(response.body().getDetails().getErrorMsg());
+                                        tvInvestRiskError.setText(response.body().getDetails().getErrorMsg());
+                                        tvDocumentError.setText(response.body().getDetails().getErrorMsg());
+                                        tvLastInvestError.setText(response.body().getDetails().getErrorMsg());
+                                    }
+                                    try {
+                                        if (main_img != null && !main_img.isEmpty() && !main_img.equals("null")) {
+                                            Glide.with(MaxPropertyGroupDetailActivity.this).load(main_img)
+                                                    .thumbnail(0.5f)
+                                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                                    .into(iv_main_ing);
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    photosVideosList.clear();
+                                    photosVideosList_f.clear();
+
+                                    if (response.body().getDetails().getOtherPhotosVideos().size() > 0) {
+                                        for (int i = 0; i < response.body().getDetails().getOtherPhotosVideos().size(); i++) {
+                                            PhotosVideosModel photosVideosModel = new PhotosVideosModel();
+                                            photosVideosModel.setType(response.body().getDetails().getOtherPhotosVideos().get(i).getType());
+                                            photosVideosModel.setUrl(response.body().getDetails().getOtherPhotosVideos().get(i).getUrl());
+                                            photosVideosList.add(photosVideosModel);
+                                        }
+                                    }
+                                    if (photosVideosList.size() > 0) {
+                                        PhotosVideosModel model = new PhotosVideosModel();
+                                        model.setUrl(main_img);
+                                        model.setType("photo");
+                                        photosVideosList_f.add(model);
+                                        photosVideosList_f.addAll(photosVideosList);
+
+                                        recyclerView.setVisibility(View.VISIBLE);
+                                        tvNoRecord.setVisibility(View.GONE);
+
+                                        adapter = new MyPhotoAdapter(MaxPropertyGroupDetailActivity.this, photosVideosList_f, MaxPropertyGroupDetailActivity.this);
+                                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MaxPropertyGroupDetailActivity.this, LinearLayoutManager.HORIZONTAL, false);
+                                        recyclerView.setLayoutManager(mLayoutManager);
+                                        recyclerView.setItemAnimator(new DefaultItemAnimator());
+                                        recyclerView.setAdapter(adapter);
+                                        adapter.notifyDataSetChanged();
+                                    } else {
+                                        recyclerView.setVisibility(View.GONE);
+                                        tvNoRecord.setVisibility(View.VISIBLE);
+                                    }
+                                    //For Summary data
+
+                                    tv_summary.setText(response.body().getDetails().getSummary().getHeading());
+
+                                    // set Text in TextView using fromHtml() method with version check
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                        txt_summary_content.setText(Html.fromHtml(response.body().getDetails().getSummary().getData()));
+                                    } else {
+                                        txt_summary_content.setText(Html.fromHtml(response.body().getDetails().getSummary().getData()));
+                                    }
+                                    //For loan_terms
+
+                                    tv_loan_terms.setText(response.body().getDetails().getLoanTerms().getHeading());
+                                    loanTermList.clear();
+                                    if (response.body().getDetails().getLoanTerms().getData().size() > 0) {
+                                        for (int i = 0; i < response.body().getDetails().getLoanTerms().getData().size(); i++) {
+                                            LoanTermModel loanTermModel = new LoanTermModel();
+                                            loanTermModel.setmLoanTermTitle(response.body().getDetails().getLoanTerms().getData().get(i).getTitle());
+                                            loanTermModel.setmLoanTermValue(response.body().getDetails().getLoanTerms().getData().get(i).getValue());
+                                            loanTermList.add(loanTermModel);
+                                        }
+                                    }
+                                    if (loanTermList.size() > 0) {
+                                        recyViewLoanTerm.setVisibility(View.VISIBLE);
+                                        tvNoRecord_loan_term.setVisibility(View.GONE);
+                                        loanTermAdapter = new LoanTermAdapter(MaxPropertyGroupDetailActivity.this, loanTermList);
+                                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MaxPropertyGroupDetailActivity.this, LinearLayoutManager.VERTICAL, false);
+                                        recyViewLoanTerm.setLayoutManager(mLayoutManager);
+                                        recyViewLoanTerm.setItemAnimator(new DefaultItemAnimator());
+                                        recyViewLoanTerm.setAdapter(loanTermAdapter);
+                                        loanTermAdapter.notifyDataSetChanged();
+                                    } else {
+                                        recyViewLoanTerm.setVisibility(View.GONE);
+                                        tvNoRecord_loan_term.setVisibility(View.VISIBLE);
+                                    }
+                                    //For collateral
+                                    tv_collateral.setText(response.body().getDetails().getCollateral().getHeading());
+                                    collateralListFirst.clear();
+                                    collateralListSecond.clear();
+
+                                    if (response.body().getDetails().getCollateral().getData().size() > 0) {
+                                        for (int i = 0; i < response.body().getDetails().getCollateral().getData().size(); i++) {
+                                            CollateralModelP collateralModel = new CollateralModelP(response.body().getDetails().getCollateral().getData().get(i).getHeading());
+                                            //JSONArray jsonArraySub = collateralArray.getJSONObject(i).getJSONArray("data");
+                                            collateralListFirst.add(collateralModel);
+                                            collateralListSecond.clear();
+
+                                            for (int j = 0; j < response.body().getDetails().getCollateral().getData().get(i).getData().size(); j++) {
+                                                CollateralModelP collateralModelCh = new CollateralModelP(
+                                                        response.body().getDetails().getCollateral().getData().get(i).getData().get(j).getTitle(),
+                                                        response.body().getDetails().getCollateral().getData().get(i).getData().get(j).getValue());
+                                                collateralListSecond.add(collateralModelCh);
+                                            }
+                                            collateralListFirst.addAll(collateralListSecond);
+                                        }
+                                    } else {
+                                        Toast.makeText(mActivity, getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    if (collateralListFirst.size() > 0) {
+                                        recyViewCollateral.setVisibility(View.VISIBLE);
+                                        tvNoRecord_Collateral.setVisibility(View.GONE);
+                                        collateralAdapter = new CollateralAdapter(MaxPropertyGroupDetailActivity.this, collateralListFirst);
+                                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MaxPropertyGroupDetailActivity.this, LinearLayoutManager.VERTICAL, false);
+                                        recyViewCollateral.setLayoutManager(mLayoutManager);
+                                        recyViewCollateral.setItemAnimator(new DefaultItemAnimator());
+                                        recyViewCollateral.setAdapter(collateralAdapter);
+                                        collateralAdapter.notifyDataSetChanged();
+                                    } else {
+                                        recyViewCollateral.setVisibility(View.GONE);
+                                        tvNoRecord_Collateral.setVisibility(View.VISIBLE);
+                                    }
+                                    //For FoundRaiser
+                                    tv_fundraiser.setText(response.body().getDetails().getFundraiser().getHeading());
+                                    String logoImg = response.body().getDetails().getFundraiser().getData().getLogo();
+                                    try {
+                                        if (logoImg != null && !logoImg.isEmpty() && !logoImg.equals("null")) {
+                                            Glide.with(MaxPropertyGroupDetailActivity.this).load(logoImg)
+                                                    .thumbnail(0.5f)
+                                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                                    .into(iv_logo);
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    fundraiserModelList.clear();
+                                    if (response.body().getDetails().getFundraiser().getData().getData().size() > 0) {
+                                        for (int i = 0; i < response.body().getDetails().getFundraiser().getData().getData().size(); i++) {
+                                            FundraiserModel foundraiserModel = new FundraiserModel(response.body().getDetails().getFundraiser().getData().getData().get(i).getTitle(),
+                                                    response.body().getDetails().getFundraiser().getData().getData().get(i).getValue());
+                                            fundraiserModelList.add(foundraiserModel);
+                                        }
+                                    }
+
+                                    if (fundraiserModelList.size() > 0) {
+                                        recyViewFoundRaiser.setVisibility(View.VISIBLE);
+                                        tvNoRecord_foundRaiser.setVisibility(View.GONE);
+                                        fundraiserAdapter = new FundraiserAdapter(MaxPropertyGroupDetailActivity.this, fundraiserModelList);
+                                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MaxPropertyGroupDetailActivity.this, LinearLayoutManager.VERTICAL, false);
+                                        recyViewFoundRaiser.setLayoutManager(mLayoutManager);
+                                        recyViewFoundRaiser.setItemAnimator(new DefaultItemAnimator());
+                                        recyViewFoundRaiser.setAdapter(fundraiserAdapter);
+                                        fundraiserAdapter.notifyDataSetChanged();
+                                    } else {
+                                        recyViewFoundRaiser.setVisibility(View.GONE);
+                                        tvNoRecord_foundRaiser.setVisibility(View.VISIBLE);
+                                    }
+
+                                    tv_addnal_info_tittle.setText(response.body().getDetails().getFundraiser().getData().getAdditional().getTitle());
+                                    // tv_addnal_content.setText(additionalInfo.getString("value"));/
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                        tv_addnal_content.setText(Html.fromHtml(response.body().getDetails().getFundraiser().getData().getAdditional().getValue()));
+                                    } else {
+                                        tv_addnal_content.setText(Html.fromHtml(response.body().getDetails().getFundraiser().getData().getAdditional().getValue()));
+                                    }
+
+                                    //For Risk
+                                    tv_rik.setText(response.body().getDetails().getRisk().getHeading());
+                                    riskList.clear();
+                                    if (response.body().getDetails().getRisk().getData().size() > 0) {
+                                        for (int i = 0; i < response.body().getDetails().getRisk().getData().size(); i++) {
+                                            RiskModel riskModel = new RiskModel();
+                                            riskModel.setmRiskTitle(response.body().getDetails().getRisk().getData().get(i).getRisk().getTitle());
+                                            riskModel.setmRiskValue(response.body().getDetails().getRisk().getData().get(i).getRisk().getValue());
+                                            riskModel.setmScoreTitle(response.body().getDetails().getRisk().getData().get(i).getScore().getTitle());
+                                            riskModel.setmScoreValue(response.body().getDetails().getRisk().getData().get(i).getScore().getValue());
+                                            riskModel.setmMeasureTitle(response.body().getDetails().getRisk().getData().get(i).getMeasure().getTitle());
+                                            riskModel.setmMeasureValue(response.body().getDetails().getRisk().getData().get(i).getMeasure().getValue());
+                                            riskList.add(riskModel);
+                                        }
+                                    }
+
+                                    if (riskList.size() > 0) {
+                                        recyViewRisk.setVisibility(View.VISIBLE);
+                                        tvNoRecord_Risk.setVisibility(View.GONE);
+                                        riskAdapter = new RiskAdapter(MaxPropertyGroupDetailActivity.this, riskList);
+                                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MaxPropertyGroupDetailActivity.this, LinearLayoutManager.VERTICAL, false);
+                                        recyViewRisk.setLayoutManager(mLayoutManager);
+                                        recyViewRisk.setItemAnimator(new DefaultItemAnimator());
+                                        recyViewRisk.setAdapter(riskAdapter);
+                                        riskAdapter.notifyDataSetChanged();
+                                    } else {
+                                        recyViewRisk.setVisibility(View.GONE);
+                                        tvNoRecord_Risk.setVisibility(View.VISIBLE);
+                                    }
+
+                                    //For Investment plan
+
+                                    tv_investment_plan.setText(response.body().getDetails().getInvestmentPlan().getHeading());
+                                    investmentPlanList.clear();
+                                    if (response.body().getDetails().getInvestmentPlan().getData().size() > 0) {
+                                        for (int i = 0; i < response.body().getDetails().getInvestmentPlan().getData().size(); i++) {
+                                            InvestmentPlanModel investmentPlanModel = new InvestmentPlanModel();
+                                            investmentPlanModel.setmInvestmentPlanTitle(response.body().getDetails().getInvestmentPlan().getData().get(i).getTitle());
+                                            investmentPlanModel.setmInvestmentPlanValue(response.body().getDetails().getInvestmentPlan().getData().get(i).getValue());
+                                            investmentPlanList.add(investmentPlanModel);
+                                        }
+                                    }
+
+                                    if (investmentPlanList.size() > 0) {
+                                        recyViewInvestment.setVisibility(View.VISIBLE);
+                                        tvNoRecord_investment.setVisibility(View.GONE);
+                                        investmentPlanAdapter = new InvestmentPlanAdapter(MaxPropertyGroupDetailActivity.this, investmentPlanList);
+                                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MaxPropertyGroupDetailActivity.this, LinearLayoutManager.VERTICAL, false);
+                                        recyViewInvestment.setLayoutManager(mLayoutManager);
+                                        recyViewInvestment.setItemAnimator(new DefaultItemAnimator());
+                                        recyViewInvestment.setAdapter(investmentPlanAdapter);
+                                        investmentPlanAdapter.notifyDataSetChanged();
+                                    } else {
+                                        recyViewInvestment.setVisibility(View.GONE);
+                                        tvNoRecord_investment.setVisibility(View.VISIBLE);
+                                    }
+
+                                    //For Document
+                                    tv_document.setText(response.body().getDetails().getDocuments().getHeading());
+                                    documentList.clear();
+                                    if (response.body().getDetails().getDocuments().getData().size() > 0) {
+                                        for (int i = 0; i < response.body().getDetails().getDocuments().getData().size(); i++) {
+                                            DocumentModel documentModel = new DocumentModel(response.body().getDetails().getDocuments().getData().get(i).getTitle(),
+                                                    response.body().getDetails().getDocuments().getData().get(i).getUrl());
+                                            documentList.add(documentModel);
+                                        }
+                                    }
+                                    if (documentList.size() > 0) {
+                                        recyViewDocument.setVisibility(View.VISIBLE);
+                                        tvNoRecord_Document.setVisibility(View.GONE);
+                                        documentAdapter = new DocumentAdapter(getApplicationContext(), MaxPropertyGroupDetailActivity.this, documentList);
+                                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MaxPropertyGroupDetailActivity.this, LinearLayoutManager.VERTICAL, false);
+                                        recyViewDocument.setLayoutManager(mLayoutManager);
+                                        recyViewDocument.setItemAnimator(new DefaultItemAnimator());
+                                        recyViewDocument.setAdapter(documentAdapter);
+                                        documentAdapter.notifyDataSetChanged();
+                                    } else {
+                                        recyViewDocument.setVisibility(View.GONE);
+                                        tvNoRecord_Document.setVisibility(View.VISIBLE);
+                                    }
+
+                                    //For last Investment
+                                    tv_last_investment.setText(response.body().getDetails().getLastInvestment().getHeading());
+                                    lastInvestmentList.clear();
+                                    if (response.body().getDetails().getLastInvestment().getData().size() > 0) {
+                                        for (int i = 0; i < response.body().getDetails().getLastInvestment().getData().size(); i++) {
+                                            LastInvestmentModel lastInvestmentModel = new LastInvestmentModel(response.body().getDetails().getLastInvestment().getData().get(i).getData());
+                                            lastInvestmentList.add(lastInvestmentModel);
+                                        }
+                                    }
+                                    if (lastInvestmentList.size() > 0) {
+                                        recyViewLastInvestment.setVisibility(View.VISIBLE);
+                                        tvNoRecord_LastInvestment.setVisibility(View.GONE);
+                                        lastInvestmentAdapter = new LastInvestmentAdapter(MaxPropertyGroupDetailActivity.this, lastInvestmentList);
+                                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MaxPropertyGroupDetailActivity.this, LinearLayoutManager.VERTICAL, false);
+                                        recyViewLastInvestment.setLayoutManager(mLayoutManager);
+                                        recyViewLastInvestment.setItemAnimator(new DefaultItemAnimator());
+                                        recyViewLastInvestment.setAdapter(lastInvestmentAdapter);
+                                        lastInvestmentAdapter.notifyDataSetChanged();
+                                    } else {
+                                        recyViewLastInvestment.setVisibility(View.GONE);
+                                        tvNoRecord_LastInvestment.setVisibility(View.VISIBLE);
+                                    }
+                                } else {
+                                    Toast.makeText(mActivity, getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                                }
                             } else {
-                                Toast.makeText(MaxPropertyGroupDetailActivity.this, getResources().getString(R.string.please_try_again), Toast.LENGTH_SHORT).show();
+                                setPreference(mActivity, "user_id", "");
+                                setPreference(mActivity, "mLogout_token", "");
+                                MaxCrowdFund.getClearCookies(mActivity, "cookies", "");
+                                Toast.makeText(mActivity, getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(mActivity, LoginActivity.class);
+                                startActivity(intent);
+                                mActivity.finish();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
                     } else {
-                        if (error instanceof NoConnectionError) {
-                            Toast.makeText(MaxPropertyGroupDetailActivity.this,  getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
-                        } else if (error instanceof NetworkError) {
-                            Toast.makeText(MaxPropertyGroupDetailActivity.this,  getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
-                        } else if (error instanceof TimeoutError) {
-                            try {
-                                if (error.networkResponse == null) {
-                                    if (error.getClass().equals(TimeoutError.class)) {
-                                        // Show timeout error message
-                                        Toast.makeText(MaxPropertyGroupDetailActivity.this,  getResources().getString(R.string.timed_out), Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        } else if (error instanceof AuthFailureError) {
-                            Log.d(TAG, "onErrorResponse: " + "AuthFailureError" + AuthFailureError.class);
-                        } else if (error instanceof ServerError) {
-                            Log.d(TAG, "onErrorResponse: " + "ServerError" + ServerError.class);
-                            //Indicates that the server responded with a error response
-                        } else if (error instanceof ParseError) {
-                            Log.d(TAG, "onErrorResponse: " + "ParseError" + ParseError.class);
-                            // Indicates that the server response could not be parsed
-                        }
+                        Toast.makeText(mActivity, getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                     }
-                    error.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            }) {
-                @Override
-                public String getBodyContentType() {
-                    return "application/json";
-                }
-                @Override
-                public Map getHeaders() throws AuthFailureError {
-                    HashMap headers = new HashMap();
-                    String mCsrfToken =getPreference(MaxPropertyGroupDetailActivity.this, "mCsrf_token");
-                    if (mCsrfToken!=null && !mCsrfToken.isEmpty()){
-                        headers.put("X-CSRF-TOKEN", mCsrfToken);
-                    }
-                    headers.put("Content-Type", "application/json");
-                    return headers;
-                }
-            };
-            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            RequestQueue queue = Volley.newRequestQueue(this);
-            queue.add(jsonObjectRequest);
-        } catch (Error e) {
-            if (pd != null && pd.isShowing()) {
-                pd.dismiss();
             }
-            e.printStackTrace();
-        } catch (Exception e) {
-            if (pd != null && pd.isShowing()) {
-                pd.dismiss();
+
+            @Override
+            public void onFailure(Call<FundDetailResponce> call, Throwable t) {
+                Log.e("response", "error " + t.getMessage());
+                Toast.makeText(mActivity, t.getMessage(), Toast.LENGTH_SHORT).show();
+                if (pd != null && pd.isShowing()) {
+                    pd.dismiss();
+                }
             }
-            e.printStackTrace();
-        }
+        });
     }
 
     @Override
@@ -839,7 +851,7 @@ public class MaxPropertyGroupDetailActivity extends AppCompatActivity implements
 
     private void doPermissionGranted() {
         Log.d(TAG, "onMyDownloadClick: " + "><><" + mdownloadFile);
-      //  new DownloadingTask().execute();
+        //  new DownloadingTask().execute();
 
         //////////////////////////
         // Toast.makeText(this, "Download....", Toast.LENGTH_SHORT).show();
@@ -888,7 +900,7 @@ public class MaxPropertyGroupDetailActivity extends AppCompatActivity implements
 
                 //Get File if SD card is present
                 if (new CheckForSDCard().isSDCardPresent()) {
-                    apkStorage = new File(Environment.getExternalStorageDirectory() + "/"+ APIUrl.downloadDirectory);
+                    apkStorage = new File(Environment.getExternalStorageDirectory() + "/" + APIUrl.downloadDirectory);
                 } else
                     Toast.makeText(MaxPropertyGroupDetailActivity.this, getResources().getString(R.string.noSdcard), Toast.LENGTH_SHORT).show();
 
@@ -926,7 +938,7 @@ public class MaxPropertyGroupDetailActivity extends AppCompatActivity implements
 
         @Override
         protected void onPostExecute(Void result) {
-            Log.d(TAG, "onPostExecute: "+"><result><"+result);
+            Log.d(TAG, "onPostExecute: " + "><result><" + result);
             pd.dismiss();
             try {
                 if (outputFile != null) {

@@ -54,13 +54,12 @@ public class AccountBalanceAdapter extends RecyclerView.Adapter<AccountBalanceAd
             holder.tvCompanyName.setText(arrayList.get(position).getmTitle());
             holder.tvCompanyName.setTextColor(mContext.getResources().getColor(R.color.light_gray_text));
 
-            if ((arrayList.get(position).getmTitle().equalsIgnoreCase("Total Balance"))){
-                mTotal=arrayList.get(position).getmValue();
-               // holder.tv_invested.setText(arrayList.get(position).getmValue());
-            }
             if (arrayList.get(position).getmType().equals("C")) {
                 holder.tv_type.setText("+");
                 holder.tv_invested.setText(arrayList.get(position).getmValue());
+                if ((arrayList.get(position).getmTitle().equalsIgnoreCase("Total Balance"))){
+                    mTotal=arrayList.get(position).getmValue();
+                }
             } else {
                 holder.tv_type.setText("-");
                 holder.tv_invested.setText(arrayList.get(position).getmValue());

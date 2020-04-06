@@ -2,7 +2,7 @@ package com.auxesis.maxcrowdfund.constant;
 
 public class APIUrl {
     public final static String BASE_URL = "https://test.maxcrowdfund.com/";
-    public final static String GER_MY_INVEST_DETAILS = BASE_URL + "api/fundraiser/details?_format=json";
+    //public final static String GER_MY_INVEST_DETAILS = BASE_URL + "api/fundraiser/details?_format=json";
 
     public static String investStatus = "active";
 

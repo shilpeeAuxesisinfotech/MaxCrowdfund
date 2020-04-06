@@ -1,5 +1,7 @@
 package com.auxesis.maxcrowdfund.mvvm.ui.changeemail;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.text.TextUtils;
@@ -11,8 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.auxesis.maxcrowdfund.R;
+import com.auxesis.maxcrowdfund.constant.MaxCrowdFund;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.mvvm.activity.HomeActivity;
+import com.auxesis.maxcrowdfund.mvvm.activity.LoginActivity;
 import com.auxesis.maxcrowdfund.restapi.ApiClient;
 import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.google.gson.Gson;
@@ -22,6 +26,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
+import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
 
 public class ChangeEmailFragment extends Fragment {
     private static final String TAG = "ChangeEmailFragment";
@@ -29,10 +34,12 @@ public class ChangeEmailFragment extends Fragment {
     Button btn_submit;
     String error_msg = "";
     ProgressDialog pd;
+    Activity mActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_change_email, container, false);
+        mActivity = getActivity();
         edt_email = root.findViewById(R.id.edt_email);
         btn_submit = root.findViewById(R.id.btn_submit);
 
@@ -70,7 +77,17 @@ public class ChangeEmailFragment extends Fragment {
                     if (response!=null) {
                         if (response != null && response.isSuccessful()) {
                             Log.d(TAG, "onResponse:" + "><><" + new Gson().toJson(response.body()));
-                            Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                            if (response.body().getUserLoginStatus() == 1) {
+                                Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                            }else {
+                                setPreference(getActivity(), "user_id", "");
+                                setPreference(getActivity(), "mLogout_token", "");
+                                MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                                Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                startActivity(intent);
+                                mActivity.finish();
+                            }
                         }
                     }else {
                         Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
@@ -81,7 +98,7 @@ public class ChangeEmailFragment extends Fragment {
             }
             @Override
             public void onFailure(Call<ChangeEmailResponse> call, Throwable t) {
-                Log.e("", "error " + t.getMessage());
+                Log.e("error", "error " + t.getMessage());
                 if (pd != null && pd.isShowing()) {
                     pd.dismiss();
                 }

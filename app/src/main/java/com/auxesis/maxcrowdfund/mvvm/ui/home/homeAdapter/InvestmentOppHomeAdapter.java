@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.auxesis.maxcrowdfund.R;
+import com.auxesis.maxcrowdfund.mvvm.ui.home.homemodel.InvestmentOppHomeModel1;
 import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.MaxPropertyGroupDetailActivity;
 import com.auxesis.maxcrowdfund.constant.BaseViewHolder;
 import com.auxesis.maxcrowdfund.mvvm.ui.home.homemodel.InvestmentOppHomeModel;
@@ -28,11 +29,11 @@ public class InvestmentOppHomeAdapter extends RecyclerView.Adapter<BaseViewHolde
     private static final int VIEW_TYPE_NORMAL = 1;
     private boolean isLoaderVisible = false;
     private static final String TAG = "MyListAdapter";
-    public ArrayList<InvestmentOppHomeModel> arrayList, filterList;
+    public ArrayList<InvestmentOppHomeModel1> arrayList, filterList;
     Context mContext;
     Context mActivity;
 
-    public InvestmentOppHomeAdapter(Context context, Activity mActivity, ArrayList<InvestmentOppHomeModel> arrayList) {
+    public InvestmentOppHomeAdapter(Context context, Activity mActivity, ArrayList<InvestmentOppHomeModel1> arrayList) {
         this.mContext = context;
         this.mActivity = mActivity;
         this.arrayList = arrayList;
@@ -70,21 +71,21 @@ public class InvestmentOppHomeAdapter extends RecyclerView.Adapter<BaseViewHolde
         return arrayList == null ? 0 : arrayList.size();
     }
 
-    public void addItems(List<InvestmentOppHomeModel> postItems) {
+    public void addItems(List<InvestmentOppHomeModel1> postItems) {
         arrayList.addAll(postItems);
         notifyDataSetChanged();
     }
 
     public void addLoading() {
         isLoaderVisible = true;
-        arrayList.add(new InvestmentOppHomeModel());
+        arrayList.add(new InvestmentOppHomeModel1());
         notifyItemInserted(arrayList.size() - 1);
     }
 
     public void removeLoading() {
         isLoaderVisible = false;
         int position = arrayList.size() - 1;
-        InvestmentOppHomeModel item = getItem(position);
+        InvestmentOppHomeModel1 item = getItem(position);
         if (item != null) {
             arrayList.remove(position);
             notifyItemRemoved(position);
@@ -96,7 +97,7 @@ public class InvestmentOppHomeAdapter extends RecyclerView.Adapter<BaseViewHolde
         notifyDataSetChanged();
     }
 
-    InvestmentOppHomeModel getItem(int position) {
+    InvestmentOppHomeModel1 getItem(int position) {
         return arrayList.get(position);
     }
 
@@ -144,7 +145,7 @@ public class InvestmentOppHomeAdapter extends RecyclerView.Adapter<BaseViewHolde
         public void onBind(int position) {
             super.onBind(position);
 
-            InvestmentOppHomeModel item = arrayList.get(position);
+            InvestmentOppHomeModel1 item = arrayList.get(position);
             cardView.setVisibility(View.VISIBLE);
             tv_mTittle.setText(item.getmTitle());
             tv_interest_pr.setText(item.getInterest_pa() + "%");

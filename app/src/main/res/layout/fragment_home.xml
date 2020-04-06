@@ -22,7 +22,7 @@
         android:textAlignment="center"
         android:fontFamily="@font/roboto"
         android:textSize="@dimen/_12sdp"
-        android:textColor="@color/light_gray_text"
+        android:textColor="@color/colorPrimaryDark"
         android:text="@string/no_data_found"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -26,12 +26,16 @@ import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.MaxPropertyGroupDetailActivit
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
+
 public class InvestmentOppAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int VIEW_TYPE_LOADING = 0;
     private static final int VIEW_TYPE_NORMAL = 1;
+
     private boolean isLoaderVisible = false;
     private static final String TAG = "MyListAdapter";
     public ArrayList<InvestmentOppModel> arrayList, filterList;
+
     Context mContext;
     Context mActivity;
 
@@ -118,7 +122,7 @@ public class InvestmentOppAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             tv_mTittle = itemView.findViewById(R.id.tv_mTittle);
             tv_interest_pr = itemView.findViewById(R.id.tv_interest_pr);
             tv_risk_c = itemView.findViewById(R.id.tv_risk_c);
-          //  tv_cur_symbol_amt = itemView.findViewById(R.id.tv_cur_symbol_amt);
+            //  tv_cur_symbol_amt = itemView.findViewById(R.id.tv_cur_symbol_amt);
             tvAmount = itemView.findViewById(R.id.tvAmount);
             tv_filled = itemView.findViewById(R.id.tv_filled);
             tv_investors = itemView.findViewById(R.id.tv_investors);
@@ -153,7 +157,7 @@ public class InvestmentOppAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             tv_interest_pr.setText(item.getInterest_pa() + "%");
             tv_risk_c.setText(item.getRisk_class());
             String currencyBymbol = item.getCurrency_symbol();
-            tvAmount.setText(item.getAmount()+".00");
+            tvAmount.setText(item.getAmount() + ".00");
             //tv_cur_symbol_amt.setText(currencyBymbol);
             //tvAmount.setText(String.valueOf(getCustomReplaceFormat(item.getAmount())+".00"));
             int mFilled = item.getFilled();
@@ -166,7 +170,7 @@ public class InvestmentOppAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             tv_location.setText(item.getLocation());
             progessBar.setProgress(mFilled);
 
-           /* if (item.getInvestment_status().equals("expired")) {
+            if (item.getInvestment_status().equals("expired")) {
                 cardView.setVisibility(View.GONE);
                 lLayoutFooter.setVisibility(View.VISIBLE);
                 tv_cur_total_rsd.setText(currencyBymbol);
@@ -178,12 +182,13 @@ public class InvestmentOppAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             } else {
                 lLayoutFooter.setVisibility(View.GONE);
                 cardView.setVisibility(View.VISIBLE);
-            }*/
+            }
             Log.d(TAG, "onBind: " + arrayList.size());
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, MaxPropertyGroupDetailActivity.class);
+                    setPreference(mContext,"id",item.getId());
                     mContext.startActivity(intent);
                 }
             });
@@ -192,10 +197,12 @@ public class InvestmentOppAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     public class ProgressHolder extends BaseViewHolder {
         ProgressBar mProgressbar;
+
         ProgressHolder(View itemView) {
             super(itemView);
             mProgressbar = itemView.findViewById(R.id.mProgressbar);
         }
+
         @Override
         protected void clear() {
         }
