@@ -261,7 +261,6 @@
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:backgroundTint="@color/colorAccent"
-                        android:drawableLeft="@drawable/ic_euro"
                         android:drawablePadding="@dimen/_10sdp"
                         android:fontFamily="@font/roboto"
                         android:inputType="number"

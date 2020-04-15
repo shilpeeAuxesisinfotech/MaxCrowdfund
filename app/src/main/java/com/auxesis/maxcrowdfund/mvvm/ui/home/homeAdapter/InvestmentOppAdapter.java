@@ -2,7 +2,6 @@ package com.auxesis.maxcrowdfund.mvvm.ui.home.homeAdapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,32 +11,26 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.constant.BaseViewHolder;
-import com.auxesis.maxcrowdfund.mvvm.ui.home.homemodel.InvestmentOppHomeModel;
 import com.auxesis.maxcrowdfund.mvvm.ui.home.oppmodel.InvestmentOppModel;
-import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.MaxPropertyGroupDetailActivity;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
 
 public class InvestmentOppAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int VIEW_TYPE_LOADING = 0;
     private static final int VIEW_TYPE_NORMAL = 1;
-
     private boolean isLoaderVisible = false;
     private static final String TAG = "MyListAdapter";
     public ArrayList<InvestmentOppModel> arrayList, filterList;
-
     Context mContext;
-    Context mActivity;
+    Activity mActivity;
 
     public InvestmentOppAdapter(Context context, Activity mActivity, ArrayList<InvestmentOppModel> arrayList) {
         this.mContext = context;
@@ -170,7 +163,7 @@ public class InvestmentOppAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             tv_location.setText(item.getLocation());
             progessBar.setProgress(mFilled);
 
-            if (item.getInvestment_status().equals("expired")) {
+            if (item.getInvestment_status().equals("OtherItem")) {
                 cardView.setVisibility(View.GONE);
                 lLayoutFooter.setVisibility(View.VISIBLE);
                 tv_cur_total_rsd.setText(currencyBymbol);
@@ -187,9 +180,9 @@ public class InvestmentOppAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, MaxPropertyGroupDetailActivity.class);
-                    setPreference(mContext,"id",item.getId());
-                    mContext.startActivity(intent);
+                    NavController navController = Navigation.findNavController(mActivity, R.id.nav_host_fragment);
+                    setPreference(mActivity, "id",item.getId());
+                    navController.navigate(R.id.action_nav_investment_opp_to_investmentOppDetailFragment);
                 }
             });
         }

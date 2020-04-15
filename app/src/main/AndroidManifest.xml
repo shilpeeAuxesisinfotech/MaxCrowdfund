@@ -21,19 +21,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".mvvm.activity.InvestActivity"></activity>
+
         <activity
             android:name=".mvvm.activity.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".mvvm.ui.homeDetail.MaxPropertyGroupDetailActivity" />
         <activity
             android:name=".mvvm.activity.LoginActivity"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".mvvm.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -42,5 +40,4 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
-
 </manifest>

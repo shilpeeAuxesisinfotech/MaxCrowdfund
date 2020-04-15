@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,7 +54,11 @@ public class ChangePasswordFragment extends Fragment {
                 if (Utils.isInternetConnected(getActivity())) {
                     if (getValidation()) {
                         if (edtNPass.getText().toString().trim().equals(edtConfirmPass.getText().toString().trim())) {
-                            getChangePass();
+                            if (edtNPass.getText().toString().trim().length()==8) {
+                                getChangePass();
+                            }else {
+                                Toast.makeText(getActivity(), getResources().getString(R.string.eight_digit), Toast.LENGTH_SHORT).show();
+                            }
                         }else {
                             Toast.makeText(getActivity(), getResources().getString(R.string.confirm_password), Toast.LENGTH_SHORT).show();
                         }
@@ -86,11 +93,15 @@ public class ChangePasswordFragment extends Fragment {
                         if (response!=null) {
                             if (response != null && response.isSuccessful()) {
                                 if (response.body().getUserLoginStatus() == 1) {
-                                    if (response.body().getResult().equals("success")) {
-                                        Toast.makeText(getActivity(), getResources().getString(R.string.update_password), Toast.LENGTH_SHORT).show();
+                                    if (response.body().getResult()==1) {
+                                        Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                                         edtOldPass.setText("");
                                         edtNPass.setText("");
                                         edtConfirmPass.setText("");
+                                        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                                        navController.navigateUp();
+                                    }else {
+                                        Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }else {
                                     setPreference(getActivity(), "user_id", "");

@@ -17,6 +17,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -64,7 +66,7 @@ public class UploadImgFragment extends Fragment {
     String mConvertedImg1;
     String imgExtension;
     ProgressDialog pd;
-    byte[] byteArray_photo_1;
+  //  byte[] byteArray_photo_1;
     CardView cardView;
     TextView tvNoRecordFound;
     Activity mActivity;
@@ -83,7 +85,7 @@ public class UploadImgFragment extends Fragment {
         cirIv_ChooseImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isInternetConnected(getActivity())) {
+                if (isInternetConnected(mActivity)) {
                     getBottomSheet();
                 } else {
                     Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
@@ -130,6 +132,8 @@ public class UploadImgFragment extends Fragment {
                                 if (response.body().getUserLoginStatus() == 1) {
                                     if (response.body().getResult().equals("success")) {
                                         Toast.makeText(getActivity(), "Image upload successfully", Toast.LENGTH_SHORT).show();
+                                        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                                        navController.navigateUp();
                                     }
                                 } else {
                                     setPreference(getActivity(), "user_id", "");

@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -74,23 +77,30 @@ public class ChangeEmailFragment extends Fragment {
                     if (pd != null && pd.isShowing()) {
                         pd.dismiss();
                     }
-                    if (response!=null) {
-                        if (response != null && response.isSuccessful()) {
-                            Log.d(TAG, "onResponse:" + "><><" + new Gson().toJson(response.body()));
-                            if (response.body().getUserLoginStatus() == 1) {
-                                Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                            }else {
-                                setPreference(getActivity(), "user_id", "");
-                                setPreference(getActivity(), "mLogout_token", "");
-                                MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
-                                Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                                startActivity(intent);
-                                mActivity.finish();
-                            }
-                        }
+                    if (response.code()==500){
+                        Toast.makeText(getActivity(), "Please check your email and click on one time login link to validate your email", Toast.LENGTH_SHORT).show();
+                        edt_email.setText("");
+                        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                        navController.navigateUp();
                     }else {
-                        Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                        if (response!=null) {
+                            if (response != null && response.isSuccessful()) {
+                                Log.d(TAG, "onResponse:" + "><><" + new Gson().toJson(response.body()));
+                                if (response.body().getUserLoginStatus() == 1) {
+                                    Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                }else {
+                                    setPreference(getActivity(), "user_id", "");
+                                    setPreference(getActivity(), "mLogout_token", "");
+                                    MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                                    Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                    startActivity(intent);
+                                    mActivity.finish();
+                                }
+                            }
+                        }else {
+                            Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

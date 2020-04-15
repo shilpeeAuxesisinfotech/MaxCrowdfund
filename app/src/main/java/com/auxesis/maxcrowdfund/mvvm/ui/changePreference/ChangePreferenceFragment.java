@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,6 +39,9 @@ import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -66,6 +71,10 @@ public class ChangePreferenceFragment extends Fragment {
     int mInvestment_updates = 0;
     int mNewsletter = 0;
     Activity mActivity;
+    String mSelected = "";
+    List<Option> languageArraySelected = new ArrayList<>();
+    List<Option> languageArray = new ArrayList<>();
+    boolean isSelected = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -134,10 +143,11 @@ public class ChangePreferenceFragment extends Fragment {
                 Option_ option = activeAccountAdapter.getItem(position);
                 //selected_product_id = addProductModel.getProduct_id();
                 mActive_account = option.getKey();
-                Log.d(TAG, "onItemSelected: " +">>>>>>>key"+option.getKey());
+                Log.d(TAG, "onItemSelected: " + ">>>>>>>key" + option.getKey());
                 Log.d(TAG, "onItemSelected: " + option.getKey());
                 Log.d(TAG, "onItemSelected: " + option.getVal());
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -272,16 +282,27 @@ public class ChangePreferenceFragment extends Fragment {
             public void onResponse(Call<ChangePreferenceResponse> call, Response<ChangePreferenceResponse> response) {
                 Log.d(TAG, "onResponse: " + "><><" + new Gson().toJson(response.body()));
                 try {
-                    if(response!=null) {
+                    if (response != null) {
                         if (response != null && response.isSuccessful()) {
                             if (pd != null && pd.isShowing()) {
                                 pd.dismiss();
                             }
-                            if (response.body().getUserLoginStatus() ==1) {
+                            if (response.body().getUserLoginStatus() == 1) {
                                 /* For Language Preference */
                                 tvLanguage.setText(response.body().getPreferences().getData().getLanguage().getTitle());
                                 if (response.body().getPreferences().getData().getLanguage().getOptions().size() > 0) {
-                                    languagePreferenceAdapter = new LanguagePreferenceAdapter(getActivity(), response.body().getPreferences().getData().getLanguage().getOptions());
+                                    mSelected = response.body().getPreferences().getData().getLanguage().getValue();
+
+                                    languageArray.clear();
+                                    languageArraySelected.clear();
+                                    for (int i = 0; i < response.body().getPreferences().getData().getLanguage().getOptions().size(); i++) {
+                                        if (response.body().getPreferences().getData().getLanguage().getOptions().get(i).getKey().equalsIgnoreCase(mSelected))
+                                            languageArray.set(0, response.body().getPreferences().getData().getLanguage().getOptions().get(i));
+                                        languageArray.add(response.body().getPreferences().getData().getLanguage().getOptions().get(i));
+                                    }
+                                    languageArraySelected.addAll(languageArray);
+                                    //languagePreferenceAdapter = new LanguagePreferenceAdapter(getActivity(), response.body().getPreferences().getData().getLanguage().getValue(), response.body().getPreferences().getData().getLanguage().getOptions());
+                                    languagePreferenceAdapter = new LanguagePreferenceAdapter(getActivity(), languageArraySelected);
                                     spinnerLanguage.setAdapter(languagePreferenceAdapter);
                                 }
                                 /*For Active account */
@@ -357,10 +378,10 @@ public class ChangePreferenceFragment extends Fragment {
                                 startActivity(intent);
                                 mActivity.finish();
                             }
-                        }else {
+                        } else {
                             Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                         }
-                    }else {
+                    } else {
                         Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
@@ -401,33 +422,35 @@ public class ChangePreferenceFragment extends Fragment {
                     if (pd != null && pd.isShowing()) {
                         pd.dismiss();
                     }
-                    if (response!=null) {
+                    if (response != null) {
                         if (response != null && response.isSuccessful()) {
-                           if (response.body().getUserLoginStatus()==1) {
-                               if (response.body().getResult() != null) {
-                                   mLanguage = "";
-                                   mActive_account = "";
-                                   mTrans_signing = "";
-                                   mAccount_login = 0;
-                                   mInvestment_opportunities = 0;
-                                   mInvestment_updates = 0;
-                                   mNewsletter = 0;
-                                   Toast.makeText(getActivity(), getResources().getString(R.string.hint_updated_succ), Toast.LENGTH_SHORT).show();
-                                   Log.d(TAG, "onResponse: " + "><><" + response.body().getResult());
-                               }
-                           }else {
-                               setPreference(getActivity(), "user_id", "");
-                               setPreference(getActivity(), "mLogout_token", "");
-                               MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
-                               Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
-                               Intent intent = new Intent(getActivity(), LoginActivity.class);
-                               startActivity(intent);
-                               mActivity.finish();
-                           }
-                        }else {
+                            if (response.body().getUserLoginStatus() == 1) {
+                                if (response.body().getResult() != null) {
+                                    mLanguage = "";
+                                    mActive_account = "";
+                                    mTrans_signing = "";
+                                    mAccount_login = 0;
+                                    mInvestment_opportunities = 0;
+                                    mInvestment_updates = 0;
+                                    mNewsletter = 0;
+                                    Toast.makeText(getActivity(), getResources().getString(R.string.hint_updated_succ), Toast.LENGTH_SHORT).show();
+                                    NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                                    navController.navigateUp();
+                                    Log.d(TAG, "onResponse: " + "><><" + response.body().getResult());
+                                }
+                            } else {
+                                setPreference(getActivity(), "user_id", "");
+                                setPreference(getActivity(), "mLogout_token", "");
+                                MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                                Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                startActivity(intent);
+                                mActivity.finish();
+                            }
+                        } else {
                             Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                         }
-                    }else {
+                    } else {
                         Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {

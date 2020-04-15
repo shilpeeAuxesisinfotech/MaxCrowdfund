@@ -10,9 +10,9 @@
         android:name="com.auxesis.maxcrowdfund.mvvm.ui.home.HomeFragment"
         android:label="@string/menu_investments_opportunity"
         tools:layout="@layout/fragment_home" >
-        <!--<action
-            android:id="@+id/action_nav_investment_opp_to_homeDetailFragment"
-            app:destination="@id/homeDetailFragment" />-->
+        <action
+            android:id="@+id/action_nav_investment_opp_to_investmentOppDetailFragment"
+            app:destination="@id/investmentOppDetailFragment" />
     </fragment>
 
     <fragment
@@ -69,7 +69,7 @@
 
    <fragment
         android:id="@+id/nav_my_investment_detail"
-        android:name="com.auxesis.maxcrowdfund.mvvm.ui.myinvestmentdetail.MyInvestmentDetailFragment"
+        android:name="com.auxesis.maxcrowdfund.mvvm.ui.myinvestments.myinvestmentdetail.MyInvestmentDetailFragment"
         android:label="@string/my_investments_detail"
         tools:layout="@layout/fragment_my_investment_detail" />
     <fragment
@@ -106,11 +106,28 @@
         android:name="com.auxesis.maxcrowdfund.mvvm.ui.uploadImage.UploadImgFragment"
         android:label="fragment_upload_img"
         tools:layout="@layout/fragment_upload_image" />
+
     <fragment
         android:id="@+id/dashboardDepositFragment"
         android:name="com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboarddeposit.DashboardDepositFragment"
         android:label="@string/deposit"
         tools:layout="@layout/fragment_dashboard_deposit" />
 
+    <fragment
+        android:id="@+id/investmentOppDetailFragment"
+        android:name="com.auxesis.maxcrowdfund.mvvm.ui.home.homeDetail.InvestmentOppDetailFragment"
+        android:label="@string/max_property_group"
+        tools:layout="@layout/fragment_investment_opp_detail" >
+        <action
+            android:id="@+id/action_investmentOppDetailFragment_to_investFormFragment"
+            app:destination="@id/investFormFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/investFormFragment"
+        android:name="com.auxesis.maxcrowdfund.mvvm.ui.investform.InvestFormFragment"
+        android:label="@string/max_property_group"
+        tools:layout="@layout/fragment_invest_form" >
+    </fragment>
 
 </navigation>

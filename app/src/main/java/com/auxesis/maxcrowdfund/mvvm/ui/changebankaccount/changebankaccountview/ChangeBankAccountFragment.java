@@ -3,6 +3,8 @@ package com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankaccountview
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,12 +45,11 @@ public class ChangeBankAccountFragment extends Fragment implements OnCustomClick
         recyclerView = root.findViewById(R.id.recyclerView);
         tvNoRecord = root.findViewById(R.id.tvNoRecord);
 
+        adapter = new ChangeBankAccountAdapter(getActivity(), ChangeBankAccountFragment.this, new ArrayList<>());
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        adapter = new ChangeBankAccountAdapter(getActivity(), ChangeBankAccountFragment.this, new ArrayList<>());
         recyclerView.setAdapter(adapter);
 
         if (Utils.isInternetConnected(getActivity())) {
@@ -117,23 +118,21 @@ public class ChangeBankAccountFragment extends Fragment implements OnCustomClick
                         if (pd != null && pd.isShowing()) {
                             pd.dismiss();
                         }
-                        if (response != null && response.isSuccessful()) {
-                            Log.d(TAG, "onResponse:" + "><Bank><" + new Gson().toJson(response.body()));
-                            if (response.body().getBankAccounts().getData().size() > 0) {
-                                tvNoRecord.setVisibility(View.GONE);
-                                recyclerView.setVisibility(View.VISIBLE);
-                                adapter.clear();
-                                adapter.addItems(response.body().getBankAccounts().getData());
-                                    /*adapter = new ChangeBankAccountAdapter(getActivity(),ChangeBankAccountFragment.this, response.body().getBankAccounts().getData());
-                                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-                                    recyclerView.setLayoutManager(mLayoutManager);
-                                    recyclerView.setItemAnimator(new DefaultItemAnimator());
-                                    recyclerView.setAdapter(adapter);
-                                    adapter.notifyDataSetChanged();*/
-                            } else {
-                                recyclerView.setVisibility(View.GONE);
-                                tvNoRecord.setVisibility(View.VISIBLE);
+                        if (response!=null) {
+                            if (response != null && response.isSuccessful()) {
+                                Log.d(TAG, "onResponse:" + "><Bank><" + new Gson().toJson(response.body()));
+                                if (response.body().getBankAccounts().getData().size() > 0) {
+                                    tvNoRecord.setVisibility(View.GONE);
+                                    recyclerView.setVisibility(View.VISIBLE);
+                                    adapter.clear();
+                                    adapter.addItems(response.body().getBankAccounts().getData());
+                                } else {
+                                    recyclerView.setVisibility(View.GONE);
+                                    tvNoRecord.setVisibility(View.VISIBLE);
+                                }
                             }
+                        }else {
+                            Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

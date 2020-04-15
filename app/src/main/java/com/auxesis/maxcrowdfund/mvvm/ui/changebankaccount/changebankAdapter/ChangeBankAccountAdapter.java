@@ -1,18 +1,23 @@
 package com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankAdapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.auxesis.maxcrowdfund.R;
@@ -26,10 +31,11 @@ public class ChangeBankAccountAdapter extends RecyclerView.Adapter<ChangeBankAcc
     Context mContext;
     String account = "";
     OnCustomClickListener onCustomClickListener;
-    RadioButton lastCheckedRB = null;
+    Activity mActivity;
 
     public ChangeBankAccountAdapter(Context mContext, OnCustomClickListener onCustomClickListener, List<Datum> arrayList) {
         this.mContext = mContext;
+        this.mActivity =mActivity;
         this.arrayList = arrayList;
         this.onCustomClickListener = onCustomClickListener;
     }
@@ -46,52 +52,46 @@ public class ChangeBankAccountAdapter extends RecyclerView.Adapter<ChangeBankAcc
         holder.radioAccount.setText(arrayList.get(position).getAccount());
         if (arrayList.get(position).getActive() == 1) {
             holder.radioAccount.setChecked(true);
+            Log.d(">>>>>>>>>>", "onCheckedChanged: " +"account====="+account+"pos---"+String.valueOf(position));
         } else {
             holder.radioAccount.setChecked(false);
         }
-
         holder.radioAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (arrayList.get(position).getActive() == 1) {
-                    holder.radioAccount.setChecked(true);
-                    Toast.makeText(mContext, "Selected Bank Account is " + arrayList.get(position).getAccount(), Toast.LENGTH_SHORT).show();
-                    Log.d(">>>>>>", "onClick: " + arrayList.get(position).getAccount());
-                    account = arrayList.get(position).getAccount();
-                } else {
-                    holder.radioAccount.setChecked(false);
-                    Toast.makeText(mContext, "Selected Bank Account is " + arrayList.get(position).getAccount(), Toast.LENGTH_SHORT).show();
-                    Log.d(">>>>>>", "onClick: " + arrayList.get(position).getAccount());
-                    account = arrayList.get(position).getAccount();
-                }
-                if (account != null) {
-                    onCustomClickListener.onCustomClick(account);
-                } else {
-                    Toast.makeText(mContext, "Please select bank account", Toast.LENGTH_SHORT).show();
-                }
+                holder.radioAccount.setChecked(false);
+                Toast.makeText(mContext, "Selected Bank Account is " + arrayList.get(position).getAccount(), Toast.LENGTH_SHORT).show();
+                account = arrayList.get(position).getAccount();
             }
         });
+
+       /* holder.radioAccount.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+               // holder.radioAccount.setChecked(false);
+                account = arrayList.get(position).getAccount();
+                Log.d(">>>>>>>>>>", "onCheckedChanged: " + isChecked+"account====="+account+"pos---"+String.valueOf(position));
+            }
+        });
+      */
 
         if (position == arrayList.size() - 1) {
             holder.btn_saveChanges.setVisibility(View.VISIBLE);
             holder.btn_saveChanges.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (account != null) {
+                        onCustomClickListener.onCustomClick(account);
+                    } else {
+                        Toast.makeText(mContext, "Please select bank account", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         } else {
             holder.btn_saveChanges.setVisibility(View.GONE);
         }
+
     }
-
-
-      /* holder.radioAccount.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                holder.radioAccount.setChecked(isChecked);
-                Log.d(">>>>>>>>>>", "onCheckedChanged: "+isChecked);
-            }
-        });*/
 
     @Override
     public int getItemCount() {

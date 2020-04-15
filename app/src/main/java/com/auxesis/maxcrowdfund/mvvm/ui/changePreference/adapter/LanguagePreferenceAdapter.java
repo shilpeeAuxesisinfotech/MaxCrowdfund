@@ -1,6 +1,7 @@
 package com.auxesis.maxcrowdfund.mvvm.ui.changePreference.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,15 +9,13 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.model.Option;
-
 import java.util.List;
-
 
 public class LanguagePreferenceAdapter extends BaseAdapter {
     Context mContext;
     List<Option> modelList;
 
-    public LanguagePreferenceAdapter(Context mContext, List<Option> modelList) {
+    public LanguagePreferenceAdapter(Context mContext,List<Option> modelList) {
         this.mContext = mContext;
         this.modelList = modelList;
     }
@@ -38,8 +37,15 @@ public class LanguagePreferenceAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.spinner_item, null);;
-        TextView textView =view.findViewById(R.id.tvName);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.spinner_item, null);
+        TextView textView = view.findViewById(R.id.tvName);
+
+        /*if (position == 0) {
+            if (modelList.get(position).getKey().equals(mSelected)) ;
+            {
+                textView.setText(modelList.get(position).getVal());
+            }
+        }*/
         textView.setText(modelList.get(position).getVal());
         return view;
     }

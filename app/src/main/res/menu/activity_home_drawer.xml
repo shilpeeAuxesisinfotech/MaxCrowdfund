@@ -19,8 +19,8 @@
         <item
             android:id="@+id/nav_contact_information"
             android:title="@string/menu_contact_information" />
-       <!-- <item
-            android:id="@+id/demoFragment"
+     <!--<item
+            android:id="@+id/investmentOppFragment"
             android:title="Demo" />-->
        <item
            android:id="@+id/nav_logout"

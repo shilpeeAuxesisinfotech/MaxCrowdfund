@@ -1,11 +1,9 @@
 
 package com.auxesis.maxcrowdfund.mvvm.ui.uploadImage;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class ChangeAvatarResponce {
-
     @SerializedName("user_login_status")
     @Expose
     private Integer userLoginStatus;

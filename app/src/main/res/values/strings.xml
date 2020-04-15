@@ -98,8 +98,6 @@
 
     <!--for data not found-->
     <string name="no_data_found">No data found</string>
-
-
     <string name="download_Pdf">Download pdf</string>
     <string name="download_Doc">Download Doc</string>
     <string name="download_zip">Download Zip</string>
@@ -144,6 +142,7 @@
     <string name="enter_new_password">Enter new password</string>
     <string name="enter_confirm_password">Enter confirm password</string>
     <string name="confirm_password">New password and confirm password didn"'"t match.</string>
+    <string name="eight_digit">New password must be 8 digits.</string>
     <!--<string name="confirm_password">New password and confirm password didn"'"t match.</string>-->
     <string name="update_password">Password update successfully...</string>
     <string name="submit_new_e_mail_address">Submit new e-mail address</string>

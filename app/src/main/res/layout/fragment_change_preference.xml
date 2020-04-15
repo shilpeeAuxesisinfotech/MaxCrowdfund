@@ -45,7 +45,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginTop="@dimen/_3sdp"
-                        android:background="@drawable/custom_spinner_bg"
+                        android:background="@drawable/outline_gray"
                         android:orientation="horizontal">
 
                         <Spinner
@@ -72,7 +72,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginTop="@dimen/_3sdp"
-                        android:background="@drawable/custom_spinner_bg"
+                        android:background="@drawable/outline_gray"
                         android:orientation="horizontal">
 
                         <Spinner
@@ -99,7 +99,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginTop="@dimen/_3sdp"
-                        android:background="@drawable/custom_spinner_bg"
+                        android:background="@drawable/outline_gray"
                         android:orientation="horizontal">
 
                         <Spinner

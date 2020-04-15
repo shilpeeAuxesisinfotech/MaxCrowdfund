@@ -9,17 +9,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboardmodel.AccountBalanceModel;
-
 import java.util.List;
-
 import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
 
 public class AccountBalanceAdapter extends RecyclerView.Adapter<AccountBalanceAdapter.MyHolder> {
@@ -74,9 +70,6 @@ public class AccountBalanceAdapter extends RecyclerView.Adapter<AccountBalanceAd
                         NavController navController = Navigation.findNavController(mActivity, R.id.nav_host_fragment);
                         setPreference(mContext, "totalBalance", mTotal);
                         navController.navigate(R.id.action_nav_dashboard_to_dashboardDepositFragment);
-
-                        /*Intent intent = new Intent(mContext, DashboardDepositActivity.class);
-                        mContext.startActivity(intent);*/
                     }
                 });
             }

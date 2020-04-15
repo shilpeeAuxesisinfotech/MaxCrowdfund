@@ -90,9 +90,9 @@ public class HomeActivity extends AppCompatActivity {
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_investment_opp, R.id.nav_dashboard, R.id.nav_my_investments,
-                R.id.nav_my_profile, R.id.nav_contact_information, R.id.nav_logout)
+                R.id.nav_my_profile, R.id.nav_contact_information,R.id.nav_logout)
                 .setDrawerLayout(drawer)
-                .build();
+                .build();  //R.id.investmentOppFragment,
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);

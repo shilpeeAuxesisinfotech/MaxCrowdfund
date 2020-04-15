@@ -1,5 +1,6 @@
 package com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboarddeposit;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
@@ -31,7 +32,6 @@ import retrofit2.Response;
 
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
-import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
 
 public class DashboardDepositFragment extends Fragment {
     private static final String TAG = "DashboardDeposit";
@@ -60,21 +60,19 @@ public class DashboardDepositFragment extends Fragment {
     CardView cv_trustly;
     WebView webView;
     TextView tvTrustly;
+    Activity mActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_dashboard_deposit, container, false);
+        mActivity = getActivity();
         tvTrustly = root.findViewById(R.id.tvTrustly);
         edt_trustly = root.findViewById(R.id.edt_trustly);
         btn_trustly = root.findViewById(R.id.btn_trustly);
         cv_trustly = root.findViewById(R.id.cv_trustly);
         webView = root.findViewById(R.id.webView);
-       /* if (isInternetConnected(getActivity())) {
-            //we will load it asynchronously from server in this method
-            getDashboardDetail();
-        } else {
-            Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
-        }*/
+
+
 
         if (getPreference(getActivity(), "totalBalance") != null && !getPreference(getActivity(), "totalBalance").isEmpty()) {
             tvTrustly.setText(getPreference(getActivity(), "totalBalance"));
@@ -87,7 +85,6 @@ public class DashboardDepositFragment extends Fragment {
                 if (isInternetConnected(getActivity())) {
                     if (Validation()) {
                         getDeposit();
-                        // getTrustly();
                     } else {
                         Toast.makeText(getActivity(), error_msg, Toast.LENGTH_SHORT).show();
                     }
@@ -98,6 +95,7 @@ public class DashboardDepositFragment extends Fragment {
         });
         return root;
     }
+
 
     private void getDeposit() {
         pd = ProgressDialog.show(getActivity(), "Please Wait...");

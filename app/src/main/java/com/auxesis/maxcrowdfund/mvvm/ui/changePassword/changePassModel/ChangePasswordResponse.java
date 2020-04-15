@@ -11,7 +11,10 @@ public class ChangePasswordResponse {
     private Integer userLoginStatus;
     @SerializedName("result")
     @Expose
-    private String result;
+    private Integer result;
+    @SerializedName("message")
+    @Expose
+    private String message;
 
     public Integer getUserLoginStatus() {
         return userLoginStatus;
@@ -21,12 +24,20 @@ public class ChangePasswordResponse {
         this.userLoginStatus = userLoginStatus;
     }
 
-    public String getResult() {
+    public Integer getResult() {
         return result;
     }
 
-    public void setResult(String result) {
+    public void setResult(Integer result) {
         this.result = result;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
 }

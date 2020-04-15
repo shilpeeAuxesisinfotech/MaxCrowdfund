@@ -14,13 +14,17 @@ import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboarddeposit.DashboardDepo
 import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboardmodel.AccountResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.pendingmodel.PendingResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.home.oppmodel.InvestmentOppRes;
-import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.detailmodel.FundDetailResponce;
-import com.auxesis.maxcrowdfund.mvvm.ui.homeDetail.investmodel.CreateInvestmentResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.home.homeDetail.detailmodel.FundDetailResponce;
+import com.auxesis.maxcrowdfund.mvvm.ui.home.homeDetail.investmodel.CreateInvestmentResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.investform.questmodel.model.SurveyFormDataInsertResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.investform.questmodel.questionlistmodel.InvestAmountKeyUpResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.investform.questmodel.questionlistmodel.InvestSurveyRuestionResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.login.LoginResponse;
-import com.auxesis.maxcrowdfund.mvvm.ui.myinvestmentdetail.myinvestmentdetailmodel.CancelInvestmentResponce;
-import com.auxesis.maxcrowdfund.mvvm.ui.myinvestmentdetail.myinvestmentdetailmodel.MyInvestmentDetailResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.myinvestments.myinvestmentdetail.myinvestmentdetailmodel.CancelInvestmentResponce;
+import com.auxesis.maxcrowdfund.mvvm.ui.myinvestments.myinvestmentdetail.myinvestmentdetailmodel.MyInvestmentDetailResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.myinvestments.model.MyInvestmentResponce;
 import com.auxesis.maxcrowdfund.mvvm.ui.myprofile.model.ProfileResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.investform.questmodel.InvestFormPreloadResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.uploadImage.ChangeAvatarResponce;
 import com.google.gson.JsonObject;
 
@@ -67,13 +71,11 @@ public interface EndPointInterface {
     @GET("api/investment/details")
     Call<MyInvestmentDetailResponse> getMyInvestmentDetail(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Query("investment_id") String investment_id);
 
-     @POST("api/create-investment")
+    @POST("api/create-investment")
     Call<CreateInvestmentResponse> getCreateInvestment(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Body JsonObject jsonObject);
-
 
     @GET("api/investment-cancel")
     Call<CancelInvestmentResponce> getCancelInvestment(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Query("investment_id") String investment_id);
-
 
     @POST("api/change-email")
     Call<ChangeEmailResponse> changeEmail(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Body JsonObject jsonObject);
@@ -112,9 +114,20 @@ public interface EndPointInterface {
     @GET("api/fundraiser/details")
     Call<FundDetailResponce> getInvestmentOppDetail(@Query("loan_id") String loan_id, @Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);  //done
 
-
     @GET("api/user/login_status")
     Call<?> getCheckUser(@Query("_format") String mFormate);
 
-    //https://test.maxcrowdfund.com/api/fundraiser/listing?_format=json&investment_status=expired&page=0
+    //For Questing
+    @GET("api/invest-form-preload")
+    Call<InvestFormPreloadResponse> getInvestFormPreload(@Query("loan_id") String mLoanId, @Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);
+
+    @GET("api/invest-amount-key-up")
+    Call<InvestAmountKeyUpResponse> getInvestAmountKeyUp(@Query("loan_id") String mLoanId, @Query("invest_amount") String mInvestAmount, @Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);
+
+    @GET("api/invest-survey-question")
+    Call<InvestSurveyRuestionResponse> getInvestSurvey(@Query("loan_id") String mLoanId, @Query("invest_amount") String mInvestAmount, @Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);
+
+    @POST("api/survey-form-data-insert")
+    Call<SurveyFormDataInsertResponse> getSurveyFormDataInserted(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Body JsonObject jsonObject);
+
 }

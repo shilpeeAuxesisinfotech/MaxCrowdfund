@@ -10,10 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.constant.MaxCrowdFund;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
@@ -26,14 +28,15 @@ import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
+
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
 
 public class MyProfileFragment extends Fragment {
-    private static final String TAG = "MyProfileFragment";
     TextView tv_user_name, tvName, tv_name, tvSurName, tv_sur_name, tvEmail, tv_email, tvAddress, tv_Address, tvInvestorId, tv_investorId, tvAccountId, tv_accountId;
     Button btn_addChange, btn_change_email, btn_change_mobile, btn_change_pass, btn_change_default_bankA, btn_change_preference;
     ProgressDialog pd;
@@ -76,8 +79,6 @@ public class MyProfileFragment extends Fragment {
             public void onClick(View v) {
                 NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
                 navController.navigate(R.id.action_nav_my_profile_to_uploadImgFragment);
-                // navController.navigate(R.id.action_nav_my_profile_to_uploadImageFragment);
-                // startActivity(new Intent(getActivity(), UploadImageActivity.class));
             }
         });
 
@@ -112,33 +113,33 @@ public class MyProfileFragment extends Fragment {
         btn_change_preference.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                NavController navController = Navigation.findNavController(mActivity, R.id.nav_host_fragment);
                 navController.navigate(R.id.action_nav_my_profile_to_changePreferenceFragment);
             }
         });
-        if (Utils.isInternetConnected(getActivity())) {
+        if (Utils.isInternetConnected(mActivity)) {
             getMyProfile();
         } else {
-            Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
         }
         return root;
     }
 
     private void getMyProfile() {
         try {
-            pd = ProgressDialog.show(getActivity(), "Please Wait...");
-            String XCSRF = getPreference(getActivity(), "mCsrf_token");
-            EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
+            pd = ProgressDialog.show(mActivity, "Please Wait...");
+            String XCSRF = getPreference(mActivity, "mCsrf_token");
+            EndPointInterface git = ApiClient.getClient1(mActivity).create(EndPointInterface.class);
             Call<ProfileResponse> call = git.UserProfile("application/json", XCSRF);
             call.enqueue(new Callback<ProfileResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<ProfileResponse> call, @NonNull retrofit2.Response<ProfileResponse> response) {
-                    Log.d(TAG, "onResponse: " + "><><" + new Gson().toJson(response.body()));
+                    Log.d("onResponse: ", "><><" + new Gson().toJson(response.body()));
                     try {
                         if (pd != null && pd.isShowing()) {
                             pd.dismiss();
                         }
-                        if (response != null) {
+                        if (response.code() == 200) {
                             if (response != null && response.isSuccessful()) {
                                 if (response.body().getUserLoginStatus() == 1) {
                                     ProfileResponse profileResponse = response.body();
@@ -178,10 +179,10 @@ public class MyProfileFragment extends Fragment {
                                     mActivity.finish();
                                 }
                             } else {
-                                Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mActivity, getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mActivity, getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -191,7 +192,7 @@ public class MyProfileFragment extends Fragment {
                 @Override
                 public void onFailure(@NonNull Call<ProfileResponse> call, @NonNull Throwable t) {
                     Log.e("response", "error " + t.getMessage());
-                    Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, t.getMessage(), Toast.LENGTH_SHORT).show();
                     if (pd != null && pd.isShowing()) {
                         pd.dismiss();
                     }
@@ -204,8 +205,6 @@ public class MyProfileFragment extends Fragment {
 
     public void onResume() {
         super.onResume();
-        // Set title bar
         ((HomeActivity) getActivity()).setActionBarTitle(getString(R.string.menu_my_profile));
     }
-
 }
