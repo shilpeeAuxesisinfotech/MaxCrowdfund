@@ -8,13 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.constant.MaxCrowdFund;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
@@ -27,14 +25,11 @@ import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.pendingmodel.PendingResponse;
 import com.auxesis.maxcrowdfund.restapi.ApiClient;
 import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
 

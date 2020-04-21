@@ -18,11 +18,6 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-          <!--  <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
--->
-
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -540,6 +535,7 @@
                                                 android:layout_width="@dimen/_25sdp"
                                                 android:layout_height="match_parent"
                                                 android:layout_alignParentRight="true"
+                                                android:textSize="@dimen/_14sdp"
                                                 android:background="@drawable/ic_arrow_up"
                                                 android:fontFamily="@font/roboto_medium" />
 
@@ -630,6 +626,7 @@
                                                 android:layout_width="@dimen/_25sdp"
                                                 android:layout_height="match_parent"
                                                 android:layout_alignParentRight="true"
+                                                android:textSize="@dimen/_14sdp"
                                                 android:background="@drawable/ic_arrow_down"
                                                 android:fontFamily="@font/roboto_medium" />
 
@@ -700,6 +697,7 @@
                                                 android:layout_width="@dimen/_25sdp"
                                                 android:layout_height="match_parent"
                                                 android:layout_alignParentRight="true"
+                                                android:textSize="@dimen/_14sdp"
                                                 android:background="@drawable/ic_arrow_down"
                                                 android:fontFamily="@font/roboto_medium" />
 
@@ -771,6 +769,7 @@
                                                 android:layout_width="@dimen/_25sdp"
                                                 android:layout_height="match_parent"
                                                 android:layout_alignParentRight="true"
+                                                android:textSize="@dimen/_14sdp"
                                                 android:background="@drawable/ic_arrow_down"
                                                 android:fontFamily="@font/roboto_medium" />
 
@@ -785,7 +784,6 @@
                                                 android:text=""
                                                 android:textColor="@color/colorPrimaryDark"
                                                 android:textSize="@dimen/_14sdp" />
-
                                         </RelativeLayout>
 
                                         <View
@@ -895,6 +893,7 @@
                                                 android:layout_width="@dimen/_25sdp"
                                                 android:layout_height="match_parent"
                                                 android:layout_alignParentRight="true"
+                                                android:textSize="@dimen/_14sdp"
                                                 android:background="@drawable/ic_arrow_down"
                                                 android:fontFamily="@font/roboto_medium" />
 
@@ -992,6 +991,7 @@
                                                 android:layout_width="@dimen/_25sdp"
                                                 android:layout_height="match_parent"
                                                 android:layout_alignParentRight="true"
+                                                android:textSize="@dimen/_14sdp"
                                                 android:background="@drawable/ic_arrow_down"
                                                 android:fontFamily="@font/roboto_medium" />
 
@@ -1086,6 +1086,7 @@
                                                 android:layout_width="@dimen/_25sdp"
                                                 android:layout_height="match_parent"
                                                 android:layout_alignParentRight="true"
+                                                android:textSize="@dimen/_14sdp"
                                                 android:background="@drawable/ic_arrow_down"
                                                 android:fontFamily="@font/roboto_medium" />
 
@@ -1185,6 +1186,7 @@
                                                 android:layout_height="match_parent"
                                                 android:layout_alignParentRight="true"
                                                 android:layout_centerInParent="true"
+                                                android:textSize="@dimen/_14sdp"
                                                 android:background="@drawable/ic_arrow_down"
                                                 android:fontFamily="@font/roboto_medium" />
 
@@ -1268,7 +1270,6 @@
                         </LinearLayout>
                     </LinearLayout>
                 </RelativeLayout>
-           <!-- </RelativeLayout>-->
         </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </RelativeLayout>

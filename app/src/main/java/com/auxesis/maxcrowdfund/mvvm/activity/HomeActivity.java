@@ -3,7 +3,6 @@ package com.auxesis.maxcrowdfund.mvvm.activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
@@ -21,14 +20,12 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.auxesis.maxcrowdfund.R;
-
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
 import com.auxesis.maxcrowdfund.constant.APIUrl;
 import com.auxesis.maxcrowdfund.constant.MaxCrowdFund;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
@@ -37,27 +34,20 @@ import com.auxesis.maxcrowdfund.restapi.ApiClient;
 import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
-
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
-
 import retrofit2.Call;
 import retrofit2.Callback;
-
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
 import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;

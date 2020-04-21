@@ -73,7 +73,7 @@ public class ContactInformationFragement extends Fragment {
                     if (pd != null && pd.isShowing()) {
                         pd.dismiss();
                     }
-                    if (response != null) {
+                    if (response.code()==200) {
                         if (response != null && response.isSuccessful()) {
                             if (response.body().getUserLoginStatus() == 1) {
                                 if (response.body().getContactInformation() != null) {
@@ -113,7 +113,10 @@ public class ContactInformationFragement extends Fragment {
                             Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                        if (pd != null && pd.isShowing()) {
+                            pd.dismiss();
+                        }
+                        Toast.makeText(getActivity(), getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

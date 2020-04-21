@@ -2,7 +2,6 @@ package com.auxesis.maxcrowdfund.mvvm.ui.myinvestments;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -63,7 +62,6 @@ public class MyInvestmentsFragment extends Fragment {
         edtCompany = root.findViewById(R.id.edtCompany);
         edtFrom = root.findViewById(R.id.edtFrom);
         edtTo = root.findViewById(R.id.edtTo);
-
         recyclerView = root.findViewById(R.id.recyView);
         lLayoutFilter = root.findViewById(R.id.lLayoutFilter);
         lLayoutFilter.setVisibility(View.GONE);
@@ -80,8 +78,8 @@ public class MyInvestmentsFragment extends Fragment {
             public void onClick(View v) {
                 if (Utils.isInternetConnected(getActivity())) {
                     if (Validation()) {
-                       // getMyInvestmentSearch();
-                    }else {
+                        // getMyInvestmentSearch();
+                    } else {
                         Toast.makeText(getActivity(), error_msg, Toast.LENGTH_SHORT).show();
                     }
                 } else {
@@ -149,41 +147,41 @@ public class MyInvestmentsFragment extends Fragment {
             @Override
             public void onResponse(Call<MyInvestmentResponce> call, Response<MyInvestmentResponce> response) {
                 Log.d(TAG, "onResponse: " + "><" + new Gson().toJson(response.body()));
-                try {
+                if (pd != null && pd.isShowing()) {
+                    pd.dismiss();
+                }
+                if (response.code() == 200) {
+                    if (response != null && response.isSuccessful()) {
+                        if (response.body().getUserLoginStatus() == 1) {
+                            if (response.body().getData().size() > 0) {
+                                adapter = new MyInvestmentAdapter(getActivity(), getActivity(), response.body().getData());
+                                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+                                recyclerView.setLayoutManager(mLayoutManager);
+                                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                                recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+                                recyclerView.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+                            } else {
+                                Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            setPreference(getActivity(), "user_id", "");
+                            setPreference(getActivity(), "mLogout_token", "");
+                            MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                            Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getActivity(), LoginActivity.class);
+                            startActivity(intent);
+                            mActivity.finish();
+                        }
+                    }
+                } else {
                     if (pd != null && pd.isShowing()) {
                         pd.dismiss();
                     }
-                    if (response!=null) {
-                        if (response != null && response.isSuccessful()) {
-                            if (response.body().getUserLoginStatus() == 1) {
-                                if (response.body().getData().size() > 0) {
-                                    adapter = new MyInvestmentAdapter(getActivity(), getActivity(), response.body().getData());
-                                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-                                    recyclerView.setLayoutManager(mLayoutManager);
-                                    recyclerView.setItemAnimator(new DefaultItemAnimator());
-                                    recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
-                                    recyclerView.setAdapter(adapter);
-                                    adapter.notifyDataSetChanged();
-                                }else {
-                                    Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
-                                }
-                            }else {
-                                setPreference(getActivity(), "user_id", "");
-                                setPreference(getActivity(), "mLogout_token", "");
-                                MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
-                                Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                                startActivity(intent);
-                                mActivity.finish();
-                            }
-                        }
-                    }else {
-                        Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
-                    }
-                } catch (Resources.NotFoundException e) {
-                    e.printStackTrace();
+                    Toast.makeText(getActivity(), getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onFailure(Call<MyInvestmentResponce> call, Throwable t) {
                 Log.e("response", "error " + t.getMessage());
@@ -227,7 +225,7 @@ public class MyInvestmentsFragment extends Fragment {
         }
     }
 
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         // Set title bar
         ((HomeActivity) getActivity()).setActionBarTitle(getString(R.string.menu_my_investments));

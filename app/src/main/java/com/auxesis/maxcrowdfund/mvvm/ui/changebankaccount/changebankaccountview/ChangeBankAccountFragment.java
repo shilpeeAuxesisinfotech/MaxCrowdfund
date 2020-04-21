@@ -79,17 +79,24 @@ public class ChangeBankAccountFragment extends Fragment implements OnCustomClick
                     if (pd != null && pd.isShowing()) {
                         pd.dismiss();
                     }
-                    if (response != null && response.isSuccessful()) {
-                        if (response.body().getResult().equals("success")) {
-                            Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                            if (Utils.isInternetConnected(getActivity())) {
-                                 getChangeBankAccountApi();
+                    if (response.code()==200) {
+                        if (response != null && response.isSuccessful()) {
+                            if (response.body().getResult().equals("success")) {
+                                Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                if (Utils.isInternetConnected(getActivity())) {
+                                    getChangeBankAccountApi();
+                                } else {
+                                    Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
+                                }
                             } else {
-                                Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         }
+                    }else {
+                        if (pd != null && pd.isShowing()) {
+                            pd.dismiss();
+                        }
+                        Toast.makeText(getActivity(), getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
                     }
                 }
                 @Override
@@ -118,7 +125,7 @@ public class ChangeBankAccountFragment extends Fragment implements OnCustomClick
                         if (pd != null && pd.isShowing()) {
                             pd.dismiss();
                         }
-                        if (response!=null) {
+                        if (response.code()==200) {
                             if (response != null && response.isSuccessful()) {
                                 Log.d(TAG, "onResponse:" + "><Bank><" + new Gson().toJson(response.body()));
                                 if (response.body().getBankAccounts().getData().size() > 0) {
@@ -132,7 +139,10 @@ public class ChangeBankAccountFragment extends Fragment implements OnCustomClick
                                 }
                             }
                         }else {
-                            Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                            if (pd != null && pd.isShowing()) {
+                                pd.dismiss();
+                            }
+                            Toast.makeText(getActivity(), getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

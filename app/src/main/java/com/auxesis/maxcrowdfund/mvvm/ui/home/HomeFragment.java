@@ -51,6 +51,7 @@ public class HomeFragment extends Fragment {
     List<InvestmentOppModel> listArrayMeddle = new ArrayList<>();
     List<InvestmentOppModel> listArrayExpired = new ArrayList<>();
     private int currentPage = PAGE_START;
+    private int currentPageExpired = PAGE_START;
     private boolean isLastPage = false;
     private boolean isLoading = false;
     boolean isRedirectData = false;
@@ -62,6 +63,8 @@ public class HomeFragment extends Fragment {
     int mActiveCount = 0;
     int mExpiredCount = 0;
     int mExpiredTotal = 0;
+    boolean isFirstThreeActive = false;
+    boolean isFirstThreeExpired = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,8 +83,8 @@ public class HomeFragment extends Fragment {
         adapter = new InvestmentOppAdapter(getContext(), getActivity(), new ArrayList<>());
         recyclerView.setAdapter(adapter);
         APICount = 0;
+        currentPage = 1;
         APIUrl.investStatus = "active";
-        listArrayActive.clear();
         if (isInternetConnected(getActivity())) {
             getInvestmentOpp();
         } else {
@@ -116,7 +119,6 @@ public class HomeFragment extends Fragment {
             }
         });
         return root;
-
     }
 
     private void getInvestmentOpp() {
@@ -134,65 +136,77 @@ public class HomeFragment extends Fragment {
                 if (response.code() == 200) {
                     if (response != null && response.isSuccessful()) {
                         if (response.body().getUserLoginStatus() == 1) {
+                            listArrayActive.clear();
+                            listArrayMeddle.clear();
+                            listArrayExpired.clear();
+                            InvestmentOppModel myListModel = new InvestmentOppModel();
+                            myListModel.setAverage_return(response.body().getAverageReturn());
+                            myListModel.setTotal_raised(response.body().getTotalRaised());
+                            myListModel.setActive_investors(response.body().getActiveInvestors());
+                            myListModel.setmDefaults(response.body().getDefaults());
+                            myListModel.setTypeData(true);
+                            listArrayMeddle.add(myListModel);
+
                             if (response.body().getFundraiserType().equals("active")) {
-                                listArrayActive.clear();
                                 mActiveTotal = response.body().getTotal();
                                 if (mActiveTotal == 0) {
                                     isRedirectData = true; //redirect to expire page
                                 } else {
-                                    Log.d("<><><><><", "if--for rest active only--"); //for active only //for rest Active
+                                    Log.d("<><><><><", "if--for rest active only--" + String.valueOf(mActiveTotal)); //for active only //for rest Active
                                     mActiveTotal = response.body().getTotal();
                                     if (mActiveTotal != 0) {
-                                        listArrayActive.clear();
                                         if (response.body().getData() != null && response.body().getData().size() > 0) {
                                             if (mActiveTotal <= VISIBLE_THRESHOLD) {
+                                                Log.d("><><>", "Page -if---" + String.valueOf(mActiveTotal));
                                                 TOTAL_ACTIVE_PAGES = 0;
-                                                mActiveCount = 0;
                                                 TOTAL_PAGES = TOTAL_ACTIVE_PAGES;
-                                                APICount = mActiveCount;
+                                                APICount = 0;
+                                                currentPage = 1;
                                                 for (int i = 0; i < response.body().getData().size(); i++) {
-                                                    InvestmentOppModel myListModel = new InvestmentOppModel();
-                                                    myListModel.setId(response.body().getData().get(i).getId());
-                                                    myListModel.setmTitle(response.body().getData().get(i).getTitle());
-                                                    myListModel.setInterest_pa(response.body().getData().get(i).getInterestPa());
-                                                    myListModel.setRisk_class(response.body().getData().get(i).getRiskClass());
-                                                    myListModel.setAmount(response.body().getData().get(i).getAmount());
-                                                    myListModel.setCurrency(response.body().getData().get(i).getCurrency());
-                                                    myListModel.setCurrency_symbol(response.body().getData().get(i).getCurrencySymbol());
-                                                    myListModel.setFilled(response.body().getData().get(i).getFilled());
-                                                    myListModel.setNo_of_investors(response.body().getData().get(i).getNoOfInvestors());
-                                                    myListModel.setAmount_left(response.body().getData().get(i).getAmountLeft());
-                                                    myListModel.setMonths(response.body().getData().get(i).getMonths());
-                                                    myListModel.setType(response.body().getData().get(i).getType());
-                                                    myListModel.setLocation(response.body().getData().get(i).getLocation());
-                                                    myListModel.setLocation_flag_img(response.body().getData().get(i).getLocationFlagImg());
-                                                    myListModel.setInvestment_status(response.body().getFundraiserType());
-                                                    listArrayActive.add(myListModel);
+                                                    InvestmentOppModel mModel = new InvestmentOppModel();
+                                                    mModel.setId(response.body().getData().get(i).getId());
+                                                    mModel.setmTitle(response.body().getData().get(i).getTitle());
+                                                    mModel.setInterest_pa(response.body().getData().get(i).getInterestPa());
+                                                    mModel.setRisk_class(response.body().getData().get(i).getRiskClass());
+                                                    mModel.setAmount(response.body().getData().get(i).getAmount());
+                                                    mModel.setCurrency(response.body().getData().get(i).getCurrency());
+                                                    mModel.setCurrency_symbol(response.body().getData().get(i).getCurrencySymbol());
+                                                    mModel.setFilled(response.body().getData().get(i).getFilled());
+                                                    mModel.setNo_of_investors(response.body().getData().get(i).getNoOfInvestors());
+                                                    mModel.setAmount_left(response.body().getData().get(i).getAmountLeft());
+                                                    mModel.setMonths(response.body().getData().get(i).getMonths());
+                                                    mModel.setType(response.body().getData().get(i).getType());
+                                                    mModel.setLocation(response.body().getData().get(i).getLocation());
+                                                    mModel.setLocation_flag_img(response.body().getData().get(i).getLocationFlagImg());
+                                                    mModel.setTypeData(false);
+                                                    listArrayActive.add(mModel);
                                                 }
+                                                isFirstThreeActive = true;
                                             } else if (mActiveTotal > VISIBLE_THRESHOLD) {
+                                                isFirstThreeActive = false;
                                                 TOTAL_ACTIVE_PAGES = (mActiveTotal / VISIBLE_THRESHOLD);
                                                 TOTAL_PAGES = TOTAL_ACTIVE_PAGES;
-                                                mActiveCount = mActiveCount + 1;
-                                                APICount = mActiveCount;
-                                               // APICount++;
+                                                APICount = APICount + 1;
+                                                currentPage = APICount;
                                                 for (int i = 0; i < response.body().getData().size(); i++) {
-                                                    InvestmentOppModel myListModel = new InvestmentOppModel();
-                                                    myListModel.setId(response.body().getData().get(i).getId());
-                                                    myListModel.setmTitle(response.body().getData().get(i).getTitle());
-                                                    myListModel.setInterest_pa(response.body().getData().get(i).getInterestPa());
-                                                    myListModel.setRisk_class(response.body().getData().get(i).getRiskClass());
-                                                    myListModel.setAmount(response.body().getData().get(i).getAmount());
-                                                    myListModel.setCurrency(response.body().getData().get(i).getCurrency());
-                                                    myListModel.setCurrency_symbol(response.body().getData().get(i).getCurrencySymbol());
-                                                    myListModel.setFilled(response.body().getData().get(i).getFilled());
-                                                    myListModel.setNo_of_investors(response.body().getData().get(i).getNoOfInvestors());
-                                                    myListModel.setAmount_left(response.body().getData().get(i).getAmountLeft());
-                                                    myListModel.setMonths(response.body().getData().get(i).getMonths());
-                                                    myListModel.setType(response.body().getData().get(i).getType());
-                                                    myListModel.setLocation(response.body().getData().get(i).getLocation());
-                                                    myListModel.setLocation_flag_img(response.body().getData().get(i).getLocationFlagImg());
-                                                    myListModel.setInvestment_status(response.body().getFundraiserType());
-                                                    listArrayActive.add(myListModel);
+                                                    InvestmentOppModel mSecondModelActive = new InvestmentOppModel();
+                                                    mSecondModelActive.setId(response.body().getData().get(i).getId());
+                                                    mSecondModelActive.setmTitle(response.body().getData().get(i).getTitle());
+                                                    mSecondModelActive.setInterest_pa(response.body().getData().get(i).getInterestPa());
+                                                    mSecondModelActive.setRisk_class(response.body().getData().get(i).getRiskClass());
+                                                    mSecondModelActive.setAmount(response.body().getData().get(i).getAmount());
+                                                    mSecondModelActive.setCurrency(response.body().getData().get(i).getCurrency());
+                                                    mSecondModelActive.setCurrency_symbol(response.body().getData().get(i).getCurrencySymbol());
+                                                    mSecondModelActive.setFilled(response.body().getData().get(i).getFilled());
+                                                    mSecondModelActive.setNo_of_investors(response.body().getData().get(i).getNoOfInvestors());
+                                                    mSecondModelActive.setAmount_left(response.body().getData().get(i).getAmountLeft());
+                                                    mSecondModelActive.setMonths(response.body().getData().get(i).getMonths());
+                                                    mSecondModelActive.setType(response.body().getData().get(i).getType());
+                                                    mSecondModelActive.setLocation(response.body().getData().get(i).getLocation());
+                                                    mSecondModelActive.setLocation_flag_img(response.body().getData().get(i).getLocationFlagImg());
+                                                    mSecondModelActive.setInvestment_status(response.body().getFundraiserType());
+                                                    mSecondModelActive.setTypeData(false);
+                                                    listArrayActive.add(mSecondModelActive);
                                                 }
                                             }
                                             //manage progress view
@@ -200,29 +214,38 @@ public class HomeFragment extends Fragment {
                                                 adapter.removeLoading();
                                             }
                                             adapter.addItems(listArrayActive); //data added into the list
-                                            if (currentPage <TOTAL_ACTIVE_PAGES) {
-                                                Log.d("><><>", "page "+String.valueOf(currentPage));
-                                                adapter.addLoading(); //TOTAL_ACTIVE_PAGES  if (currentPage == APICount)
-                                            }else if (currentPage == TOTAL_ACTIVE_PAGES) {
+                                            if (currentPage <= TOTAL_ACTIVE_PAGES) {
+                                                Log.d("><><>", "page " + String.valueOf(currentPage) + "><><>" + String.valueOf(TOTAL_ACTIVE_PAGES));
+                                                adapter.addLoading();
+                                            } else if (currentPage <= APICount) {
+                                                Log.d("><><>", "page " + String.valueOf(currentPage) + "><>else<>" + String.valueOf(TOTAL_ACTIVE_PAGES));
                                                 listArrayActive.clear();
-                                                listArrayMeddle.clear();
-                                                InvestmentOppModel myListModel = new InvestmentOppModel();
-                                                myListModel.setAverage_return(response.body().getAverageReturn());
-                                                myListModel.setTotal_raised(response.body().getTotalRaised());
-                                                myListModel.setActive_investors(response.body().getActiveInvestors());
-                                                myListModel.setInvestment_status("OtherItem");
-                                                listArrayMeddle.add(myListModel);
                                                 listArrayActive.addAll(listArrayMeddle);
                                                 adapter.addItems(listArrayActive);
                                                 APIUrl.investStatus = "expired";
                                                 APICount = 0;
-                                                adapter.addLoading();
-                                            } else {
+                                                isRedirectData = true;
+                                                // adapter.addLoading();
+                                            } /*else {
                                                 isLastPage = true;
                                             }
-                                            isLoading = false;
-                                        } else {
-                                            Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                                            isLoading = false;*/
+
+                                            // if Active Total is less than three //For first three
+                                            if (isFirstThreeActive) {
+                                                Log.d("><><><", "First threee----");
+                                                if (currentPage != PAGE_START) {
+                                                    adapter.removeLoading();
+                                                }
+                                                // adapter.addItems(listArrayActive); //data added into the list
+                                                listArrayActive.clear();
+                                                listArrayActive.addAll(listArrayMeddle);
+                                                adapter.addItems(listArrayActive);
+                                                APIUrl.investStatus = "expired";
+                                                APICount = 0;
+                                                isRedirectData = true;
+                                                isFirstThreeActive = false;
+                                            }
                                         }
                                     }
                                 } //end
@@ -230,68 +253,88 @@ public class HomeFragment extends Fragment {
                                 mExpiredTotal = response.body().getTotal();
                                 Log.d("<><><><><", "ifelse--for expired only--" + mExpiredTotal); //for active only
                                 if (mExpiredTotal != 0) {
-                                    listArrayExpired.clear();
                                     if (response.body().getData() != null && response.body().getData().size() > 0) {
                                         if (mExpiredTotal <= VISIBLE_THRESHOLD) {
                                             TOTAL_EXPIRED_PAGES = 0;
                                             TOTAL_PAGES = TOTAL_EXPIRED_PAGES;
-                                            mExpiredCount = 0;
-                                            APICount = mExpiredCount;
+                                            APICount = 0;
+                                            currentPageExpired = 1; //*****
+                                            currentPage = currentPageExpired;  //*****
                                             for (int i = 0; i < response.body().getData().size(); i++) {
-                                                InvestmentOppModel myListModel = new InvestmentOppModel();
-                                                myListModel.setId(response.body().getData().get(i).getId());
-                                                myListModel.setmTitle(response.body().getData().get(i).getTitle());
-                                                myListModel.setInterest_pa(response.body().getData().get(i).getInterestPa());
-                                                myListModel.setRisk_class(response.body().getData().get(i).getRiskClass());
-                                                myListModel.setAmount(response.body().getData().get(i).getAmount());
-                                                myListModel.setCurrency(response.body().getData().get(i).getCurrency());
-                                                myListModel.setCurrency_symbol(response.body().getData().get(i).getCurrencySymbol());
-                                                myListModel.setFilled(response.body().getData().get(i).getFilled());
-                                                myListModel.setNo_of_investors(response.body().getData().get(i).getNoOfInvestors());
-                                                myListModel.setAmount_left(response.body().getData().get(i).getAmountLeft());
-                                                myListModel.setMonths(response.body().getData().get(i).getMonths());
-                                                myListModel.setType(response.body().getData().get(i).getType());
-                                                myListModel.setLocation(response.body().getData().get(i).getLocation());
-                                                myListModel.setLocation_flag_img(response.body().getData().get(i).getLocationFlagImg());
-                                                myListModel.setInvestment_status(response.body().getFundraiserType());
-                                                listArrayExpired.add(myListModel);
+                                                InvestmentOppModel myListModelExFirst = new InvestmentOppModel();
+                                                myListModelExFirst.setId(response.body().getData().get(i).getId());
+                                                myListModelExFirst.setmTitle(response.body().getData().get(i).getTitle());
+                                                myListModelExFirst.setInterest_pa(response.body().getData().get(i).getInterestPa());
+                                                myListModelExFirst.setRisk_class(response.body().getData().get(i).getRiskClass());
+                                                myListModelExFirst.setAmount(response.body().getData().get(i).getAmount());
+                                                myListModelExFirst.setCurrency(response.body().getData().get(i).getCurrency());
+                                                myListModelExFirst.setCurrency_symbol(response.body().getData().get(i).getCurrencySymbol());
+                                                myListModelExFirst.setFilled(response.body().getData().get(i).getFilled());
+                                                myListModelExFirst.setNo_of_investors(response.body().getData().get(i).getNoOfInvestors());
+                                                myListModelExFirst.setAmount_left(response.body().getData().get(i).getAmountLeft());
+                                                myListModelExFirst.setMonths(response.body().getData().get(i).getMonths());
+                                                myListModelExFirst.setType(response.body().getData().get(i).getType());
+                                                myListModelExFirst.setLocation(response.body().getData().get(i).getLocation());
+                                                myListModelExFirst.setLocation_flag_img(response.body().getData().get(i).getLocationFlagImg());
+                                                myListModelExFirst.setTypeData(false);
+                                                listArrayExpired.add(myListModelExFirst);
                                             }
+                                            isFirstThreeExpired = true;
                                         } else if (mExpiredTotal > VISIBLE_THRESHOLD) {
                                             TOTAL_EXPIRED_PAGES = (mExpiredTotal / VISIBLE_THRESHOLD);
                                             TOTAL_PAGES = TOTAL_EXPIRED_PAGES;
-                                            mExpiredCount = mExpiredCount + 1;
-                                            APICount = mExpiredCount;
+                                            isFirstThreeExpired = false;
+                                            // mExpiredCount = mExpiredCount + 1;
+                                            APICount++;
+                                            currentPageExpired = APICount; //****
+                                            currentPage = currentPageExpired; //*
+
                                             for (int i = 0; i < response.body().getData().size(); i++) {
-                                                InvestmentOppModel myListModel = new InvestmentOppModel();
-                                                myListModel.setId(response.body().getData().get(i).getId());
-                                                myListModel.setmTitle(response.body().getData().get(i).getTitle());
-                                                myListModel.setInterest_pa(response.body().getData().get(i).getInterestPa());
-                                                myListModel.setRisk_class(response.body().getData().get(i).getRiskClass());
-                                                myListModel.setAmount(response.body().getData().get(i).getAmount());
-                                                myListModel.setCurrency(response.body().getData().get(i).getCurrency());
-                                                myListModel.setCurrency_symbol(response.body().getData().get(i).getCurrencySymbol());
-                                                myListModel.setFilled(response.body().getData().get(i).getFilled());
-                                                myListModel.setNo_of_investors(response.body().getData().get(i).getNoOfInvestors());
-                                                myListModel.setAmount_left(response.body().getData().get(i).getAmountLeft());
-                                                myListModel.setMonths(response.body().getData().get(i).getMonths());
-                                                myListModel.setType(response.body().getData().get(i).getType());
-                                                myListModel.setLocation(response.body().getData().get(i).getLocation());
-                                                myListModel.setLocation_flag_img(response.body().getData().get(i).getLocationFlagImg());
-                                                myListModel.setInvestment_status(response.body().getFundraiserType());
-                                                listArrayExpired.add(myListModel);
+                                                InvestmentOppModel mModelExSecond = new InvestmentOppModel();
+                                                mModelExSecond.setId(response.body().getData().get(i).getId());
+                                                mModelExSecond.setmTitle(response.body().getData().get(i).getTitle());
+                                                mModelExSecond.setInterest_pa(response.body().getData().get(i).getInterestPa());
+                                                mModelExSecond.setRisk_class(response.body().getData().get(i).getRiskClass());
+                                                mModelExSecond.setAmount(response.body().getData().get(i).getAmount());
+                                                mModelExSecond.setCurrency(response.body().getData().get(i).getCurrency());
+                                                mModelExSecond.setCurrency_symbol(response.body().getData().get(i).getCurrencySymbol());
+                                                mModelExSecond.setFilled(response.body().getData().get(i).getFilled());
+                                                mModelExSecond.setNo_of_investors(response.body().getData().get(i).getNoOfInvestors());
+                                                mModelExSecond.setAmount_left(response.body().getData().get(i).getAmountLeft());
+                                                mModelExSecond.setMonths(response.body().getData().get(i).getMonths());
+                                                mModelExSecond.setType(response.body().getData().get(i).getType());
+                                                mModelExSecond.setLocation(response.body().getData().get(i).getLocation());
+                                                mModelExSecond.setLocation_flag_img(response.body().getData().get(i).getLocationFlagImg());
+                                                mModelExSecond.setTypeData(false);
+                                                listArrayExpired.add(mModelExSecond);
                                             }
-                                        } //end greater
+                                        }
                                         //manage progress view
                                         if (currentPage != PAGE_START) {
                                             adapter.removeLoading();
                                         }
                                         adapter.addItems(listArrayExpired);
-                                        if (currentPage < TOTAL_EXPIRED_PAGES) {
+                                        if (currentPage <= TOTAL_EXPIRED_PAGES) {
+                                            // if (currentPage <mExpiredTotal) {
+                                            Log.d("><><>", String.valueOf(currentPage) + "><><>" + String.valueOf(APICount));
                                             adapter.addLoading();
-                                        } else {
+                                        } /*else if (currentPage==mExpiredTotal){
+                                            Toast.makeText(mActivity, getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                                        }*/ else {
                                             isLastPage = true;
                                         }
                                         isLoading = false;
+
+                                        if (isFirstThreeExpired) {
+                                            Log.d("><><><>", ">>>>For first Expired data");
+                                            //manage progress view
+                                            if (currentPage != PAGE_START) {
+                                                adapter.removeLoading();
+                                            }
+                                            adapter.clear();
+                                            adapter.addItems(listArrayExpired);
+                                            isFirstThreeExpired = false;
+                                        }
                                     }
                                 }
                             }
@@ -313,7 +356,10 @@ public class HomeFragment extends Fragment {
                     } else {
                         Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                     }
-                } else {
+                } else if (response.code()==500 ||response.code()==400){
+                    if (pd != null && pd.isShowing()) {
+                        pd.dismiss();
+                    }
                     Toast.makeText(getActivity(), getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
                 }
             }

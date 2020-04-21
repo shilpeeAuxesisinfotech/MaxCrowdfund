@@ -28,7 +28,7 @@ public class InvestmentOppAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int VIEW_TYPE_NORMAL = 1;
     private boolean isLoaderVisible = false;
     private static final String TAG = "MyListAdapter";
-    public ArrayList<InvestmentOppModel> arrayList, filterList;
+    public ArrayList<InvestmentOppModel> arrayList;
     Context mContext;
     Activity mActivity;
 
@@ -143,59 +143,57 @@ public class InvestmentOppAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
         public void onBind(int position) {
             super.onBind(position);
-
-            InvestmentOppModel item = arrayList.get(position);
-            cardView.setVisibility(View.VISIBLE);
-            tv_mTittle.setText(item.getmTitle());
-            tv_interest_pr.setText(item.getInterest_pa() + "%");
-            tv_risk_c.setText(item.getRisk_class());
-            String currencyBymbol = item.getCurrency_symbol();
-            tvAmount.setText(item.getAmount() + ".00");
-            //tv_cur_symbol_amt.setText(currencyBymbol);
-            //tvAmount.setText(String.valueOf(getCustomReplaceFormat(item.getAmount())+".00"));
-            int mFilled = item.getFilled();
-            tv_filled.setText(String.valueOf(mFilled) + "%");
-            tv_currency_left_amt.setText(currencyBymbol);
-            tv_investors.setText(String.valueOf(item.getNo_of_investors()));
-            tv_left_amount.setText(String.valueOf(item.getAmount_left()));
-            tv_months.setText(String.valueOf(item.getMonths()));
-            tv_type.setText(item.getType());
-            tv_location.setText(item.getLocation());
-            progessBar.setProgress(mFilled);
-
-            if (item.getInvestment_status().equals("OtherItem")) {
-                cardView.setVisibility(View.GONE);
-                lLayoutFooter.setVisibility(View.VISIBLE);
-                tv_cur_total_rsd.setText(currencyBymbol);
-                tv_raised_amount.setText(String.valueOf(item.getTotal_raised()));
-                tv_active_investor.setText(String.valueOf(item.getActive_investors()));
-                tv_cur_avr_return.setText(currencyBymbol);
-                tv_avr_return.setText(String.valueOf(item.getAverage_return()));
-                tv_active_invest_2.setText(String.valueOf(item.getActive_investors()));
-            } else {
-                lLayoutFooter.setVisibility(View.GONE);
-                cardView.setVisibility(View.VISIBLE);
-            }
-            Log.d(TAG, "onBind: " + arrayList.size());
-            cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    NavController navController = Navigation.findNavController(mActivity, R.id.nav_host_fragment);
-                    setPreference(mActivity, "id",item.getId());
-                    navController.navigate(R.id.action_nav_investment_opp_to_investmentOppDetailFragment);
+            try {
+                InvestmentOppModel item = arrayList.get(position);
+                if (item.isTypeData()){
+                    lLayoutFooter.setVisibility(View.VISIBLE);
+                    cardView.setVisibility(View.GONE);
+                    tv_raised_amount.setText("€" + String.valueOf(item.getTotal_raised()));
+                    tv_active_investor.setText("€" + String.valueOf(item.getActive_investors()));
+                    tv_avr_return.setText("€" + String.valueOf(item.getAverage_return()));
+                    tv_active_invest_2.setText(String.valueOf(item.getmDefaults()));
+                    Log.d(TAG, "onBind: " + "1 -----"+item.isTypeData());
+                }else {
+                    lLayoutFooter.setVisibility(View.GONE);
+                    cardView.setVisibility(View.VISIBLE);
+                    Log.d(TAG, "onBind: " + "12-----"+item.isTypeData());
+                    tv_mTittle.setText(item.getmTitle());
+                    tv_interest_pr.setText(item.getInterest_pa() + "%");
+                    tv_risk_c.setText(item.getRisk_class());
+                    String currencyBymbol = item.getCurrency_symbol();
+                    tvAmount.setText(item.getAmount() + ".00");
+                    int mFilled = item.getFilled();
+                    tv_filled.setText(String.valueOf(mFilled) + "%");
+                    tv_currency_left_amt.setText(currencyBymbol);
+                    tv_investors.setText(String.valueOf(item.getNo_of_investors()));
+                    tv_left_amount.setText(String.valueOf(item.getAmount_left()));
+                    tv_months.setText(String.valueOf(item.getMonths()));
+                    tv_type.setText(item.getType());
+                    tv_location.setText(item.getLocation());
+                    progessBar.setProgress(mFilled);
                 }
-            });
+
+                Log.d(TAG, "onBind: " + arrayList.size());
+                cardView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        NavController navController = Navigation.findNavController(mActivity, R.id.nav_host_fragment);
+                        setPreference(mActivity, "id", item.getId());
+                        navController.navigate(R.id.action_nav_investment_opp_to_investmentOppDetailFragment);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public class ProgressHolder extends BaseViewHolder {
         ProgressBar mProgressbar;
-
         ProgressHolder(View itemView) {
             super(itemView);
             mProgressbar = itemView.findViewById(R.id.mProgressbar);
         }
-
         @Override
         protected void clear() {
         }

@@ -1,5 +1,7 @@
 package com.auxesis.maxcrowdfund.mvvm.ui.home.oppmodel;
 
+import static com.auxesis.maxcrowdfund.constant.APIUrl.investment_status;
+
 public class InvestmentOppModel {
     String id;
     String mTitle;
@@ -16,12 +18,29 @@ public class InvestmentOppModel {
     String location;
     String location_flag_img;
     String main_img;
-    int total_raised;
+    String total_raised;
     int active_investors;
-    int average_return;
+    String average_return;
     String fundraiser_type;
     String investment_status;
+    String mDefaults;
+    boolean isTypeData;
 
+    public boolean isTypeData() {
+        return isTypeData;
+    }
+
+    public void setTypeData(boolean typeData) {
+        isTypeData = typeData;
+    }
+
+    public String getmDefaults() {
+        return mDefaults;
+    }
+
+    public void setmDefaults(String mDefaults) {
+        this.mDefaults = mDefaults;
+    }
 
     public String getFundraiser_type() {
         return fundraiser_type;
@@ -30,6 +49,7 @@ public class InvestmentOppModel {
     public void setFundraiser_type(String fundraiser_type) {
         this.fundraiser_type = fundraiser_type;
     }
+
     public int mViewHolderType;
 
     public int getmViewHolderType() {
@@ -171,11 +191,11 @@ public class InvestmentOppModel {
         this.main_img = main_img;
     }
 
-    public int getTotal_raised() {
+    public String getTotal_raised() {
         return total_raised;
     }
 
-    public void setTotal_raised(int total_raised) {
+    public void setTotal_raised(String total_raised) {
         this.total_raised = total_raised;
     }
 
@@ -187,11 +207,11 @@ public class InvestmentOppModel {
         this.active_investors = active_investors;
     }
 
-    public int getAverage_return() {
+    public String getAverage_return() {
         return average_return;
     }
 
-    public void setAverage_return(int average_return) {
+    public void setAverage_return(String average_return) {
         this.average_return = average_return;
     }
 }

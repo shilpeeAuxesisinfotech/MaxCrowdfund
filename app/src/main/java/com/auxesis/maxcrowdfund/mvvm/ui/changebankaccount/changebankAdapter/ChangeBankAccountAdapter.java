@@ -52,14 +52,16 @@ public class ChangeBankAccountAdapter extends RecyclerView.Adapter<ChangeBankAcc
         holder.radioAccount.setText(arrayList.get(position).getAccount());
         if (arrayList.get(position).getActive() == 1) {
             holder.radioAccount.setChecked(true);
+            account = arrayList.get(position).getAccount();
             Log.d(">>>>>>>>>>", "onCheckedChanged: " +"account====="+account+"pos---"+String.valueOf(position));
         } else {
             holder.radioAccount.setChecked(false);
+            account = arrayList.get(position).getAccount();
         }
         holder.radioAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.radioAccount.setChecked(false);
+               // holder.radioAccount.setChecked(false);
                 Toast.makeText(mContext, "Selected Bank Account is " + arrayList.get(position).getAccount(), Toast.LENGTH_SHORT).show();
                 account = arrayList.get(position).getAccount();
             }

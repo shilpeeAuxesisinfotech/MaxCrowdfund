@@ -1,5 +1,4 @@
 package com.auxesis.maxcrowdfund.mvvm.ui.home.homeDetail;
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -84,28 +83,22 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
     TextView tv_mTittle, tv_interest_pr, tv_risk_c, tv_currency_left_amt, tv_cur_symbol_amt, tvAmount, tv_filled, tv_investors,
             tv_left_amount, tv_left, tv_months, tvType, tv_location, tvNoRecord, tv_summary, txt_summary_content, tv_loan_terms, tvNoRecord_loan_term, tv_investment_plan,
             tvNoRecord_investment, tv_collateral, tvNoRecord_Collateral, tv_fundraiser, tvNoRecord_foundRaiser, tv_addnal_info_tittle, tv_addnal_content, tv_rik,
-            tvNoRecord_Risk, tvNoRecord_Document, tvNoRecord_LastInvestment, tv_last_investment, tv_document;
+            tvNoRecord_Risk, tvNoRecord_Document, tvNoRecord_LastInvestment, tv_last_investment, tv_document,tv_arrow_summary, tv_arrow_loan_terms, tv_arrow_collateral, tv_arrow_fundraiser, tv_arrow_investment_plan,
+            tv_arrow_risk, tv_arrow_document, tv_arrow_last_investment,tvSummaryError, tvInvestmentPlanError, tvInvestRiskError, tvDocumentError, tvLastInvestError;
     ImageView iv_main_ing, iv_logo;
-    // Button btn_investment_plan;
-    TextView tv_arrow_summary, tv_arrow_loan_terms, tv_arrow_collateral, tv_arrow_fundraiser, tv_arrow_investment_plan, tv_arrow_risk, tv_arrow_document, tv_arrow_last_investment;
-
     LinearLayout ll_contant_summary, ll_contant_loan_terms, ll_contant_collateral, ll_contant_fundraiser, ll_contant_investment, ll_contant_risk, ll_contant_document, ll_contant_last_invest;
     RelativeLayout rl_summary_for, rl_loan_term_click, rl_collateral_click, rl_foundaiser_click, rl_investment_click, rl_risk_click, rl_document_click, rl_last_invest_click;
 
     List<PhotosVideosModel> photosVideosList = new ArrayList<>();
     List<PhotosVideosModel> photosVideosList_f = new ArrayList<>();
     List<LoanTermModel> loanTermList = new ArrayList<>();
-
     List<CollateralModelP> collateralListFirst = new ArrayList<>();
     List<CollateralModelP> collateralListSecond = new ArrayList<>();
-
     List<FundraiserModel> fundraiserModelList = new ArrayList<>();
     List<InvestmentPlanModel> investmentPlanList = new ArrayList<>();
     List<RiskModel> riskList = new ArrayList<>();
-
     List<DocumentModel> documentList = new ArrayList<>();
     List<LastInvestmentModel> lastInvestmentList = new ArrayList<>();
-
     ProgressDialog pd;
     ProgressBar progessBar;
     RecyclerView recyclerView, recyViewLoanTerm, recyViewInvestment, recyViewCollateral, recyViewFoundRaiser, recyViewRisk, recyViewDocument, recyViewLastInvestment;
@@ -121,7 +114,6 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
     private String mdownloadFile;
     private long downloadID;
     Button btn_summary_invest, btn_investment_plan, btn_invest_risk, btn_invest_document, btn_last_invest;
-    TextView tvSummaryError, tvInvestmentPlanError, tvInvestRiskError, tvDocumentError, tvLastInvestError;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

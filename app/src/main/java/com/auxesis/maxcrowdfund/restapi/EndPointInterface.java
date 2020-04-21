@@ -16,6 +16,7 @@ import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.pendingmodel.PendingResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.home.oppmodel.InvestmentOppRes;
 import com.auxesis.maxcrowdfund.mvvm.ui.home.homeDetail.detailmodel.FundDetailResponce;
 import com.auxesis.maxcrowdfund.mvvm.ui.home.homeDetail.investmodel.CreateInvestmentResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.investform.questmodel.famodel.TfaValidateResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.investform.questmodel.model.SurveyFormDataInsertResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.investform.questmodel.questionlistmodel.InvestAmountKeyUpResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.investform.questmodel.questionlistmodel.InvestSurveyRuestionResponse;
@@ -90,6 +91,9 @@ public interface EndPointInterface {
     @POST("api/sendotp")
     Call<SendOTPResponse> getSendOTP(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Body JsonObject jsonObject);
 
+    @POST("api/sendotp")
+    Call<SendOTPResponse> getTwoFASendOTP(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Body JsonObject jsonObject);
+
     @POST("api/update-phone")
     Call<UpdatePhoneNumberResponse> getUpdatePhone(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Body JsonObject jsonObject);
 
@@ -129,5 +133,9 @@ public interface EndPointInterface {
 
     @POST("api/survey-form-data-insert")
     Call<SurveyFormDataInsertResponse> getSurveyFormDataInserted(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Body JsonObject jsonObject);
+
+   @GET("api/tfa-validate")
+    Call<TfaValidateResponse> getTFAValidated(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf,@Query("tfa_type") String mTfaType,@Query("code") String mCode,@Query("code_submit") String mCodeSubmit);
+
 
 }

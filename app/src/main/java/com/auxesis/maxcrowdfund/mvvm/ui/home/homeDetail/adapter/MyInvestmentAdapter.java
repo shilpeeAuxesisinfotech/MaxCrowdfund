@@ -48,6 +48,7 @@ public class MyInvestmentAdapter extends RecyclerView.Adapter<MyInvestmentAdapte
                 NavController navController = Navigation.findNavController(mActivity, R.id.nav_host_fragment);
                 Log.d("><><><",arrayList.get(position).getInvestmentId());
                 setPreference(mContext, "investment_id", arrayList.get(position).getInvestmentId());
+                setPreference(mContext, "loan_id", arrayList.get(position).getLoanid());
                 navController.navigate(R.id.action_nav_my_investments_to_nav_send);
             }
         });

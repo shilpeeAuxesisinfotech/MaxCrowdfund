@@ -152,25 +152,6 @@ public class MaxCrowdFund extends Application {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-   /* public RequestQueue getRequestQueue() {
-        return mRequestQueue;
-    }
-
-
-
     //363636
 
   /*  public static void saveCookie(Context context, String cookie) {

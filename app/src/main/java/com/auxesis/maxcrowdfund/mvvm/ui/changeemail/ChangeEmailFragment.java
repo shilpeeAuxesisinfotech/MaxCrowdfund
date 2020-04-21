@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -83,7 +82,7 @@ public class ChangeEmailFragment extends Fragment {
                         NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
                         navController.navigateUp();
                     }else {
-                        if (response!=null) {
+                        if (response.code()==200) {
                             if (response != null && response.isSuccessful()) {
                                 Log.d(TAG, "onResponse:" + "><><" + new Gson().toJson(response.body()));
                                 if (response.body().getUserLoginStatus() == 1) {
@@ -99,7 +98,10 @@ public class ChangeEmailFragment extends Fragment {
                                 }
                             }
                         }else {
-                            Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                            if (pd != null && pd.isShowing()) {
+                                pd.dismiss();
+                            }
+                            Toast.makeText(getActivity(), getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
                         }
                     }
                 } catch (Exception e) {

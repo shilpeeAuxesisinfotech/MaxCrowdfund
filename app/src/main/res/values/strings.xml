@@ -30,6 +30,7 @@
     <string name="location">Location</string>
     <string name="total_raised">Total raised</string>
     <string name="active_investores">Active investores</string>
+    <string name="active_default">Default investores</string>
     <string name="average_return">Average return</string>
 
     <!--For Summary-->
@@ -68,9 +69,7 @@
     <string name="server_down">Unable to reach server</string>
 
     <string name="version">Version</string>
-
     <string name="deposit">Deposit</string>
-
     <string name="ideal">iDeal</string>
     <string name="trustly">Trustly</string>
 
@@ -122,7 +121,6 @@
     <string name="enter_from">Please enter from</string>
     <string name="enter_to">Please enter to</string>
 
-
     <!--For Change Phone number-->
     <string name="enter_the_mobile_number_you_wish_to_verify">Enter the mobile number you wish to verify</string>
     <string name="enter_mobile_number">Enter mobile number</string>
@@ -132,7 +130,9 @@
     <string name="resend">Resend</string>
     <string name="enter_code_to_verify">Enter OTP to verify</string>
     <string name="enter_valid">OTP is not correct</string>
+    <string name="enter_otp">Please enter OTP</string>
     <string name="verify">Verify</string>
+    <string name="sure_cancel">Are you sure to cancel?</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -142,7 +142,7 @@
     <string name="enter_new_password">Enter new password</string>
     <string name="enter_confirm_password">Enter confirm password</string>
     <string name="confirm_password">New password and confirm password didn"'"t match.</string>
-    <string name="eight_digit">New password must be 8 digits.</string>
+    <string name="eight_digit">New password should be greater than 8 digits.</string>
     <!--<string name="confirm_password">New password and confirm password didn"'"t match.</string>-->
     <string name="update_password">Password update successfully...</string>
     <string name="submit_new_e_mail_address">Submit new e-mail address</string>

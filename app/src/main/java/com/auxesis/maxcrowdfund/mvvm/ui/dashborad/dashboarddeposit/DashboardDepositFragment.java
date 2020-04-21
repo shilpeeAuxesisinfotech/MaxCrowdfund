@@ -2,10 +2,10 @@ package com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboarddeposit;
 
 import android.app.Activity;
 import android.os.Bundle;
-
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.mvvm.activity.HomeActivity;
@@ -25,33 +24,15 @@ import com.auxesis.maxcrowdfund.restapi.ApiClient;
 import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
 
 public class DashboardDepositFragment extends Fragment {
     private static final String TAG = "DashboardDeposit";
     ProgressDialog pd;
-   /* Button btn_ideal;
-    int logged_in_user_id = 0;
-    String active_account_type = "";
-    int active_account_id = 0;
-    String country_code = "";
-    String address_line1 = "";
-    String address_line2 = "";
-    int postal_code = 0;
-    String locality = "";
-    String email = "";
-    String last_name = "";
-    String first_name = "";
-    String mobile_phone = "";
-    String mAmount = "";*/
-
-    WebView mWebview;
     String mTrustlyUrl = "";
     String error_msg = "";
     String mAmount = "";
@@ -62,6 +43,10 @@ public class DashboardDepositFragment extends Fragment {
     TextView tvTrustly;
     Activity mActivity;
 
+    final String mDenyURl = "https://test.maxcrowdfund.com/en/access-denied";
+    final String mSuccessURl = "https://test.maxcrowdfund.com/deposit-amount/success";
+    final String mDeniedURl = "https://test.maxcrowdfund.com/profile/user_id";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_dashboard_deposit, container, false);
@@ -71,9 +56,6 @@ public class DashboardDepositFragment extends Fragment {
         btn_trustly = root.findViewById(R.id.btn_trustly);
         cv_trustly = root.findViewById(R.id.cv_trustly);
         webView = root.findViewById(R.id.webView);
-
-
-
         if (getPreference(getActivity(), "totalBalance") != null && !getPreference(getActivity(), "totalBalance").isEmpty()) {
             tvTrustly.setText(getPreference(getActivity(), "totalBalance"));
         }
@@ -96,7 +78,6 @@ public class DashboardDepositFragment extends Fragment {
         return root;
     }
 
-
     private void getDeposit() {
         pd = ProgressDialog.show(getActivity(), "Please Wait...");
         String XCSRF = getPreference(getActivity(), "mCsrf_token");
@@ -107,7 +88,6 @@ public class DashboardDepositFragment extends Fragment {
             jsonObject.addProperty("amount_deposite", mAmount);
         }
         Log.d("><><>deposit<", jsonObject.toString());
-
         Call<DashboardDepositResponse> call = endPointInterface.getDashboardDeposit("application/json", XCSRF, jsonObject);
         call.enqueue(new Callback<DashboardDepositResponse>() {
             @Override
@@ -116,12 +96,12 @@ public class DashboardDepositFragment extends Fragment {
                     if (pd != null && pd.isShowing()) {
                         pd.dismiss();
                     }
-                    if (response != null) {
+                    if (response.code() == 200) {
                         if (response != null && response.isSuccessful()) {
                             Log.d(TAG, "onResponse: " + "><><" + new Gson().toJson(response.body()));
                             if (response.body().getResult().equals("success")) {
                                 mTrustlyUrl = response.body().getTrustlyUrl().toString();
-                                Log.d("><>mTrustlyUrl", mTrustlyUrl);
+                                Log.d("><>mTrustlyUrl---", mTrustlyUrl);
                                 if (mTrustlyUrl != null) {
                                     edt_trustly.setText("");
                                     cv_trustly.setVisibility(View.GONE);
@@ -129,17 +109,13 @@ public class DashboardDepositFragment extends Fragment {
                                     webView.loadUrl(mTrustlyUrl);
                                     webView.getSettings().setJavaScriptEnabled(true);
                                     webView.setWebViewClient(new WebClient());
-
-                                  /* mWebview.setWebViewClient(new WebClient());
-                                   mWebview.loadUrl(mTrustlyUrl);
-                                   mWebview.getSettings().setJavaScriptEnabled(true);*/
                                 }
                             }
                         } else {
                             Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -158,7 +134,6 @@ public class DashboardDepositFragment extends Fragment {
         });
     }
 
-
     private class WebClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -167,8 +142,19 @@ public class DashboardDepositFragment extends Fragment {
             return true;
         }
 
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            if (url.contains(mDenyURl)) {
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                navController.navigateUp();
+            } else if (url.contains(mSuccessURl)){
+                cv_trustly.setVisibility(View.VISIBLE);
+                webView.setVisibility(View.GONE);
+                edt_trustly.setText("");
+            }
+        }
     }
-
 
     /* private void getDashboardDetail() {
          EndPointInterface endPointInterface = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
@@ -306,6 +292,7 @@ public class DashboardDepositFragment extends Fragment {
         });
     }
 */
+
     private boolean Validation() {
         error_msg = "";
         if (TextUtils.isEmpty(edt_trustly.getText().toString().trim())) {

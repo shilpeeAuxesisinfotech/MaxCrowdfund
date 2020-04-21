@@ -12,13 +12,16 @@ public class InvestmentOppRes {
     private Integer userLoginStatus;
     @SerializedName("total_raised")
     @Expose
-    private Integer totalRaised;
+    private String totalRaised;
     @SerializedName("active_investors")
     @Expose
     private Integer activeInvestors;
     @SerializedName("average_return")
     @Expose
-    private Integer averageReturn;
+    private String averageReturn;
+    @SerializedName("defaults")
+    @Expose
+    private String defaults;
     @SerializedName("total")
     @Expose
     private Integer total;
@@ -37,11 +40,11 @@ public class InvestmentOppRes {
         this.userLoginStatus = userLoginStatus;
     }
 
-    public Integer getTotalRaised() {
+    public String getTotalRaised() {
         return totalRaised;
     }
 
-    public void setTotalRaised(Integer totalRaised) {
+    public void setTotalRaised(String totalRaised) {
         this.totalRaised = totalRaised;
     }
 
@@ -53,12 +56,20 @@ public class InvestmentOppRes {
         this.activeInvestors = activeInvestors;
     }
 
-    public Integer getAverageReturn() {
+    public String getAverageReturn() {
         return averageReturn;
     }
 
-    public void setAverageReturn(Integer averageReturn) {
+    public void setAverageReturn(String averageReturn) {
         this.averageReturn = averageReturn;
+    }
+
+    public String getDefaults() {
+        return defaults;
+    }
+
+    public void setDefaults(String defaults) {
+        this.defaults = defaults;
     }
 
     public Integer getTotal() {

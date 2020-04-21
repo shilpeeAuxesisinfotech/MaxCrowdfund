@@ -11,7 +11,7 @@ public class CreateInvestmentResponse {
     private Integer userLoginStatus;
     @SerializedName("deposit_amount")
     @Expose
-    private Integer depositAmount;
+    private Double depositAmount;
     @SerializedName("deposit_check")
     @Expose
     private Integer depositCheck;
@@ -30,11 +30,11 @@ public class CreateInvestmentResponse {
         this.userLoginStatus = userLoginStatus;
     }
 
-    public Integer getDepositAmount() {
+    public Double getDepositAmount() {
         return depositAmount;
     }
 
-    public void setDepositAmount(Integer depositAmount) {
+    public void setDepositAmount(Double depositAmount) {
         this.depositAmount = depositAmount;
     }
 

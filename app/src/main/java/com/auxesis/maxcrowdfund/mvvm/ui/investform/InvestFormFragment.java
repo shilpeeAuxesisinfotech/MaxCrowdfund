@@ -18,10 +18,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,8 +32,13 @@ import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.constant.MaxCrowdFund;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.mvvm.activity.LoginActivity;
+import com.auxesis.maxcrowdfund.mvvm.ui.changeMobileNumber.changeMobileModel.SendOTPResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.adapter.TransactionSigningAdapter;
+import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.model.ChangePreferenceResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.model.Option__;
 import com.auxesis.maxcrowdfund.mvvm.ui.home.homeDetail.investmodel.CreateInvestmentResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.investform.questmodel.InvestFormPreloadResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.investform.questmodel.famodel.TfaValidateResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.investform.questmodel.model.SurveyFormDataInsertResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.investform.questmodel.questionlistmodel.InvestAmountKeyUpResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.investform.questmodel.questionlistmodel.InvestSurveyRuestionResponse;
@@ -38,6 +46,9 @@ import com.auxesis.maxcrowdfund.restapi.ApiClient;
 import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,14 +60,16 @@ import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
 
 public class InvestFormFragment extends Fragment {
     private static final String TAG = "InvestFormFragment";
-    TextView tvLoanId, tvLoanName, tvMpgToken, tvCharged, tvHeading, tvQuestion;
-    EditText edtAccount;
+    TextView tvLoanId, tvLoanName, tvMpgToken, tvCharged, tvHeading, tvQuestion, tvTotalAccount, tvTotalWallet;
+    Spinner spinnerFA;
+    EditText edtAccount, edtOTP;
+    LinearLayout lLayoutOTP;
     String error_msg = "";
     ProgressDialog pd;
     Activity mActivity;
     String mLoanId = "";
     String mTittle = "";
-    Button btnContinue, btnQuestionContinue, btnCancel;
+    Button btnContinue, btnQuestionContinue, btnQuestCancel, btnSend, btnFACancel, btnFASubmit;
     RadioButton radBtnQ1, radBtnQ2, radBtnQ3;
     CardView cvInvestForm, cvQuestion, cvTwoFA;
     RadioGroup radioGroup;
@@ -69,9 +82,7 @@ public class InvestFormFragment extends Fragment {
     private String mQuesting7 = "";
     private String mQuesting8 = "";
     private String mQuesting9 = "";
-
     private int mThresholdValue = 0;
-
     boolean isQuestionSet1 = false;
     boolean isQuestionSet2 = false;
     boolean isQuestionSet3 = false;
@@ -92,7 +103,11 @@ public class InvestFormFragment extends Fragment {
     private String mQuestSelected8 = "";
     private String mQuestSelected9 = "";
     private String mAmountData = "";
-
+    private String mTotalChargeMpgToken = "";
+    TransactionSigningAdapter signingAdapter;
+    String mTrans_signing = "";
+    String mResponseOTP = "";
+    String mEnterOTP = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -103,6 +118,17 @@ public class InvestFormFragment extends Fragment {
         tvLoanName = root.findViewById(R.id.tvLoanName);
         tvMpgToken = root.findViewById(R.id.tvMpgToken);
         tvCharged = root.findViewById(R.id.tvCharged);
+
+        tvTotalAccount = root.findViewById(R.id.tvTotalAccount);
+        tvTotalWallet = root.findViewById(R.id.tvTotalWallet);
+
+        spinnerFA = root.findViewById(R.id.spinnerFA);
+        edtOTP = root.findViewById(R.id.edtOTP);
+        lLayoutOTP = root.findViewById(R.id.lLayoutOTP);
+        //lLayoutOTP.setVisibility(View.GONE);
+        btnSend = root.findViewById(R.id.btnSend);
+        btnFACancel = root.findViewById(R.id.btnFACancel);
+        btnFASubmit = root.findViewById(R.id.btnFASubmit);
 
         cvInvestForm = root.findViewById(R.id.cvInvestForm);
         cvQuestion = root.findViewById(R.id.cvQuestion);
@@ -118,7 +144,7 @@ public class InvestFormFragment extends Fragment {
         radBtnQ2 = root.findViewById(R.id.radBtnQ2);
         radBtnQ3 = root.findViewById(R.id.radBtnQ3);
         btnContinue = root.findViewById(R.id.btnContinue);
-        btnCancel = root.findViewById(R.id.btnCancel);
+        btnQuestCancel = root.findViewById(R.id.btnQuestCancel);
         btnQuestionContinue = root.findViewById(R.id.btnQuestionContinue);
 
         if (getPreference(mActivity, "loan_id") != null && getPreference(mActivity, "tittle") != null) {
@@ -132,34 +158,11 @@ public class InvestFormFragment extends Fragment {
                 Toast.makeText(mActivity, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
             }
         }
-
-       /* btnContinue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isInternetConnected(mActivity)) {
-                    if (Validation()) {
-                        String mAmount = edtAccount.getText().toString().trim();
-                        if (Utils.isInternetConnected(mActivity)) {
-                            if (getPreference(mActivity, "loanId") != null) {
-                                getInvestSurveyQuestion(getPreference(mActivity, "loanId"), mAmount);
-                            }
-                        } else {
-                            Toast.makeText(mActivity, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
-                        }
-                        *//*NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-                        setPreference(mActivity, "loanId",mLoanId);
-                        setPreference(mActivity, "amount",mAmount);
-                        navController.navigate(R.id.action_investFormFragment_to_questionFragment);*//*
-                        //  getCreateInvest();
-                    } else {
-                        Toast.makeText(mActivity, error_msg, Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(mActivity, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });*/
-
+        if (isInternetConnected(mActivity)) {
+            getChangePreference();
+        } else {
+            Toast.makeText(mActivity, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
+        }
         return root;
     }
 
@@ -189,7 +192,6 @@ public class InvestFormFragment extends Fragment {
                                                     String mAmount = edtAccount.getText().toString().trim();
                                                     if (getPreference(mActivity, "loanId") != null) {
                                                         getInvestAmountKeyUp(mLoanId, mAmount);
-                                                        // getInvestSurveyQuestion(getPreference(mActivity, "loanId"), mAmount);
                                                     }
                                                 } else {
                                                     Toast.makeText(mActivity, error_msg, Toast.LENGTH_SHORT).show();
@@ -291,14 +293,13 @@ public class InvestFormFragment extends Fragment {
                                     btnContinue.setClickable(true);
                                     tvMpgToken.setText("€ " + String.valueOf(response.body().getRequiredExtraEuroAmountOfMpg().toString()));
                                     tvCharged.setText("€ " + String.valueOf(response.body().getTotalChargeMpgToken()));
+                                    mTotalChargeMpgToken = String.valueOf(response.body().getTotalChargeMpgToken());
                                     btnContinue.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             if (isInternetConnected(mActivity)) {
                                                 if (getPreference(mActivity, "loanId") != null) {
                                                     getInvestSurveyQuestion(getPreference(mActivity, "loanId"), mAmount);
-                                                    // getInvestAmountKeyUp(mLoanId, mAmount);
-                                                    // getInvestSurveyQuestion(getPreference(mActivity, "loanId"), mAmount);
                                                 }
                                             } else {
                                                 Toast.makeText(mActivity, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
@@ -354,7 +355,16 @@ public class InvestFormFragment extends Fragment {
                         if (response != null && response.isSuccessful()) {
                             if (response.body().getUserLoginStatus() == 1) {
                                 if (response.body().getThresholdDisplay() == 0) {
+                                    mThresholdValue = response.body().getThresholdDisplay();
+                                    mAmountData = amount;
+                                    cvInvestForm.setVisibility(View.GONE);
                                     cvQuestion.setVisibility(View.GONE);
+                                    cvTwoFA.setVisibility(View.VISIBLE);
+                                    if (isInternetConnected(mActivity)) {
+                                        getSurveyDataInserted();
+                                    } else {
+                                        Toast.makeText(mActivity, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
+                                    }
                                 } else if (response.body().getThresholdDisplay() == 1) {
                                     mAmountData = amount;
                                     mThresholdValue = response.body().getThresholdDisplay();
@@ -362,6 +372,69 @@ public class InvestFormFragment extends Fragment {
                                     cvQuestion.setVisibility(View.VISIBLE);
                                     if (response.body() != null) {
                                         getQuestion1(response.body());
+                                        btnQuestCancel.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                new AlertDialog.Builder(getActivity())
+                                                        .setTitle(getResources().getString(R.string.app_name))
+                                                        .setMessage(getResources().getString(R.string.sure_cancel))
+                                                        .setIcon(R.mipmap.ic_launcher)
+                                                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int id) {
+                                                                radBtnQ1.setText("");
+                                                                radBtnQ2.setText("");
+                                                                radBtnQ3.setText("");
+                                                                radBtnQ1.setChecked(false);
+                                                                radBtnQ2.setChecked(false);
+                                                                radBtnQ3.setChecked(false);
+                                                                edtAccount.setText("");
+                                                                tvMpgToken.setText("");
+                                                                tvCharged.setText("");
+                                                                cvTwoFA.setVisibility(View.GONE);
+                                                                cvQuestion.setVisibility(View.GONE);
+                                                                cvInvestForm.setVisibility(View.VISIBLE);
+                                                                dialog.dismiss();
+                                                            }
+                                                        })
+                                                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int id) {
+                                                                dialog.cancel();
+                                                            }
+                                                        }).show();
+                                            }
+                                        });
+                                        btnQuestionContinue.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                if (isQuestionSet1) {
+                                                    getQuestion2(response.body());
+                                                    if (isQuestionSet2) {
+                                                        getQuestion3(response.body());
+                                                        if (isQuestionSet3) {
+                                                            getQuestion4(response.body());
+                                                            if (isQuestionSet4) {
+                                                                getQuestion5(response.body());
+                                                                if (isQuestionSet5) {
+                                                                    getQuestion6(response.body());
+                                                                    if (isQuestionSet6) {
+                                                                        getQuestion7(response.body());
+                                                                        if (isQuestionSet7) {
+                                                                            getQuestion8(response.body());
+                                                                            if (isQuestionSet8) {
+                                                                                getQuestion9(response.body());
+                                                                                if (isQuestionSet9) {
+                                                                                    getSurveyDataInserted();
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        });
                                     }
                                 } else if (response.body().getThresholdDisplay() == 2) {
                                     mThresholdValue = response.body().getThresholdDisplay();
@@ -370,6 +443,58 @@ public class InvestFormFragment extends Fragment {
                                     cvQuestion.setVisibility(View.VISIBLE);
                                     if (response.body() != null) {
                                         getQuestion5(response.body());
+                                        btnQuestCancel.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                new AlertDialog.Builder(getActivity())
+                                                        .setTitle(getResources().getString(R.string.app_name))
+                                                        .setMessage(getResources().getString(R.string.sure_cancel))
+                                                        .setIcon(R.mipmap.ic_launcher)
+                                                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int id) {
+                                                                cvTwoFA.setVisibility(View.GONE);
+                                                                cvQuestion.setVisibility(View.GONE);
+                                                                radBtnQ1.setText("");
+                                                                radBtnQ2.setText("");
+                                                                radBtnQ3.setText("");
+                                                                radBtnQ1.setChecked(false);
+                                                                radBtnQ2.setChecked(false);
+                                                                radBtnQ3.setChecked(false);
+                                                                edtAccount.setText("");
+                                                                tvMpgToken.setText("");
+                                                                tvCharged.setText("");
+                                                                cvInvestForm.setVisibility(View.VISIBLE);
+                                                                dialog.dismiss();
+                                                            }
+                                                        })
+                                                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int id) {
+                                                                dialog.cancel();
+                                                            }
+                                                        }).show();
+                                            }
+                                        });
+
+                                        btnQuestionContinue.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                if (isQuestionSet5) {
+                                                    getQuestion6(response.body());
+                                                    if (isQuestionSet6) {
+                                                        getQuestion7(response.body());
+                                                        if (isQuestionSet7) {
+                                                            getQuestion8(response.body());
+                                                            if (isQuestionSet8) {
+                                                                getQuestion9(response.body());
+                                                                if (isQuestionSet9) {
+                                                                    getSurveyDataInserted();
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        });
                                     }
                                 }
                             } else {
@@ -446,15 +571,37 @@ public class InvestFormFragment extends Fragment {
                 }
             }
         });
-
-        btnCancel.setOnClickListener(new View.OnClickListener() {
+       /*
+        btnQuestCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-                navController.navigateUp();
+                new AlertDialog.Builder(getActivity())
+                        .setTitle(getResources().getString(R.string.app_name))
+                        .setMessage(getResources().getString(R.string.app_name))
+                        .setIcon(R.mipmap.ic_launcher)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                radBtnQ1.setText("");
+                                radBtnQ2.setText("");
+                                radBtnQ3.setText("");
+                                radBtnQ1.setChecked(false);
+                                radBtnQ2.setChecked(false);
+                                radBtnQ3.setChecked(false);
+                                cvTwoFA.setVisibility(View.GONE);
+                                cvQuestion.setVisibility(View.GONE);
+                                cvInvestForm.setVisibility(View.VISIBLE);
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        }).show();
+                *//*NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                navController.navigateUp();*//*
             }
         });
-
         btnQuestionContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -466,22 +613,16 @@ public class InvestFormFragment extends Fragment {
                             getQuestion4(body);
                             if (isQuestionSet4) {
                                 getQuestion5(body);
-                                //for question 6
                                 if (isQuestionSet5) {
                                     getQuestion6(body);
-                                    //For Question 7
                                     if (isQuestionSet6) {
                                         getQuestion7(body);
-                                        //For question 8
                                         if (isQuestionSet7) {
                                             getQuestion8(body);
-                                            //For Question 9
                                             if (isQuestionSet8) {
                                                 getQuestion9(body);
                                                 if (isQuestionSet9) {
                                                     getSurveyDataInserted();
-                                                    // btnQuestionContinue.setClickable(false);
-                                                    // Toast.makeText(mActivity, "All Question Selected", Toast.LENGTH_SHORT).show();
                                                 }
                                             }
                                         }
@@ -492,7 +633,7 @@ public class InvestFormFragment extends Fragment {
                     }
                 }
             }
-        });
+        });*/
     }
 
     private void getQuestion2(InvestSurveyRuestionResponse body) {
@@ -714,41 +855,56 @@ public class InvestFormFragment extends Fragment {
                 Log.d(TAG, "onCheckedChanged: " + rb.getText().toString());
             }
         });
-        btnCancel.setOnClickListener(new View.OnClickListener() {
+
+      /*  btnQuestCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-                navController.navigateUp();
+                new AlertDialog.Builder(getActivity())
+                        .setTitle(getResources().getString(R.string.app_name))
+                        .setMessage(getResources().getString(R.string.app_name))
+                        .setIcon(R.mipmap.ic_launcher)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                cvTwoFA.setVisibility(View.GONE);
+                                cvQuestion.setVisibility(View.GONE);
+                                radBtnQ1.setText("");
+                                radBtnQ2.setText("");
+                                radBtnQ3.setText("");
+                                radBtnQ1.setChecked(false);
+                                radBtnQ2.setChecked(false);
+                                radBtnQ3.setChecked(false);
+                                cvInvestForm.setVisibility(View.VISIBLE);
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        }).show();
             }
         });
 
         btnQuestionContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //for question 6
                 if (isQuestionSet5) {
                     getQuestion6(body);
-                    //For Question 7
                     if (isQuestionSet6) {
                         getQuestion7(body);
-                        //For question 8
                         if (isQuestionSet7) {
                             getQuestion8(body);
-                            //For Question 9
                             if (isQuestionSet8) {
                                 getQuestion9(body);
                                 if (isQuestionSet9) {
                                     getSurveyDataInserted();
-                                    // getSurveyDataInserted();
-                                    // Log.d("><><", mQuestSelected1 + "><" + mQuestSelected2 + "><><" + mQuestSelected3 + "><><" + mQuestSelected4 + "><>" + mQuestSelected5 + "><><" + mQuestSelected6 + "><><" + mQuestSelected7 + "><><>" + mQuestSelected8 + "><><" + mQuestSelected9);
-                                    // Toast.makeText(mActivity, "All Question Selected", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }
                     }
                 }
             }
-        });
+        });*/
     }
 
     /*For Question 6*/
@@ -976,61 +1132,6 @@ public class InvestFormFragment extends Fragment {
                 Log.d(TAG, "onCheckedChanged: " + rb.getText().toString());
             }
         });
-
-    }
-
-    private void getCreateInvest() {
-        pd = ProgressDialog.show(mActivity, "Please Wait...");
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("amount", edtAccount.getText().toString().trim());
-        if (mLoanId != null && !mLoanId.isEmpty()) {
-            jsonObject.addProperty("loan_id", mLoanId);
-        }
-        Log.d(TAG, "getCreateInvest: " + jsonObject);
-        String XCSRF = getPreference(mActivity, "mCsrf_token");
-        EndPointInterface git = ApiClient.getClient1(mActivity).create(EndPointInterface.class);
-        Call<CreateInvestmentResponse> call = git.getCreateInvestment("application/json", XCSRF, jsonObject);
-        call.enqueue(new Callback<CreateInvestmentResponse>() {
-            @Override
-            public void onResponse(Call<CreateInvestmentResponse> call, Response<CreateInvestmentResponse> response) {
-                try {
-                    if (pd != null && pd.isShowing()) {
-                        pd.dismiss();
-                    }
-                    if (response != null) {
-                        if (response != null && response.isSuccessful()) {
-                            Log.d(TAG, "onResponse:" + "><><" + new Gson().toJson(response.body()));
-                            if (response.body().getUserLoginStatus() == 1) {
-                                //deposit redired
-                                // Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                            } else {
-                                setPreference(mActivity, "user_id", "");
-                                setPreference(mActivity, "mLogout_token", "");
-                                MaxCrowdFund.getClearCookies(mActivity, "cookies", "");
-                                Toast.makeText(mActivity, getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(mActivity, LoginActivity.class);
-                                startActivity(intent);
-                                mActivity.finish();
-                            }
-                        }
-                    } else {
-                        Toast.makeText(mActivity, getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CreateInvestmentResponse> call, Throwable t) {
-                Log.e("error", "error " + t.getMessage());
-                if (pd != null && pd.isShowing()) {
-                    pd.dismiss();
-                }
-                Toast.makeText(mActivity, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
     }
 
     //For inserted data
@@ -1069,8 +1170,86 @@ public class InvestFormFragment extends Fragment {
                                 cvInvestForm.setVisibility(View.GONE);
                                 cvQuestion.setVisibility(View.GONE);
                                 cvTwoFA.setVisibility(View.VISIBLE);
-                                //deposit redired
-                                // Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                tvTotalAccount.setText(mAmountData);
+                                tvTotalWallet.setText(mTotalChargeMpgToken);
+                                //For Transation Siging
+                                spinnerFA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                        Option__ option = signingAdapter.getItem(position);
+                                        Log.d(TAG, "onItemSelected: " + option.getKey());
+                                        Log.d(TAG, "onItemSelected: " + option.getVal());
+                                        mTrans_signing = option.getKey();
+                                        if (mTrans_signing.equals("google_authentication")) {
+                                            lLayoutOTP.setVisibility(View.GONE);
+                                        } else {
+                                            lLayoutOTP.setVisibility(View.VISIBLE);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+                                    }
+                                });
+
+                                btnSend.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if (isInternetConnected(mActivity)) {
+                                            if (mTrans_signing != null) {
+                                                getSendOTP(mTrans_signing);
+                                            }
+                                        } else {
+                                            Toast.makeText(mActivity, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+
+                                btnFASubmit.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if (isInternetConnected(mActivity)) {
+                                            mEnterOTP = edtOTP.getText().toString().trim();
+                                            if (mEnterOTP != null) {
+                                                if (mResponseOTP != null) {
+                                                    getTFAValidate(mTrans_signing, mResponseOTP, mEnterOTP);
+                                                }
+                                            } else {
+                                                Toast.makeText(mActivity, getResources().getString(R.string.enter_otp), Toast.LENGTH_SHORT).show();
+                                            }
+                                        } else {
+                                            Toast.makeText(mActivity, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                                Log.d(TAG, "onItemSelected: --" + mTrans_signing);
+
+                                btnFACancel.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        new AlertDialog.Builder(getActivity())
+                                                .setTitle(getResources().getString(R.string.app_name))
+                                                .setMessage(getResources().getString(R.string.sure_cancel))
+                                                .setIcon(R.mipmap.ic_launcher)
+                                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int id) {
+                                                        cvTwoFA.setVisibility(View.GONE);
+                                                        cvInvestForm.setVisibility(View.VISIBLE);
+                                                        edtAccount.setText("");
+                                                        tvTotalAccount.setText("");
+                                                        tvTotalWallet.setText("");
+                                                        tvMpgToken.setText("");
+                                                        tvCharged.setText("");
+                                                        dialog.dismiss();
+                                                    }
+                                                })
+                                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int id) {
+                                                        dialog.cancel();
+                                                    }
+                                                }).show();
+                                    }
+                                });
                             } else {
                                 setPreference(mActivity, "user_id", "");
                                 setPreference(mActivity, "mLogout_token", "");
@@ -1099,6 +1278,232 @@ public class InvestFormFragment extends Fragment {
             }
         });
     }
+
+    private void getTFAValidate(String mTrans_signing, String mResponseOTP, String mEnterOTP) {
+        pd = ProgressDialog.show(getActivity(), "Please Wait...");
+        EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
+        String XCSRF = getPreference(getActivity(), "mCsrf_token");
+        Call<TfaValidateResponse> call = git.getTFAValidated("application/json", XCSRF, mTrans_signing, mResponseOTP, mEnterOTP);
+        call.enqueue(new Callback<TfaValidateResponse>() {
+            @Override
+            public void onResponse(Call<TfaValidateResponse> call, Response<TfaValidateResponse> response) {
+                Log.d(TAG, "onResponse: " + "><><" + new Gson().toJson(response.body()));
+                try {
+                    if (pd != null && pd.isShowing()) {
+                        pd.dismiss();
+                    }
+                    if (response.code() == 200) {
+                        if (response != null && response.isSuccessful()) {
+                            if (response.body().getUserLoginStatus() == 1) {
+                                if (response.body().getNoErrCheck() == 0) {
+                                    Toast.makeText(mActivity, response.body().getErrorMsg(), Toast.LENGTH_SHORT).show();
+                                } else {
+                                    getCreateInvest();
+                                }
+                            } else {
+                                setPreference(getActivity(), "user_id", "");
+                                setPreference(getActivity(), "mLogout_token", "");
+                                MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                                Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                startActivity(intent);
+                                mActivity.finish();
+                            }
+                        } else {
+                            Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TfaValidateResponse> call, Throwable t) {
+                Log.e("", "error " + t.getMessage());
+                if (pd != null && pd.isShowing()) {
+                    pd.dismiss();
+                }
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getChangePreference() {
+        //  pd = ProgressDialog.show(getActivity(), "Please Wait...");
+        EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
+        String XCSRF = getPreference(getActivity(), "mCsrf_token");
+        Call<ChangePreferenceResponse> call = git.getChangePreferenceAPI("application/json", XCSRF);
+        call.enqueue(new Callback<ChangePreferenceResponse>() {
+            @Override
+            public void onResponse(Call<ChangePreferenceResponse> call, Response<ChangePreferenceResponse> response) {
+                Log.d(TAG, "onResponse: " + "><><" + new Gson().toJson(response.body()));
+                try {
+                    if (response.code() == 200) {
+                        if (response != null && response.isSuccessful()) {
+                            if (response.body().getUserLoginStatus() == 1) {
+                                //For Transation Sigining
+                                if (response.body().getPreferences().getData().getTransactionSigning().getOptions().size() > 0) {
+                                    signingAdapter = new TransactionSigningAdapter(getActivity(), response.body().getPreferences().getData().getTransactionSigning().getOptions());
+                                    spinnerFA.setAdapter(signingAdapter);
+                                }
+                            } else {
+                                setPreference(getActivity(), "user_id", "");
+                                setPreference(getActivity(), "mLogout_token", "");
+                                MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                                Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                startActivity(intent);
+                                mActivity.finish();
+                            }
+                        } else {
+                            Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ChangePreferenceResponse> call, Throwable t) {
+                Log.e("", "error " + t.getMessage());
+               /* if (pd != null && pd.isShowing()) {
+                    pd.dismiss();
+                }*/
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getSendOTP(String mTwoFAType) {
+        pd = ProgressDialog.show(getActivity(), "Please Wait...");
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("tfa_type", mTwoFAType);
+        Log.d(">>>>mTwoFAType>", mTwoFAType);
+        String XCSRF = getPreference(getActivity(), "mCsrf_token");
+        EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
+        Call<SendOTPResponse> call = git.getTwoFASendOTP("application/json", XCSRF, jsonObject);
+        call.enqueue(new Callback<SendOTPResponse>() {
+            @Override
+            public void onResponse(Call<SendOTPResponse> call, Response<SendOTPResponse> response) {
+                try {
+                    if (pd != null && pd.isShowing()) {
+                        pd.dismiss();
+                    }
+                    if (response.code() == 200) {
+                        if (response != null && response.isSuccessful()) {
+                            Log.d(TAG, "onResponse: " + "><send><" + new Gson().toJson(response.body()));
+                            if (response.body().getUserLoginStatus() == 1) {
+                                if (response.body().getMessage() != null) {
+                                    if (response.body().getOtp() != null) {
+                                        mResponseOTP = response.body().getOtp().toString();
+                                        Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            } else {
+                                setPreference(getActivity(), "user_id", "");
+                                setPreference(getActivity(), "mLogout_token", "");
+                                MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                                Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                startActivity(intent);
+                                mActivity.finish();
+                            }
+                        } else {
+                            Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (
+                        Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SendOTPResponse> call, Throwable t) {
+                Log.e("", "error " + t.getMessage());
+                if (pd != null && pd.isShowing()) {
+                    pd.dismiss();
+                }
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getCreateInvest() {
+        pd = ProgressDialog.show(mActivity, "Please Wait...");
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("amount", mAmountData);
+        if (mLoanId != null && !mLoanId.isEmpty()) {
+            jsonObject.addProperty("loan_id", mLoanId);
+        }
+        Log.d(TAG, "getCreateInvest: " + jsonObject);
+        String XCSRF = getPreference(mActivity, "mCsrf_token");
+        EndPointInterface git = ApiClient.getClient1(mActivity).create(EndPointInterface.class);
+        Call<CreateInvestmentResponse> call = git.getCreateInvestment("application/json", XCSRF, jsonObject);
+        call.enqueue(new Callback<CreateInvestmentResponse>() {
+            @Override
+            public void onResponse(Call<CreateInvestmentResponse> call, Response<CreateInvestmentResponse> response) {
+                try {
+                    if (pd != null && pd.isShowing()) {
+                        pd.dismiss();
+                    }
+                    if (response != null) {
+                        if (response != null && response.isSuccessful()) {
+                            Log.d(TAG, "onResponse:" + "><create><" + new Gson().toJson(response.body()));
+                            if (response.body().getUserLoginStatus() == 1) {
+                                if (response.body().getInvestCreateCheck() == 0) {
+                                    Toast.makeText(mActivity, response.body().getInvestmentSuccess(), Toast.LENGTH_SHORT).show();
+                                } else if (response.body().getInvestCreateCheck() == 1) {
+                                    if (response.body().getDepositCheck() == 0) {
+                                        cvInvestForm.setVisibility(View.VISIBLE);
+                                        edtAccount.setText(String.valueOf(response.body().getDepositAmount()));
+                                        cvTwoFA.setVisibility(View.GONE);
+                                        cvQuestion.setVisibility(View.GONE);
+                                    } else {
+                                        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                                        navController.navigate(R.id.action_nav_my_investments_to_investFormFragment);
+                                    }
+                                }
+                            } else {
+                                setPreference(mActivity, "user_id", "");
+                                setPreference(mActivity, "mLogout_token", "");
+                                MaxCrowdFund.getClearCookies(mActivity, "cookies", "");
+                                Toast.makeText(mActivity, getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(mActivity, LoginActivity.class);
+                                startActivity(intent);
+                                mActivity.finish();
+                            }
+                        }
+                    } else {
+                        Toast.makeText(mActivity, getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CreateInvestmentResponse> call, Throwable t) {
+                Log.e("error", "error " + t.getMessage());
+                if (pd != null && pd.isShowing()) {
+                    pd.dismiss();
+                }
+                Toast.makeText(mActivity, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
 
     private boolean Validation() {
         error_msg = "";

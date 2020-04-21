@@ -33,6 +33,12 @@
         <action
             android:id="@+id/action_nav_my_investments_to_nav_send"
             app:destination="@id/nav_my_investment_detail" />
+        <action
+            android:id="@+id/action_nav_my_investments_self"
+            app:destination="@id/nav_my_investments" />
+        <action
+            android:id="@+id/action_nav_my_investments_to_investFormFragment"
+            app:destination="@id/investFormFragment" />
     </fragment>
 
     <fragment
@@ -71,7 +77,11 @@
         android:id="@+id/nav_my_investment_detail"
         android:name="com.auxesis.maxcrowdfund.mvvm.ui.myinvestments.myinvestmentdetail.MyInvestmentDetailFragment"
         android:label="@string/my_investments_detail"
-        tools:layout="@layout/fragment_my_investment_detail" />
+        tools:layout="@layout/fragment_my_investment_detail" >
+       <action
+           android:id="@+id/action_nav_my_investment_detail_to_investmentOppDetailFragment"
+           app:destination="@id/investmentOppDetailFragment" />
+   </fragment>
     <fragment
         android:id="@+id/changeBankAccountFragment"
         android:name="com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankaccountview.ChangeBankAccountFragment"
@@ -87,7 +97,7 @@
     <fragment
         android:id="@+id/changeMobileNumberFragment"
         android:name="com.auxesis.maxcrowdfund.mvvm.ui.changeMobileNumber.ChangeMobileNumberFragment"
-        android:label="fragment_change_mobile_number"
+        android:label="@string/change_mobile_no"
         tools:layout="@layout/fragment_change_mobile_number" />
     <fragment
         android:id="@+id/changePasswordFragment"

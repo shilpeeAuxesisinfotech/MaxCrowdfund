@@ -10,12 +10,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.constant.MaxCrowdFund;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
@@ -28,11 +26,9 @@ import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
-
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
 
@@ -182,6 +178,9 @@ public class MyProfileFragment extends Fragment {
                                 Toast.makeText(mActivity, getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                             }
                         } else {
+                            if (pd != null && pd.isShowing()) {
+                                pd.dismiss();
+                            }
                             Toast.makeText(mActivity, getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {

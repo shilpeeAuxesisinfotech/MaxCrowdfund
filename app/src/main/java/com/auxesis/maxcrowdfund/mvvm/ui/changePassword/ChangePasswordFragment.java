@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.constant.MaxCrowdFund;
@@ -35,6 +35,7 @@ import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
 public class ChangePasswordFragment extends Fragment {
     private static final String TAG = "ChangePasswordFragment";
     EditText edtOldPass, edtNPass, edtConfirmPass;
+    TextView tvErrorMessage;
     Button btnSubmit;
     ProgressDialog pd;
     String error_msg = "";
@@ -44,6 +45,7 @@ public class ChangePasswordFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_change_password, container, false);
         mActivity = getActivity();
+        tvErrorMessage = root.findViewById(R.id.tvErrorMessage);
         edtOldPass = root.findViewById(R.id.edtOldPass);
         edtNPass = root.findViewById(R.id.edtNPass);
         edtConfirmPass = root.findViewById(R.id.edtConfirmPass);
@@ -54,19 +56,19 @@ public class ChangePasswordFragment extends Fragment {
                 if (Utils.isInternetConnected(getActivity())) {
                     if (getValidation()) {
                         if (edtNPass.getText().toString().trim().equals(edtConfirmPass.getText().toString().trim())) {
-                            if (edtNPass.getText().toString().trim().length()==8) {
+                            if (edtNPass.getText().toString().trim().length()>=8) {
                                 getChangePass();
                             }else {
-                                Toast.makeText(getActivity(), getResources().getString(R.string.eight_digit), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), getResources().getString(R.string.eight_digit), Toast.LENGTH_LONG).show();
                             }
                         }else {
-                            Toast.makeText(getActivity(), getResources().getString(R.string.confirm_password), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), getResources().getString(R.string.confirm_password), Toast.LENGTH_LONG).show();
                         }
                     } else {
-                        Toast.makeText(getActivity(), error_msg, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), error_msg, Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -90,10 +92,11 @@ public class ChangePasswordFragment extends Fragment {
                         if (pd != null && pd.isShowing()) {
                             pd.dismiss();
                         }
-                        if (response!=null) {
+                        if (response.code()==200) {
                             if (response != null && response.isSuccessful()) {
                                 if (response.body().getUserLoginStatus() == 1) {
                                     if (response.body().getResult()==1) {
+                                        tvErrorMessage.setVisibility(View.GONE);
                                         Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                                         edtOldPass.setText("");
                                         edtNPass.setText("");
@@ -101,22 +104,25 @@ public class ChangePasswordFragment extends Fragment {
                                         NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
                                         navController.navigateUp();
                                     }else {
-                                        Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                        tvErrorMessage.setVisibility(View.VISIBLE);
+                                        tvErrorMessage.setText(response.body().getMessage());
+                                        //Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }else {
                                     setPreference(getActivity(), "user_id", "");
                                     setPreference(getActivity(), "mLogout_token", "");
                                     MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
-                                    Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_LONG).show();
                                     Intent intent = new Intent(getActivity(), LoginActivity.class);
                                     startActivity(intent);
                                     mActivity.finish();
                                 }
-                            }else {
-                                Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                             }
                         }else {
-                            Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                            if (pd != null && pd.isShowing()) {
+                                pd.dismiss();
+                            }
+                            Toast.makeText(getActivity(), getResources().getString(R.string.something_went), Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -125,7 +131,7 @@ public class ChangePasswordFragment extends Fragment {
                 @Override
                 public void onFailure(@NonNull Call<ChangePasswordResponse> call, @NonNull Throwable t) {
                     Log.e("response", "error " + t.getMessage());
-                    Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
                     if (pd != null && pd.isShowing()) {
                         pd.dismiss();
                     }

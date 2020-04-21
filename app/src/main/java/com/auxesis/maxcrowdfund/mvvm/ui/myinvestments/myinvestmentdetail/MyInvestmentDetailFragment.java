@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,6 +57,7 @@ public class MyInvestmentDetailFragment extends Fragment implements OnDownloadCl
     MyInvestmentDetailRepayAdapter repaymentadapter;
     Activity mActivity;
     String mInvestmentId = "";
+    String mLoanId = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,8 @@ public class MyInvestmentDetailFragment extends Fragment implements OnDownloadCl
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_my_investment_detail, container, false);
         mActivity = getActivity();
+        mInvestmentId = getPreference(mActivity, "investment_id");
+        mLoanId = getPreference(mActivity, "loan_id");
         rl_document_click = root.findViewById(R.id.rl_document_click);
         rl_repayment_schedule_click = root.findViewById(R.id.rl_repayment_schedule_click);
 
@@ -97,14 +102,18 @@ public class MyInvestmentDetailFragment extends Fragment implements OnDownloadCl
             public void onClick(View v) {
             }
         });
+
         btn_view_pinch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // startActivity(new Intent(getActivity(), MaxPropertyGroupDetailActivity.class));
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                if (mLoanId != null && !mLoanId.isEmpty()) {
+                    setPreference(mActivity, "id",mLoanId);
+                }
+                navController.navigate(R.id.action_nav_my_investment_detail_to_investmentOppDetailFragment);
             }
         });
         if (Utils.isInternetConnected(getActivity())) {
-            mInvestmentId = getPreference(mActivity, "investment_id");
             if (mInvestmentId != null && !mInvestmentId.isEmpty()) {
                 getMyInvestmentDetail(mInvestmentId);
             }

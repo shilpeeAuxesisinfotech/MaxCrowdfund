@@ -96,7 +96,6 @@ public class ChangePreferenceFragment extends Fragment {
 
         radioGroupLogin = root.findViewById(R.id.radioGroupLogin);
         radioGroupLogin.clearCheck();
-
         radioGroupInvestment = root.findViewById(R.id.radioGroupInvestment);
         radioGroupInvestUpdate = root.findViewById(R.id.radioGroupInvestUpdate);
         radioGroupNewslatter = root.findViewById(R.id.radioGroupNewslatter);
@@ -282,7 +281,7 @@ public class ChangePreferenceFragment extends Fragment {
             public void onResponse(Call<ChangePreferenceResponse> call, Response<ChangePreferenceResponse> response) {
                 Log.d(TAG, "onResponse: " + "><><" + new Gson().toJson(response.body()));
                 try {
-                    if (response != null) {
+                    if (response.code()==200) {
                         if (response != null && response.isSuccessful()) {
                             if (pd != null && pd.isShowing()) {
                                 pd.dismiss();
@@ -292,7 +291,7 @@ public class ChangePreferenceFragment extends Fragment {
                                 tvLanguage.setText(response.body().getPreferences().getData().getLanguage().getTitle());
                                 if (response.body().getPreferences().getData().getLanguage().getOptions().size() > 0) {
                                     mSelected = response.body().getPreferences().getData().getLanguage().getValue();
-
+                                    Log.d("><><selected><>", response.body().getPreferences().getData().getLanguage().getValue());
                                     languageArray.clear();
                                     languageArraySelected.clear();
                                     for (int i = 0; i < response.body().getPreferences().getData().getLanguage().getOptions().size(); i++) {
@@ -382,7 +381,10 @@ public class ChangePreferenceFragment extends Fragment {
                             Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                        if (pd != null && pd.isShowing()) {
+                            pd.dismiss();
+                        }
+                        Toast.makeText(getActivity(), getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -422,7 +424,7 @@ public class ChangePreferenceFragment extends Fragment {
                     if (pd != null && pd.isShowing()) {
                         pd.dismiss();
                     }
-                    if (response != null) {
+                    if (response.code()==200) {
                         if (response != null && response.isSuccessful()) {
                             if (response.body().getUserLoginStatus() == 1) {
                                 if (response.body().getResult() != null) {
@@ -451,7 +453,10 @@ public class ChangePreferenceFragment extends Fragment {
                             Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                        if (pd != null && pd.isShowing()) {
+                            pd.dismiss();
+                        }
+                        Toast.makeText(getActivity(), getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

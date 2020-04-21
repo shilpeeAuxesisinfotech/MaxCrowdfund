@@ -39,7 +39,6 @@ public class LanguagePreferenceAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.spinner_item, null);
         TextView textView = view.findViewById(R.id.tvName);
-
         /*if (position == 0) {
             if (modelList.get(position).getKey().equals(mSelected)) ;
             {

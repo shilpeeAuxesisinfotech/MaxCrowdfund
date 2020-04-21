@@ -77,7 +77,6 @@ public class UploadImgFragment extends Fragment {
         mActivity = getActivity();
         cardView = root.findViewById(R.id.cardView);
         tvNoRecordFound = root.findViewById(R.id.tvNoRecordFound);
-
         ivUserProfile = root.findViewById(R.id.ivUserProfile);
         cirIv_ChooseImg = root.findViewById(R.id.cirIv_ChooseImg);
         btnUpdated = root.findViewById(R.id.btnUpdated);
@@ -127,7 +126,7 @@ public class UploadImgFragment extends Fragment {
                         if (pd != null && pd.isShowing()) {
                             pd.dismiss();
                         }
-                        if (response != null) {
+                        if (response.code()==200) {
                             if (response != null && response.isSuccessful()) {
                                 if (response.body().getUserLoginStatus() == 1) {
                                     if (response.body().getResult().equals("success")) {
@@ -146,7 +145,10 @@ public class UploadImgFragment extends Fragment {
                                 }
                             }
                         } else {
-                            Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                            if (pd != null && pd.isShowing()) {
+                                pd.dismiss();
+                            }
+                            Toast.makeText(getActivity(), getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

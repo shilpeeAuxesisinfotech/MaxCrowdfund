@@ -148,7 +148,7 @@ public class ChangeMobileNumberFragment extends Fragment {
         JsonObject jsonObject = new JsonObject();
         enteredPhone = edt_mobile.getText().toString().trim();
         code = (countryCode + enteredPhone);
-        jsonObject.addProperty("phone", code);
+        jsonObject.addProperty("tfa_type", code);
         Log.d(">>>>number>", code);
         String XCSRF = getPreference(getActivity(), "mCsrf_token");
         EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
@@ -160,7 +160,7 @@ public class ChangeMobileNumberFragment extends Fragment {
                     if (pd != null && pd.isShowing()) {
                         pd.dismiss();
                     }
-                    if (response != null) {
+                    if (response.code()==200) {
                         if (response != null && response.isSuccessful()) {
                             Log.d(TAG, "onResponse: " + "><send><" + new Gson().toJson(response.body()));
                             if (response.body().getUserLoginStatus() == 1) {
@@ -192,7 +192,10 @@ public class ChangeMobileNumberFragment extends Fragment {
                             Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                        if (pd != null && pd.isShowing()) {
+                            pd.dismiss();
+                        }
+                        Toast.makeText(getActivity(), getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
                     }
                 } catch (
                         Exception e) {
@@ -216,7 +219,8 @@ public class ChangeMobileNumberFragment extends Fragment {
     private void getResendOTP() {
         pd = ProgressDialog.show(getActivity(), "Please Wait...");
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("phone", getPreference(getActivity(), "enteredPhone"));
+       // jsonObject.addProperty("phone", getPreference(getActivity(), "enteredPhone"));
+        jsonObject.addProperty("tfa_type", getPreference(getActivity(), "enteredPhone"));
         String XCSRF = getPreference(getActivity(), "mCsrf_token");
         EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
         Call<SendOTPResponse> call = git.getSendOTP("application/json", XCSRF, jsonObject);
