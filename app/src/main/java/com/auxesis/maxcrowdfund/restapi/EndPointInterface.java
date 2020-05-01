@@ -13,19 +13,19 @@ import com.auxesis.maxcrowdfund.mvvm.ui.contactinformation.contactInformationMod
 import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboarddeposit.DashboardDepositResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboardmodel.AccountResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.pendingmodel.PendingResponse;
-import com.auxesis.maxcrowdfund.mvvm.ui.home.oppmodel.InvestmentOppRes;
-import com.auxesis.maxcrowdfund.mvvm.ui.home.homeDetail.detailmodel.FundDetailResponce;
+import com.auxesis.maxcrowdfund.mvvm.ui.home.homeDetail.funddetail.FundraiserDetailResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.home.homeDetail.investmodel.CreateInvestmentResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.home.oppmodel.InvestmentOppRes;
 import com.auxesis.maxcrowdfund.mvvm.ui.investform.questmodel.famodel.TfaValidateResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.investform.questmodel.model.SurveyFormDataInsertResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.investform.questmodel.question.InvestSurveyQuestionResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.investform.questmodel.questionlistmodel.InvestAmountKeyUpResponse;
-import com.auxesis.maxcrowdfund.mvvm.ui.investform.questmodel.questionlistmodel.InvestSurveyRuestionResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.login.LoginResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.myinvestments.myinvestmentdetail.myinvestmentdetailmodel.CancelInvestmentResponce;
 import com.auxesis.maxcrowdfund.mvvm.ui.myinvestments.myinvestmentdetail.myinvestmentdetailmodel.MyInvestmentDetailResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.myinvestments.model.MyInvestmentResponce;
-import com.auxesis.maxcrowdfund.mvvm.ui.myprofile.model.ProfileResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.investform.questmodel.InvestFormPreloadResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.myprofile.model.ProfileResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.uploadImage.ChangeAvatarResponce;
 import com.google.gson.JsonObject;
 
@@ -40,28 +40,19 @@ public interface EndPointInterface {
 
     /*for login */
     @POST("api/user/login")
-    Call<LoginResponse> getLoginUser(@Header("Content-Type") String content, @Body JsonObject jsonObject);   //dynamic done
+    Call<LoginResponse> getLoginUser(@Header("Content-Type") String content, @Body JsonObject jsonObject);
 
     @GET("api/portfolio")
     Call<PendingResponse> getPendingAPI(@Header("Content-Type") String content);
 
     @GET("api/profile")
-    Call<ProfileResponse> UserProfile(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf); //done
+    Call<ProfileResponse> UserProfile(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);
 
-    /* @GET("api/active-account-details")
-     Call<DashboardDetailModelResponce> DashboardDetail();
-
-     @POST("api/get-trustly-signature/")
-     Call<DashboardSignatureResponce> DashboardDetailSignature(@Header("Content-Type") String content,
-                                                               @Header("X-CSRF-TOKEN") String xcsrf,
-                                                               @Query("method") String method,
-                                                               @Query("uuid") String uuid,
-                                                               @Query("data") JSONObject data);*/
     @GET("api/account-balance")
-    Call<AccountResponse> getAccountBalance(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);   //done for dashboard
+    Call<AccountResponse> getAccountBalance(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);
 
     @POST("api/create-deposit-entry")
-    Call<DashboardDepositResponse> getDashboardDeposit(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Body JsonObject jsonObject);  //done for dashboard
+    Call<DashboardDepositResponse> getDashboardDeposit(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Body JsonObject jsonObject);
 
     @GET("api/investments/listing")
     Call<MyInvestmentResponce> getMyInvestment(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);
@@ -83,10 +74,10 @@ public interface EndPointInterface {
 
     /*For Bank Account */
     @GET("api/bank-accounts")
-    Call<ChangeBankAccountResponse> getChangeBankAccount(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);   //done
+    Call<ChangeBankAccountResponse> getChangeBankAccount(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);
 
     @POST("api/change-active-bank-account")
-    Call<ActiveBankAccountResponse> getActiveBankAccount(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Body JsonObject jsonObject); //done
+    Call<ActiveBankAccountResponse> getActiveBankAccount(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Body JsonObject jsonObject);
 
     @POST("api/sendotp")
     Call<SendOTPResponse> getSendOTP(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Body JsonObject jsonObject);
@@ -107,16 +98,16 @@ public interface EndPointInterface {
     Call<ContactInfoResponse> getContactInformation(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);
 
     @POST("api/change-password")
-    Call<ChangePasswordResponse> getChangePassword(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Body JsonObject jsonObject);  //done
+    Call<ChangePasswordResponse> getChangePassword(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Body JsonObject jsonObject);
 
     @POST("api/change-avatar")
     Call<ChangeAvatarResponce> getChangeAvtar(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Body JsonObject jsonObject);
 
     @GET("api/fundraiser/listing")
-    Call<InvestmentOppRes> getInvestmentOppHome(@Query("_format") String mFormate, @Query("investment_status") String investmentStatus, @Query("page") int mPage, @Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);  //done
+    Call<InvestmentOppRes> getInvestmentOppHome(@Query("_format") String mFormate, @Query("investment_status") String investmentStatus, @Query("page") int mPage, @Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);
 
     @GET("api/fundraiser/details")
-    Call<FundDetailResponce> getInvestmentOppDetail(@Query("loan_id") String loan_id, @Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);  //done
+    Call<FundraiserDetailResponse> getInvestmentOppDetail(@Query("loan_id") String loan_id, @Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);
 
     @GET("api/user/login_status")
     Call<?> getCheckUser(@Query("_format") String mFormate);
@@ -129,13 +120,12 @@ public interface EndPointInterface {
     Call<InvestAmountKeyUpResponse> getInvestAmountKeyUp(@Query("loan_id") String mLoanId, @Query("invest_amount") String mInvestAmount, @Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);
 
     @GET("api/invest-survey-question")
-    Call<InvestSurveyRuestionResponse> getInvestSurvey(@Query("loan_id") String mLoanId, @Query("invest_amount") String mInvestAmount, @Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);
+    Call<InvestSurveyQuestionResponse> getInvestSurvey(@Query("loan_id") String mLoanId, @Query("invest_amount") String mInvestAmount, @Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);
 
     @POST("api/survey-form-data-insert")
     Call<SurveyFormDataInsertResponse> getSurveyFormDataInserted(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Body JsonObject jsonObject);
 
-   @GET("api/tfa-validate")
-    Call<TfaValidateResponse> getTFAValidated(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf,@Query("tfa_type") String mTfaType,@Query("code") String mCode,@Query("code_submit") String mCodeSubmit);
-
+    @GET("api/tfa-validate")
+    Call<TfaValidateResponse> getTFAValidated(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Query("tfa_type") String mTfaType, @Query("code") String mCode, @Query("code_submit") String mCodeSubmit);
 
 }

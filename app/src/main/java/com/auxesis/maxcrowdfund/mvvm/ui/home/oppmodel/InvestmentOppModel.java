@@ -25,6 +25,15 @@ public class InvestmentOppModel {
     String investment_status;
     String mDefaults;
     boolean isTypeData;
+    int invested_total_amount_on_loan;
+
+    public int getInvested_total_amount_on_loan() {
+        return invested_total_amount_on_loan;
+    }
+
+    public void setInvested_total_amount_on_loan(int invested_total_amount_on_loan) {
+        this.invested_total_amount_on_loan = invested_total_amount_on_loan;
+    }
 
     public boolean isTypeData() {
         return isTypeData;

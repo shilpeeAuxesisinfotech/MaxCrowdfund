@@ -2,6 +2,7 @@ package com.auxesis.maxcrowdfund.mvvm.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,16 +16,27 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.constant.MaxCrowdFund;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.mvvm.ui.login.LoginResponse;
 import com.auxesis.maxcrowdfund.restapi.ApiClient;
+import com.auxesis.maxcrowdfund.restapi.CustomErrorResponse;
 import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+
 import static com.auxesis.maxcrowdfund.constant.Utils.hideKeyboard;
 import static com.auxesis.maxcrowdfund.constant.Utils.isInternetConnected;
 import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
@@ -107,44 +119,43 @@ public class LoginActivity extends AppCompatActivity {
                         if (pd != null && pd.isShowing()) {
                             pd.dismiss();
                         }
-                        if (response.code()==200) {
-                            Log.d(TAG, "onResponse: "+">>>>>>>>"+response.code());
-                            if (response != null) {
-                                if (response != null && response.isSuccessful()) {
-                                    if (response.body().getMessage().equals("Succesfully Logged In")) {
-                                        String mSattus = response.body().getStatus();
-                                        Log.d(">>>>>>>>", ">>>>>mSattus>>>" + mSattus);
-                                        if (mSattus.equals("200")) {
-                                            String name = response.body().getCurrentUser().getName();
-                                            String uid = response.body().getCurrentUser().getUid();
-                                            String csrf_token = response.body().getCurrentUser().getCsrfToken();
-                                            String logout_token = response.body().getCurrentUser().getLogoutToken();
-                                            setPreference(LoginActivity.this, "isRememberMe", String.valueOf(isRememberMe));
-                                            setPreference(LoginActivity.this, "user_id", uid);
-                                            setPreference(LoginActivity.this, "mName", name);
-                                            setPreference(LoginActivity.this, "mCsrf_token", csrf_token);
-                                            setPreference(LoginActivity.this, "mLogout_token", logout_token);
-                                            Toast.makeText(LoginActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                                            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                                            overridePendingTransition(R.anim.enter, R.anim.exit);
-                                            edt_email.setText("");
-                                            edt_pssword.setText("");
-                                            finish();
-                                        }
-                                    } else {
+                        if (response.code() == 200) {
+                            if (response != null && response.isSuccessful()) {
+                                if (response.body().getMessage().equals("Succesfully Logged In")) {
+                                    String mSattus = response.body().getStatus();
+                                    if (mSattus.equals("200")) {
+                                        String name = response.body().getCurrentUser().getName();
+                                        String uid = response.body().getCurrentUser().getUid();
+                                        String csrf_token = response.body().getCurrentUser().getCsrfToken();
+                                        String logout_token = response.body().getCurrentUser().getLogoutToken();
+                                        setPreference(LoginActivity.this, "isRememberMe", String.valueOf(isRememberMe));
+                                        setPreference(LoginActivity.this, "user_id", uid);
+                                        setPreference(LoginActivity.this, "mName", name);
+                                        setPreference(LoginActivity.this, "mCsrf_token", csrf_token);
+                                        setPreference(LoginActivity.this, "mLogout_token", logout_token);
                                         Toast.makeText(LoginActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                                        overridePendingTransition(R.anim.enter, R.anim.exit);
+                                        edt_email.setText("");
+                                        edt_pssword.setText("");
+                                        finish();
                                     }
                                 } else {
-                                    MaxCrowdFund.getClearCookies(LoginActivity.this, "cookies", "");
-                                    Toast.makeText(LoginActivity.this, "This route can only be accessed by anonymous users.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             } else {
-                                Toast.makeText(LoginActivity.this, getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, "onResponse: " + ">>>>>>>>" + response.code());
+                                Log.d(TAG, "onResponse: " + ">>>>>b>>>" + response.body().getMessage());
+                                String mError = response.errorBody().string();
+                                Toast.makeText(LoginActivity.this, mError, Toast.LENGTH_SHORT).show();
+                                // Toast.makeText(LoginActivity.this, "This route can only be accessed by anonymous users.", Toast.LENGTH_SHORT).show();
+                                MaxCrowdFund.getInstance().getClearCookies(LoginActivity.this, "cookies", "");
                             }
-                        }else {
-                            Log.d(TAG, "onResponse: "+">>>>>>>>"+response.code());
-                            MaxCrowdFund.getClearCookies(LoginActivity.this, "cookies", "");
-                            Toast.makeText(LoginActivity.this, "Sorry, unrecognized username or password.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            String mError = response.errorBody().string();
+                            Log.d(TAG, "onResponse: " + ">>>>parse>>>>" + mError);
+                            Toast.makeText(LoginActivity.this, mError, Toast.LENGTH_SHORT).show();
+                            MaxCrowdFund.getInstance().getClearCookies(LoginActivity.this, "cookies", "");
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

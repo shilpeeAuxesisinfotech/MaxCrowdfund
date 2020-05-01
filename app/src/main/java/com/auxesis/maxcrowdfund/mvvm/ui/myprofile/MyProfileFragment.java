@@ -10,10 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.constant.MaxCrowdFund;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
@@ -26,9 +28,11 @@ import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
+
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
 
@@ -38,6 +42,8 @@ public class MyProfileFragment extends Fragment {
     ProgressDialog pd;
     CircleImageView iv_user_img;
     Activity mActivity;
+    String mMobile = "";
+    String mCountryCode = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,8 +94,12 @@ public class MyProfileFragment extends Fragment {
         btn_change_mobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-                navController.navigate(R.id.action_nav_my_profile_to_changeMobileNumberFragment);
+                if (mMobile != null) {
+                    NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                    setPreference(mActivity, "mobile", mMobile);
+                    setPreference(mActivity, "countryCode", mCountryCode);
+                    navController.navigate(R.id.action_nav_my_profile_to_changeMobileNumberFragment);
+                }
             }
         });
         btn_change_pass.setOnClickListener(new View.OnClickListener() {
@@ -153,7 +163,8 @@ public class MyProfileFragment extends Fragment {
                                         tv_investorId.setText(profileResponse.getProfile().getData().getInvestorid().getValue());
                                         tvAccountId.setText(profileResponse.getProfile().getData().getAccountid().getTitle());
                                         tv_accountId.setText(profileResponse.getProfile().getData().getAccountid().getValue());
-
+                                        mMobile = String.valueOf(profileResponse.getProfile().getData().getMobileNumber().getValue());
+                                        mCountryCode = profileResponse.getProfile().getData().getAddressCountryCode().getValue();
                                         try {
                                             if (profileResponse.getProfile().getData().getAvatar().getValue() != null && !profileResponse.getProfile().getData().getAvatar().getValue().isEmpty() && !profileResponse.getProfile().getData().getAvatar().getValue().equals("null")) {
                                                 Glide.with(getActivity()).load(profileResponse.getProfile().getData().getAvatar().getValue())
@@ -168,7 +179,7 @@ public class MyProfileFragment extends Fragment {
                                 } else {
                                     setPreference(getActivity(), "user_id", "");
                                     setPreference(getActivity(), "mLogout_token", "");
-                                    MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                                    MaxCrowdFund.getInstance().getClearCookies(getActivity(), "cookies", "");
                                     Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getActivity(), LoginActivity.class);
                                     startActivity(intent);

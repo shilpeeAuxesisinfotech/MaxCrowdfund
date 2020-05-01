@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -20,7 +19,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.constant.MaxCrowdFund;
 import com.auxesis.maxcrowdfund.mvvm.activity.LoginActivity;
@@ -36,11 +34,9 @@ import com.auxesis.maxcrowdfund.mvvm.ui.myinvestments.myinvestmentdetail.myinves
 import com.auxesis.maxcrowdfund.restapi.ApiClient;
 import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.google.gson.Gson;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
 
@@ -70,6 +66,7 @@ public class MyInvestmentDetailFragment extends Fragment implements OnDownloadCl
         mActivity = getActivity();
         mInvestmentId = getPreference(mActivity, "investment_id");
         mLoanId = getPreference(mActivity, "loan_id");
+
         rl_document_click = root.findViewById(R.id.rl_document_click);
         rl_repayment_schedule_click = root.findViewById(R.id.rl_repayment_schedule_click);
 
@@ -157,6 +154,7 @@ public class MyInvestmentDetailFragment extends Fragment implements OnDownloadCl
         pd = ProgressDialog.show(getActivity(), "Please Wait...");
         EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
         String XCSRF = getPreference(getActivity(), "mCsrf_token");
+        Log.d(TAG, "getMyInvestmentDetail: "+investmentId);
         Call<MyInvestmentDetailResponse> call = git.getMyInvestmentDetail("application/json", XCSRF, investmentId);
         call.enqueue(new Callback<MyInvestmentDetailResponse>() {
             @Override
@@ -164,7 +162,7 @@ public class MyInvestmentDetailFragment extends Fragment implements OnDownloadCl
                 if (pd != null && pd.isShowing()) {
                     pd.dismiss();
                 }
-                if (response != null) {
+                if (response.code()==200) {
                     if (response != null && response.isSuccessful()) {
                         if (response.body().getUserLoginStatus() == 1) {
                             Log.d(TAG, "onResponse: " + "><s><" + new Gson().toJson(response.body()));
@@ -232,7 +230,7 @@ public class MyInvestmentDetailFragment extends Fragment implements OnDownloadCl
                         } else {
                             setPreference(getActivity(), "user_id", "");
                             setPreference(getActivity(), "mLogout_token", "");
-                            MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                            MaxCrowdFund.getInstance().getClearCookies(getActivity(), "cookies", "");
                             Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getActivity(), LoginActivity.class);
                             startActivity(intent);
@@ -242,7 +240,7 @@ public class MyInvestmentDetailFragment extends Fragment implements OnDownloadCl
                         Toast.makeText(mActivity, getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(mActivity, getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
@@ -270,7 +268,7 @@ public class MyInvestmentDetailFragment extends Fragment implements OnDownloadCl
                         }else {
                             setPreference(getActivity(), "user_id", "");
                             setPreference(getActivity(), "mLogout_token", "");
-                            MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                            MaxCrowdFund.getInstance().getClearCookies(getActivity(), "cookies", "");
                             Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getActivity(), LoginActivity.class);
                             startActivity(intent);

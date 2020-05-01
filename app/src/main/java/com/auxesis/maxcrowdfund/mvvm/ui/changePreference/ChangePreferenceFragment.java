@@ -34,6 +34,7 @@ import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.model.Option;
 import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.model.Option_;
 import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.model.Option__;
 import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.model.UpdatePreferenceResponse;
+import com.auxesis.maxcrowdfund.mvvm.ui.investform.questmodel.famodel.SpinnerModel;
 import com.auxesis.maxcrowdfund.restapi.ApiClient;
 import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.google.gson.Gson;
@@ -75,6 +76,8 @@ public class ChangePreferenceFragment extends Fragment {
     List<Option> languageArraySelected = new ArrayList<>();
     List<Option> languageArray = new ArrayList<>();
     boolean isSelected = false;
+    List<SpinnerModel> modelList =new ArrayList<>();
+    List<SpinnerModel> modelList1 = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -156,12 +159,11 @@ public class ChangePreferenceFragment extends Fragment {
         spinnerTranSigning.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Option__ option = signingAdapter.getItem(position);
-                //selected_product_id = addProductModel.getProduct_id();
-                Log.d(TAG, "onItemSelected: " + option.getKey());
-                Log.d(TAG, "onItemSelected: " + option.getVal());
-                mTrans_signing = option.getKey();
-                Log.d(TAG, "onItemSelected: --" + mTrans_signing);
+                SpinnerModel option = signingAdapter.getItem(position);
+                if (position==0){
+                }else {
+                    mTrans_signing = option.getKey();
+                }
             }
 
             @Override
@@ -312,8 +314,21 @@ public class ChangePreferenceFragment extends Fragment {
                                 }
                                 //For Transation Sigining
                                 tvTransaction_signing.setText(response.body().getPreferences().getData().getTransactionSigning().getTitle());
+                                modelList.clear();
+                                modelList1.clear();
+                                SpinnerModel spinnerModel1 = new SpinnerModel();
+                                spinnerModel1.setKey("Please select");
+                                spinnerModel1.setVal("Please select");
+                                modelList1.add(0,spinnerModel1);
                                 if (response.body().getPreferences().getData().getTransactionSigning().getOptions().size() > 0) {
-                                    signingAdapter = new TransactionSigningAdapter(getActivity(), response.body().getPreferences().getData().getTransactionSigning().getOptions());
+                                    for (int i = 0; i <response.body().getPreferences().getData().getTransactionSigning().getOptions().size(); i++) {
+                                        SpinnerModel spinnerModel =new SpinnerModel();
+                                        spinnerModel.setKey(response.body().getPreferences().getData().getTransactionSigning().getOptions().get(i).getKey());
+                                        spinnerModel.setVal(response.body().getPreferences().getData().getTransactionSigning().getOptions().get(i).getVal());
+                                        modelList.add(spinnerModel);
+                                    }
+                                    modelList1.addAll( modelList);
+                                    signingAdapter = new TransactionSigningAdapter(getActivity(), modelList1);
                                     spinnerTranSigning.setAdapter(signingAdapter);
                                 }
                                 //For Notification Preference
@@ -371,7 +386,7 @@ public class ChangePreferenceFragment extends Fragment {
                             } else {
                                 setPreference(getActivity(), "user_id", "");
                                 setPreference(getActivity(), "mLogout_token", "");
-                                MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                                MaxCrowdFund.getInstance().getClearCookies(getActivity(), "cookies", "");
                                 Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                                 startActivity(intent);
@@ -443,7 +458,7 @@ public class ChangePreferenceFragment extends Fragment {
                             } else {
                                 setPreference(getActivity(), "user_id", "");
                                 setPreference(getActivity(), "mLogout_token", "");
-                                MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                                MaxCrowdFund.getInstance().getClearCookies(getActivity(), "cookies", "");
                                 Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                                 startActivity(intent);

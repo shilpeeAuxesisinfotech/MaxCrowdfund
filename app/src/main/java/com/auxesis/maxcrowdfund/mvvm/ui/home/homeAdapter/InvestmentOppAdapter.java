@@ -11,16 +11,21 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.constant.BaseViewHolder;
 import com.auxesis.maxcrowdfund.mvvm.ui.home.oppmodel.InvestmentOppModel;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.auxesis.maxcrowdfund.constant.Utils.getFilledData;
 import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
 
 public class InvestmentOppAdapter extends RecyclerView.Adapter<BaseViewHolder> {
@@ -145,34 +150,41 @@ public class InvestmentOppAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             super.onBind(position);
             try {
                 InvestmentOppModel item = arrayList.get(position);
-                if (item.isTypeData()){
+                if (item.isTypeData()) {
                     lLayoutFooter.setVisibility(View.VISIBLE);
                     cardView.setVisibility(View.GONE);
-                    tv_raised_amount.setText("€" + String.valueOf(item.getTotal_raised()));
-                    tv_active_investor.setText("€" + String.valueOf(item.getActive_investors()));
-                    tv_avr_return.setText("€" + String.valueOf(item.getAverage_return()));
+                    tv_raised_amount.setText("€ " + String.valueOf(item.getTotal_raised()));
+                    tv_active_investor.setText(String.valueOf(item.getActive_investors()));
+                    tv_avr_return.setText(String.valueOf(item.getAverage_return()) + "%");
                     tv_active_invest_2.setText(String.valueOf(item.getmDefaults()));
-                    Log.d(TAG, "onBind: " + "1 -----"+item.isTypeData());
-                }else {
+                    Log.d(TAG, "onBind: " + "1 -----" + item.isTypeData());
+                } else {
                     lLayoutFooter.setVisibility(View.GONE);
                     cardView.setVisibility(View.VISIBLE);
-                    Log.d(TAG, "onBind: " + "12-----"+item.isTypeData());
                     tv_mTittle.setText(item.getmTitle());
                     tv_interest_pr.setText(item.getInterest_pa() + "%");
                     tv_risk_c.setText(item.getRisk_class());
                     String currencyBymbol = item.getCurrency_symbol();
                     tvAmount.setText(item.getAmount() + ".00");
-                    int mFilled = item.getFilled();
-                    tv_filled.setText(String.valueOf(mFilled) + "%");
+                   // int mFilled = item.getFilled();
                     tv_currency_left_amt.setText(currencyBymbol);
                     tv_investors.setText(String.valueOf(item.getNo_of_investors()));
                     tv_left_amount.setText(String.valueOf(item.getAmount_left()));
                     tv_months.setText(String.valueOf(item.getMonths()));
                     tv_type.setText(item.getType());
                     tv_location.setText(item.getLocation());
-                    progessBar.setProgress(mFilled);
+                    Log.d("><>dd<d><>", String.valueOf(item.getInvested_total_amount_on_loan() )+">><<<<<<<<<<>>>>>"+item.getAmount());
+                    if (item.getAmount()!= null) {
+                        try {
+                            int mAmount =  ((item.getInvested_total_amount_on_loan() * 100) / Integer.valueOf(item.getAmount()));;
+                            Log.d("><>dd<d><>", String.valueOf(mAmount)+">>>>>>>>"+item.getAmount());
+                            tv_filled.setText(String.valueOf(mAmount) + "%");
+                            progessBar.setProgress(mAmount);
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
-
                 Log.d(TAG, "onBind: " + arrayList.size());
                 cardView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -190,10 +202,12 @@ public class InvestmentOppAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     public class ProgressHolder extends BaseViewHolder {
         ProgressBar mProgressbar;
+
         ProgressHolder(View itemView) {
             super(itemView);
             mProgressbar = itemView.findViewById(R.id.mProgressbar);
         }
+
         @Override
         protected void clear() {
         }

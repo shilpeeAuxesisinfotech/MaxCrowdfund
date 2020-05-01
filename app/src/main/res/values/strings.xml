@@ -3,7 +3,6 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">Navigation header</string>
-
     <!--For navigation drawer-->
     <string name="menu_investments_opportunity">Investment Opportunities</string>
     <string name="menu_dashboard">Dashboard</string>
@@ -11,12 +10,9 @@
     <string name="menu_my_profile">My Profile</string>
     <string name="menu_contact_information">Contact Information</string>
     <string name="menu_logout">Logout</string>
-
     <!--For Details page-->
     <string name="max_property_group">Max Property Group</string>
     <string name="my_investments_detail">My Investment detail</string>
-
-
     <!--Main Activity-->
     <!--For Investment and investment detail-->
     <string name="interest_per_annual">Interest per annual</string>
@@ -32,13 +28,11 @@
     <string name="active_investores">Active investores</string>
     <string name="active_default">Default investores</string>
     <string name="average_return">Average return</string>
-
     <!--For Summary-->
     <!--For Splash  screen-->
     <string name="max">Max</string>
     <string name="crowdfund">Crowdfund</string>
     <string name="loading">Loading...</string>
-
     <!--For login -->
     <string name="please_enter_your_e_mail_and">Please Enter your e-mail and</string>
     <string name="password_to_login">password to login</string>
@@ -51,15 +45,10 @@
     <string name="enter_email">Please enter your E-mail</string>
     <string name="enter_password">Please enter your password</string>
     <string name="logout_succ">Logout Successfully..</string>
-
     <string name="session_expire">Session expired please login again...</string>
-
-
     <string name="invest">Invest</string>
     <string name="max_crowdfund">Max Crowdfund</string>
     <string name="international_real_estate_crowdfunding_platform">International Real Estate Crowdfunding Platform</string>
-
-
     <string name="yes">Yes</string>
     <string name="no_internet">No internet Connection</string>
     <string name="oops_connect_your_internet">Oops! Connect Your Internet</string>
@@ -72,10 +61,7 @@
     <string name="deposit">Deposit</string>
     <string name="ideal">iDeal</string>
     <string name="trustly">Trustly</string>
-
     <string name="enter_amount">Please enter your amount</string>
-
-
     <!--For profile page-->
     <string name="change_avatar">Change avatar</string>
     <string name="change_email">Change E-mail</string>
@@ -83,10 +69,8 @@
     <string name="change_password">Change password</string>
     <string name="change_default_bank_account">Change default bank account</string>
     <string name="change_preference">Change preference</string>
-
     <string name="save_changes">Save changes</string>
     <string name="submit">Submit</string>
-
     <!--For camera dialog-->
     <string name="choose_photo">Choose photo</string>
     <string name="gallery">Gallery</string>
@@ -94,7 +78,6 @@
     <string name="remove">Remove</string>
     <string name="cancel">Cancel</string>
     <string name="update_avatar">Update avatar</string>
-
     <!--for data not found-->
     <string name="no_data_found">No data found</string>
     <string name="download_Pdf">Download pdf</string>

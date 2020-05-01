@@ -51,6 +51,9 @@ public class Datum {
     @SerializedName("main_img")
     @Expose
     private String mainImg;
+    @SerializedName("invested_total_amount_on_loan")
+    @Expose
+    private Integer investedTotalAmountOnLoan;
 
     public String getId() {
         return id;
@@ -170,6 +173,14 @@ public class Datum {
 
     public void setMainImg(String mainImg) {
         this.mainImg = mainImg;
+    }
+
+    public Integer getInvestedTotalAmountOnLoan() {
+        return investedTotalAmountOnLoan;
+    }
+
+    public void setInvestedTotalAmountOnLoan(Integer investedTotalAmountOnLoan) {
+        this.investedTotalAmountOnLoan = investedTotalAmountOnLoan;
     }
 
 }

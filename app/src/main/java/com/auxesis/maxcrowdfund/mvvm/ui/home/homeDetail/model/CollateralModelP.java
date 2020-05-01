@@ -5,8 +5,6 @@ public class CollateralModelP {
     String mCollateralTitle1;
     String mCollateralValue1;
 
-    // List<CollateralModelCh>collateralModelChes;
-
     public CollateralModelP(String mCollateralSubHeading) {
         this.mCollateralSubHeading = mCollateralSubHeading;
     }
@@ -28,12 +26,4 @@ public class CollateralModelP {
         return mCollateralValue1;
     }
 
-
-    /* public List<CollateralModelCh> getCollateralModelChes() {
-        return collateralModelChes;
-    }
-
-    public void setCollateralModelChes(List<CollateralModelCh> collateralModelChes) {
-        this.collateralModelChes = collateralModelChes;
-    }*/
 }

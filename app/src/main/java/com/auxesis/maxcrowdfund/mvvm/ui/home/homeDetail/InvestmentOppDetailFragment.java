@@ -1,4 +1,5 @@
 package com.auxesis.maxcrowdfund.mvvm.ui.home.homeDetail;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -16,6 +18,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.os.Environment;
 import android.os.Handler;
 import android.text.Html;
@@ -30,6 +33,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.constant.APIUrl;
 import com.auxesis.maxcrowdfund.constant.CheckForSDCard;
@@ -48,7 +52,7 @@ import com.auxesis.maxcrowdfund.mvvm.ui.home.homeDetail.adapter.LastInvestmentAd
 import com.auxesis.maxcrowdfund.mvvm.ui.home.homeDetail.adapter.LoanTermAdapter;
 import com.auxesis.maxcrowdfund.mvvm.ui.home.homeDetail.adapter.MyPhotoAdapter;
 import com.auxesis.maxcrowdfund.mvvm.ui.home.homeDetail.adapter.RiskAdapter;
-import com.auxesis.maxcrowdfund.mvvm.ui.home.homeDetail.detailmodel.FundDetailResponce;
+import com.auxesis.maxcrowdfund.mvvm.ui.home.homeDetail.funddetail.FundraiserDetailResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.home.homeDetail.model.CollateralModelP;
 import com.auxesis.maxcrowdfund.mvvm.ui.home.homeDetail.model.DocumentModel;
 import com.auxesis.maxcrowdfund.mvvm.ui.home.homeDetail.model.FundraiserModel;
@@ -62,6 +66,7 @@ import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -71,9 +76,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
 
@@ -81,19 +88,30 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
     private static final String TAG = "InvestmentOppDetailFrag";
     Activity mActivity;
     TextView tv_mTittle, tv_interest_pr, tv_risk_c, tv_currency_left_amt, tv_cur_symbol_amt, tvAmount, tv_filled, tv_investors,
-            tv_left_amount, tv_left, tv_months, tvType, tv_location, tvNoRecord, tv_summary, txt_summary_content, tv_loan_terms, tvNoRecord_loan_term, tv_investment_plan,
+            tv_left_amount, tv_left, tv_months, tvType, tv_location, tvNoRecord, tvSumryHeaderTittle, tvSummaryHeaderArrow, tvSummaryContent, tvSummaryNoData, tvSummaryError, tv_loan_terms, tvNoRecord_loan_term, tv_investment_plan,
             tvNoRecord_investment, tv_collateral, tvNoRecord_Collateral, tv_fundraiser, tvNoRecord_foundRaiser, tv_addnal_info_tittle, tv_addnal_content, tv_rik,
-            tvNoRecord_Risk, tvNoRecord_Document, tvNoRecord_LastInvestment, tv_last_investment, tv_document,tv_arrow_summary, tv_arrow_loan_terms, tv_arrow_collateral, tv_arrow_fundraiser, tv_arrow_investment_plan,
-            tv_arrow_risk, tv_arrow_document, tv_arrow_last_investment,tvSummaryError, tvInvestmentPlanError, tvInvestRiskError, tvDocumentError, tvLastInvestError;
+            tvNoRecord_Risk, tvNoRecord_Document, tvNoRecord_LastInvestment, tv_last_investment, tv_document, tv_arrow_loan_terms, tv_arrow_collateral, tv_arrow_fundraiser, tv_arrow_investment_plan,
+            tv_arrow_risk, tv_arrow_document, tv_arrow_last_investment, tvInvestmentPlanError, tvInvestRiskError, tvDocumentError, tvLastInvestError, tvLoanTermError, tvCollatralError, tvFundraiserError,
+            tvArrowPayment, tvPaymentHeaderTittle, tvPaymentContentDisplay, tvPaymentError, tvPaymentNoData, tvArrowAddiTerms,
+            tvAddiTermsHeaderTittle, tvAddiTermsContentDisplay, tvAddiTermsNoData, tvAddiTermsError, tvArrowPitchSec, tvPitchSecHeaderTittle,
+            tvPitchSecDisplayContent, tvPitchSecError, tvPitchSecNoData, tvNoRecordCollSecurity;
+
     ImageView iv_main_ing, iv_logo;
-    LinearLayout ll_contant_summary, ll_contant_loan_terms, ll_contant_collateral, ll_contant_fundraiser, ll_contant_investment, ll_contant_risk, ll_contant_document, ll_contant_last_invest;
-    RelativeLayout rl_summary_for, rl_loan_term_click, rl_collateral_click, rl_foundaiser_click, rl_investment_click, rl_risk_click, rl_document_click, rl_last_invest_click;
+    LinearLayout lLayoutSummaryContent, ll_contant_loan_terms, ll_contant_collateral, ll_contant_fundraiser, ll_contant_investment, ll_contant_risk, ll_contant_document, ll_contant_last_invest,
+            llPaymentContent, llAddiTermsContent, llPitchSecContent;
+    RelativeLayout rLayoutSummaryHeader, rl_loan_term_click, rl_collateral_click, rl_foundaiser_click, rl_investment_click, rl_risk_click, rl_document_click, rl_last_invest_click,
+            rlPaymentHeader, rlAddiTermsHeader, rlPitchSecHeader;
 
     List<PhotosVideosModel> photosVideosList = new ArrayList<>();
     List<PhotosVideosModel> photosVideosList_f = new ArrayList<>();
     List<LoanTermModel> loanTermList = new ArrayList<>();
+
     List<CollateralModelP> collateralListFirst = new ArrayList<>();
     List<CollateralModelP> collateralListSecond = new ArrayList<>();
+
+    List<CollateralModelP> collListSecurity1 = new ArrayList<>();
+    List<CollateralModelP> collListSecurity2 = new ArrayList<>();
+
     List<FundraiserModel> fundraiserModelList = new ArrayList<>();
     List<InvestmentPlanModel> investmentPlanList = new ArrayList<>();
     List<RiskModel> riskList = new ArrayList<>();
@@ -101,11 +119,12 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
     List<LastInvestmentModel> lastInvestmentList = new ArrayList<>();
     ProgressDialog pd;
     ProgressBar progessBar;
-    RecyclerView recyclerView, recyViewLoanTerm, recyViewInvestment, recyViewCollateral, recyViewFoundRaiser, recyViewRisk, recyViewDocument, recyViewLastInvestment;
+    RecyclerView recyclerView, recyViewLoanTerm, recyViewInvestment, recyViewCollateral, recyViewFoundRaiser, recyViewRisk, recyViewDocument, recyViewLastInvestment, recyViewCollSecurity;
     MyPhotoAdapter adapter;
     LoanTermAdapter loanTermAdapter;
     InvestmentPlanAdapter investmentPlanAdapter;
     CollateralAdapter collateralAdapter;
+    CollateralAdapter mSecurityAdapter;
     FundraiserAdapter fundraiserAdapter;
     RiskAdapter riskAdapter;
     DocumentAdapter documentAdapter;
@@ -113,7 +132,19 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
     private String mdownloadFile;
     private long downloadID;
-    Button btn_summary_invest, btn_investment_plan, btn_invest_risk, btn_invest_document, btn_last_invest;
+    Button btnSummaryInvest, btn_investment_plan, btn_invest_risk, btn_invest_document, btn_last_invest, btnLoanTerm, btnCollateral, btnFundraiser,
+            btnPaymentInvest, btnAddiTermsInvest, btnPitchSecInvest;
+    boolean mSummaryInvest = false;
+    boolean mInvestmentPlan = false;
+    boolean mInvestRisk = false;
+    boolean mInvestDocument = false;
+    boolean mLastInvest = false;
+    boolean mLoanTerm = false;
+    boolean mCollateral = false;
+    boolean mFundraiser = false;
+    boolean mPayment = false;
+    boolean mAdditinalTerms = false;
+    boolean mPitchSecurity = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -141,95 +172,122 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
         tv_location = root.findViewById(R.id.tv_location);
         progessBar = root.findViewById(R.id.progessBar);
         iv_main_ing = root.findViewById(R.id.iv_main_ing);
-
-        //For photo
+        //For photo card
         recyclerView = root.findViewById(R.id.recyclerView);
         tvNoRecord = root.findViewById(R.id.tvNoRecord);
+        //For Summary card
+        tvSumryHeaderTittle = root.findViewById(R.id.tvSumryHeaderTittle);
+        tvSummaryHeaderArrow = root.findViewById(R.id.tvSummaryHeaderArrow);
+        tvSummaryContent = root.findViewById(R.id.tvSummaryContent);
+        tvSummaryNoData = root.findViewById(R.id.tvSummaryNoData);
+        tvSummaryError = root.findViewById(R.id.tvSummaryError);
+        btnSummaryInvest = root.findViewById(R.id.btnSummaryInvest);
+        rLayoutSummaryHeader = root.findViewById(R.id.rLayoutSummaryHeader);
+        lLayoutSummaryContent = root.findViewById(R.id.lLayoutSummaryContent);
+        lLayoutSummaryContent.setVisibility(View.VISIBLE);
 
-        //For Summary data
-        tv_arrow_summary = root.findViewById(R.id.tv_arrow_summary);
-        tv_summary = root.findViewById(R.id.tv_summary);
-        txt_summary_content = root.findViewById(R.id.txt_summary_content);
-
-        //For Loan Term
+        //For Loan Term card
         tv_arrow_loan_terms = root.findViewById(R.id.tv_arrow_loan_terms);
         tv_loan_terms = root.findViewById(R.id.tv_loan_terms);
         tvNoRecord_loan_term = root.findViewById(R.id.tvNoRecord_loan_term);
         recyViewLoanTerm = root.findViewById(R.id.recyViewLoanTerm);
-
-        //For FoundRaiser
+        btnLoanTerm = root.findViewById(R.id.btnLoanTerm);
+        ll_contant_loan_terms = root.findViewById(R.id.ll_contant_loan_terms);
+        tvLoanTermError = root.findViewById(R.id.tvLoanTermError);
+        rl_loan_term_click = root.findViewById(R.id.rl_loan_term_click);
+        //For FoundRaiser card
         iv_logo = root.findViewById(R.id.iv_logo);
         tv_fundraiser = root.findViewById(R.id.tv_fundraiser);
         recyViewFoundRaiser = root.findViewById(R.id.recyViewFoundRaiser);
         tvNoRecord_foundRaiser = root.findViewById(R.id.tvNoRecord_foundRaiser);
         tv_addnal_info_tittle = root.findViewById(R.id.tv_addnal_info_tittle);
         tv_addnal_content = root.findViewById(R.id.tv_addnal_content);
+        tv_arrow_fundraiser = root.findViewById(R.id.tv_arrow_fundraiser);
+        ll_contant_fundraiser = root.findViewById(R.id.ll_contant_fundraiser);
+        tvFundraiserError = root.findViewById(R.id.tvFundraiserError);
+        btnFundraiser = root.findViewById(R.id.btnFundraiser);
+        rl_foundaiser_click = root.findViewById(R.id.rl_foundaiser_click);
 
         //For Risk
         tv_rik = root.findViewById(R.id.tv_rik);
         tvNoRecord_Risk = root.findViewById(R.id.tvNoRecord_Risk);
         recyViewRisk = root.findViewById(R.id.recyViewRisk);
+        tv_arrow_risk = root.findViewById(R.id.tv_arrow_risk);
+        tvInvestRiskError = root.findViewById(R.id.tvInvestRiskError);
+        btn_invest_risk = root.findViewById(R.id.btn_invest_risk);
+        ll_contant_risk = root.findViewById(R.id.ll_contant_risk);
+        rl_risk_click = root.findViewById(R.id.rl_risk_click);
 
         //For Investment Plan
-        tv_arrow_investment_plan = root.findViewById(R.id.tv_arrow_investment_plan);
         tv_investment_plan = root.findViewById(R.id.tv_investment_plan);
         tvNoRecord_investment = root.findViewById(R.id.tvNoRecord_investment);
         recyViewInvestment = root.findViewById(R.id.recyViewInvestment);
-
-        btn_summary_invest = root.findViewById(R.id.btn_summary_invest);
-        btn_investment_plan = root.findViewById(R.id.btn_investment_plan);
-        btn_invest_risk = root.findViewById(R.id.btn_invest_risk);
-        btn_invest_document = root.findViewById(R.id.btn_invest_document);
-        btn_last_invest = root.findViewById(R.id.btn_last_invest);
-
-        tvSummaryError = root.findViewById(R.id.tvSummaryError);
+        tv_arrow_investment_plan = root.findViewById(R.id.tv_arrow_investment_plan);
         tvInvestmentPlanError = root.findViewById(R.id.tvInvestmentPlanError);
-        tvInvestRiskError = root.findViewById(R.id.tvInvestRiskError);
-        tvDocumentError = root.findViewById(R.id.tvDocumentError);
-        tvLastInvestError = root.findViewById(R.id.tvLastInvestError);
-
-        //for colletral
+        btn_investment_plan = root.findViewById(R.id.btn_investment_plan);
+        ll_contant_investment = root.findViewById(R.id.ll_contant_investment);
+        rl_investment_click = root.findViewById(R.id.rl_investment_click);
+        //for colletral card
         tv_arrow_collateral = root.findViewById(R.id.tv_arrow_collateral);
         tv_collateral = root.findViewById(R.id.tv_collateral);
         tvNoRecord_Collateral = root.findViewById(R.id.tvNoRecord_Collateral);
+        tvCollatralError = root.findViewById(R.id.tvCollatralError);
         recyViewCollateral = root.findViewById(R.id.recyViewCollateral);
+        ll_contant_collateral = root.findViewById(R.id.ll_contant_collateral);
+        btnCollateral = root.findViewById(R.id.btnCollateral);
+        rl_collateral_click = root.findViewById(R.id.rl_collateral_click);
+        recyViewCollSecurity = root.findViewById(R.id.recyViewCollSecurity);
+        tvNoRecordCollSecurity = root.findViewById(R.id.tvNoRecordCollSecurity);
 
-        //For Document
+        //For Document card
         recyViewDocument = root.findViewById(R.id.recyViewDocument);
         tvNoRecord_Document = root.findViewById(R.id.tvNoRecord_Document);
         tv_document = root.findViewById(R.id.tv_document);
-
-        //For Last investment
+        tv_arrow_document = root.findViewById(R.id.tv_arrow_document);
+        tvDocumentError = root.findViewById(R.id.tvDocumentError);
+        ll_contant_document = root.findViewById(R.id.ll_contant_document);
+        btn_invest_document = root.findViewById(R.id.btn_invest_document);
+        rl_document_click = root.findViewById(R.id.rl_document_click);
+        //For Last investment card
         recyViewLastInvestment = root.findViewById(R.id.recyViewLastInvestment);
         tvNoRecord_LastInvestment = root.findViewById(R.id.tvNoRecord_LastInvestment);
         tv_last_investment = root.findViewById(R.id.tv_last_investment);
-
-        //For All Arrow
-        tv_arrow_fundraiser = root.findViewById(R.id.tv_arrow_fundraiser);
-
-        tv_arrow_risk = root.findViewById(R.id.tv_arrow_risk);
-        tv_arrow_document = root.findViewById(R.id.tv_arrow_document);
         tv_arrow_last_investment = root.findViewById(R.id.tv_arrow_last_investment);
-
-        ll_contant_summary = root.findViewById(R.id.ll_contant_summary);
-        ll_contant_loan_terms = root.findViewById(R.id.ll_contant_loan_terms);
-        ll_contant_collateral = root.findViewById(R.id.ll_contant_collateral);
-        ll_contant_fundraiser = root.findViewById(R.id.ll_contant_fundraiser);
-        ll_contant_investment = root.findViewById(R.id.ll_contant_investment);
-        ll_contant_risk = root.findViewById(R.id.ll_contant_risk);
-        ll_contant_document = root.findViewById(R.id.ll_contant_document);
         ll_contant_last_invest = root.findViewById(R.id.ll_contant_last_invest);
-
-        rl_summary_for = root.findViewById(R.id.rl_summary_for);
-        rl_loan_term_click = root.findViewById(R.id.rl_loan_term_click);
-        rl_collateral_click = root.findViewById(R.id.rl_collateral_click);
-        rl_foundaiser_click = root.findViewById(R.id.rl_foundaiser_click);
-        rl_investment_click = root.findViewById(R.id.rl_investment_click);
-        rl_risk_click = root.findViewById(R.id.rl_risk_click);
-        rl_document_click = root.findViewById(R.id.rl_document_click);
+        tvLastInvestError = root.findViewById(R.id.tvLastInvestError);
+        btn_last_invest = root.findViewById(R.id.btn_last_invest);
         rl_last_invest_click = root.findViewById(R.id.rl_last_invest_click);
 
-        ll_contant_summary.setVisibility(View.VISIBLE);
+        /*For Payment card */
+        rlPaymentHeader = root.findViewById(R.id.rlPaymentHeader);
+        tvArrowPayment = root.findViewById(R.id.tvArrowPayment);
+        tvPaymentHeaderTittle = root.findViewById(R.id.tvPaymentHeaderTittle);
+        tvPaymentContentDisplay = root.findViewById(R.id.tvPaymentContentDisplay);
+        tvPaymentError = root.findViewById(R.id.tvPaymentError);
+        tvPaymentNoData = root.findViewById(R.id.tvPaymentNoData);
+        llPaymentContent = root.findViewById(R.id.llPaymentContent);
+        btnPaymentInvest = root.findViewById(R.id.btnPaymentInvest);
+
+        /*For additional_terms_condition*/
+        rlAddiTermsHeader = root.findViewById(R.id.rlAddiTermsHeader);
+        tvArrowAddiTerms = root.findViewById(R.id.tvArrowAddiTerms);
+        tvAddiTermsHeaderTittle = root.findViewById(R.id.tvAddiTermsHeaderTittle);
+        tvAddiTermsContentDisplay = root.findViewById(R.id.tvAddiTermsContentDisplay);
+        tvAddiTermsNoData = root.findViewById(R.id.tvAddiTermsNoData);
+        tvAddiTermsError = root.findViewById(R.id.tvAddiTermsError);
+        llAddiTermsContent = root.findViewById(R.id.llAddiTermsContent);
+        btnAddiTermsInvest = root.findViewById(R.id.btnAddiTermsInvest);
+
+        /*For Pitch securities Card*/
+        rlPitchSecHeader = root.findViewById(R.id.rlPitchSecHeader);
+        tvArrowPitchSec = root.findViewById(R.id.tvArrowPitchSec);
+        tvPitchSecHeaderTittle = root.findViewById(R.id.tvPitchSecHeaderTittle);
+        llPitchSecContent = root.findViewById(R.id.llPitchSecContent);
+        tvPitchSecDisplayContent = root.findViewById(R.id.tvPitchSecDisplayContent);
+        tvPitchSecError = root.findViewById(R.id.tvPitchSecError);
+        tvPitchSecNoData = root.findViewById(R.id.tvPitchSecNoData);
+        btnPitchSecInvest = root.findViewById(R.id.btnPitchSecInvest);
+
         ll_contant_loan_terms.setVisibility(View.GONE);
         ll_contant_collateral.setVisibility(View.GONE);
         ll_contant_fundraiser.setVisibility(View.GONE);
@@ -237,85 +295,493 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
         ll_contant_risk.setVisibility(View.GONE);
         ll_contant_document.setVisibility(View.GONE);
         ll_contant_last_invest.setVisibility(View.GONE);
+        llPaymentContent.setVisibility(View.GONE);
+        llAddiTermsContent.setVisibility(View.GONE);
+        llPitchSecContent.setVisibility(View.GONE);
 
-        rl_summary_for.setOnClickListener(new View.OnClickListener() {
+        rLayoutSummaryHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ll_contant_summary.isShown()) {
-                    Utils.slide_up(mActivity, ll_contant_summary);
-                    tv_arrow_summary.setBackgroundResource(R.drawable.ic_arrow_down);
-                    ll_contant_summary.setVisibility(View.GONE);
+                if (lLayoutSummaryContent.isShown()) {
+                    Utils.slide_up(mActivity, lLayoutSummaryContent);
+                    mSummaryInvest = false;
+                    tvSummaryHeaderArrow.setBackgroundResource(R.drawable.ic_arrow_down);
+                    lLayoutSummaryContent.setVisibility(View.GONE);
                 } else {
-                    ll_contant_summary.setVisibility(View.VISIBLE);
-                    Utils.slide_down(mActivity, ll_contant_summary);
-                    tv_arrow_summary.setBackgroundResource(R.drawable.ic_arrow_up);
+                    mSummaryInvest = true;
+                    lLayoutSummaryContent.setVisibility(View.VISIBLE);
+                    Utils.slide_down(mActivity, lLayoutSummaryContent);
+                    tvSummaryHeaderArrow.setBackgroundResource(R.drawable.ic_arrow_up);
                 }
 
+                if (mLoanTerm) {
+                    if (ll_contant_loan_terms.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_loan_terms);
+                        mLoanTerm = false;
+                        tv_arrow_loan_terms.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_loan_terms.setVisibility(View.GONE);
+                    }
+                }
+                if (mCollateral) {
+                    if (ll_contant_collateral.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_collateral);
+                        mCollateral = false;
+                        tv_arrow_collateral.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_collateral.setVisibility(View.GONE);
+                    }
+                }
+                if (mFundraiser) {
+                    if (ll_contant_fundraiser.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_fundraiser);
+                        mFundraiser = false;
+                        tv_arrow_fundraiser.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_fundraiser.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestRisk) {
+                    if (ll_contant_risk.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_risk);
+                        mInvestRisk = false;
+                        tv_arrow_risk.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_risk.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestmentPlan) {
+                    if (ll_contant_investment.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_investment);
+                        mInvestmentPlan = false;
+                        tv_arrow_investment_plan.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_investment.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestDocument) {
+                    if (ll_contant_document.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_document);
+                        mInvestDocument = false;
+                        tv_arrow_document.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_document.setVisibility(View.GONE);
+                    }
+                }
+                if (mLastInvest) {
+                    if (ll_contant_last_invest.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_last_invest);
+                        mLastInvest = false;
+                        tv_arrow_last_investment.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_last_invest.setVisibility(View.GONE);
+                    }
+                }
+                if (mPayment) {
+                    if (llPaymentContent.isShown()) {
+                        Utils.slide_up(mActivity, llPaymentContent);
+                        mPayment = false;
+                        tvArrowPayment.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llPaymentContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mAdditinalTerms) {
+                    if (llAddiTermsContent.isShown()) {
+                        Utils.slide_up(mActivity, llAddiTermsContent);
+                        mAdditinalTerms = false;
+                        tvArrowAddiTerms.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llAddiTermsContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mPitchSecurity) {
+                    if (llPitchSecContent.isShown()) {
+                        Utils.slide_up(mActivity, llPitchSecContent);
+                        mPitchSecurity = false;
+                        tvArrowPitchSec.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llPitchSecContent.setVisibility(View.GONE);
+                    }
+                }
             }
         });
-
         //For Loan terms
         rl_loan_term_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (ll_contant_loan_terms.isShown()) {
                     Utils.slide_up(mActivity, ll_contant_loan_terms);
+                    mLoanTerm = false;
                     tv_arrow_loan_terms.setBackgroundResource(R.drawable.ic_arrow_down);
                     ll_contant_loan_terms.setVisibility(View.GONE);
                 } else {
                     ll_contant_loan_terms.setVisibility(View.VISIBLE);
+                    mLoanTerm = true;
                     Utils.slide_down(mActivity, ll_contant_loan_terms);
                     tv_arrow_loan_terms.setBackgroundResource(R.drawable.ic_arrow_up);
                 }
+                if (mSummaryInvest) {
+                    if (lLayoutSummaryContent.isShown()) {
+                        Utils.slide_up(mActivity, lLayoutSummaryContent);
+                        mSummaryInvest = false;
+                        tvSummaryHeaderArrow.setBackgroundResource(R.drawable.ic_arrow_down);
+                        lLayoutSummaryContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mCollateral) {
+                    if (ll_contant_collateral.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_collateral);
+                        mCollateral = false;
+                        tv_arrow_collateral.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_collateral.setVisibility(View.GONE);
+                    }
+                }
+                if (mFundraiser) {
+                    if (ll_contant_fundraiser.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_fundraiser);
+                        mFundraiser = false;
+                        tv_arrow_fundraiser.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_fundraiser.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestRisk) {
+                    if (ll_contant_risk.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_risk);
+                        mInvestRisk = false;
+                        tv_arrow_risk.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_risk.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestmentPlan) {
+                    if (ll_contant_investment.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_investment);
+                        mInvestmentPlan = false;
+                        tv_arrow_investment_plan.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_investment.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestDocument) {
+                    if (ll_contant_document.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_document);
+                        mInvestDocument = false;
+                        tv_arrow_document.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_document.setVisibility(View.GONE);
+                    }
+                }
+                if (mLastInvest) {
+                    if (ll_contant_last_invest.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_last_invest);
+                        mLastInvest = false;
+                        tv_arrow_last_investment.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_last_invest.setVisibility(View.GONE);
+                    }
+                }
+                if (mPayment) {
+                    if (llPaymentContent.isShown()) {
+                        Utils.slide_up(mActivity, llPaymentContent);
+                        mPayment = false;
+                        tvArrowPayment.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llPaymentContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mAdditinalTerms) {
+                    if (llAddiTermsContent.isShown()) {
+                        Utils.slide_up(mActivity, llAddiTermsContent);
+                        mAdditinalTerms = false;
+                        tvArrowAddiTerms.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llAddiTermsContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mPitchSecurity) {
+                    if (llPitchSecContent.isShown()) {
+                        Utils.slide_up(mActivity, llPitchSecContent);
+                        mPitchSecurity = false;
+                        tvArrowPitchSec.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llPitchSecContent.setVisibility(View.GONE);
+                    }
+                }
             }
         });
-
         //For colla
         rl_collateral_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (ll_contant_collateral.isShown()) {
                     Utils.slide_up(mActivity, ll_contant_collateral);
+                    mCollateral = false;
                     tv_arrow_collateral.setBackgroundResource(R.drawable.ic_arrow_down);
                     ll_contant_collateral.setVisibility(View.GONE);
-
                 } else {
                     ll_contant_collateral.setVisibility(View.VISIBLE);
+                    mCollateral = true;
                     Utils.slide_down(mActivity, ll_contant_collateral);
                     tv_arrow_collateral.setBackgroundResource(R.drawable.ic_arrow_up);
                 }
+                if (mSummaryInvest) {
+                    if (lLayoutSummaryContent.isShown()) {
+                        Utils.slide_up(mActivity, lLayoutSummaryContent);
+                        mSummaryInvest = false;
+                        tvSummaryHeaderArrow.setBackgroundResource(R.drawable.ic_arrow_down);
+                        lLayoutSummaryContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mLoanTerm) {
+                    if (ll_contant_loan_terms.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_loan_terms);
+                        mLoanTerm = false;
+                        tv_arrow_loan_terms.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_loan_terms.setVisibility(View.GONE);
+                    }
+                }
+                if (mFundraiser) {
+                    if (ll_contant_fundraiser.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_fundraiser);
+                        mFundraiser = false;
+                        tv_arrow_fundraiser.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_fundraiser.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestRisk) {
+                    if (ll_contant_risk.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_risk);
+                        mInvestRisk = false;
+                        tv_arrow_risk.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_risk.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestmentPlan) {
+                    if (ll_contant_investment.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_investment);
+                        mInvestmentPlan = false;
+                        tv_arrow_investment_plan.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_investment.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestDocument) {
+                    if (ll_contant_document.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_document);
+                        mInvestDocument = false;
+                        tv_arrow_document.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_document.setVisibility(View.GONE);
+                    }
+                }
+                if (mLastInvest) {
+                    if (ll_contant_last_invest.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_last_invest);
+                        mLastInvest = false;
+                        tv_arrow_last_investment.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_last_invest.setVisibility(View.GONE);
+                    }
+                }
+                if (mPayment) {
+                    if (llPaymentContent.isShown()) {
+                        Utils.slide_up(mActivity, llPaymentContent);
+                        mPayment = false;
+                        tvArrowPayment.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llPaymentContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mAdditinalTerms) {
+                    if (llAddiTermsContent.isShown()) {
+                        Utils.slide_up(mActivity, llAddiTermsContent);
+                        mAdditinalTerms = false;
+                        tvArrowAddiTerms.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llAddiTermsContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mPitchSecurity) {
+                    if (llPitchSecContent.isShown()) {
+                        Utils.slide_up(mActivity, llPitchSecContent);
+                        mPitchSecurity = false;
+                        tvArrowPitchSec.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llPitchSecContent.setVisibility(View.GONE);
+                    }
+                }
             }
         });
-
         //For fundraiser
         rl_foundaiser_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (ll_contant_fundraiser.isShown()) {
                     Utils.slide_up(mActivity, ll_contant_fundraiser);
+                    mFundraiser = false;
                     tv_arrow_fundraiser.setBackgroundResource(R.drawable.ic_arrow_down);
                     ll_contant_fundraiser.setVisibility(View.GONE);
-
                 } else {
                     ll_contant_fundraiser.setVisibility(View.VISIBLE);
+                    mFundraiser = true;
                     Utils.slide_down(mActivity, ll_contant_fundraiser);
                     tv_arrow_fundraiser.setBackgroundResource(R.drawable.ic_arrow_up);
                 }
+
+                if (mSummaryInvest) {
+                    if (lLayoutSummaryContent.isShown()) {
+                        Utils.slide_up(mActivity, lLayoutSummaryContent);
+                        mSummaryInvest = false;
+                        tvSummaryHeaderArrow.setBackgroundResource(R.drawable.ic_arrow_down);
+                        lLayoutSummaryContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mLoanTerm) {
+                    if (ll_contant_loan_terms.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_loan_terms);
+                        mLoanTerm = false;
+                        tv_arrow_loan_terms.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_loan_terms.setVisibility(View.GONE);
+                    }
+                }
+                if (mCollateral) {
+                    if (ll_contant_collateral.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_collateral);
+                        mCollateral = false;
+                        tv_arrow_collateral.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_collateral.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestRisk) {
+                    if (ll_contant_risk.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_risk);
+                        mInvestRisk = false;
+                        tv_arrow_risk.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_risk.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestmentPlan) {
+                    if (ll_contant_investment.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_investment);
+                        mInvestmentPlan = false;
+                        tv_arrow_investment_plan.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_investment.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestDocument) {
+                    if (ll_contant_document.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_document);
+                        mInvestDocument = false;
+                        tv_arrow_document.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_document.setVisibility(View.GONE);
+                    }
+                }
+                if (mLastInvest) {
+                    if (ll_contant_last_invest.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_last_invest);
+                        mLastInvest = false;
+                        tv_arrow_last_investment.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_last_invest.setVisibility(View.GONE);
+                    }
+                }
+                if (mPayment) {
+                    if (llPaymentContent.isShown()) {
+                        Utils.slide_up(mActivity, llPaymentContent);
+                        mPayment = false;
+                        tvArrowPayment.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llPaymentContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mAdditinalTerms) {
+                    if (llAddiTermsContent.isShown()) {
+                        Utils.slide_up(mActivity, llAddiTermsContent);
+                        mAdditinalTerms = false;
+                        tvArrowAddiTerms.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llAddiTermsContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mPitchSecurity) {
+                    if (llPitchSecContent.isShown()) {
+                        Utils.slide_up(mActivity, llPitchSecContent);
+                        mPitchSecurity = false;
+                        tvArrowPitchSec.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llPitchSecContent.setVisibility(View.GONE);
+                    }
+                }
             }
         });
-
         //For investment
         rl_investment_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (ll_contant_investment.isShown()) {
                     Utils.slide_up(mActivity, ll_contant_investment);
+                    mInvestmentPlan = false;
                     tv_arrow_investment_plan.setBackgroundResource(R.drawable.ic_arrow_down);
                     ll_contant_investment.setVisibility(View.GONE);
                 } else {
                     ll_contant_investment.setVisibility(View.VISIBLE);
+                    mInvestmentPlan = true;
                     Utils.slide_down(mActivity, ll_contant_investment);
                     tv_arrow_investment_plan.setBackgroundResource(R.drawable.ic_arrow_up);
+                }
+                if (mSummaryInvest) {
+                    if (lLayoutSummaryContent.isShown()) {
+                        Utils.slide_up(mActivity, lLayoutSummaryContent);
+                        mSummaryInvest = false;
+                        tvSummaryHeaderArrow.setBackgroundResource(R.drawable.ic_arrow_down);
+                        lLayoutSummaryContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mLoanTerm) {
+                    if (ll_contant_loan_terms.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_loan_terms);
+                        mLoanTerm = false;
+                        tv_arrow_loan_terms.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_loan_terms.setVisibility(View.GONE);
+                    }
+                }
+                if (mCollateral) {
+                    if (ll_contant_collateral.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_collateral);
+                        mCollateral = false;
+                        tv_arrow_collateral.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_collateral.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestRisk) {
+                    if (ll_contant_risk.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_risk);
+                        mInvestRisk = false;
+                        tv_arrow_risk.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_risk.setVisibility(View.GONE);
+                    }
+                }
+                if (mFundraiser) {
+                    if (ll_contant_fundraiser.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_fundraiser);
+                        mFundraiser = false;
+                        tv_arrow_fundraiser.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_fundraiser.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestDocument) {
+                    if (ll_contant_document.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_document);
+                        mInvestDocument = false;
+                        tv_arrow_document.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_document.setVisibility(View.GONE);
+                    }
+                }
+                if (mLastInvest) {
+                    if (ll_contant_last_invest.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_last_invest);
+                        mLastInvest = false;
+                        tv_arrow_last_investment.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_last_invest.setVisibility(View.GONE);
+                    }
+                }
+                if (mPayment) {
+                    if (llPaymentContent.isShown()) {
+                        Utils.slide_up(mActivity, llPaymentContent);
+                        mPayment = false;
+                        tvArrowPayment.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llPaymentContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mAdditinalTerms) {
+                    if (llAddiTermsContent.isShown()) {
+                        Utils.slide_up(mActivity, llAddiTermsContent);
+                        mAdditinalTerms = false;
+                        tvArrowAddiTerms.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llAddiTermsContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mPitchSecurity) {
+                    if (llPitchSecContent.isShown()) {
+                        Utils.slide_up(mActivity, llPitchSecContent);
+                        mPitchSecurity = false;
+                        tvArrowPitchSec.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llPitchSecContent.setVisibility(View.GONE);
+                    }
                 }
             }
         });
@@ -325,13 +791,95 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
             public void onClick(View v) {
                 if (ll_contant_risk.isShown()) {
                     Utils.slide_up(mActivity, ll_contant_risk);
+                    mInvestRisk = false;
                     tv_arrow_risk.setBackgroundResource(R.drawable.ic_arrow_down);
                     ll_contant_risk.setVisibility(View.GONE);
 
                 } else {
                     ll_contant_risk.setVisibility(View.VISIBLE);
+                    mInvestRisk = true;
                     Utils.slide_down(mActivity, ll_contant_risk);
                     tv_arrow_risk.setBackgroundResource(R.drawable.ic_arrow_up);
+                }
+                if (mSummaryInvest) {
+                    if (lLayoutSummaryContent.isShown()) {
+                        Utils.slide_up(mActivity, lLayoutSummaryContent);
+                        mSummaryInvest = false;
+                        tvSummaryHeaderArrow.setBackgroundResource(R.drawable.ic_arrow_down);
+                        lLayoutSummaryContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mLoanTerm) {
+                    if (ll_contant_loan_terms.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_loan_terms);
+                        mLoanTerm = false;
+                        tv_arrow_loan_terms.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_loan_terms.setVisibility(View.GONE);
+                    }
+                }
+                if (mCollateral) {
+                    if (ll_contant_collateral.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_collateral);
+                        mCollateral = false;
+                        tv_arrow_collateral.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_collateral.setVisibility(View.GONE);
+                    }
+                }
+                if (mFundraiser) {
+                    if (ll_contant_fundraiser.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_fundraiser);
+                        mFundraiser = false;
+                        tv_arrow_fundraiser.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_fundraiser.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestmentPlan) {
+                    if (ll_contant_investment.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_investment);
+                        mInvestmentPlan = false;
+                        tv_arrow_investment_plan.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_investment.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestDocument) {
+                    if (ll_contant_document.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_document);
+                        mInvestDocument = false;
+                        tv_arrow_document.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_document.setVisibility(View.GONE);
+                    }
+                }
+                if (mLastInvest) {
+                    if (ll_contant_last_invest.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_last_invest);
+                        mLastInvest = false;
+                        tv_arrow_last_investment.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_last_invest.setVisibility(View.GONE);
+                    }
+                }
+                if (mPayment) {
+                    if (llPaymentContent.isShown()) {
+                        Utils.slide_up(mActivity, llPaymentContent);
+                        mPayment = false;
+                        tvArrowPayment.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llPaymentContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mAdditinalTerms) {
+                    if (llAddiTermsContent.isShown()) {
+                        Utils.slide_up(mActivity, llAddiTermsContent);
+                        mAdditinalTerms = false;
+                        tvArrowAddiTerms.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llAddiTermsContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mPitchSecurity) {
+                    if (llPitchSecContent.isShown()) {
+                        Utils.slide_up(mActivity, llPitchSecContent);
+                        mPitchSecurity = false;
+                        tvArrowPitchSec.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llPitchSecContent.setVisibility(View.GONE);
+                    }
                 }
             }
         });
@@ -341,28 +889,487 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
             public void onClick(View v) {
                 if (ll_contant_document.isShown()) {
                     Utils.slide_up(mActivity, ll_contant_document);
+                    mInvestDocument = false;
                     tv_arrow_document.setBackgroundResource(R.drawable.ic_arrow_down);
                     ll_contant_document.setVisibility(View.GONE);
                 } else {
                     ll_contant_document.setVisibility(View.VISIBLE);
+                    mInvestDocument = true;
                     Utils.slide_down(mActivity, ll_contant_document);
                     tv_arrow_document.setBackgroundResource(R.drawable.ic_arrow_up);
                 }
+                if (mSummaryInvest) {
+                    if (lLayoutSummaryContent.isShown()) {
+                        Utils.slide_up(mActivity, lLayoutSummaryContent);
+                        mSummaryInvest = false;
+                        tvSummaryHeaderArrow.setBackgroundResource(R.drawable.ic_arrow_down);
+                        lLayoutSummaryContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mLoanTerm) {
+                    if (ll_contant_loan_terms.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_loan_terms);
+                        mLoanTerm = false;
+                        tv_arrow_loan_terms.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_loan_terms.setVisibility(View.GONE);
+                    }
+                }
+                if (mCollateral) {
+                    if (ll_contant_collateral.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_collateral);
+                        mCollateral = false;
+                        tv_arrow_collateral.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_collateral.setVisibility(View.GONE);
+                    }
+                }
+                if (mFundraiser) {
+                    if (ll_contant_fundraiser.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_fundraiser);
+                        mFundraiser = false;
+                        tv_arrow_fundraiser.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_fundraiser.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestRisk) {
+                    if (ll_contant_risk.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_risk);
+                        mInvestRisk = false;
+                        tv_arrow_risk.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_risk.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestmentPlan) {
+                    if (ll_contant_investment.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_investment);
+                        mInvestmentPlan = false;
+                        tv_arrow_investment_plan.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_investment.setVisibility(View.GONE);
+                    }
+                }
+                if (mLastInvest) {
+                    if (ll_contant_last_invest.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_last_invest);
+                        mLastInvest = false;
+                        tv_arrow_last_investment.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_last_invest.setVisibility(View.GONE);
+                    }
+                }
+                if (mPayment) {
+                    if (llPaymentContent.isShown()) {
+                        Utils.slide_up(mActivity, llPaymentContent);
+                        mPayment = false;
+                        tvArrowPayment.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llPaymentContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mAdditinalTerms) {
+                    if (llAddiTermsContent.isShown()) {
+                        Utils.slide_up(mActivity, llAddiTermsContent);
+                        mAdditinalTerms = false;
+                        tvArrowAddiTerms.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llAddiTermsContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mPitchSecurity) {
+                    if (llPitchSecContent.isShown()) {
+                        Utils.slide_up(mActivity, llPitchSecContent);
+                        mPitchSecurity = false;
+                        tvArrowPitchSec.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llPitchSecContent.setVisibility(View.GONE);
+                    }
+                }
             }
         });
-
         //For last invest
         rl_last_invest_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (ll_contant_last_invest.isShown()) {
                     Utils.slide_up(mActivity, ll_contant_last_invest);
+                    mLastInvest = false;
                     tv_arrow_last_investment.setBackgroundResource(R.drawable.ic_arrow_down);
                     ll_contant_last_invest.setVisibility(View.GONE);
                 } else {
                     ll_contant_last_invest.setVisibility(View.VISIBLE);
                     Utils.slide_down(mActivity, ll_contant_last_invest);
+                    mLastInvest = true;
                     tv_arrow_last_investment.setBackgroundResource(R.drawable.ic_arrow_up);
+                }
+                if (mSummaryInvest) {
+                    if (lLayoutSummaryContent.isShown()) {
+                        Utils.slide_up(mActivity, lLayoutSummaryContent);
+                        mSummaryInvest = false;
+                        tvSummaryHeaderArrow.setBackgroundResource(R.drawable.ic_arrow_down);
+                        lLayoutSummaryContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mLoanTerm) {
+                    if (ll_contant_loan_terms.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_loan_terms);
+                        mLoanTerm = false;
+                        tv_arrow_loan_terms.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_loan_terms.setVisibility(View.GONE);
+                    }
+                }
+                if (mCollateral) {
+                    if (ll_contant_collateral.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_collateral);
+                        mCollateral = false;
+                        tv_arrow_collateral.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_collateral.setVisibility(View.GONE);
+                    }
+                }
+                if (mFundraiser) {
+                    if (ll_contant_fundraiser.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_fundraiser);
+                        mFundraiser = false;
+                        tv_arrow_fundraiser.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_fundraiser.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestRisk) {
+                    if (ll_contant_risk.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_risk);
+                        mInvestRisk = false;
+                        tv_arrow_risk.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_risk.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestmentPlan) {
+                    if (ll_contant_investment.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_investment);
+                        mInvestmentPlan = false;
+                        tv_arrow_investment_plan.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_investment.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestDocument) {
+                    if (ll_contant_document.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_document);
+                        mInvestDocument = false;
+                        tv_arrow_document.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_document.setVisibility(View.GONE);
+                    }
+                }
+                if (mPayment) {
+                    if (llPaymentContent.isShown()) {
+                        Utils.slide_up(mActivity, llPaymentContent);
+                        mPayment = false;
+                        tvArrowPayment.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llPaymentContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mAdditinalTerms) {
+                    if (llAddiTermsContent.isShown()) {
+                        Utils.slide_up(mActivity, llAddiTermsContent);
+                        mAdditinalTerms = false;
+                        tvArrowAddiTerms.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llAddiTermsContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mPitchSecurity) {
+                    if (llPitchSecContent.isShown()) {
+                        Utils.slide_up(mActivity, llPitchSecContent);
+                        mPitchSecurity = false;
+                        tvArrowPitchSec.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llPitchSecContent.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
+
+        /*Payment*/
+        rlPaymentHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (llPaymentContent.isShown()) {
+                    Utils.slide_up(mActivity, llPaymentContent);
+                    mPayment = false;
+                    tvArrowPayment.setBackgroundResource(R.drawable.ic_arrow_down);
+                    llPaymentContent.setVisibility(View.GONE);
+                } else {
+                    llPaymentContent.setVisibility(View.VISIBLE);
+                    Utils.slide_down(mActivity, llPaymentContent);
+                    mPayment = true;
+                    tvArrowPayment.setBackgroundResource(R.drawable.ic_arrow_up);
+                }
+
+                if (mSummaryInvest) {
+                    if (lLayoutSummaryContent.isShown()) {
+                        Utils.slide_up(mActivity, lLayoutSummaryContent);
+                        mSummaryInvest = false;
+                        tvSummaryHeaderArrow.setBackgroundResource(R.drawable.ic_arrow_down);
+                        lLayoutSummaryContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mLoanTerm) {
+                    if (ll_contant_loan_terms.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_loan_terms);
+                        mLoanTerm = false;
+                        tv_arrow_loan_terms.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_loan_terms.setVisibility(View.GONE);
+                    }
+                }
+                if (mCollateral) {
+                    if (ll_contant_collateral.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_collateral);
+                        mCollateral = false;
+                        tv_arrow_collateral.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_collateral.setVisibility(View.GONE);
+                    }
+                }
+                if (mFundraiser) {
+                    if (ll_contant_fundraiser.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_fundraiser);
+                        mFundraiser = false;
+                        tv_arrow_fundraiser.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_fundraiser.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestRisk) {
+                    if (ll_contant_risk.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_risk);
+                        mInvestRisk = false;
+                        tv_arrow_risk.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_risk.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestmentPlan) {
+                    if (ll_contant_investment.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_investment);
+                        mInvestmentPlan = false;
+                        tv_arrow_investment_plan.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_investment.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestDocument) {
+                    if (ll_contant_document.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_document);
+                        mInvestDocument = false;
+                        tv_arrow_document.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_document.setVisibility(View.GONE);
+                    }
+                }
+                if (mLastInvest) {
+                    if (ll_contant_last_invest.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_last_invest);
+                        mLastInvest = false;
+                        tv_arrow_last_investment.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_last_invest.setVisibility(View.GONE);
+                    }
+                }
+                if (mAdditinalTerms) {
+                    if (llAddiTermsContent.isShown()) {
+                        Utils.slide_up(mActivity, llAddiTermsContent);
+                        mAdditinalTerms = false;
+                        tvArrowAddiTerms.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llAddiTermsContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mPitchSecurity) {
+                    if (llPitchSecContent.isShown()) {
+                        Utils.slide_up(mActivity, llPitchSecContent);
+                        mPitchSecurity = false;
+                        tvArrowPitchSec.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llPitchSecContent.setVisibility(View.GONE);
+                    }
+                }
+
+            }
+        });
+
+        // AddiTerms
+        rlAddiTermsHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (llAddiTermsContent.isShown()) {
+                    Utils.slide_up(mActivity, llAddiTermsContent);
+                    mAdditinalTerms = false;
+                    tvArrowAddiTerms.setBackgroundResource(R.drawable.ic_arrow_down);
+                    llAddiTermsContent.setVisibility(View.GONE);
+                } else {
+                    llAddiTermsContent.setVisibility(View.VISIBLE);
+                    Utils.slide_down(mActivity, llAddiTermsContent);
+                    mAdditinalTerms = true;
+                    tvArrowAddiTerms.setBackgroundResource(R.drawable.ic_arrow_up);
+                }
+                if (mSummaryInvest) {
+                    if (lLayoutSummaryContent.isShown()) {
+                        Utils.slide_up(mActivity, lLayoutSummaryContent);
+                        mSummaryInvest = false;
+                        tvSummaryHeaderArrow.setBackgroundResource(R.drawable.ic_arrow_down);
+                        lLayoutSummaryContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mLoanTerm) {
+                    if (ll_contant_loan_terms.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_loan_terms);
+                        mLoanTerm = false;
+                        tv_arrow_loan_terms.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_loan_terms.setVisibility(View.GONE);
+                    }
+                }
+                if (mCollateral) {
+                    if (ll_contant_collateral.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_collateral);
+                        mCollateral = false;
+                        tv_arrow_collateral.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_collateral.setVisibility(View.GONE);
+                    }
+                }
+                if (mFundraiser) {
+                    if (ll_contant_fundraiser.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_fundraiser);
+                        mFundraiser = false;
+                        tv_arrow_fundraiser.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_fundraiser.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestRisk) {
+                    if (ll_contant_risk.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_risk);
+                        mInvestRisk = false;
+                        tv_arrow_risk.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_risk.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestmentPlan) {
+                    if (ll_contant_investment.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_investment);
+                        mInvestmentPlan = false;
+                        tv_arrow_investment_plan.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_investment.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestDocument) {
+                    if (ll_contant_document.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_document);
+                        mInvestDocument = false;
+                        tv_arrow_document.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_document.setVisibility(View.GONE);
+                    }
+                }
+                if (mPayment) {
+                    if (llPaymentContent.isShown()) {
+                        Utils.slide_up(mActivity, llPaymentContent);
+                        mPayment = false;
+                        tvArrowPayment.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llPaymentContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mLastInvest) {
+                    if (ll_contant_last_invest.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_last_invest);
+                        mLastInvest = false;
+                        tv_arrow_last_investment.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_last_invest.setVisibility(View.GONE);
+                    }
+                }
+                if (mPitchSecurity) {
+                    if (llPitchSecContent.isShown()) {
+                        Utils.slide_up(mActivity, llPitchSecContent);
+                        mPitchSecurity = false;
+                        tvArrowPitchSec.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llPitchSecContent.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
+
+        //Pitch Secutity
+        rlPitchSecHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (llPitchSecContent.isShown()) {
+                    Utils.slide_up(mActivity, llPitchSecContent);
+                    mPitchSecurity = false;
+                    tvArrowPitchSec.setBackgroundResource(R.drawable.ic_arrow_down);
+                    llPitchSecContent.setVisibility(View.GONE);
+                } else {
+                    llPitchSecContent.setVisibility(View.VISIBLE);
+                    Utils.slide_down(mActivity, llPitchSecContent);
+                    mPitchSecurity = true;
+                    tvArrowPitchSec.setBackgroundResource(R.drawable.ic_arrow_up);
+                }
+                if (mSummaryInvest) {
+                    if (lLayoutSummaryContent.isShown()) {
+                        Utils.slide_up(mActivity, lLayoutSummaryContent);
+                        mSummaryInvest = false;
+                        tvSummaryHeaderArrow.setBackgroundResource(R.drawable.ic_arrow_down);
+                        lLayoutSummaryContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mLoanTerm) {
+                    if (ll_contant_loan_terms.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_loan_terms);
+                        mLoanTerm = false;
+                        tv_arrow_loan_terms.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_loan_terms.setVisibility(View.GONE);
+                    }
+                }
+                if (mCollateral) {
+                    if (ll_contant_collateral.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_collateral);
+                        mCollateral = false;
+                        tv_arrow_collateral.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_collateral.setVisibility(View.GONE);
+                    }
+                }
+                if (mFundraiser) {
+                    if (ll_contant_fundraiser.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_fundraiser);
+                        mFundraiser = false;
+                        tv_arrow_fundraiser.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_fundraiser.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestRisk) {
+                    if (ll_contant_risk.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_risk);
+                        mInvestRisk = false;
+                        tv_arrow_risk.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_risk.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestmentPlan) {
+                    if (ll_contant_investment.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_investment);
+                        mInvestmentPlan = false;
+                        tv_arrow_investment_plan.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_investment.setVisibility(View.GONE);
+                    }
+                }
+                if (mInvestDocument) {
+                    if (ll_contant_document.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_document);
+                        mInvestDocument = false;
+                        tv_arrow_document.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_document.setVisibility(View.GONE);
+                    }
+                }
+                if (mPayment) {
+                    if (llPaymentContent.isShown()) {
+                        Utils.slide_up(mActivity, llPaymentContent);
+                        mPayment = false;
+                        tvArrowPayment.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llPaymentContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mAdditinalTerms) {
+                    if (llAddiTermsContent.isShown()) {
+                        Utils.slide_up(mActivity, llAddiTermsContent);
+                        mAdditinalTerms = false;
+                        tvArrowAddiTerms.setBackgroundResource(R.drawable.ic_arrow_down);
+                        llAddiTermsContent.setVisibility(View.GONE);
+                    }
+                }
+                if (mLastInvest) {
+                    if (ll_contant_last_invest.isShown()) {
+                        Utils.slide_up(mActivity, ll_contant_last_invest);
+                        mLastInvest = false;
+                        tv_arrow_last_investment.setBackgroundResource(R.drawable.ic_arrow_down);
+                        ll_contant_last_invest.setVisibility(View.GONE);
+                    }
                 }
             }
         });
@@ -381,58 +1388,77 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
         pd = ProgressDialog.show(mActivity, "Please Wait...");
         String XCSRF = getPreference(mActivity, "mCsrf_token");
         EndPointInterface git = ApiClient.getClient1(mActivity).create(EndPointInterface.class);
-        Call<FundDetailResponce> call = git.getInvestmentOppDetail(loanId, "application/json", XCSRF);
-        call.enqueue(new Callback<FundDetailResponce>() {
+        Call<FundraiserDetailResponse> call = git.getInvestmentOppDetail(loanId, "application/json", XCSRF);
+        call.enqueue(new Callback<FundraiserDetailResponse>() {
             @Override
-            public void onResponse(Call<FundDetailResponce> call, Response<FundDetailResponce> response) {
+            public void onResponse(Call<FundraiserDetailResponse> call, Response<FundraiserDetailResponse> response) {
                 Log.d(TAG, "onResponse: " + "><><" + new Gson().toJson(response.body()));
                 try {
                     if (pd != null && pd.isShowing()) {
                         pd.dismiss();
                     }
-                    if (response.code()==200) {
+                    if (response.code() == 200) {
                         if (response != null && response.isSuccessful()) {
                             if (response.body().getUserLoginStatus() == 1) {
                                 if (response.body().getDetails() != null) {
                                     String currency_symbol = response.body().getDetails().getCurrencySymbol();
-                                    int filled = Integer.valueOf(response.body().getDetails().getFilled());
-                                    // String location_flag_img = jsonObjDetails.getString("location_flag_img");
                                     String main_img = response.body().getDetails().getMainImg();
-
-                                    String currency = response.body().getDetails().getCurrency();
                                     tv_mTittle.setText(response.body().getDetails().getTitle());
                                     tv_interest_pr.setText(response.body().getDetails().getInterestPa() + "%");
-                                    tv_risk_c.setText(response.body().getDetails().getRiskClass());
+                                    if (response.body().getDetails().getRiskClassColourCode().equals("blue")) {
+                                        tv_risk_c.setBackgroundResource(R.color.blue_color);
+                                    } else {
+                                        tv_risk_c.setBackgroundResource(R.color.light_gray_text);
+                                    }
                                     tv_cur_symbol_amt.setText(currency_symbol);
                                     tvAmount.setText(String.valueOf(response.body().getDetails().getAmount()));
-                                    tv_filled.setText(String.valueOf(filled) + "%");
                                     tv_investors.setText(String.valueOf(response.body().getDetails().getNoOfInvestors()));
                                     tv_currency_left_amt.setText(currency_symbol);
                                     tv_left_amount.setText(String.valueOf(response.body().getDetails().getAmountLeft()));
                                     tv_months.setText(String.valueOf(response.body().getDetails().getMonths()));
                                     tvType.setText(response.body().getDetails().getType());
                                     tv_location.setText(response.body().getDetails().getLocation());
-                                    progessBar.setProgress(filled);
+                                    if (response.body().getDetails().getAmount() != null) {
+                                        try {
+                                            int mAmount = ((response.body().getDetails().getInvestedTotalAmountOnLoan() * 100) / Integer.valueOf(response.body().getDetails().getAmount()));
+                                            tv_filled.setText(String.valueOf(mAmount) + "%");
+                                            progessBar.setProgress(mAmount);
+                                        } catch (NumberFormatException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
 
                                     if (response.body().getDetails().getInvestButtonCheck() == 1) {
-                                        btn_summary_invest.setVisibility(View.VISIBLE);
+                                        btnSummaryInvest.setVisibility(View.VISIBLE);
                                         btn_investment_plan.setVisibility(View.VISIBLE);
                                         btn_invest_risk.setVisibility(View.VISIBLE);
                                         btn_invest_document.setVisibility(View.VISIBLE);
                                         btn_last_invest.setVisibility(View.VISIBLE);
+                                        btnLoanTerm.setVisibility(View.VISIBLE);
+                                        btnCollateral.setVisibility(View.VISIBLE);
+                                        btnFundraiser.setVisibility(View.VISIBLE);
+                                        btnPaymentInvest.setVisibility(View.VISIBLE);
+                                        btnAddiTermsInvest.setVisibility(View.VISIBLE);
+                                        btnPitchSecInvest.setVisibility(View.VISIBLE);
 
                                         tvSummaryError.setVisibility(View.GONE);
                                         tvInvestmentPlanError.setVisibility(View.GONE);
                                         tvInvestRiskError.setVisibility(View.GONE);
                                         tvDocumentError.setVisibility(View.GONE);
                                         tvLastInvestError.setVisibility(View.GONE);
+                                        tvLoanTermError.setVisibility(View.GONE);
+                                        tvCollatralError.setVisibility(View.GONE);
+                                        tvFundraiserError.setVisibility(View.GONE);
+                                        tvPaymentError.setVisibility(View.GONE);
+                                        tvAddiTermsError.setVisibility(View.GONE);
+                                        tvPitchSecError.setVisibility(View.GONE);
 
-                                        btn_summary_invest.setOnClickListener(new View.OnClickListener() {
+                                        btnSummaryInvest.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
                                                 NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-                                                setPreference(mActivity,"loan_id", response.body().getDetails().getId());
-                                                setPreference(mActivity,"tittle", response.body().getDetails().getTitle());
+                                                setPreference(mActivity, "loan_id", response.body().getDetails().getId());
+                                                setPreference(mActivity, "tittle", response.body().getDetails().getTitle());
                                                 navController.navigate(R.id.action_investmentOppDetailFragment_to_investFormFragment);
                                             }
                                         });
@@ -440,8 +1466,8 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
                                             @Override
                                             public void onClick(View v) {
                                                 NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-                                                setPreference(mActivity,"loan_id", response.body().getDetails().getId());
-                                                setPreference(mActivity,"tittle", response.body().getDetails().getTitle());
+                                                setPreference(mActivity, "loan_id", response.body().getDetails().getId());
+                                                setPreference(mActivity, "tittle", response.body().getDetails().getTitle());
                                                 navController.navigate(R.id.action_investmentOppDetailFragment_to_investFormFragment);
                                             }
                                         });
@@ -449,8 +1475,8 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
                                             @Override
                                             public void onClick(View v) {
                                                 NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-                                                setPreference(mActivity,"loan_id", response.body().getDetails().getId());
-                                                setPreference(mActivity,"tittle", response.body().getDetails().getTitle());
+                                                setPreference(mActivity, "loan_id", response.body().getDetails().getId());
+                                                setPreference(mActivity, "tittle", response.body().getDetails().getTitle());
                                                 navController.navigate(R.id.action_investmentOppDetailFragment_to_investFormFragment);
                                             }
                                         });
@@ -458,8 +1484,8 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
                                             @Override
                                             public void onClick(View v) {
                                                 NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-                                                setPreference(mActivity,"loan_id", response.body().getDetails().getId());
-                                                setPreference(mActivity,"tittle", response.body().getDetails().getTitle());
+                                                setPreference(mActivity, "loan_id", response.body().getDetails().getId());
+                                                setPreference(mActivity, "tittle", response.body().getDetails().getTitle());
                                                 navController.navigate(R.id.action_investmentOppDetailFragment_to_investFormFragment);
                                             }
                                         });
@@ -467,30 +1493,104 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
                                             @Override
                                             public void onClick(View v) {
                                                 NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-                                                setPreference(mActivity,"loan_id", response.body().getDetails().getId());
-                                                setPreference(mActivity,"tittle", response.body().getDetails().getTitle());
+                                                setPreference(mActivity, "loan_id", response.body().getDetails().getId());
+                                                setPreference(mActivity, "tittle", response.body().getDetails().getTitle());
+                                                navController.navigate(R.id.action_investmentOppDetailFragment_to_investFormFragment);
+                                            }
+                                        });
+                                        btnFundraiser.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                                                setPreference(mActivity, "loan_id", response.body().getDetails().getId());
+                                                setPreference(mActivity, "tittle", response.body().getDetails().getTitle());
+                                                navController.navigate(R.id.action_investmentOppDetailFragment_to_investFormFragment);
+                                            }
+                                        });
+                                        btnCollateral.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                                                setPreference(mActivity, "loan_id", response.body().getDetails().getId());
+                                                setPreference(mActivity, "tittle", response.body().getDetails().getTitle());
+                                                navController.navigate(R.id.action_investmentOppDetailFragment_to_investFormFragment);
+                                            }
+                                        });
+                                        btnLoanTerm.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                                                setPreference(mActivity, "loan_id", response.body().getDetails().getId());
+                                                setPreference(mActivity, "tittle", response.body().getDetails().getTitle());
+                                                navController.navigate(R.id.action_investmentOppDetailFragment_to_investFormFragment);
+                                            }
+                                        });
+                                        btnPaymentInvest.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                                                setPreference(mActivity, "loan_id", response.body().getDetails().getId());
+                                                setPreference(mActivity, "tittle", response.body().getDetails().getTitle());
+                                                navController.navigate(R.id.action_investmentOppDetailFragment_to_investFormFragment);
+                                            }
+                                        });
+                                        btnAddiTermsInvest.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                                                setPreference(mActivity, "loan_id", response.body().getDetails().getId());
+                                                setPreference(mActivity, "tittle", response.body().getDetails().getTitle());
+                                                navController.navigate(R.id.action_investmentOppDetailFragment_to_investFormFragment);
+                                            }
+                                        });
+                                        btnPitchSecInvest.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                                                setPreference(mActivity, "loan_id", response.body().getDetails().getId());
+                                                setPreference(mActivity, "tittle", response.body().getDetails().getTitle());
                                                 navController.navigate(R.id.action_investmentOppDetailFragment_to_investFormFragment);
                                             }
                                         });
                                     } else {
-                                        btn_summary_invest.setVisibility(View.GONE);
+                                        btnSummaryInvest.setVisibility(View.GONE);
                                         btn_investment_plan.setVisibility(View.GONE);
                                         btn_invest_risk.setVisibility(View.GONE);
                                         btn_invest_document.setVisibility(View.GONE);
                                         btn_last_invest.setVisibility(View.GONE);
+                                        btnLoanTerm.setVisibility(View.GONE);
+                                        btnCollateral.setVisibility(View.GONE);
+                                        btnFundraiser.setVisibility(View.GONE);
+                                        btnPaymentInvest.setVisibility(View.GONE);
+                                        btnAddiTermsInvest.setVisibility(View.GONE);
+                                        btnPitchSecInvest.setVisibility(View.GONE);
 
                                         tvSummaryError.setVisibility(View.VISIBLE);
                                         tvInvestmentPlanError.setVisibility(View.VISIBLE);
                                         tvInvestRiskError.setVisibility(View.VISIBLE);
                                         tvDocumentError.setVisibility(View.VISIBLE);
                                         tvLastInvestError.setVisibility(View.VISIBLE);
+                                        tvLoanTermError.setVisibility(View.VISIBLE);
+                                        tvCollatralError.setVisibility(View.VISIBLE);
+                                        tvFundraiserError.setVisibility(View.VISIBLE);
+                                        tvPaymentError.setVisibility(View.VISIBLE);
+                                        tvAddiTermsError.setVisibility(View.VISIBLE);
+                                        tvPitchSecError.setVisibility(View.VISIBLE);
 
                                         tvSummaryError.setText(response.body().getDetails().getErrorMsg());
                                         tvInvestmentPlanError.setText(response.body().getDetails().getErrorMsg());
                                         tvInvestRiskError.setText(response.body().getDetails().getErrorMsg());
                                         tvDocumentError.setText(response.body().getDetails().getErrorMsg());
                                         tvLastInvestError.setText(response.body().getDetails().getErrorMsg());
+                                        tvLoanTermError.setText(response.body().getDetails().getErrorMsg());
+                                        tvCollatralError.setText(response.body().getDetails().getErrorMsg());
+                                        tvFundraiserError.setText(response.body().getDetails().getErrorMsg());
+                                        tvPaymentError.setText(response.body().getDetails().getErrorMsg());
+                                        tvAddiTermsError.setText(response.body().getDetails().getErrorMsg());
+                                        tvPitchSecError.setText(response.body().getDetails().getErrorMsg());
                                     }
+
+                                    /*start Photo card*/
                                     try {
                                         if (main_img != null && !main_img.isEmpty() && !main_img.equals("null")) {
                                             Glide.with(mActivity).load(main_img)
@@ -501,10 +1601,8 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
-
                                     photosVideosList.clear();
                                     photosVideosList_f.clear();
-
                                     if (response.body().getDetails().getOtherPhotosVideos().size() > 0) {
                                         for (int i = 0; i < response.body().getDetails().getOtherPhotosVideos().size(); i++) {
                                             PhotosVideosModel photosVideosModel = new PhotosVideosModel();
@@ -519,10 +1617,8 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
                                         model.setType("photo");
                                         photosVideosList_f.add(model);
                                         photosVideosList_f.addAll(photosVideosList);
-
                                         recyclerView.setVisibility(View.VISIBLE);
                                         tvNoRecord.setVisibility(View.GONE);
-
                                         adapter = new MyPhotoAdapter(getContext(), photosVideosList_f, InvestmentOppDetailFragment.this);
                                         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
                                         recyclerView.setLayoutManager(mLayoutManager);
@@ -533,18 +1629,18 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
                                         recyclerView.setVisibility(View.GONE);
                                         tvNoRecord.setVisibility(View.VISIBLE);
                                     }
+
+                                    /*End Photo card*/
+                                    Log.d("Summary--", response.body().getDetails().getSummary().getHeading());
                                     //For Summary data
-
-                                    tv_summary.setText(response.body().getDetails().getSummary().getHeading());
-
+                                    tvSumryHeaderTittle.setText(response.body().getDetails().getSummary().getHeading());
                                     // set Text in TextView using fromHtml() method with version check
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                        txt_summary_content.setText(Html.fromHtml(response.body().getDetails().getSummary().getData()));
+                                        tvSummaryContent.setText(Html.fromHtml(response.body().getDetails().getSummary().getData()));
                                     } else {
-                                        txt_summary_content.setText(Html.fromHtml(response.body().getDetails().getSummary().getData()));
+                                        tvSummaryContent.setText(Html.fromHtml(response.body().getDetails().getSummary().getData()));
                                     }
                                     //For loan_terms
-
                                     tv_loan_terms.setText(response.body().getDetails().getLoanTerms().getHeading());
                                     loanTermList.clear();
                                     if (response.body().getDetails().getLoanTerms().getData().size() > 0) {
@@ -572,11 +1668,10 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
                                     tv_collateral.setText(response.body().getDetails().getCollateral().getHeading());
                                     collateralListFirst.clear();
                                     collateralListSecond.clear();
-
+                                    //for collateral
                                     if (response.body().getDetails().getCollateral().getData().size() > 0) {
                                         for (int i = 0; i < response.body().getDetails().getCollateral().getData().size(); i++) {
                                             CollateralModelP collateralModel = new CollateralModelP(response.body().getDetails().getCollateral().getData().get(i).getHeading());
-                                            //JSONArray jsonArraySub = collateralArray.getJSONObject(i).getJSONArray("data");
                                             collateralListFirst.add(collateralModel);
                                             collateralListSecond.clear();
 
@@ -588,8 +1683,6 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
                                             }
                                             collateralListFirst.addAll(collateralListSecond);
                                         }
-                                    } else {
-                                        Toast.makeText(mActivity, getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                                     }
 
                                     if (collateralListFirst.size() > 0) {
@@ -605,6 +1698,37 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
                                         recyViewCollateral.setVisibility(View.GONE);
                                         tvNoRecord_Collateral.setVisibility(View.VISIBLE);
                                     }
+                                    /*For security*/
+                                    collListSecurity1.clear();
+                                    collListSecurity2.clear();
+
+                                    if (response.body().getDetails().getCollateral().getSecurity().getData().size() > 0) {
+                                        CollateralModelP collateralModel = new CollateralModelP(response.body().getDetails().getCollateral().getSecurity().getHeading());
+                                        collListSecurity1.add(collateralModel);
+                                        collListSecurity2.clear();
+                                        for (int i = 0; i < response.body().getDetails().getCollateral().getSecurity().getData().size(); i++) {
+                                            CollateralModelP collateralModelCh = new CollateralModelP(
+                                                    response.body().getDetails().getCollateral().getSecurity().getData().get(i).getTitle(),
+                                                    response.body().getDetails().getCollateral().getSecurity().getData().get(i).getValue());
+                                            collListSecurity2.add(collateralModelCh);
+                                        }
+                                        collListSecurity1.addAll(collListSecurity2);
+                                    }
+                                    //For secuti
+                                    if (collListSecurity1.size() > 0) {
+                                        recyViewCollSecurity.setVisibility(View.VISIBLE);
+                                        tvNoRecordCollSecurity.setVisibility(View.GONE);
+                                        mSecurityAdapter = new CollateralAdapter(mActivity, collListSecurity1);
+                                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
+                                        recyViewCollSecurity.setLayoutManager(mLayoutManager);
+                                        recyViewCollSecurity.setItemAnimator(new DefaultItemAnimator());
+                                        recyViewCollSecurity.setAdapter(mSecurityAdapter);
+                                        mSecurityAdapter.notifyDataSetChanged();
+                                    } else {
+                                        recyViewCollSecurity.setVisibility(View.GONE);
+                                        tvNoRecordCollSecurity.setVisibility(View.VISIBLE);
+                                    }
+
                                     //For FoundRaiser
                                     tv_fundraiser.setText(response.body().getDetails().getFundraiser().getHeading());
                                     String logoImg = response.body().getDetails().getFundraiser().getData().getLogo();
@@ -641,15 +1765,12 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
                                         recyViewFoundRaiser.setVisibility(View.GONE);
                                         tvNoRecord_foundRaiser.setVisibility(View.VISIBLE);
                                     }
-
                                     tv_addnal_info_tittle.setText(response.body().getDetails().getFundraiser().getData().getAdditional().getTitle());
-                                    // tv_addnal_content.setText(additionalInfo.getString("value"));/
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                                         tv_addnal_content.setText(Html.fromHtml(response.body().getDetails().getFundraiser().getData().getAdditional().getValue()));
                                     } else {
                                         tv_addnal_content.setText(Html.fromHtml(response.body().getDetails().getFundraiser().getData().getAdditional().getValue()));
                                     }
-
                                     //For Risk
                                     tv_rik.setText(response.body().getDetails().getRisk().getHeading());
                                     riskList.clear();
@@ -679,9 +1800,7 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
                                         recyViewRisk.setVisibility(View.GONE);
                                         tvNoRecord_Risk.setVisibility(View.VISIBLE);
                                     }
-
                                     //For Investment plan
-
                                     tv_investment_plan.setText(response.body().getDetails().getInvestmentPlan().getHeading());
                                     investmentPlanList.clear();
                                     if (response.body().getDetails().getInvestmentPlan().getData().size() > 0) {
@@ -706,7 +1825,6 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
                                         recyViewInvestment.setVisibility(View.GONE);
                                         tvNoRecord_investment.setVisibility(View.VISIBLE);
                                     }
-
                                     //For Document
                                     tv_document.setText(response.body().getDetails().getDocuments().getHeading());
                                     documentList.clear();
@@ -730,7 +1848,6 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
                                         recyViewDocument.setVisibility(View.GONE);
                                         tvNoRecord_Document.setVisibility(View.VISIBLE);
                                     }
-
                                     //For last Investment
                                     tv_last_investment.setText(response.body().getDetails().getLastInvestment().getHeading());
                                     lastInvestmentList.clear();
@@ -753,13 +1870,72 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
                                         recyViewLastInvestment.setVisibility(View.GONE);
                                         tvNoRecord_LastInvestment.setVisibility(View.VISIBLE);
                                     }
+
+                                    //For Payment
+                                    tvPaymentHeaderTittle.setText(response.body().getDetails().getPaymentConditions().getHeading());
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                        if (response.body().getDetails().getPaymentConditions().getData().length() > 0) {
+                                            tvPaymentNoData.setVisibility(View.GONE);
+                                            tvPaymentContentDisplay.setText(response.body().getDetails().getPaymentConditions().getData());
+                                        } else {
+                                            tvPaymentNoData.setVisibility(View.VISIBLE);
+                                            tvPaymentContentDisplay.setVisibility(View.GONE);
+                                        }
+                                    } else {
+                                        if (response.body().getDetails().getPaymentConditions().getData().length() > 0) {
+                                            tvPaymentNoData.setVisibility(View.GONE);
+                                            tvPaymentContentDisplay.setText(response.body().getDetails().getPaymentConditions().getData());
+                                        } else {
+                                            tvPaymentNoData.setVisibility(View.VISIBLE);
+                                            tvPaymentContentDisplay.setVisibility(View.GONE);
+                                        }
+                                    }
+                                    /*For Addtinal terms*/
+                                    tvAddiTermsHeaderTittle.setText(response.body().getDetails().getAdditionalTermsCondition().getHeading());
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                        if (response.body().getDetails().getAdditionalTermsCondition().getData().length() > 0) {
+                                            tvAddiTermsNoData.setVisibility(View.GONE);
+                                            tvAddiTermsContentDisplay.setText(response.body().getDetails().getAdditionalTermsCondition().getData());
+                                        } else {
+                                            tvAddiTermsNoData.setVisibility(View.VISIBLE);
+                                            tvAddiTermsContentDisplay.setVisibility(View.GONE);
+                                        }
+                                    } else {
+                                        if (response.body().getDetails().getAdditionalTermsCondition().getData().length() > 0) {
+                                            tvAddiTermsNoData.setVisibility(View.GONE);
+                                            tvAddiTermsContentDisplay.setText(response.body().getDetails().getAdditionalTermsCondition().getData());
+                                        } else {
+                                            tvAddiTermsNoData.setVisibility(View.VISIBLE);
+                                            tvAddiTermsContentDisplay.setVisibility(View.GONE);
+                                        }
+                                    }
+
+                                    /*For Patch */
+                                    tvPitchSecHeaderTittle.setText(response.body().getDetails().getPitchSecurities().getHeading());
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                        if (response.body().getDetails().getPitchSecurities().getData().length() > 0) {
+                                            tvPitchSecNoData.setVisibility(View.GONE);
+                                            tvPitchSecDisplayContent.setText(response.body().getDetails().getPitchSecurities().getData());
+                                        } else {
+                                            tvPitchSecNoData.setVisibility(View.VISIBLE);
+                                            tvPitchSecDisplayContent.setVisibility(View.GONE);
+                                        }
+                                    } else {
+                                        if (response.body().getDetails().getPitchSecurities().getData().length() > 0) {
+                                            tvPitchSecNoData.setVisibility(View.GONE);
+                                            tvPitchSecDisplayContent.setText(response.body().getDetails().getPitchSecurities().getData());
+                                        } else {
+                                            tvPitchSecNoData.setVisibility(View.VISIBLE);
+                                            tvPitchSecDisplayContent.setVisibility(View.GONE);
+                                        }
+                                    }
                                 } else {
                                     Toast.makeText(mActivity, getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                                 }
                             } else {
                                 setPreference(mActivity, "user_id", "");
                                 setPreference(mActivity, "mLogout_token", "");
-                                MaxCrowdFund.getClearCookies(mActivity, "cookies", "");
+                                MaxCrowdFund.getInstance().getClearCookies(mActivity, "cookies", "");
                                 Toast.makeText(mActivity, getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(mActivity, LoginActivity.class);
                                 startActivity(intent);
@@ -773,8 +1949,9 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
                     e.printStackTrace();
                 }
             }
+
             @Override
-            public void onFailure(Call<FundDetailResponce> call, Throwable t) {
+            public void onFailure(Call<FundraiserDetailResponse> call, Throwable t) {
                 Log.e("response", "error " + t.getMessage());
                 Toast.makeText(mActivity, t.getMessage(), Toast.LENGTH_SHORT).show();
                 if (pd != null && pd.isShowing()) {

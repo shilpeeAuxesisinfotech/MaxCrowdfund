@@ -90,7 +90,7 @@ public class ChangeEmailFragment extends Fragment {
                                 }else {
                                     setPreference(getActivity(), "user_id", "");
                                     setPreference(getActivity(), "mLogout_token", "");
-                                    MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                                    MaxCrowdFund.getInstance().getClearCookies(getActivity(), "cookies", "");
                                     Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getActivity(), LoginActivity.class);
                                     startActivity(intent);

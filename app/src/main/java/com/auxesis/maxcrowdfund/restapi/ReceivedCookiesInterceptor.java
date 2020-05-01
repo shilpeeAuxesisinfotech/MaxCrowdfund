@@ -24,7 +24,7 @@ public class ReceivedCookiesInterceptor implements Interceptor {
                 for (String header : originalResponse.headers("Set-Cookie")) {
                     cookies.add(header);
                 }
-            MaxCrowdFund.setCookies(context, cookies);
+            MaxCrowdFund.getInstance().setCookies(context, cookies);
         }
         return originalResponse;
     }

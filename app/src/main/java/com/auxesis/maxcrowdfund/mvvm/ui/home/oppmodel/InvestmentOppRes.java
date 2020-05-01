@@ -1,12 +1,10 @@
 
 package com.auxesis.maxcrowdfund.mvvm.ui.home.oppmodel;
-
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class InvestmentOppRes {
-
     @SerializedName("user_login_status")
     @Expose
     private Integer userLoginStatus;

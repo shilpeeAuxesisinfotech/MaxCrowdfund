@@ -51,7 +51,6 @@
                             android:id="@+id/recyViewPortFolio"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
-
                     </androidx.cardview.widget.CardView>
 
                     <!--For Net Return-->
@@ -61,12 +60,11 @@
                         android:layout_below="@+id/cr_portfolio"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:background="@color/colorPrimary"
-                        android:visibility="gone"
                         app:cardCornerRadius="@dimen/_5sdp"
                         app:contentPadding="@dimen/_10sdp">
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyViewNetReturn"
+                            android:id="@+id/recViewNetReturn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
                     </androidx.cardview.widget.CardView>

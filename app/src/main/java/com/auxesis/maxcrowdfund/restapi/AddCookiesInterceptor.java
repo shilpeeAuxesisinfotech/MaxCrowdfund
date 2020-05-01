@@ -23,7 +23,7 @@ public class AddCookiesInterceptor implements Interceptor {
     @Override
     public Response intercept(Interceptor.Chain chain) throws IOException {
         Request.Builder builder = chain.request().newBuilder();
-        HashSet<String> preferences = MaxCrowdFund.getCookies(context);
+        HashSet<String> preferences = MaxCrowdFund.getInstance().getCookies(context);
         if (preferences != null) {
             for (String cookie : preferences) {
                 builder.addHeader("Cookie", cookie);

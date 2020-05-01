@@ -50,19 +50,17 @@
                     android:id="@+id/ccp_countryCode"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".3"
+                    android:layout_weight=".4"
                     android:gravity="right"
                     app:ccp_arrowColor="@color/colorPrimaryDark"
                     app:ccp_contentColor="@color/colorPrimaryDark"
-                    app:ccp_defaultLanguage="ENGLISH"
-                    app:ccp_defaultNameCode="IN"
                     app:ccp_textSize="@dimen/_12sdp" />
 
                 <EditText
                     android:id="@+id/edt_mobile"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_35sdp"
-                    android:layout_weight=".7"
+                    android:layout_weight=".6"
                     android:backgroundTint="@color/colorAccent"
                     android:fontFamily="@font/roboto"
                     android:hint="@string/enter_mobile_number"

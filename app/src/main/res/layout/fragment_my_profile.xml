@@ -69,7 +69,7 @@
                                     android:paddingLeft="@dimen/_10sdp"
                                     android:text=""
                                     android:textColor="@color/colorPrimaryDark"
-                                    android:textSize="@dimen/_12sdp" />
+                                    android:textSize="@dimen/_14sdp" />
                             </RelativeLayout>
                         </LinearLayout>
 

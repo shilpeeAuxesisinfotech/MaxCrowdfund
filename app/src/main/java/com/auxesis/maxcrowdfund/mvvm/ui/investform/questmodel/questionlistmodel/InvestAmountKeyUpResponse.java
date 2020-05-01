@@ -20,6 +20,12 @@ public class InvestAmountKeyUpResponse {
     @SerializedName("sum_of_euro_mpg_and_amount")
     @Expose
     private Double sumOfEuroMpgAndAmount;
+    @SerializedName("error_msg")
+    @Expose
+    private String errorMsg;
+    @SerializedName("token_required")
+    @Expose
+    private Integer tokenRequired;
 
     public Integer getUserLoginStatus() {
         return userLoginStatus;
@@ -59,6 +65,22 @@ public class InvestAmountKeyUpResponse {
 
     public void setSumOfEuroMpgAndAmount(Double sumOfEuroMpgAndAmount) {
         this.sumOfEuroMpgAndAmount = sumOfEuroMpgAndAmount;
+    }
+
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
+    }
+
+    public Integer getTokenRequired() {
+        return tokenRequired;
+    }
+
+    public void setTokenRequired(Integer tokenRequired) {
+        this.tokenRequired = tokenRequired;
     }
 
 }

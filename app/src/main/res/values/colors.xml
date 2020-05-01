@@ -9,6 +9,7 @@
     <color name="dark_blue">#FF1932BD</color>
     <color name="light_pink">#FC037F</color>
     <color name="dark_pink">#cc0066</color>
+    <color name="blue_color">#4472c4</color>
 
     <!--for Background color -->
     <color name="light_gray_bg">#dbdbdb</color>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/light_gray_bg"
     android:fitsSystemWindows="true"
     tools:context=".mvvm.ui.home.homeDetail.InvestmentOppDetailFragment">
@@ -18,44 +18,538 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <RelativeLayout
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/_10sdp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="@dimen/_10sdp">
-
+                    android:orientation="vertical">
                     <LinearLayout
+                        android:id="@+id/ll_max_property_group"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content">
 
-                        <LinearLayout
-                            android:id="@+id/ll_max_property_group"
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView1"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:background="@color/colorPrimary"
+                            app:cardCornerRadius="@dimen/_5sdp">
 
-                            <androidx.cardview.widget.CardView
-                                android:id="@+id/cardView1"
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@color/colorPrimary"
-                                app:cardCornerRadius="@dimen/_5sdp">
+                                android:orientation="vertical"
+                                android:paddingLeft="@dimen/_5sdp"
+                                android:paddingRight="@dimen/_5sdp">
+
+                                <TextView
+                                    android:id="@+id/tv_mTittle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:fontFamily="@font/roboto_medium"
+                                    android:gravity="center"
+                                    android:text=""
+                                    android:textColor="@color/colorPrimaryDark"
+                                    android:textSize="@dimen/_14sdp" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/_1sdp"
+                                    android:background="@color/light_gray_bg" />
 
                                 <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal"
+                                    android:padding="@dimen/_5sdp"
+                                    android:weightSum="3">
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="left"
+                                            android:text="@string/interest_per_annual"
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_10sdp" />
+
+                                        <TextView
+                                            android:id="@+id/tv_interest_pr"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:gravity="left"
+                                            android:text=""
+                                            android:textColor="@color/colorPrimaryDark"
+                                            android:textSize="@dimen/_14sdp" />
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="center"
+                                            android:text="@string/risk_cla"
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_10sdp" />
+
+                                        <TextView
+                                            android:id="@+id/tv_risk_c"
+                                            android:layout_width="@dimen/_50sdp"
+                                            android:layout_height="@dimen/_10sdp"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:gravity="center"
+                                            android:layout_gravity="center"
+                                            android:text=""
+                                            android:textColor="@color/colorPrimaryDark"
+                                            android:textSize="@dimen/_14sdp" />
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="right"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="right"
+                                            android:text="@string/loan_amount"
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_10sdp" />
+
+                                        <RelativeLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="right">
+
+                                            <TextView
+                                                android:id="@+id/tv_cur_symbol_amt"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_toLeftOf="@+id/tvAmount"
+                                                android:fontFamily="@font/roboto_medium"
+                                                android:text=""
+                                                android:textColor="@color/colorPrimaryDark"
+                                                android:textSize="@dimen/_14sdp" />
+
+                                            <TextView
+                                                android:id="@+id/tvAmount"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_alignParentRight="true"
+                                                android:fontFamily="@font/roboto_medium"
+                                                android:gravity="right"
+                                                android:paddingLeft="@dimen/_1sdp"
+                                                android:text=""
+                                                android:textColor="@color/colorPrimaryDark"
+                                                android:textSize="@dimen/_14sdp" />
+
+                                        </RelativeLayout>
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:padding="@dimen/_5sdp">
+
+                                    <ProgressBar
+                                        android:id="@+id/progessBar"
+                                        style="@style/CustomProgressBar"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_13sdp"
+                                        android:minWidth="220dp"
+                                        android:minHeight="60dp" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="@dimen/_5sdp"
+                                    android:paddingRight="@dimen/_5sdp"
+                                    android:weightSum="1">
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".6"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:id="@+id/tv_filled"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="left"
+                                            android:text=""
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_10sdp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="left"
+                                            android:paddingLeft="@dimen/_2sdp"
+                                            android:text="@string/filled"
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_10sdp" />
+
+                                        <TextView
+                                            android:id="@+id/tv_investors"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="left"
+                                            android:paddingLeft="@dimen/_3sdp"
+                                            android:text=""
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_10sdp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="left"
+                                            android:paddingLeft="@dimen/_2sdp"
+                                            android:text="@string/investors"
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_10sdp" />
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".4"
+                                        android:orientation="vertical">
+
+                                        <RelativeLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:gravity="right|center">
+
+                                            <TextView
+                                                android:id="@+id/tv_currency_left_amt"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_toLeftOf="@+id/tv_left_amount"
+                                                android:fontFamily="@font/roboto"
+                                                android:text=""
+                                                android:textColor="@color/colorPrimaryDark"
+                                                android:textSize="@dimen/_10sdp" />
+
+                                            <TextView
+                                                android:id="@+id/tv_left_amount"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_toLeftOf="@+id/tv_left"
+                                                android:fontFamily="@font/roboto"
+                                                android:paddingLeft="@dimen/_1sdp"
+                                                android:text=""
+                                                android:textColor="@color/colorPrimaryDark"
+                                                android:textSize="@dimen/_10sdp" />
+
+                                            <TextView
+                                                android:id="@+id/tv_left"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_alignParentRight="true"
+                                                android:fontFamily="@font/roboto"
+                                                android:gravity="right"
+                                                android:paddingLeft="@dimen/_2sdp"
+                                                android:text="@string/left"
+                                                android:textColor="@color/light_gray_text"
+                                                android:textSize="@dimen/_10sdp" />
+
+                                        </RelativeLayout>
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginBottom="@dimen/_10sdp"
+                                    android:orientation="horizontal"
+                                    android:padding="@dimen/_5sdp"
+                                    android:weightSum="3">
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:id="@+id/tv_months"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:gravity="left"
+                                            android:text=""
+                                            android:textColor="@color/colorPrimaryDark"
+                                            android:textSize="@dimen/_14sdp" />
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="left"
+                                            android:text="@string/months"
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_10sdp" />
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:id="@+id/tvType"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:gravity="center"
+                                            android:text=""
+                                            android:textColor="@color/colorPrimaryDark"
+                                            android:textSize="@dimen/_14sdp" />
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="center"
+                                            android:text="@string/type"
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_10sdp" />
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_weight="1"
+                                        android:gravity="right"
+                                        android:orientation="vertical">
+
+                                        <!-- <TextView
+                                             android:visibility="gone"
+                                             android:id="@+id/tv_red"
+                                             android:layout_width="@dimen/_50sdp"
+                                             android:layout_height="@dimen/_8sdp"
+                                             android:background="@color/dark_red"
+                                             android:fontFamily="sans-serif"
+                                             android:gravity="right"
+                                             android:text=""
+                                             android:textColor="@color/dark_gray"
+                                             android:textSize="@dimen/_12sdp" />
+
+                                         <TextView
+                                             android:visibility="gone"
+                                             android:id="@+id/tv_blue"
+                                             android:layout_width="@dimen/_50sdp"
+                                             android:layout_height="@dimen/_8sdp"
+                                             android:layout_marginTop="@dimen/_3sdp"
+                                             android:background="@color/dark_blue"
+                                             android:fontFamily="sans-serif"
+                                             android:gravity="right"
+                                             android:text=""
+                                             android:textColor="@color/dark_gray"
+                                             android:textSize="@dimen/_12sdp" />
+                                              <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="sans-serif"
+                                            android:gravity="right"
+                                            android:paddingTop="@dimen/_2sdp"
+                                            android:text="Location"
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_10sdp" />
+                                             -->
+
+                                        <ImageView
+                                            android:id="@+id/iv_location_img"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/_20sdp"
+                                            android:layout_weight=".5"
+                                            android:gravity="center"
+                                            android:scaleType="fitXY"
+                                            android:visibility="gone" />
+
+                                        <!-- <TextView
+                                             android:id="@+id/tv_location"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="wrap_content"
+                                             android:fontFamily="sans-serif"
+                                             android:gravity="center"
+                                             android:text=""
+                                             android:layout_weight=".5"
+                                             android:textColor="@color/light_gray_text"
+                                             android:textSize="@dimen/_10sdp" />-->
+                                        <!--For Location-->
+
+                                        <TextView
+                                            android:id="@+id/tv_location"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:gravity="right"
+                                            android:text=""
+                                            android:textColor="@color/colorPrimaryDark"
+                                            android:textSize="@dimen/_14sdp" />
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="right"
+                                            android:text="@string/location"
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_10sdp" />
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </LinearLayout>
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:background="@drawable/outline_white"
+                        android:orientation="vertical"
+                        android:padding="@dimen/_5sdp">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/colorPrimary">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/iv_main_ing"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/_180sdp"
+                                    android:scaleType="fitXY" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/iv_main_ing"
+                                    android:background="@drawable/outline_white"
+                                    android:orientation="horizontal"
+                                    android:padding="@dimen/_5sdp">
+
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/recyclerView"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:background="@color/light_gray_bg"
+                                        android:visibility="visible">
+
+                                    </androidx.recyclerview.widget.RecyclerView>
+
+                                    <TextView
+                                        android:id="@+id/tvNoRecord"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/roboto"
+                                        android:gravity="center"
+                                        android:text="@string/no_data_found"
+                                        android:textColor="@color/light_gray_text"
+                                        android:textSize="@dimen/_12sdp"
+                                        android:visibility="gone" />
+
+                                </LinearLayout>
+                            </RelativeLayout>
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:orientation="vertical">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/colorPrimary"
+                            app:cardCornerRadius="@dimen/_5sdp">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <LinearLayout
+                                    android:id="@+id/lLayoutSummaryCard"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical"
                                     android:paddingLeft="@dimen/_5sdp"
                                     android:paddingRight="@dimen/_5sdp">
 
-                                    <TextView
-                                        android:id="@+id/tv_mTittle"
+                                    <RelativeLayout
+                                        android:id="@+id/rLayoutSummaryHeader"
                                         android:layout_width="match_parent"
                                         android:layout_height="@dimen/_35sdp"
-                                        android:fontFamily="@font/roboto_medium"
-                                        android:gravity="center"
-                                        android:text=""
-                                        android:textColor="@color/colorPrimaryDark"
-                                        android:textSize="@dimen/_14sdp" />
+                                        android:padding="@dimen/_5sdp">
+
+                                        <TextView
+                                            android:id="@+id/tvSummaryHeaderArrow"
+                                            android:layout_width="@dimen/_25sdp"
+                                            android:layout_height="match_parent"
+                                            android:layout_alignParentRight="true"
+                                            android:background="@drawable/ic_arrow_up"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:textSize="@dimen/_14sdp" />
+
+                                        <TextView
+                                            android:id="@+id/tvSumryHeaderTittle"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerInParent="true"
+                                            android:layout_toLeftOf="@id/tvSummaryHeaderArrow"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:gravity="center"
+                                            android:text=""
+                                            android:textColor="@color/colorPrimaryDark"
+                                            android:textSize="@dimen/_14sdp" />
+
+                                    </RelativeLayout>
 
                                     <View
                                         android:layout_width="match_parent"
@@ -63,428 +557,128 @@
                                         android:background="@color/light_gray_bg" />
 
                                     <LinearLayout
+                                        android:id="@+id/lLayoutSummaryContent"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:orientation="horizontal"
-                                        android:padding="@dimen/_5sdp"
-                                        android:weightSum="3">
-
-                                        <LinearLayout
-                                            android:layout_width="0dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:orientation="vertical">
-
-                                            <TextView
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto"
-                                                android:gravity="left"
-                                                android:text="@string/interest_per_annual"
-                                                android:textColor="@color/light_gray_text"
-                                                android:textSize="@dimen/_10sdp" />
-
-                                            <TextView
-                                                android:id="@+id/tv_interest_pr"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto_medium"
-                                                android:gravity="left"
-                                                android:text=""
-                                                android:textColor="@color/colorPrimaryDark"
-                                                android:textSize="@dimen/_14sdp" />
-
-                                        </LinearLayout>
-
-                                        <LinearLayout
-                                            android:layout_width="0dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:orientation="vertical">
-
-                                            <TextView
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto"
-                                                android:gravity="center"
-                                                android:text="@string/risk_cla"
-                                                android:textColor="@color/light_gray_text"
-                                                android:textSize="@dimen/_10sdp" />
-
-                                            <TextView
-                                                android:id="@+id/tv_risk_c"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto_medium"
-                                                android:gravity="center"
-                                                android:text=""
-                                                android:textColor="@color/colorPrimaryDark"
-                                                android:textSize="@dimen/_14sdp" />
-
-                                        </LinearLayout>
-
-                                        <LinearLayout
-                                            android:layout_width="0dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:gravity="right"
-                                            android:orientation="vertical">
-
-                                            <TextView
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto"
-                                                android:gravity="right"
-                                                android:text="@string/loan_amount"
-                                                android:textColor="@color/light_gray_text"
-                                                android:textSize="@dimen/_10sdp" />
-
-                                            <RelativeLayout
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:gravity="right">
-
-                                                <TextView
-                                                    android:id="@+id/tv_cur_symbol_amt"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_toLeftOf="@+id/tvAmount"
-                                                    android:fontFamily="@font/roboto_medium"
-                                                    android:text=""
-                                                    android:textColor="@color/colorPrimaryDark"
-                                                    android:textSize="@dimen/_14sdp" />
-
-                                                <TextView
-                                                    android:id="@+id/tvAmount"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_alignParentRight="true"
-                                                    android:fontFamily="@font/roboto_medium"
-                                                    android:gravity="right"
-                                                    android:paddingLeft="@dimen/_1sdp"
-                                                    android:text=""
-                                                    android:textColor="@color/colorPrimaryDark"
-                                                    android:textSize="@dimen/_14sdp" />
-
-                                            </RelativeLayout>
-                                        </LinearLayout>
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="horizontal"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
+                                        android:orientation="vertical"
                                         android:padding="@dimen/_5sdp">
 
-                                        <ProgressBar
-                                            android:id="@+id/progessBar"
-                                            style="@style/CustomProgressBar"
+                                        <TextView
+                                            android:id="@+id/tvSummaryContent"
                                             android:layout_width="match_parent"
-                                            android:layout_height="@dimen/_13sdp"
-                                            android:minWidth="220dp"
-                                            android:minHeight="60dp" />
-
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="horizontal"
-                                        android:paddingLeft="@dimen/_5sdp"
-                                        android:paddingRight="@dimen/_5sdp"
-                                        android:weightSum="1">
-
-                                        <LinearLayout
-                                            android:layout_width="0dp"
                                             android:layout_height="wrap_content"
-                                            android:layout_weight=".6"
-                                            android:orientation="horizontal">
+                                            android:layout_marginTop="@dimen/_5sdp"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="left"
+                                            android:text=""
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_12sdp" />
 
-                                            <TextView
-                                                android:id="@+id/tv_filled"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto"
-                                                android:gravity="left"
-                                                android:text=""
-                                                android:textColor="@color/light_gray_text"
-                                                android:textSize="@dimen/_10sdp" />
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto"
-                                                android:gravity="left"
-                                                android:paddingLeft="@dimen/_2sdp"
-                                                android:text="@string/filled"
-                                                android:textColor="@color/light_gray_text"
-                                                android:textSize="@dimen/_10sdp" />
-
-                                            <TextView
-                                                android:id="@+id/tv_investors"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto"
-                                                android:gravity="left"
-                                                android:paddingLeft="@dimen/_3sdp"
-                                                android:text=""
-                                                android:textColor="@color/light_gray_text"
-                                                android:textSize="@dimen/_10sdp" />
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto"
-                                                android:gravity="left"
-                                                android:paddingLeft="@dimen/_2sdp"
-                                                android:text="@string/investors"
-                                                android:textColor="@color/light_gray_text"
-                                                android:textSize="@dimen/_10sdp" />
-
-                                        </LinearLayout>
-
-                                        <LinearLayout
-                                            android:layout_width="0dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight=".4"
-                                            android:orientation="vertical">
-
-                                            <RelativeLayout
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:gravity="right|center">
-
-                                                <TextView
-                                                    android:id="@+id/tv_currency_left_amt"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_toLeftOf="@+id/tv_left_amount"
-                                                    android:fontFamily="@font/roboto"
-                                                    android:text=""
-                                                    android:textColor="@color/colorPrimaryDark"
-                                                    android:textSize="@dimen/_10sdp" />
-
-                                                <TextView
-                                                    android:id="@+id/tv_left_amount"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_toLeftOf="@+id/tv_left"
-                                                    android:fontFamily="@font/roboto"
-                                                    android:paddingLeft="@dimen/_1sdp"
-                                                    android:text=""
-                                                    android:textColor="@color/colorPrimaryDark"
-                                                    android:textSize="@dimen/_10sdp" />
-
-                                                <TextView
-                                                    android:id="@+id/tv_left"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_alignParentRight="true"
-                                                    android:fontFamily="@font/roboto"
-                                                    android:gravity="right"
-                                                    android:paddingLeft="@dimen/_2sdp"
-                                                    android:text="@string/left"
-                                                    android:textColor="@color/light_gray_text"
-                                                    android:textSize="@dimen/_10sdp" />
-
-                                            </RelativeLayout>
-                                        </LinearLayout>
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_marginBottom="@dimen/_10sdp"
-                                        android:orientation="horizontal"
-                                        android:padding="@dimen/_5sdp"
-                                        android:weightSum="3">
-
-                                        <LinearLayout
-                                            android:layout_width="0dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:orientation="vertical">
-
-                                            <TextView
-                                                android:id="@+id/tv_months"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto_medium"
-                                                android:gravity="left"
-                                                android:text=""
-                                                android:textColor="@color/colorPrimaryDark"
-                                                android:textSize="@dimen/_14sdp" />
-
-                                            <TextView
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto"
-                                                android:gravity="left"
-                                                android:text="@string/months"
-                                                android:textColor="@color/light_gray_text"
-                                                android:textSize="@dimen/_10sdp" />
-
-                                        </LinearLayout>
-
-                                        <LinearLayout
-                                            android:layout_width="0dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:orientation="vertical">
-
-                                            <TextView
-                                                android:id="@+id/tvType"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto_medium"
-                                                android:gravity="center"
-                                                android:text=""
-                                                android:textColor="@color/colorPrimaryDark"
-                                                android:textSize="@dimen/_14sdp" />
-
-                                            <TextView
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto"
-                                                android:gravity="center"
-                                                android:text="@string/type"
-                                                android:textColor="@color/light_gray_text"
-                                                android:textSize="@dimen/_10sdp" />
-
-                                        </LinearLayout>
-
-                                        <LinearLayout
-                                            android:layout_width="0dp"
+                                        <TextView
+                                            android:id="@+id/tvSummaryNoData"
+                                            android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_gravity="center"
-                                            android:layout_weight="1"
-                                            android:gravity="right"
-                                            android:orientation="vertical">
+                                            android:layout_marginTop="@dimen/_5sdp"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="center"
+                                            android:text="@string/no_data_found"
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
 
-                                            <!-- <TextView
-                                                 android:visibility="gone"
-                                                 android:id="@+id/tv_red"
-                                                 android:layout_width="@dimen/_50sdp"
-                                                 android:layout_height="@dimen/_8sdp"
-                                                 android:background="@color/dark_red"
-                                                 android:fontFamily="sans-serif"
-                                                 android:gravity="right"
-                                                 android:text=""
-                                                 android:textColor="@color/dark_gray"
-                                                 android:textSize="@dimen/_12sdp" />
+                                        <TextView
+                                            android:id="@+id/tvSummaryError"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="center"
+                                            android:text=""
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
 
-                                             <TextView
-                                                 android:visibility="gone"
-                                                 android:id="@+id/tv_blue"
-                                                 android:layout_width="@dimen/_50sdp"
-                                                 android:layout_height="@dimen/_8sdp"
-                                                 android:layout_marginTop="@dimen/_3sdp"
-                                                 android:background="@color/dark_blue"
-                                                 android:fontFamily="sans-serif"
-                                                 android:gravity="right"
-                                                 android:text=""
-                                                 android:textColor="@color/dark_gray"
-                                                 android:textSize="@dimen/_12sdp" />
-                                                  <TextView
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="sans-serif"
-                                                android:gravity="right"
-                                                android:paddingTop="@dimen/_2sdp"
-                                                android:text="Location"
-                                                android:textColor="@color/light_gray_text"
-                                                android:textSize="@dimen/_10sdp" />
-                                                 -->
+                                        <Button
+                                            android:id="@+id/btnSummaryInvest"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/_33sdp"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:background="@drawable/button_ripple_green"
+                                            android:fontFamily="@font/roboto"
+                                            android:text="@string/invest"
+                                            android:textAllCaps="false"
+                                            android:textColor="@color/colorPrimary"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
 
-                                            <ImageView
-                                                android:id="@+id/iv_location_img"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="@dimen/_20sdp"
-                                                android:layout_weight=".5"
-                                                android:gravity="center"
-                                                android:scaleType="fitXY"
-                                                android:visibility="gone" />
-
-                                            <!-- <TextView
-                                                 android:id="@+id/tv_location"
-                                                 android:layout_width="match_parent"
-                                                 android:layout_height="wrap_content"
-                                                 android:fontFamily="sans-serif"
-                                                 android:gravity="center"
-                                                 android:text=""
-                                                 android:layout_weight=".5"
-                                                 android:textColor="@color/light_gray_text"
-                                                 android:textSize="@dimen/_10sdp" />-->
-                                            <!--For Location-->
-
-                                            <TextView
-                                                android:id="@+id/tv_location"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto_medium"
-                                                android:gravity="right"
-                                                android:text=""
-                                                android:textColor="@color/colorPrimaryDark"
-                                                android:textSize="@dimen/_14sdp" />
-
-                                            <TextView
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto"
-                                                android:gravity="right"
-                                                android:text="@string/location"
-                                                android:textColor="@color/light_gray_text"
-                                                android:textSize="@dimen/_10sdp" />
-                                        </LinearLayout>
                                     </LinearLayout>
                                 </LinearLayout>
-                            </androidx.cardview.widget.CardView>
-                        </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:layout_marginBottom="@dimen/_10sdp"
-                            android:background="@drawable/outline_white"
-                            android:orientation="vertical"
-                            android:padding="@dimen/_5sdp">
-
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@color/colorPrimary">
-
-                                <RelativeLayout
+                                <LinearLayout
+                                    android:id="@+id/ll_loan_terms"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/lLayoutSummaryCard"
+                                    android:orientation="vertical"
+                                    android:paddingLeft="@dimen/_5sdp"
+                                    android:paddingRight="@dimen/_5sdp">
 
-                                    <ImageView
-                                        android:id="@+id/iv_main_ing"
+                                    <RelativeLayout
+                                        android:id="@+id/rl_loan_term_click"
                                         android:layout_width="match_parent"
-                                        android:layout_height="@dimen/_180sdp"
-                                        android:scaleType="fitXY" />
+                                        android:layout_height="@dimen/_35sdp"
+                                        android:padding="@dimen/_5sdp">
+
+                                        <TextView
+                                            android:id="@+id/tv_arrow_loan_terms"
+                                            android:layout_width="@dimen/_25sdp"
+                                            android:layout_height="match_parent"
+                                            android:layout_alignParentRight="true"
+                                            android:background="@drawable/ic_arrow_down"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:textSize="@dimen/_14sdp" />
+
+                                        <TextView
+                                            android:id="@+id/tv_loan_terms"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerInParent="true"
+                                            android:layout_toLeftOf="@id/tv_arrow_loan_terms"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:gravity="center"
+                                            android:text=""
+                                            android:textColor="@color/colorPrimaryDark"
+                                            android:textSize="@dimen/_14sdp" />
+
+                                    </RelativeLayout>
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_1sdp"
+                                        android:background="@color/light_gray_bg" />
 
                                     <LinearLayout
+                                        android:id="@+id/ll_contant_loan_terms"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/iv_main_ing"
-                                        android:background="@drawable/outline_white"
-                                        android:orientation="horizontal"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
+                                        android:orientation="vertical"
                                         android:padding="@dimen/_5sdp">
 
                                         <androidx.recyclerview.widget.RecyclerView
-                                            android:id="@+id/recyclerView"
+                                            android:id="@+id/recyViewLoanTerm"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:background="@color/light_gray_bg"
-                                            android:visibility="visible">
-
-                                        </androidx.recyclerview.widget.RecyclerView>
+                                            android:layout_marginTop="@dimen/_5sdp"
+                                            android:visibility="visible" />
 
                                         <TextView
-                                            android:id="@+id/tvNoRecord"
+                                            android:id="@+id/tvNoRecord_loan_term"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/roboto"
@@ -494,244 +688,96 @@
                                             android:textSize="@dimen/_12sdp"
                                             android:visibility="gone" />
 
-                                    </LinearLayout>
-                                </RelativeLayout>
-                            </androidx.cardview.widget.CardView>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:orientation="vertical">
-
-                            <androidx.cardview.widget.CardView
-                                android:id="@+id/cardView"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@color/colorPrimary"
-                                app:cardCornerRadius="@dimen/_5sdp">
-
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
-
-                                    <LinearLayout
-                                        android:id="@+id/ll_summary"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="vertical"
-                                        android:paddingLeft="@dimen/_5sdp"
-                                        android:paddingRight="@dimen/_5sdp">
-
-                                        <RelativeLayout
-                                            android:id="@+id/rl_summary_for"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="@dimen/_35sdp"
-                                            android:padding="@dimen/_5sdp">
-
-                                            <TextView
-                                                android:id="@+id/tv_arrow_summary"
-                                                android:layout_width="@dimen/_25sdp"
-                                                android:layout_height="match_parent"
-                                                android:layout_alignParentRight="true"
-                                                android:textSize="@dimen/_14sdp"
-                                                android:background="@drawable/ic_arrow_up"
-                                                android:fontFamily="@font/roboto_medium" />
-
-                                            <TextView
-                                                android:id="@+id/tv_summary"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:layout_centerInParent="true"
-                                                android:layout_toLeftOf="@id/tv_arrow_summary"
-                                                android:fontFamily="@font/roboto_medium"
-                                                android:gravity="center"
-                                                android:text=""
-                                                android:textColor="@color/colorPrimaryDark"
-                                                android:textSize="@dimen/_14sdp" />
-
-                                        </RelativeLayout>
-
-                                        <View
-                                            android:layout_width="match_parent"
-                                            android:layout_height="@dimen/_1sdp"
-                                            android:background="@color/light_gray_bg" />
-
-                                        <LinearLayout
-                                            android:id="@+id/ll_contant_summary"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:layout_gravity="center"
-                                            android:gravity="center"
-                                            android:orientation="vertical"
-                                            android:padding="@dimen/_5sdp">
-
-                                            <TextView
-                                                android:layout_marginTop="@dimen/_5sdp"
-                                                android:id="@+id/txt_summary_content"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto"
-                                                android:gravity="left"
-                                                android:text=""
-                                                android:textColor="@color/light_gray_text"
-                                                android:textSize="@dimen/_12sdp" />
-
-                                            <TextView
-                                                android:visibility="gone"
-                                                android:id="@+id/tvSummaryError"
-                                                android:layout_marginTop="@dimen/_10sdp"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto"
-                                                android:layout_gravity="center"
-                                                android:gravity="center"
-                                                android:text=""
-                                                android:textColor="@color/light_gray_text"
-                                                android:textSize="@dimen/_12sdp" />
-                                            <Button
-                                                android:visibility="gone"
-                                                android:id="@+id/btn_summary_invest"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="@dimen/_33sdp"
-                                                android:layout_marginTop="@dimen/_10sdp"
-                                                android:background="@drawable/button_ripple_green"
-                                                android:fontFamily="@font/roboto"
-                                                android:text="@string/invest"
-                                                android:textAllCaps="false"
-                                                android:textColor="@color/colorPrimary"
-                                                android:textSize="@dimen/_12sdp" />
-
-                                        </LinearLayout>
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:id="@+id/ll_loan_terms"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/ll_summary"
-                                        android:orientation="vertical"
-                                        android:paddingLeft="@dimen/_5sdp"
-                                        android:paddingRight="@dimen/_5sdp">
-
-                                        <RelativeLayout
-                                            android:id="@+id/rl_loan_term_click"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="@dimen/_35sdp"
-                                            android:padding="@dimen/_5sdp">
-
-                                            <TextView
-                                                android:id="@+id/tv_arrow_loan_terms"
-                                                android:layout_width="@dimen/_25sdp"
-                                                android:layout_height="match_parent"
-                                                android:layout_alignParentRight="true"
-                                                android:textSize="@dimen/_14sdp"
-                                                android:background="@drawable/ic_arrow_down"
-                                                android:fontFamily="@font/roboto_medium" />
-
-                                            <TextView
-                                                android:id="@+id/tv_loan_terms"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:layout_centerInParent="true"
-                                                android:layout_toLeftOf="@id/tv_arrow_loan_terms"
-                                                android:fontFamily="@font/roboto_medium"
-                                                android:gravity="center"
-                                                android:text=""
-                                                android:textColor="@color/colorPrimaryDark"
-                                                android:textSize="@dimen/_14sdp" />
-
-                                        </RelativeLayout>
-
-                                        <View
-                                            android:layout_width="match_parent"
-                                            android:layout_height="@dimen/_1sdp"
-                                            android:background="@color/light_gray_bg" />
-
-                                        <LinearLayout
-                                            android:id="@+id/ll_contant_loan_terms"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:layout_gravity="center"
-                                            android:gravity="center"
-                                            android:orientation="vertical">
-
-                                            <androidx.recyclerview.widget.RecyclerView
-                                                android:layout_marginTop="@dimen/_5sdp"
-                                                android:id="@+id/recyViewLoanTerm"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:visibility="visible" />
-
-                                            <TextView
-                                                android:id="@+id/tvNoRecord_loan_term"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto"
-                                                android:gravity="center"
-                                                android:text="@string/no_data_found"
-                                                android:textColor="@color/light_gray_text"
-                                                android:textSize="@dimen/_12sdp"
-                                                android:visibility="gone" />
-                                        </LinearLayout>
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:id="@+id/ll_collateral"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/ll_loan_terms"
-                                        android:orientation="vertical"
-                                        android:paddingLeft="@dimen/_5sdp"
-                                        android:paddingRight="@dimen/_5sdp">
-
-                                        <RelativeLayout
-                                            android:id="@+id/rl_collateral_click"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="@dimen/_35sdp"
-                                            android:padding="@dimen/_5sdp">
-
-                                            <TextView
-                                                android:id="@+id/tv_arrow_collateral"
-                                                android:layout_width="@dimen/_25sdp"
-                                                android:layout_height="match_parent"
-                                                android:layout_alignParentRight="true"
-                                                android:textSize="@dimen/_14sdp"
-                                                android:background="@drawable/ic_arrow_down"
-                                                android:fontFamily="@font/roboto_medium" />
-
-                                            <TextView
-                                                android:id="@+id/tv_collateral"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:layout_centerInParent="true"
-                                                android:layout_toLeftOf="@id/tv_arrow_collateral"
-                                                android:fontFamily="@font/roboto_medium"
-                                                android:gravity="center"
-                                                android:text=""
-                                                android:textColor="@color/colorPrimaryDark"
-                                                android:textSize="@dimen/_14sdp" />
-                                        </RelativeLayout>
-
-                                        <View
-                                            android:layout_width="match_parent"
-                                            android:layout_height="@dimen/_1sdp"
-                                            android:background="@color/light_gray_bg" />
-
-                                        <LinearLayout
-                                            android:id="@+id/ll_contant_collateral"
+                                        <TextView
+                                            android:id="@+id/tvLoanTermError"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_gravity="center"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:fontFamily="@font/roboto"
                                             android:gravity="center"
-                                            android:orientation="vertical">
+                                            android:text=""
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
+
+                                        <Button
+                                            android:id="@+id/btnLoanTerm"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/_33sdp"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:background="@drawable/button_ripple_green"
+                                            android:fontFamily="@font/roboto"
+                                            android:text="Invest"
+                                            android:textAllCaps="false"
+                                            android:textColor="@color/colorPrimary"
+                                            android:textSize="@dimen/_14sdp"
+                                            android:visibility="gone" />
+
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/ll_collateral"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/ll_loan_terms"
+                                    android:orientation="vertical"
+                                    android:paddingLeft="@dimen/_5sdp"
+                                    android:paddingRight="@dimen/_5sdp">
+
+                                    <RelativeLayout
+                                        android:id="@+id/rl_collateral_click"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_35sdp"
+                                        android:padding="@dimen/_5sdp">
+
+                                        <TextView
+                                            android:id="@+id/tv_arrow_collateral"
+                                            android:layout_width="@dimen/_25sdp"
+                                            android:layout_height="match_parent"
+                                            android:layout_alignParentRight="true"
+                                            android:background="@drawable/ic_arrow_down"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:textSize="@dimen/_14sdp" />
+
+                                        <TextView
+                                            android:id="@+id/tv_collateral"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerInParent="true"
+                                            android:layout_toLeftOf="@id/tv_arrow_collateral"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:gravity="center"
+                                            android:text=""
+                                            android:textColor="@color/colorPrimaryDark"
+                                            android:textSize="@dimen/_14sdp" />
+                                    </RelativeLayout>
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_1sdp"
+                                        android:background="@color/light_gray_bg" />
+
+                                    <LinearLayout
+                                        android:id="@+id/ll_contant_collateral"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
+                                        android:orientation="vertical"
+                                        android:padding="@dimen/_5sdp">
+
+                                        <LinearLayout
+                                            android:orientation="vertical"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content">
 
                                             <androidx.recyclerview.widget.RecyclerView
-                                                android:layout_marginTop="@dimen/_5sdp"
                                                 android:id="@+id/recyViewCollateral"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
+                                                android:layout_marginTop="@dimen/_5sdp"
                                                 android:visibility="visible">
 
                                             </androidx.recyclerview.widget.RecyclerView>
@@ -746,530 +792,928 @@
                                                 android:textColor="@color/light_gray_text"
                                                 android:textSize="@dimen/_12sdp"
                                                 android:visibility="gone" />
-                                        </LinearLayout>
-                                    </LinearLayout>
 
-                                    <LinearLayout
-                                        android:id="@+id/ll_fundraiser"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/ll_collateral"
-                                        android:orientation="vertical"
-                                        android:paddingLeft="@dimen/_5sdp"
-                                        android:paddingRight="@dimen/_5sdp">
-
-                                        <RelativeLayout
-                                            android:id="@+id/rl_foundaiser_click"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="@dimen/_35sdp"
-                                            android:padding="@dimen/_5sdp">
-
-                                            <TextView
-                                                android:id="@+id/tv_arrow_fundraiser"
-                                                android:layout_width="@dimen/_25sdp"
-                                                android:layout_height="match_parent"
-                                                android:layout_alignParentRight="true"
-                                                android:textSize="@dimen/_14sdp"
-                                                android:background="@drawable/ic_arrow_down"
-                                                android:fontFamily="@font/roboto_medium" />
-
-                                            <TextView
-                                                android:id="@+id/tv_fundraiser"
+                                            <androidx.recyclerview.widget.RecyclerView
+                                                android:id="@+id/recyViewCollSecurity"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
-                                                android:layout_centerInParent="true"
-                                                android:layout_toLeftOf="@id/tv_arrow_fundraiser"
-                                                android:fontFamily="@font/roboto_medium"
-                                                android:gravity="center"
-                                                android:text=""
-                                                android:textColor="@color/colorPrimaryDark"
-                                                android:textSize="@dimen/_14sdp" />
-                                        </RelativeLayout>
+                                                android:layout_marginTop="@dimen/_5sdp"
+                                                android:visibility="visible">
 
-                                        <View
+                                            </androidx.recyclerview.widget.RecyclerView>
+
+                                            <TextView
+                                                android:id="@+id/tvNoRecordCollSecurity"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:fontFamily="@font/roboto"
+                                                android:gravity="center"
+                                                android:text="@string/no_data_found"
+                                                android:textColor="@color/light_gray_text"
+                                                android:textSize="@dimen/_12sdp"
+                                                android:visibility="gone" />
+
+                                        </LinearLayout>
+
+
+                                        <TextView
+                                            android:id="@+id/tvCollatralError"
                                             android:layout_width="match_parent"
-                                            android:layout_height="@dimen/_1sdp"
-                                            android:background="@color/light_gray_bg" />
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="center"
+                                            android:text=""
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
+
+                                        <Button
+                                            android:id="@+id/btnCollateral"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/_33sdp"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:background="@drawable/button_ripple_green"
+                                            android:fontFamily="@font/roboto"
+                                            android:text="Invest"
+                                            android:textAllCaps="false"
+                                            android:textColor="@color/colorPrimary"
+                                            android:textSize="@dimen/_14sdp"
+                                            android:visibility="gone" />
+
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/ll_investment_plan"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/ll_collateral"
+                                    android:orientation="vertical"
+                                    android:paddingLeft="@dimen/_5sdp"
+                                    android:paddingRight="@dimen/_5sdp">
+
+                                    <RelativeLayout
+                                        android:id="@+id/rl_investment_click"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_35sdp"
+                                        android:padding="@dimen/_5sdp">
+
+                                        <TextView
+                                            android:id="@+id/tv_arrow_investment_plan"
+                                            android:layout_width="@dimen/_25sdp"
+                                            android:layout_height="match_parent"
+                                            android:layout_alignParentRight="true"
+                                            android:background="@drawable/ic_arrow_down"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:textSize="@dimen/_14sdp" />
+
+                                        <TextView
+                                            android:id="@+id/tv_investment_plan"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerInParent="true"
+                                            android:layout_toLeftOf="@id/tv_arrow_investment_plan"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:gravity="center"
+                                            android:text=""
+                                            android:textColor="@color/colorPrimaryDark"
+                                            android:textSize="@dimen/_14sdp" />
+
+                                    </RelativeLayout>
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_1sdp"
+                                        android:background="@color/light_gray_bg" />
+
+                                    <LinearLayout
+                                        android:id="@+id/ll_contant_investment"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
+                                        android:orientation="vertical"
+                                        android:padding="@dimen/_5sdp">
+
+                                        <androidx.recyclerview.widget.RecyclerView
+                                            android:id="@+id/recyViewInvestment"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="@dimen/_5sdp"
+                                            android:visibility="visible" />
+
+                                        <TextView
+                                            android:id="@+id/tvNoRecord_investment"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="center"
+                                            android:text="@string/no_data_found"
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
+
+                                        <TextView
+                                            android:id="@+id/tvInvestmentPlanError"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="center"
+                                            android:text=""
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
+
+                                        <Button
+                                            android:id="@+id/btn_investment_plan"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/_33sdp"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:background="@drawable/button_ripple_green"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="center"
+                                            android:text="@string/invest"
+                                            android:textAllCaps="false"
+                                            android:textColor="@color/colorPrimary"
+                                            android:textSize="@dimen/_14sdp"
+                                            android:visibility="gone" />
+
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/ll_risk"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/ll_investment_plan"
+                                    android:orientation="vertical"
+                                    android:paddingLeft="@dimen/_5sdp"
+                                    android:paddingRight="@dimen/_5sdp">
+
+                                    <RelativeLayout
+                                        android:id="@+id/rl_risk_click"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_35sdp"
+                                        android:padding="@dimen/_5sdp">
+
+                                        <TextView
+                                            android:id="@+id/tv_arrow_risk"
+                                            android:layout_width="@dimen/_25sdp"
+                                            android:layout_height="match_parent"
+                                            android:layout_alignParentRight="true"
+                                            android:background="@drawable/ic_arrow_down"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:textSize="@dimen/_14sdp" />
+
+                                        <TextView
+                                            android:id="@+id/tv_rik"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerInParent="true"
+                                            android:layout_toLeftOf="@id/tv_arrow_risk"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:gravity="center"
+                                            android:text=""
+                                            android:textColor="@color/colorPrimaryDark"
+                                            android:textSize="@dimen/_14sdp" />
+
+                                    </RelativeLayout>
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_1sdp"
+                                        android:background="@color/light_gray_bg" />
+
+                                    <LinearLayout
+                                        android:id="@+id/ll_contant_risk"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:orientation="vertical"
+                                        android:padding="@dimen/_5sdp">
+
+                                        <androidx.recyclerview.widget.RecyclerView
+                                            android:id="@+id/recyViewRisk"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="@dimen/_5sdp"
+                                            android:visibility="visible" />
+
+                                        <TextView
+                                            android:id="@+id/tvNoRecord_Risk"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="center"
+                                            android:text="@string/no_data_found"
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
+
+
+                                        <TextView
+                                            android:id="@+id/tvInvestRiskError"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="center"
+                                            android:text=""
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
+
+                                        <Button
+                                            android:id="@+id/btn_invest_risk"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/_33sdp"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:background="@drawable/button_ripple_green"
+                                            android:fontFamily="@font/roboto"
+                                            android:text="Invest"
+                                            android:textAllCaps="false"
+                                            android:textColor="@color/colorPrimary"
+                                            android:textSize="@dimen/_14sdp"
+                                            android:visibility="gone" />
+
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/ll_document"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/ll_risk"
+                                    android:orientation="vertical"
+                                    android:paddingLeft="@dimen/_5sdp"
+                                    android:paddingRight="@dimen/_5sdp">
+
+                                    <RelativeLayout
+                                        android:id="@+id/rl_document_click"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_35sdp"
+                                        android:padding="@dimen/_5sdp">
+
+                                        <TextView
+                                            android:id="@+id/tv_arrow_document"
+                                            android:layout_width="@dimen/_25sdp"
+                                            android:layout_height="match_parent"
+                                            android:layout_alignParentRight="true"
+                                            android:background="@drawable/ic_arrow_down"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:textSize="@dimen/_14sdp" />
+
+                                        <TextView
+                                            android:id="@+id/tv_document"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerInParent="true"
+                                            android:layout_toLeftOf="@id/tv_arrow_document"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:gravity="center"
+                                            android:text=""
+                                            android:textColor="@color/colorPrimaryDark"
+                                            android:textSize="@dimen/_14sdp" />
+
+                                    </RelativeLayout>
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_1sdp"
+                                        android:background="@color/light_gray_bg" />
+
+                                    <LinearLayout
+                                        android:id="@+id/ll_contant_document"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
+                                        android:orientation="vertical"
+                                        android:padding="@dimen/_5sdp">
+
+                                        <androidx.recyclerview.widget.RecyclerView
+                                            android:id="@+id/recyViewDocument"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="@dimen/_5sdp"
+                                            android:visibility="visible" />
+
+                                        <TextView
+                                            android:id="@+id/tvNoRecord_Document"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="center"
+                                            android:text="@string/no_data_found"
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
+
+                                        <TextView
+                                            android:id="@+id/tvDocumentError"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="center"
+                                            android:text=""
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
+
+                                        <Button
+                                            android:id="@+id/btn_invest_document"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/_33sdp"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:background="@drawable/button_ripple_green"
+                                            android:fontFamily="@font/roboto"
+                                            android:text="Invest"
+                                            android:textAllCaps="false"
+                                            android:textColor="@color/colorPrimary"
+                                            android:textSize="@dimen/_14sdp"
+                                            android:visibility="gone" />
+
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/ll_last_investment"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/ll_document"
+                                    android:orientation="vertical"
+                                    android:paddingLeft="@dimen/_5sdp"
+                                    android:paddingRight="@dimen/_5sdp">
+
+                                    <RelativeLayout
+                                        android:id="@+id/rl_last_invest_click"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_35sdp"
+                                        android:padding="@dimen/_5sdp">
+
+                                        <TextView
+                                            android:id="@+id/tv_arrow_last_investment"
+                                            android:layout_width="@dimen/_25sdp"
+                                            android:layout_height="match_parent"
+                                            android:layout_alignParentRight="true"
+                                            android:layout_centerInParent="true"
+                                            android:background="@drawable/ic_arrow_down"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:textSize="@dimen/_14sdp" />
+
+                                        <TextView
+                                            android:id="@+id/tv_last_investment"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerInParent="true"
+                                            android:layout_toLeftOf="@id/tv_arrow_last_investment"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:gravity="center"
+                                            android:text=""
+                                            android:textColor="@color/colorPrimaryDark"
+                                            android:textSize="@dimen/_14sdp" />
+                                    </RelativeLayout>
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_1sdp"
+                                        android:background="@color/light_gray_bg" />
+                                    <!-- android:layout_marginTop="@dimen/_5sdp"
+                                        android:layout_marginBottom="@dimen/_5sdp"-->
+                                    <LinearLayout
+                                        android:id="@+id/ll_contant_last_invest"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
+                                        android:orientation="vertical"
+                                        android:padding="@dimen/_5sdp">
+
+                                        <androidx.recyclerview.widget.RecyclerView
+                                            android:id="@+id/recyViewLastInvestment"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="@dimen/_5sdp"
+                                            android:visibility="visible" />
+
+                                        <TextView
+                                            android:id="@+id/tvNoRecord_LastInvestment"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="center"
+                                            android:text="@string/no_data_found"
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
+
+                                        <TextView
+                                            android:id="@+id/tvLastInvestError"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="center"
+                                            android:text=""
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
+
+                                        <Button
+                                            android:id="@+id/btn_last_invest"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/_33sdp"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:background="@drawable/button_ripple_green"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="center"
+                                            android:text="Invest"
+                                            android:textAllCaps="false"
+                                            android:textColor="@color/colorPrimary"
+                                            android:textSize="@dimen/_14sdp"
+                                            android:visibility="gone" />
+
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/ll_fundraiser"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/ll_last_investment"
+                                    android:orientation="vertical"
+                                    android:paddingLeft="@dimen/_5sdp"
+                                    android:paddingRight="@dimen/_5sdp">
+
+                                    <RelativeLayout
+                                        android:id="@+id/rl_foundaiser_click"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_35sdp"
+                                        android:padding="@dimen/_5sdp">
+
+                                        <TextView
+                                            android:id="@+id/tv_arrow_fundraiser"
+                                            android:layout_width="@dimen/_25sdp"
+                                            android:layout_height="match_parent"
+                                            android:layout_alignParentRight="true"
+                                            android:background="@drawable/ic_arrow_down"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:textSize="@dimen/_14sdp" />
+
+                                        <TextView
+                                            android:id="@+id/tv_fundraiser"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerInParent="true"
+                                            android:layout_toLeftOf="@id/tv_arrow_fundraiser"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:gravity="center"
+                                            android:text=""
+                                            android:textColor="@color/colorPrimaryDark"
+                                            android:textSize="@dimen/_14sdp" />
+                                    </RelativeLayout>
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_1sdp"
+                                        android:background="@color/light_gray_bg" />
+
+                                    <LinearLayout
+                                        android:id="@+id/ll_contant_fundraiser"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
+                                        android:orientation="vertical"
+                                        android:padding="@dimen/_5sdp">
 
                                         <LinearLayout
-                                            android:id="@+id/ll_contant_fundraiser"
                                             android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
+                                            android:layout_height="wrap_content"
                                             android:layout_gravity="center"
                                             android:gravity="center"
                                             android:orientation="vertical"
                                             android:padding="@dimen/_8sdp">
 
-                                            <LinearLayout
+                                            <ImageView
+                                                android:id="@+id/iv_logo"
                                                 android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:gravity="center"
-                                                android:orientation="vertical"
-                                                android:padding="@dimen/_8sdp">
-
-                                                <ImageView
-                                                    android:id="@+id/iv_logo"
-                                                    android:layout_width="match_parent"
-                                                    android:layout_height="@dimen/_70sdp"
-                                                    android:scaleType="fitXY" />
-                                            </LinearLayout>
-
-                                            <LinearLayout
-                                                android:layout_width="match_parent"
-                                                android:layout_height="match_parent"
-                                                android:orientation="vertical">
-
-                                                <androidx.recyclerview.widget.RecyclerView
-                                                    android:layout_marginTop="@dimen/_5sdp"
-                                                    android:id="@+id/recyViewFoundRaiser"
-                                                    android:layout_width="match_parent"
-                                                    android:layout_height="wrap_content"
-                                                    android:visibility="visible" />
-
-                                                <TextView
-                                                    android:id="@+id/tvNoRecord_foundRaiser"
-                                                    android:layout_width="match_parent"
-                                                    android:layout_height="wrap_content"
-                                                    android:fontFamily="@font/roboto"
-                                                    android:gravity="center"
-                                                    android:text="@string/no_data_found"
-                                                    android:textColor="@color/light_gray_text"
-                                                    android:textSize="@dimen/_12sdp"
-                                                    android:visibility="gone" />
-                                            </LinearLayout>
-
-                                            <LinearLayout
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:orientation="vertical"
-                                                android:padding="@dimen/_5sdp">
-
-                                                <TextView
-                                                    android:id="@+id/tv_addnal_info_tittle"
-                                                    android:layout_width="match_parent"
-                                                    android:layout_height="wrap_content"
-                                                    android:fontFamily="@font/roboto"
-                                                    android:gravity="left"
-                                                    android:paddingTop="@dimen/_5sdp"
-                                                    android:paddingBottom="@dimen/_5sdp"
-                                                    android:text=""
-                                                    android:textColor="@color/colorPrimaryDark"
-                                                    android:textSize="@dimen/_12sdp"
-                                                    android:textStyle="bold" />
-
-                                                <TextView
-                                                    android:id="@+id/tv_addnal_content"
-                                                    android:layout_width="match_parent"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_gravity="left"
-                                                    android:fontFamily="@font/roboto_medium"
-                                                    android:gravity="left"
-                                                    android:text=""
-                                                    android:textColor="@color/colorPrimaryDark"
-                                                    android:textSize="@dimen/_12sdp" />/>
-
-                                            </LinearLayout>
+                                                android:layout_height="@dimen/_70sdp"
+                                                android:scaleType="fitXY" />
                                         </LinearLayout>
-                                    </LinearLayout>
 
-                                    <LinearLayout
-                                        android:id="@+id/ll_investment_plan"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/ll_fundraiser"
-                                        android:orientation="vertical"
-                                        android:paddingLeft="@dimen/_5sdp"
-                                        android:paddingRight="@dimen/_5sdp">
-
-                                        <RelativeLayout
-                                            android:id="@+id/rl_investment_click"
+                                        <LinearLayout
                                             android:layout_width="match_parent"
-                                            android:layout_height="@dimen/_35sdp"
+                                            android:layout_height="match_parent"
+                                            android:orientation="vertical">
+
+                                            <androidx.recyclerview.widget.RecyclerView
+                                                android:id="@+id/recyViewFoundRaiser"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="@dimen/_5sdp"
+                                                android:visibility="visible" />
+
+                                            <TextView
+                                                android:id="@+id/tvNoRecord_foundRaiser"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:fontFamily="@font/roboto"
+                                                android:gravity="center"
+                                                android:text="@string/no_data_found"
+                                                android:textColor="@color/light_gray_text"
+                                                android:textSize="@dimen/_12sdp"
+                                                android:visibility="gone" />
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="vertical"
                                             android:padding="@dimen/_5sdp">
 
                                             <TextView
-                                                android:id="@+id/tv_arrow_investment_plan"
-                                                android:layout_width="@dimen/_25sdp"
-                                                android:layout_height="match_parent"
-                                                android:layout_alignParentRight="true"
-                                                android:textSize="@dimen/_14sdp"
-                                                android:background="@drawable/ic_arrow_down"
-                                                android:fontFamily="@font/roboto_medium" />
-
-                                            <TextView
-                                                android:id="@+id/tv_investment_plan"
+                                                android:id="@+id/tv_addnal_info_tittle"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
-                                                android:layout_centerInParent="true"
-                                                android:layout_toLeftOf="@id/tv_arrow_investment_plan"
-                                                android:fontFamily="@font/roboto_medium"
-                                                android:gravity="center"
+                                                android:fontFamily="@font/roboto"
+                                                android:gravity="left"
+                                                android:paddingTop="@dimen/_5sdp"
+                                                android:paddingBottom="@dimen/_5sdp"
                                                 android:text=""
                                                 android:textColor="@color/colorPrimaryDark"
-                                                android:textSize="@dimen/_14sdp" />
+                                                android:textSize="@dimen/_12sdp"
+                                                android:textStyle="bold" />
 
-                                        </RelativeLayout>
+                                            <TextView
+                                                android:id="@+id/tv_addnal_content"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="left"
+                                                android:fontFamily="@font/roboto_medium"
+                                                android:gravity="left"
+                                                android:text=""
+                                                android:textColor="@color/colorPrimaryDark"
+                                                android:textSize="@dimen/_12sdp" />/>
 
-                                        <View
+                                        </LinearLayout>
+
+                                        <TextView
+                                            android:id="@+id/tvFundraiserError"
                                             android:layout_width="match_parent"
-                                            android:layout_height="@dimen/_1sdp"
-                                            android:background="@color/light_gray_bg" />
-
-                                        <LinearLayout
-                                            android:id="@+id/ll_contant_investment"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
+                                            android:layout_height="wrap_content"
                                             android:layout_gravity="center"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:fontFamily="@font/roboto"
                                             android:gravity="center"
-                                            android:orientation="vertical">
+                                            android:text=""
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
 
-                                            <androidx.recyclerview.widget.RecyclerView
-                                                android:layout_marginTop="@dimen/_5sdp"
-                                                android:id="@+id/recyViewInvestment"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:visibility="visible" />
+                                        <Button
+                                            android:id="@+id/btnFundraiser"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/_33sdp"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:background="@drawable/button_ripple_green"
+                                            android:fontFamily="@font/roboto"
+                                            android:text="Invest"
+                                            android:textAllCaps="false"
+                                            android:textColor="@color/colorPrimary"
+                                            android:textSize="@dimen/_14sdp"
+                                            android:visibility="gone" />
 
-                                            <TextView
-                                                android:id="@+id/tvNoRecord_investment"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto"
-                                                android:gravity="center"
-                                                android:text="@string/no_data_found"
-                                                android:textColor="@color/light_gray_text"
-                                                android:textSize="@dimen/_12sdp"
-                                                android:visibility="gone" />
-
-                                            <TextView
-                                                android:visibility="gone"
-                                                android:id="@+id/tvInvestmentPlanError"
-                                                android:layout_marginTop="@dimen/_10sdp"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto"
-                                                android:layout_gravity="center"
-                                                android:gravity="center"
-                                                android:text=""
-                                                android:textColor="@color/light_gray_text"
-                                                android:textSize="@dimen/_12sdp" />
-                                            <Button
-                                                android:visibility="gone"
-                                                android:id="@+id/btn_investment_plan"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="@dimen/_35sdp"
-                                                android:layout_marginTop="@dimen/_10sdp"
-                                                android:background="@drawable/button_ripple_green"
-                                                android:fontFamily="@font/roboto"
-                                                android:gravity="center"
-                                                android:text="@string/invest"
-                                                android:textAllCaps="false"
-                                                android:textColor="@color/colorPrimary"
-                                                android:textSize="@dimen/_14sdp" />
-
-                                        </LinearLayout>
                                     </LinearLayout>
+                                </LinearLayout>
 
-                                    <LinearLayout
-                                        android:id="@+id/ll_risk"
+                                <LinearLayout
+                                    android:id="@+id/llPaymentCondition"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/ll_fundraiser"
+                                    android:orientation="vertical"
+                                    android:paddingLeft="@dimen/_5sdp"
+                                    android:paddingRight="@dimen/_5sdp">
+
+                                    <RelativeLayout
+                                        android:id="@+id/rlPaymentHeader"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/ll_investment_plan"
-                                        android:orientation="vertical"
-                                        android:paddingLeft="@dimen/_5sdp"
-                                        android:paddingRight="@dimen/_5sdp">
+                                        android:layout_height="@dimen/_35sdp"
+                                        android:padding="@dimen/_5sdp">
 
-                                        <RelativeLayout
-                                            android:id="@+id/rl_risk_click"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="@dimen/_35sdp"
-                                            android:padding="@dimen/_5sdp">
-
-                                            <TextView
-                                                android:id="@+id/tv_arrow_risk"
-                                                android:layout_width="@dimen/_25sdp"
-                                                android:layout_height="match_parent"
-                                                android:layout_alignParentRight="true"
-                                                android:textSize="@dimen/_14sdp"
-                                                android:background="@drawable/ic_arrow_down"
-                                                android:fontFamily="@font/roboto_medium" />
-
-                                            <TextView
-                                                android:id="@+id/tv_rik"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:layout_centerInParent="true"
-                                                android:layout_toLeftOf="@id/tv_arrow_risk"
-                                                android:fontFamily="@font/roboto_medium"
-                                                android:gravity="center"
-                                                android:text=""
-                                                android:textColor="@color/colorPrimaryDark"
-                                                android:textSize="@dimen/_14sdp" />
-
-                                        </RelativeLayout>
-
-                                        <View
-                                            android:layout_width="match_parent"
-                                            android:layout_height="@dimen/_1sdp"
-                                            android:background="@color/light_gray_bg" />
-
-                                        <LinearLayout
-                                            android:id="@+id/ll_contant_risk"
-                                            android:layout_width="match_parent"
+                                        <TextView
+                                            android:id="@+id/tvArrowPayment"
+                                            android:layout_width="@dimen/_25sdp"
                                             android:layout_height="match_parent"
-                                            android:orientation="vertical">
+                                            android:layout_alignParentRight="true"
+                                            android:background="@drawable/ic_arrow_down"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:textSize="@dimen/_14sdp" />
 
-                                            <androidx.recyclerview.widget.RecyclerView
-                                                android:id="@+id/recyViewRisk"
-                                                android:layout_marginTop="@dimen/_5sdp"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:visibility="visible" />
-
-                                            <TextView
-                                                android:id="@+id/tvNoRecord_Risk"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto"
-                                                android:gravity="center"
-                                                android:text="@string/no_data_found"
-                                                android:textColor="@color/light_gray_text"
-                                                android:textSize="@dimen/_12sdp"
-                                                android:visibility="gone" />
-
-                                            <TextView
-                                                android:visibility="gone"
-                                                android:id="@+id/tvInvestRiskError"
-                                                android:layout_marginTop="@dimen/_10sdp"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto"
-                                                android:layout_gravity="center"
-                                                android:gravity="center"
-                                                android:text=""
-                                                android:textColor="@color/light_gray_text"
-                                                android:textSize="@dimen/_12sdp" />
-                                            <Button
-                                                android:visibility="gone"
-                                                android:id="@+id/btn_invest_risk"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="@dimen/_38sdp"
-                                                android:layout_marginTop="@dimen/_10sdp"
-                                                android:background="@drawable/button_ripple_green"
-                                                android:fontFamily="@font/roboto"
-                                                android:text="Invest"
-                                                android:textAllCaps="false"
-                                                android:textColor="@color/colorPrimary"
-                                                android:textSize="@dimen/_14sdp" />
-
-                                        </LinearLayout>
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:id="@+id/ll_document"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/ll_risk"
-                                        android:orientation="vertical"
-                                        android:paddingLeft="@dimen/_5sdp"
-                                        android:paddingRight="@dimen/_5sdp">
-
-                                        <RelativeLayout
-                                            android:id="@+id/rl_document_click"
+                                        <TextView
+                                            android:id="@+id/tvPaymentHeaderTittle"
                                             android:layout_width="match_parent"
-                                            android:layout_height="@dimen/_35sdp"
-                                            android:padding="@dimen/_5sdp">
-
-                                            <TextView
-                                                android:id="@+id/tv_arrow_document"
-                                                android:layout_width="@dimen/_25sdp"
-                                                android:layout_height="match_parent"
-                                                android:layout_alignParentRight="true"
-                                                android:textSize="@dimen/_14sdp"
-                                                android:background="@drawable/ic_arrow_down"
-                                                android:fontFamily="@font/roboto_medium" />
-
-                                            <TextView
-                                                android:id="@+id/tv_document"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:layout_centerInParent="true"
-                                                android:layout_toLeftOf="@id/tv_arrow_document"
-                                                android:fontFamily="@font/roboto_medium"
-                                                android:gravity="center"
-                                                android:text=""
-                                                android:textColor="@color/colorPrimaryDark"
-                                                android:textSize="@dimen/_14sdp" />
-
-                                        </RelativeLayout>
-
-                                        <View
-                                            android:layout_width="match_parent"
-                                            android:layout_height="@dimen/_1sdp"
-                                            android:background="@color/light_gray_bg" />
-
-                                        <LinearLayout
-                                            android:id="@+id/ll_contant_document"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:layout_gravity="center"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerInParent="true"
+                                            android:layout_toLeftOf="@id/tvArrowPayment"
+                                            android:fontFamily="@font/roboto_medium"
                                             android:gravity="center"
-                                            android:orientation="vertical">
+                                            android:text=""
+                                            android:textColor="@color/colorPrimaryDark"
+                                            android:textSize="@dimen/_14sdp" />
 
-                                            <androidx.recyclerview.widget.RecyclerView
-                                                android:layout_marginTop="@dimen/_5sdp"
-                                                android:id="@+id/recyViewDocument"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:visibility="visible" />
+                                    </RelativeLayout>
 
-                                            <TextView
-                                                android:id="@+id/tvNoRecord_Document"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto"
-                                                android:gravity="center"
-                                                android:text="@string/no_data_found"
-                                                android:textColor="@color/light_gray_text"
-                                                android:textSize="@dimen/_12sdp"
-                                                android:visibility="gone" />
-
-                                            <TextView
-                                                android:visibility="gone"
-                                                android:id="@+id/tvDocumentError"
-                                                android:layout_marginTop="@dimen/_10sdp"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto"
-                                                android:layout_gravity="center"
-                                                android:gravity="center"
-                                                android:text=""
-                                                android:textColor="@color/light_gray_text"
-                                                android:textSize="@dimen/_12sdp" />
-
-                                            <Button
-                                                android:visibility="gone"
-                                                android:id="@+id/btn_invest_document"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="@dimen/_38sdp"
-                                                android:layout_marginTop="@dimen/_10sdp"
-                                                android:background="@drawable/button_ripple_green"
-                                                android:fontFamily="@font/roboto"
-                                                android:text="Invest"
-                                                android:textAllCaps="false"
-                                                android:textColor="@color/colorPrimary"
-                                                android:textSize="@dimen/_14sdp" />
-
-                                        </LinearLayout>
-                                    </LinearLayout>
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_1sdp"
+                                        android:background="@color/light_gray_bg" />
 
                                     <LinearLayout
-                                        android:id="@+id/ll_last_investment"
+                                        android:id="@+id/llPaymentContent"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/ll_document"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
                                         android:orientation="vertical"
-                                        android:paddingBottom="@dimen/_10sdp"
-                                        android:paddingLeft="@dimen/_5sdp"
-                                        android:paddingRight="@dimen/_5sdp">
+                                        android:padding="@dimen/_5sdp">
 
-                                        <RelativeLayout
-                                            android:id="@+id/rl_last_invest_click"
+                                        <TextView
+                                            android:id="@+id/tvPaymentContentDisplay"
                                             android:layout_width="match_parent"
-                                            android:layout_height="@dimen/_35sdp"
-                                            android:padding="@dimen/_5sdp">
-
-                                            <TextView
-                                                android:id="@+id/tv_arrow_last_investment"
-                                                android:layout_width="@dimen/_25sdp"
-                                                android:layout_height="match_parent"
-                                                android:layout_alignParentRight="true"
-                                                android:layout_centerInParent="true"
-                                                android:textSize="@dimen/_14sdp"
-                                                android:background="@drawable/ic_arrow_down"
-                                                android:fontFamily="@font/roboto_medium" />
-
-                                            <TextView
-                                                android:id="@+id/tv_last_investment"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:layout_centerInParent="true"
-                                                android:layout_toLeftOf="@id/tv_arrow_last_investment"
-                                                android:fontFamily="@font/roboto_medium"
-                                                android:gravity="center"
-                                                android:text=""
-                                                android:textColor="@color/colorPrimaryDark"
-                                                android:textSize="@dimen/_14sdp" />
-                                        </RelativeLayout>
-
-                                        <View
-                                            android:layout_width="match_parent"
-                                            android:layout_height="@dimen/_1sdp"
+                                            android:layout_height="wrap_content"
                                             android:layout_marginTop="@dimen/_5sdp"
-                                            android:layout_marginBottom="@dimen/_5sdp"
-                                            android:background="@color/light_gray_bg" />
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="left"
+                                            android:text=""
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_12sdp" />
 
-                                        <LinearLayout
-                                            android:id="@+id/ll_contant_last_invest"
+                                        <TextView
+                                            android:id="@+id/tvPaymentNoData"
                                             android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
+                                            android:layout_height="wrap_content"
                                             android:layout_gravity="center"
+                                            android:layout_marginTop="@dimen/_5sdp"
+                                            android:fontFamily="@font/roboto"
                                             android:gravity="center"
-                                            android:orientation="vertical">
+                                            android:text="@string/no_data_found"
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
 
-                                            <androidx.recyclerview.widget.RecyclerView
-                                                android:id="@+id/recyViewLastInvestment"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginTop="@dimen/_5sdp"
-                                                android:visibility="visible" />
+                                        <TextView
+                                            android:id="@+id/tvPaymentError"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="center"
+                                            android:text=""
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
 
-                                            <TextView
-                                                android:id="@+id/tvNoRecord_LastInvestment"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto"
-                                                android:gravity="center"
-                                                android:text="@string/no_data_found"
-                                                android:textColor="@color/light_gray_text"
-                                                android:textSize="@dimen/_12sdp"
-                                                android:visibility="gone" />
+                                        <Button
+                                            android:id="@+id/btnPaymentInvest"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/_33sdp"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:background="@drawable/button_ripple_green"
+                                            android:fontFamily="@font/roboto"
+                                            android:text="@string/invest"
+                                            android:textAllCaps="false"
+                                            android:textColor="@color/colorPrimary"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
 
-                                            <TextView
-                                                android:visibility="gone"
-                                                android:id="@+id/tvLastInvestError"
-                                                android:layout_marginTop="@dimen/_10sdp"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto"
-                                                android:layout_gravity="center"
-                                                android:gravity="center"
-                                                android:text=""
-                                                android:textColor="@color/light_gray_text"
-                                                android:textSize="@dimen/_12sdp" />
-
-                                            <Button
-                                                android:visibility="gone"
-                                                android:id="@+id/btn_last_invest"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="@dimen/_38sdp"
-                                                android:layout_marginTop="@dimen/_10sdp"
-                                                android:background="@drawable/button_ripple_green"
-                                                android:fontFamily="@font/roboto"
-                                                android:gravity="center"
-                                                android:text="Invest"
-                                                android:textAllCaps="false"
-                                                android:textColor="@color/colorPrimary"
-                                                android:textSize="@dimen/_14sdp" />
-
-                                        </LinearLayout>
                                     </LinearLayout>
-                                </RelativeLayout>
-                            </androidx.cardview.widget.CardView>
-                        </LinearLayout>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/llAdditionalTermsCard"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/llPaymentCondition"
+                                    android:orientation="vertical"
+                                    android:paddingLeft="@dimen/_5sdp"
+                                    android:paddingRight="@dimen/_5sdp">
+
+                                    <RelativeLayout
+                                        android:id="@+id/rlAddiTermsHeader"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_35sdp"
+                                        android:padding="@dimen/_5sdp">
+
+                                        <TextView
+                                            android:id="@+id/tvArrowAddiTerms"
+                                            android:layout_width="@dimen/_25sdp"
+                                            android:layout_height="match_parent"
+                                            android:layout_alignParentRight="true"
+                                            android:background="@drawable/ic_arrow_down"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:textSize="@dimen/_14sdp" />
+
+                                        <TextView
+                                            android:id="@+id/tvAddiTermsHeaderTittle"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerInParent="true"
+                                            android:layout_toLeftOf="@id/tvArrowAddiTerms"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:gravity="center"
+                                            android:text=""
+                                            android:textColor="@color/colorPrimaryDark"
+                                            android:textSize="@dimen/_14sdp" />
+
+                                    </RelativeLayout>
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_1sdp"
+                                        android:background="@color/light_gray_bg" />
+
+                                    <LinearLayout
+                                        android:id="@+id/llAddiTermsContent"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
+                                        android:orientation="vertical"
+                                        android:padding="@dimen/_5sdp">
+
+                                        <TextView
+                                            android:id="@+id/tvAddiTermsContentDisplay"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="@dimen/_5sdp"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="left"
+                                            android:text=""
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_12sdp" />
+                                        /
+
+                                        <TextView
+                                            android:id="@+id/tvAddiTermsNoData"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_marginTop="@dimen/_5sdp"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="center"
+                                            android:text="@string/no_data_found"
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
+
+                                        <TextView
+                                            android:id="@+id/tvAddiTermsError"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="center"
+                                            android:text=""
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
+
+                                        <Button
+                                            android:id="@+id/btnAddiTermsInvest"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/_33sdp"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:background="@drawable/button_ripple_green"
+                                            android:fontFamily="@font/roboto"
+                                            android:text="@string/invest"
+                                            android:textAllCaps="false"
+                                            android:textColor="@color/colorPrimary"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
+
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/llPitchSecuritiesCard"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/llAdditionalTermsCard"
+                                    android:orientation="vertical"
+                                    android:paddingLeft="@dimen/_5sdp"
+                                    android:paddingRight="@dimen/_5sdp">
+
+                                    <RelativeLayout
+                                        android:id="@+id/rlPitchSecHeader"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_35sdp"
+                                        android:padding="@dimen/_5sdp">
+
+                                        <TextView
+                                            android:id="@+id/tvArrowPitchSec"
+                                            android:layout_width="@dimen/_25sdp"
+                                            android:layout_height="match_parent"
+                                            android:layout_alignParentRight="true"
+                                            android:background="@drawable/ic_arrow_down"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:textSize="@dimen/_14sdp" />
+
+                                        <TextView
+                                            android:id="@+id/tvPitchSecHeaderTittle"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerInParent="true"
+                                            android:layout_toLeftOf="@id/tvArrowPitchSec"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:gravity="center"
+                                            android:text=""
+                                            android:textColor="@color/colorPrimaryDark"
+                                            android:textSize="@dimen/_14sdp" />
+
+                                    </RelativeLayout>
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_1sdp"
+                                        android:background="@color/light_gray_bg" />
+
+                                    <LinearLayout
+                                        android:id="@+id/llPitchSecContent"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
+                                        android:orientation="vertical"
+                                        android:padding="@dimen/_5sdp">
+
+                                        <TextView
+                                            android:id="@+id/tvPitchSecDisplayContent"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="@dimen/_5sdp"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="left"
+                                            android:text=""
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_12sdp" />
+
+                                        <TextView
+                                            android:id="@+id/tvPitchSecNoData"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_marginTop="@dimen/_5sdp"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="center"
+                                            android:text="@string/no_data_found"
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
+
+                                        <TextView
+                                            android:id="@+id/tvPitchSecError"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:fontFamily="@font/roboto"
+                                            android:gravity="center"
+                                            android:text=""
+                                            android:textColor="@color/light_gray_text"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
+
+                                        <Button
+                                            android:id="@+id/btnPitchSecInvest"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/_33sdp"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:background="@drawable/button_ripple_green"
+                                            android:fontFamily="@font/roboto"
+                                            android:text="@string/invest"
+                                            android:textAllCaps="false"
+                                            android:textColor="@color/colorPrimary"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </RelativeLayout>
+                        </androidx.cardview.widget.CardView>
                     </LinearLayout>
-                </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </RelativeLayout>

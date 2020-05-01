@@ -102,6 +102,21 @@ public class Utils {
         }
     }
 
+    public static int getFilledData(int total_amount, String amount) throws ArithmeticException {
+        int mAmountR = 0;
+        if (amount == null) {
+            mAmountR = 0;
+        } else {
+            try {
+                mAmountR = ((total_amount * 100) / Integer.valueOf(amount));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        return mAmountR;
+    }
+
+
     // for replace <br>
     public static String getCustomRepalce(String[] message) {
         String mMessage = "";

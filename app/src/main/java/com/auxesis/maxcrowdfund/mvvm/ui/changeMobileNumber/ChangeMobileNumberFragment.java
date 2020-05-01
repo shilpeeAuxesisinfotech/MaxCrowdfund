@@ -50,14 +50,19 @@ public class ChangeMobileNumberFragment extends Fragment {
     CountryCodePicker ccp_countryCode;
     String countryCode = "";
     String code = "";
-    String reSendcode = "";
     String mOTP = "";
+    String countryName = "";
     Activity mActivity;
+    private String mMobileNumber = "";
+    private String mAddressCountryCode = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_change_mobile_number, container, false);
         mActivity = getActivity();
+        mMobileNumber = getPreference(mActivity, "mobile");
+        mAddressCountryCode = getPreference(mActivity, "countryCode");
+
         cardViewSend = root.findViewById(R.id.cardViewSend);
         cardViewVerify = root.findViewById(R.id.cardViewVerify);
         cardViewSend.setVisibility(View.VISIBLE);
@@ -66,19 +71,31 @@ public class ChangeMobileNumberFragment extends Fragment {
         btn_resend = root.findViewById(R.id.btn_resend);
         btn_verify = root.findViewById(R.id.btn_verify);
         tv_mobile = root.findViewById(R.id.tv_mobile);
+        edt_mobile = root.findViewById(R.id.edt_mobile);
         edt_verifyCode = root.findViewById(R.id.edt_verifyCode);
         /*For Country code*/
         ccp_countryCode = root.findViewById(R.id.ccp_countryCode);
-        //countryCode = ccp_countryCode.getDefaultCountryCode();
-        countryCode = ccp_countryCode.getSelectedCountryCodeWithPlus();
+        if (mMobileNumber != null && mAddressCountryCode != null) {
+            if (mMobileNumber.equals("0")) {
+                ccp_countryCode.setCountryForNameCode(mAddressCountryCode);
+                countryCode = ccp_countryCode.getSelectedCountryCodeWithPlus();
+                countryName = ccp_countryCode.getSelectedCountryNameCode();
+                edt_mobile.setText("");
+            } else {
+                ccp_countryCode.setCountryForNameCode(mAddressCountryCode);
+                countryCode = ccp_countryCode.getSelectedCountryCodeWithPlus();
+                countryName = ccp_countryCode.getSelectedCountryNameCode();
+                edt_mobile.setText(mMobileNumber);
+            }
+        }
         ccp_countryCode.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
             @Override
             public void onCountrySelected() {
                 countryCode = ccp_countryCode.getSelectedCountryCodeWithPlus();
                 Log.d(TAG, "onCountrySelected: " + ">>>>>>>>>>" + countryCode);
+                Log.d(TAG, "onCountrySelected: " + ">>>>>>>>>>" + ccp_countryCode.getSelectedCountryNameCode());
             }
         });
-        edt_mobile = root.findViewById(R.id.edt_mobile);
         //For Send Otp
         btn_send_verify = root.findViewById(R.id.btn_send_verify);
         btn_send_verify.setOnClickListener(new View.OnClickListener() {
@@ -95,7 +112,6 @@ public class ChangeMobileNumberFragment extends Fragment {
                 }
             }
         });
-
         //For Verify OTP
         btn_verify.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,7 +154,6 @@ public class ChangeMobileNumberFragment extends Fragment {
                 }
             }
         });
-
         return root;
     }
 
@@ -160,13 +175,12 @@ public class ChangeMobileNumberFragment extends Fragment {
                     if (pd != null && pd.isShowing()) {
                         pd.dismiss();
                     }
-                    if (response.code()==200) {
+                    if (response.code() == 200) {
                         if (response != null && response.isSuccessful()) {
                             Log.d(TAG, "onResponse: " + "><send><" + new Gson().toJson(response.body()));
                             if (response.body().getUserLoginStatus() == 1) {
                                 if (response.body().getMessage() != null) {
                                     if (response.body().getOtp() != null) {
-                                        //Toast.makeText(getActivity(), "OTP Send Successfully..", Toast.LENGTH_SHORT).show();
                                         Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                                         setPreference(getActivity(), "countryCode", countryCode);
                                         setPreference(getActivity(), "enteredPhone", enteredPhone);
@@ -175,14 +189,14 @@ public class ChangeMobileNumberFragment extends Fragment {
                                         cardViewVerify.setVisibility(View.VISIBLE);
                                         edt_mobile.setText("");
                                         tv_mobile.setText("+" + getPreference(getActivity(), "countryCode") + getPreference(getActivity(), "enteredPhone"));
-                                    }else {
+                                    } else {
                                         Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             } else {
                                 setPreference(getActivity(), "user_id", "");
                                 setPreference(getActivity(), "mLogout_token", "");
-                                MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                                MaxCrowdFund.getInstance().getClearCookies(getActivity(), "cookies", "");
                                 Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                                 startActivity(intent);
@@ -219,7 +233,7 @@ public class ChangeMobileNumberFragment extends Fragment {
     private void getResendOTP() {
         pd = ProgressDialog.show(getActivity(), "Please Wait...");
         JsonObject jsonObject = new JsonObject();
-       // jsonObject.addProperty("phone", getPreference(getActivity(), "enteredPhone"));
+        // jsonObject.addProperty("phone", getPreference(getActivity(), "enteredPhone"));
         jsonObject.addProperty("tfa_type", getPreference(getActivity(), "enteredPhone"));
         String XCSRF = getPreference(getActivity(), "mCsrf_token");
         EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
@@ -233,24 +247,24 @@ public class ChangeMobileNumberFragment extends Fragment {
                     }
                     if (response != null && response.isSuccessful()) {
                         if (response.body().getUserLoginStatus() == 1) {
-                            if (response.body().getMessage()!=null) {
+                            if (response.body().getMessage() != null) {
                                 if (response.body().getOtp() != null) {
                                     Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                                   // Toast.makeText(getActivity(), "OTP Resend Successfully...", Toast.LENGTH_SHORT).show();
-                                }else {
+                                    // Toast.makeText(getActivity(), "OTP Resend Successfully...", Toast.LENGTH_SHORT).show();
+                                } else {
                                     Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         } else {
                             setPreference(getActivity(), "user_id", "");
                             setPreference(getActivity(), "mLogout_token", "");
-                            MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                            MaxCrowdFund.getInstance().getClearCookies(getActivity(), "cookies", "");
                             Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getActivity(), LoginActivity.class);
                             startActivity(intent);
                             mActivity.finish();
                         }
-                    }else {
+                    } else {
                         Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
@@ -298,7 +312,7 @@ public class ChangeMobileNumberFragment extends Fragment {
                         } else {
                             setPreference(getActivity(), "user_id", "");
                             setPreference(getActivity(), "mLogout_token", "");
-                            MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                            MaxCrowdFund.getInstance().getClearCookies(getActivity(), "cookies", "");
                             Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getActivity(), LoginActivity.class);
                             startActivity(intent);

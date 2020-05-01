@@ -30,6 +30,15 @@ public class Data {
     @SerializedName("avatar")
     @Expose
     private Avatar avatar;
+    @SerializedName("mobile_number")
+    @Expose
+    private MobileNumber mobileNumber;
+    @SerializedName("address_country")
+    @Expose
+    private AddressCountry addressCountry;
+    @SerializedName("address_country_code")
+    @Expose
+    private AddressCountryCode addressCountryCode;
 
     public Name getName() {
         return name;
@@ -93,6 +102,30 @@ public class Data {
 
     public void setAvatar(Avatar avatar) {
         this.avatar = avatar;
+    }
+
+    public MobileNumber getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(MobileNumber mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
+    public AddressCountry getAddressCountry() {
+        return addressCountry;
+    }
+
+    public void setAddressCountry(AddressCountry addressCountry) {
+        this.addressCountry = addressCountry;
+    }
+
+    public AddressCountryCode getAddressCountryCode() {
+        return addressCountryCode;
+    }
+
+    public void setAddressCountryCode(AddressCountryCode addressCountryCode) {
+        this.addressCountryCode = addressCountryCode;
     }
 
 }

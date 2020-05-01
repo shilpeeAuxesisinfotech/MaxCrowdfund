@@ -8,15 +8,16 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.mvvm.ui.changePreference.model.Option__;
+import com.auxesis.maxcrowdfund.mvvm.ui.investform.questmodel.famodel.SpinnerModel;
 
 
 import java.util.List;
 
 public class TransactionSigningAdapter extends BaseAdapter {
     Context mContext;
-    List<Option__> modelList;
+    List<SpinnerModel> modelList;
 
-    public TransactionSigningAdapter(Context mContext, List<Option__> modelList) {
+    public TransactionSigningAdapter(Context mContext, List<SpinnerModel> modelList) {
         this.mContext = mContext;
         this.modelList = modelList;
     }
@@ -27,7 +28,7 @@ public class TransactionSigningAdapter extends BaseAdapter {
     }
 
     @Override
-    public Option__ getItem(int position) {
+    public SpinnerModel getItem(int position) {
         return modelList.get(position);
     }
 

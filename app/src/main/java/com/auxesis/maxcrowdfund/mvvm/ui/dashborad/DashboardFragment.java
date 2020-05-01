@@ -8,28 +8,41 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.auxesis.maxcrowdfund.R;
 import com.auxesis.maxcrowdfund.constant.MaxCrowdFund;
 import com.auxesis.maxcrowdfund.constant.ProgressDialog;
 import com.auxesis.maxcrowdfund.constant.Utils;
 import com.auxesis.maxcrowdfund.mvvm.activity.LoginActivity;
+import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.adapter.AccountBalanceAdapter;
+import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.adapter.NetReturnAdapter;
+import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.adapter.PortFolioAdapter;
 import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboardmodel.AccountBalanceModel;
+import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.netreturnmodel.NetReturnModel;
 import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.pendingmodel.PortfolioModel;
 import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboardmodel.AccountResponse;
 import com.auxesis.maxcrowdfund.mvvm.ui.dashborad.pendingmodel.PendingResponse;
 import com.auxesis.maxcrowdfund.restapi.ApiClient;
 import com.auxesis.maxcrowdfund.restapi.EndPointInterface;
 import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 import static com.auxesis.maxcrowdfund.constant.Utils.getPreference;
 import static com.auxesis.maxcrowdfund.constant.Utils.setPreference;
 
@@ -38,6 +51,7 @@ public class DashboardFragment extends Fragment {
     ProgressDialog pd;
     AccountBalanceAdapter accountbalanceadapter;
     PortFolioAdapter portFolioAdapter;
+    NetReturnAdapter netReturnAdapter;
     List<AccountBalanceModel> accountlist = new ArrayList<>();
     List<AccountBalanceModel> depositedlist = new ArrayList<>();
     List<AccountBalanceModel> withdrawnlist = new ArrayList<>();
@@ -60,7 +74,9 @@ public class DashboardFragment extends Fragment {
     List<PortfolioModel> arrears_3 = new ArrayList<>();
     List<PortfolioModel> arrears_4 = new ArrayList<>();
     List<PortfolioModel> reserved = new ArrayList<>();
-    RecyclerView recyViewAccBalance, recyViewPortFolio;
+
+    String netResponse = "{\"data\":[{\"title\":\"Net returen\",\"type\":\"\",\"value\":\"\"},{\"title\":\"Average returen\",\"type\":\"C\",\"value\":\"8.00\"},{\"title\":\"Incidental\",\"type\":\"C\",\"value\":\"0.00\"},{\"title\":\"Fees\",\"type\":\"D\",\"value\":\"0.50\"},{\"title\":\"Reserved\",\"type\":\"D\",\"value\":\"0.00\"},{\"title\":\"Written-off\",\"type\":\"D\",\"value\":\"0.00\"},{\"title\":\"Net return\",\"type\":\"D\",\"value\":\"7.50\"}]}";
+    private RecyclerView recyViewAccBalance, recyViewPortFolio, recViewNetReturn;
     Activity mActivity;
 
     @Override
@@ -74,13 +90,37 @@ public class DashboardFragment extends Fragment {
         mActivity = getActivity();
         recyViewAccBalance = root.findViewById(R.id.recyViewAccBalance);
         recyViewPortFolio = root.findViewById(R.id.recyViewPortFolio);
+        recViewNetReturn = root.findViewById(R.id.recViewNetReturn);
+
         if (Utils.isInternetConnected(getActivity())) {
             getAccountBalance();
             getPortFolio();
+            getNetReturn();
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
         }
         return root;
+    }
+
+    private void getNetReturn() {
+        List<NetReturnModel> netReturn = new ArrayList<>();
+        netReturn.clear();
+        netReturn.add(new NetReturnModel("Net return", "", ""));
+        netReturn.add(new NetReturnModel("Average return", "C", "8.00"));
+        netReturn.add(new NetReturnModel("Incidental", "D", "0.00"));
+        netReturn.add(new NetReturnModel("Fees", "D", "0.50"));
+        netReturn.add(new NetReturnModel("Reserved", "D", "0.00"));
+        netReturn.add(new NetReturnModel("Written-off", "D", "0.00"));
+        netReturn.add(new NetReturnModel("Net return", "D", "7.50"));
+
+        if (netReturn.size() > 0) {
+            netReturnAdapter = new NetReturnAdapter(getActivity(), netReturn);
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+            recViewNetReturn.setLayoutManager(mLayoutManager);
+            recViewNetReturn.setItemAnimator(new DefaultItemAnimator());
+            recViewNetReturn.setAdapter(netReturnAdapter);
+            netReturnAdapter.notifyDataSetChanged();
+        }
     }
 
     private void getAccountBalance() {
@@ -113,7 +153,6 @@ public class DashboardFragment extends Fragment {
                             mpgsPurchaseList.clear();
                             totalBalanceList.clear();
                             lastButtonList.clear();
-
                             if (response.body().getBalance() != null) {
                                 /*For Account balance*/
                                 if (response.body().getBalance() != null) {
@@ -212,7 +251,7 @@ public class DashboardFragment extends Fragment {
                                     mpgsPurchaseList.add(mpgs_purchaseModel);
                                 }
 
-                                 //For total balance
+                                //For total balance
                                 if (response.body().getBalance().getData().getTotalBalance() != null) {
                                     AccountBalanceModel totalBalance = new AccountBalanceModel();
                                     totalBalance.setmTitle(response.body().getBalance().getData().getTotalBalance().getTitle());
@@ -251,7 +290,7 @@ public class DashboardFragment extends Fragment {
                         } else {
                             setPreference(getActivity(), "user_id", "");
                             setPreference(getActivity(), "mLogout_token", "");
-                            MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                            MaxCrowdFund.getInstance().getClearCookies(getActivity(), "cookies", "");
                             Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getActivity(), LoginActivity.class);
                             startActivity(intent);

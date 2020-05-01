@@ -36,9 +36,9 @@
         <action
             android:id="@+id/action_nav_my_investments_self"
             app:destination="@id/nav_my_investments" />
-        <action
+        <!--<action
             android:id="@+id/action_nav_my_investments_to_investFormFragment"
-            app:destination="@id/investFormFragment" />
+            app:destination="@id/investFormFragment" />-->
     </fragment>
 
     <fragment
@@ -138,6 +138,9 @@
         android:name="com.auxesis.maxcrowdfund.mvvm.ui.investform.InvestFormFragment"
         android:label="@string/max_property_group"
         tools:layout="@layout/fragment_invest_form" >
+        <action
+            android:id="@+id/action_investFormFragment_to_nav_my_investments"
+            app:destination="@id/nav_my_investments" />
     </fragment>
 
 </navigation>

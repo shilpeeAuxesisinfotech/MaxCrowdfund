@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -136,6 +135,7 @@ public class HomeFragment extends Fragment {
                 if (response.code() == 200) {
                     if (response != null && response.isSuccessful()) {
                         if (response.body().getUserLoginStatus() == 1) {
+                            Log.d("><><><>", "onResponse: "+response.body().getUserLoginStatus());
                             listArrayActive.clear();
                             listArrayMeddle.clear();
                             listArrayExpired.clear();
@@ -178,6 +178,7 @@ public class HomeFragment extends Fragment {
                                                     mModel.setType(response.body().getData().get(i).getType());
                                                     mModel.setLocation(response.body().getData().get(i).getLocation());
                                                     mModel.setLocation_flag_img(response.body().getData().get(i).getLocationFlagImg());
+                                                    mModel.setInvested_total_amount_on_loan(response.body().getData().get(i).getInvestedTotalAmountOnLoan());
                                                     mModel.setTypeData(false);
                                                     listArrayActive.add(mModel);
                                                 }
@@ -205,6 +206,7 @@ public class HomeFragment extends Fragment {
                                                     mSecondModelActive.setLocation(response.body().getData().get(i).getLocation());
                                                     mSecondModelActive.setLocation_flag_img(response.body().getData().get(i).getLocationFlagImg());
                                                     mSecondModelActive.setInvestment_status(response.body().getFundraiserType());
+                                                    mSecondModelActive.setInvested_total_amount_on_loan(response.body().getData().get(i).getInvestedTotalAmountOnLoan());
                                                     mSecondModelActive.setTypeData(false);
                                                     listArrayActive.add(mSecondModelActive);
                                                 }
@@ -218,7 +220,7 @@ public class HomeFragment extends Fragment {
                                                 Log.d("><><>", "page " + String.valueOf(currentPage) + "><><>" + String.valueOf(TOTAL_ACTIVE_PAGES));
                                                 adapter.addLoading();
                                             } else if (currentPage <= APICount) {
-                                                Log.d("><><>", "page " + String.valueOf(currentPage) + "><>else<>" + String.valueOf(TOTAL_ACTIVE_PAGES));
+                                                Log.d("><><>", "page " + String.valueOf(currentPage) + "><>else<>" +String.valueOf(APICount)+">>>>t>>>>>>>>>>>" +String.valueOf(TOTAL_ACTIVE_PAGES));
                                                 listArrayActive.clear();
                                                 listArrayActive.addAll(listArrayMeddle);
                                                 adapter.addItems(listArrayActive);
@@ -230,7 +232,6 @@ public class HomeFragment extends Fragment {
                                                 isLastPage = true;
                                             }
                                             isLoading = false;*/
-
                                             // if Active Total is less than three //For first three
                                             if (isFirstThreeActive) {
                                                 Log.d("><><><", "First threee----");
@@ -243,8 +244,8 @@ public class HomeFragment extends Fragment {
                                                 adapter.addItems(listArrayActive);
                                                 APIUrl.investStatus = "expired";
                                                 APICount = 0;
-                                                isRedirectData = true;
                                                 isFirstThreeActive = false;
+                                               // isRedirectData = true;
                                             }
                                         }
                                     }
@@ -253,6 +254,9 @@ public class HomeFragment extends Fragment {
                                 mExpiredTotal = response.body().getTotal();
                                 Log.d("<><><><><", "ifelse--for expired only--" + mExpiredTotal); //for active only
                                 if (mExpiredTotal != 0) {
+                                    if (pd != null && pd.isShowing()) {
+                                        pd.dismiss();
+                                    }
                                     if (response.body().getData() != null && response.body().getData().size() > 0) {
                                         if (mExpiredTotal <= VISIBLE_THRESHOLD) {
                                             TOTAL_EXPIRED_PAGES = 0;
@@ -276,6 +280,7 @@ public class HomeFragment extends Fragment {
                                                 myListModelExFirst.setType(response.body().getData().get(i).getType());
                                                 myListModelExFirst.setLocation(response.body().getData().get(i).getLocation());
                                                 myListModelExFirst.setLocation_flag_img(response.body().getData().get(i).getLocationFlagImg());
+                                                myListModelExFirst.setInvested_total_amount_on_loan(response.body().getData().get(i).getInvestedTotalAmountOnLoan());
                                                 myListModelExFirst.setTypeData(false);
                                                 listArrayExpired.add(myListModelExFirst);
                                             }
@@ -305,6 +310,7 @@ public class HomeFragment extends Fragment {
                                                 mModelExSecond.setType(response.body().getData().get(i).getType());
                                                 mModelExSecond.setLocation(response.body().getData().get(i).getLocation());
                                                 mModelExSecond.setLocation_flag_img(response.body().getData().get(i).getLocationFlagImg());
+                                                mModelExSecond.setInvested_total_amount_on_loan(response.body().getData().get(i).getInvestedTotalAmountOnLoan());
                                                 mModelExSecond.setTypeData(false);
                                                 listArrayExpired.add(mModelExSecond);
                                             }
@@ -342,12 +348,13 @@ public class HomeFragment extends Fragment {
                                 APICount = 0;
                                 APIUrl.investStatus = "expired";
                                 isRedirectData = false;
+                                isFirstThreeActive = false;
                                 getInvestmentOpp();
                             }
                         } else {
                             setPreference(getActivity(), "user_id", "");
                             setPreference(getActivity(), "mLogout_token", "");
-                            MaxCrowdFund.getClearCookies(getActivity(), "cookies", "");
+                            MaxCrowdFund.getInstance().getClearCookies(getActivity(), "cookies", "");
                             Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getActivity(), LoginActivity.class);
                             startActivity(intent);
@@ -356,7 +363,7 @@ public class HomeFragment extends Fragment {
                     } else {
                         Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
                     }
-                } else if (response.code()==500 ||response.code()==400){
+                } else if (response.code() == 500 || response.code() == 400) {
                     if (pd != null && pd.isShowing()) {
                         pd.dismiss();
                     }
@@ -379,11 +386,13 @@ public class HomeFragment extends Fragment {
         super.onResume();
         isRedirectData = false;
         APICount = 0;
-        currentPage = 0;
+        currentPage = 1;
         mActiveTotal = 0;
         mActiveCount = 0;
         mExpiredCount = 0;
         mExpiredTotal = 0;
+        isFirstThreeActive = false;
+        isFirstThreeExpired = false;
         TOTAL_ACTIVE_PAGES = 0;
         TOTAL_EXPIRED_PAGES = 0;
         TOTAL_PAGES = 0;

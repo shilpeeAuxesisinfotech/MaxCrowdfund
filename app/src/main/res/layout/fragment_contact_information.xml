@@ -28,7 +28,7 @@
                 android:text=""
                 android:padding="@dimen/_5sdp"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/_12sdp"/>
+                android:textSize="@dimen/_14sdp"/>
 
             <View
                 android:layout_width="match_parent"

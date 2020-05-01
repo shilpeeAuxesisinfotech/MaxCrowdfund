@@ -167,7 +167,7 @@ public class HomeActivity extends AppCompatActivity {
                         Log.d(TAG, "onResponse: " + status);
                         setPreference(HomeActivity.this, "user_id", "");
                         setPreference(HomeActivity.this, "mLogout_token", "");
-                        MaxCrowdFund.getClearCookies(HomeActivity.this, "cookies", "");
+                        MaxCrowdFund.getInstance().getClearCookies(HomeActivity.this, "cookies", "");
                         Toast.makeText(HomeActivity.this, getResources().getString(R.string.logout_succ), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                         startActivity(intent);
@@ -294,7 +294,7 @@ public class HomeActivity extends AppCompatActivity {
                             setPreference(HomeActivity.this, "isRememberMe", "");
                             setPreference(HomeActivity.this, "user_id", "");
                             setPreference(HomeActivity.this, "mLogout_token", "");
-                            MaxCrowdFund.getClearCookies(HomeActivity.this, "cookies", "");
+                            MaxCrowdFund.getInstance().getClearCookies(HomeActivity.this, "cookies", "");
                             Toast.makeText(HomeActivity.this, getResources().getString(R.string.logout_succ), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                             startActivity(intent);
