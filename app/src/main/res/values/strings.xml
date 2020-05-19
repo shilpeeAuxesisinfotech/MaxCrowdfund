@@ -1,14 +1,18 @@
 <resources>
-    <string name="app_name">Max Crowdfund</string>
+    <string name="app_name">Max Crowdfund - Real Estate Crowdfunding Platform</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">Navigation header</string>
     <!--For navigation drawer-->
     <string name="menu_investments_opportunity">Investment Opportunities</string>
     <string name="menu_dashboard">Dashboard</string>
+    <string name="menu_my_account">My Account</string>
     <string name="menu_my_investments">My Investments</string>
+    <string name="menu_my_wallet">My Wallet</string>
+    <string name="menu_my_portfolio">My Portfolio</string>
     <string name="menu_my_profile">My Profile</string>
     <string name="menu_contact_information">Contact Information</string>
+    <string name="bank_transfer_detail">Bank Transfer Detail</string>
     <string name="menu_logout">Logout</string>
     <!--For Details page-->
     <string name="max_property_group">Max Property Group</string>
@@ -50,6 +54,7 @@
     <string name="max_crowdfund">Max Crowdfund</string>
     <string name="international_real_estate_crowdfunding_platform">International Real Estate Crowdfunding Platform</string>
     <string name="yes">Yes</string>
+
     <string name="no_internet">No internet Connection</string>
     <string name="oops_connect_your_internet">Oops! Connect Your Internet</string>
     <string name="something_went">Oops ! Something Went Wrong</string>
@@ -91,19 +96,17 @@
     <string name="downloadFailed">Download Failed…</string>
     <string name="downloadAgain">Download Again</string>
     <string name="noSdcard">Oops!! There is no SD Card.</string>
-    <string name="title_activity_home">HomeActivity</string>
 
+    <string name="title_activity_home">HomeActivity</string>
     <string name="action_settings">Settings</string>
     <string name="clear">Clear</string>
     <string name="filter">Filter</string>
     <string name="company">Company</string>
     <string name="invested">Invested</string>
-
     <!--For my investment -->
     <string name="enter_company">Please enter company name</string>
     <string name="enter_from">Please enter from</string>
     <string name="enter_to">Please enter to</string>
-
     <!--For Change Phone number-->
     <string name="enter_the_mobile_number_you_wish_to_verify">Enter the mobile number you wish to verify</string>
     <string name="enter_mobile_number">Enter mobile number</string>
@@ -116,9 +119,6 @@
     <string name="enter_otp">Please enter OTP</string>
     <string name="verify">Verify</string>
     <string name="sure_cancel">Are you sure to cancel?</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="off">Off</string>
     <string name="on">ON</string>
     <string name="enter_old_password">Enter old password</string>
@@ -126,14 +126,15 @@
     <string name="enter_confirm_password">Enter confirm password</string>
     <string name="confirm_password">New password and confirm password didn"'"t match.</string>
     <string name="eight_digit">New password should be greater than 8 digits.</string>
-    <!--<string name="confirm_password">New password and confirm password didn"'"t match.</string>-->
     <string name="update_password">Password update successfully...</string>
     <string name="submit_new_e_mail_address">Submit new e-mail address</string>
-
     <!--for change preference-->
     <string name="hint_language">Please select language</string>
     <string name="hint_active_account">Please select active account</string>
     <string name="hint_trans_signing">Please select transaction signing</string>
     <string name="hint_updated_succ">Update successfully...</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--€-->
 </resources>

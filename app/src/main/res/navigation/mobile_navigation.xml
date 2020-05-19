@@ -4,32 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_investment_opp">
-
     <fragment
         android:id="@+id/nav_investment_opp"
-        android:name="com.auxesis.maxcrowdfund.mvvm.ui.home.HomeFragment"
+        android:name="maxcrowdfund.com.mvvm.ui.home.HomeFragment"
         android:label="@string/menu_investments_opportunity"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_nav_investment_opp_to_investmentOppDetailFragment"
             app:destination="@id/investmentOppDetailFragment" />
     </fragment>
-
     <fragment
         android:id="@+id/nav_dashboard"
-        android:name="com.auxesis.maxcrowdfund.mvvm.ui.dashborad.DashboardFragment"
+        android:name="maxcrowdfund.com.mvvm.ui.dashborad.DashboardFragment"
         android:label="@string/menu_dashboard"
-        tools:layout="@layout/fragment_dashboard" >
-        <action
-            android:id="@+id/action_nav_dashboard_to_dashboardDepositFragment"
-            app:destination="@id/dashboardDepositFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_dashboard">
 
+        <!--  <action
+              android:id="@+id/action_nav_dashboard_to_dashboardDepositFragment"
+              app:destination="@id/dashboardDepositFragment" />
+        -->
+        <action
+            android:id="@+id/action_nav_dashboard_to_bankTransferDetailFragment"
+            app:destination="@id/bankTransferDetailFragment" />
+
+    </fragment>
     <fragment
         android:id="@+id/nav_my_investments"
-        android:name="com.auxesis.maxcrowdfund.mvvm.ui.myinvestments.MyInvestmentsFragment"
+        android:name="maxcrowdfund.com.mvvm.ui.myinvestments.MyInvestmentsFragment"
         android:title="@string/menu_my_investments"
-        tools:layout="@layout/fragment_my_investments" >
+        tools:layout="@layout/fragment_my_investments">
         <action
             android:id="@+id/action_nav_my_investments_to_nav_send"
             app:destination="@id/nav_my_investment_detail" />
@@ -40,12 +43,11 @@
             android:id="@+id/action_nav_my_investments_to_investFormFragment"
             app:destination="@id/investFormFragment" />-->
     </fragment>
-
     <fragment
         android:id="@+id/nav_my_profile"
-        android:name="com.auxesis.maxcrowdfund.mvvm.ui.myprofile.MyProfileFragment"
+        android:name="maxcrowdfund.com.mvvm.ui.myprofile.MyProfileFragment"
         android:title="@string/menu_my_profile"
-        tools:layout="@layout/fragment_my_profile" >
+        tools:layout="@layout/fragment_my_profile">
         <action
             android:id="@+id/action_nav_my_profile_to_changeBankAccountFragment"
             app:destination="@id/changeBankAccountFragment" />
@@ -66,81 +68,104 @@
             app:destination="@id/uploadImgFragment" />
 
     </fragment>
-
     <fragment
         android:id="@+id/nav_contact_information"
-        android:name="com.auxesis.maxcrowdfund.mvvm.ui.contactinformation.ContactInformationFragement"
+        android:name="maxcrowdfund.com.mvvm.ui.contactinformation.ContactInformationFragement"
         android:title="@string/menu_contact_information"
         tools:layout="@layout/fragment_contact_information" />
-
-   <fragment
+    <fragment
         android:id="@+id/nav_my_investment_detail"
-        android:name="com.auxesis.maxcrowdfund.mvvm.ui.myinvestments.myinvestmentdetail.MyInvestmentDetailFragment"
+        android:name="maxcrowdfund.com.mvvm.ui.myinvestments.myinvestmentdetail.MyInvestmentDetailFragment"
         android:label="@string/my_investments_detail"
-        tools:layout="@layout/fragment_my_investment_detail" >
-       <action
-           android:id="@+id/action_nav_my_investment_detail_to_investmentOppDetailFragment"
-           app:destination="@id/investmentOppDetailFragment" />
-   </fragment>
+        tools:layout="@layout/fragment_my_investment_detail">
+        <action
+            android:id="@+id/action_nav_my_investment_detail_to_investmentOppDetailFragment"
+            app:destination="@id/investmentOppDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/changeBankAccountFragment"
-        android:name="com.auxesis.maxcrowdfund.mvvm.ui.changebankaccount.changebankaccountview.ChangeBankAccountFragment"
+        android:name="maxcrowdfund.com.mvvm.ui.changebankaccount.changebankaccountview.ChangeBankAccountFragment"
         android:label="@string/change_default_bank_account"
         tools:layout="@layout/fragment_change_bank_account" />
-
     <fragment
         android:id="@+id/changeEmailFragment"
-        android:name="com.auxesis.maxcrowdfund.mvvm.ui.changeemail.ChangeEmailFragment"
+        android:name="maxcrowdfund.com.mvvm.ui.changeemail.ChangeEmailFragment"
         android:label="@string/change_email"
         tools:layout="@layout/fragment_change_email" />
-
     <fragment
         android:id="@+id/changeMobileNumberFragment"
-        android:name="com.auxesis.maxcrowdfund.mvvm.ui.changeMobileNumber.ChangeMobileNumberFragment"
+        android:name="maxcrowdfund.com.mvvm.ui.changeMobileNumber.ChangeMobileNumberFragment"
         android:label="@string/change_mobile_no"
         tools:layout="@layout/fragment_change_mobile_number" />
     <fragment
         android:id="@+id/changePasswordFragment"
-        android:name="com.auxesis.maxcrowdfund.mvvm.ui.changePassword.ChangePasswordFragment"
+        android:name="maxcrowdfund.com.mvvm.ui.changePassword.ChangePasswordFragment"
         android:label="@string/change_password"
         tools:layout="@layout/fragment_change_password" />
-
     <fragment
         android:id="@+id/changePreferenceFragment"
-        android:name="com.auxesis.maxcrowdfund.mvvm.ui.changePreference.ChangePreferenceFragment"
+        android:name="maxcrowdfund.com.mvvm.ui.changePreference.ChangePreferenceFragment"
         android:label="@string/change_preference"
         tools:layout="@layout/fragment_change_preference" />
-
     <fragment
         android:id="@+id/uploadImgFragment"
-        android:name="com.auxesis.maxcrowdfund.mvvm.ui.uploadImage.UploadImgFragment"
+        android:name="maxcrowdfund.com.mvvm.ui.uploadImage.UploadImgFragment"
         android:label="fragment_upload_img"
         tools:layout="@layout/fragment_upload_image" />
-
     <fragment
         android:id="@+id/dashboardDepositFragment"
-        android:name="com.auxesis.maxcrowdfund.mvvm.ui.dashborad.dashboarddeposit.DashboardDepositFragment"
+        android:name="maxcrowdfund.com.mvvm.ui.dashborad.dashboarddeposit.DashboardDepositFragment"
         android:label="@string/deposit"
         tools:layout="@layout/fragment_dashboard_deposit" />
-
     <fragment
         android:id="@+id/investmentOppDetailFragment"
-        android:name="com.auxesis.maxcrowdfund.mvvm.ui.home.homeDetail.InvestmentOppDetailFragment"
+        android:name="maxcrowdfund.com.mvvm.ui.home.homeDetail.InvestmentOppDetailFragment"
         android:label="@string/max_property_group"
-        tools:layout="@layout/fragment_investment_opp_detail" >
+        tools:layout="@layout/fragment_investment_opp_detail">
         <action
             android:id="@+id/action_investmentOppDetailFragment_to_investFormFragment"
             app:destination="@id/investFormFragment" />
     </fragment>
-
     <fragment
         android:id="@+id/investFormFragment"
-        android:name="com.auxesis.maxcrowdfund.mvvm.ui.investform.InvestFormFragment"
+        android:name="maxcrowdfund.com.mvvm.ui.investform.InvestFormFragment"
         android:label="@string/max_property_group"
-        tools:layout="@layout/fragment_invest_form" >
+        tools:layout="@layout/fragment_invest_form">
         <action
             android:id="@+id/action_investFormFragment_to_nav_my_investments"
             app:destination="@id/nav_my_investments" />
     </fragment>
+    <fragment
+        android:id="@+id/bankTransferDetailFragment"
+        android:name="maxcrowdfund.com.mvvm.ui.BankTransferDetail.BankTransferDetailFragment"
+        android:label="@string/bank_transfer_detail"
+        tools:layout="@layout/fragment_bank_transfer_detail" />
+
+    <fragment
+        android:id="@+id/nav_my_account"
+        android:name="maxcrowdfund.com.mvvm.ui.myAccount.MyAccountFragment"
+        android:label="@string/menu_my_account"
+        tools:layout="@layout/fragment_my_account" >
+        <action
+            android:id="@+id/action_nav_my_account_to_myAccountDetailFragment"
+            app:destination="@id/myAccountDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_my_wallet"
+        android:name="maxcrowdfund.com.mvvm.ui.myWallet.MyWalletFragment"
+        android:label="@string/menu_my_wallet"
+        tools:layout="@layout/fragment_my_wallet" />
+
+    <fragment
+        android:id="@+id/nav_my_portfolio"
+        android:name="maxcrowdfund.com.mvvm.ui.myPortfolio.MyportfolioFragment"
+        android:label="@string/menu_my_portfolio"
+        tools:layout="@layout/fragment_myportfolio" />
+    <fragment
+        android:id="@+id/myAccountDetailFragment"
+        android:name="maxcrowdfund.com.mvvm.ui.myAccount.detail.MyAccountDetailFragment"
+        android:label="@string/menu_my_account"
+        tools:layout="@layout/fragment_my_account_detail" />
 
 </navigation>

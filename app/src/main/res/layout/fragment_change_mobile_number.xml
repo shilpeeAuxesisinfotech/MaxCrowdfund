@@ -8,7 +8,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:padding="@dimen/_10sdp"
-    tools:context=".mvvm.ui.changeMobileNumber.ChangeMobileNumberFragment">
+    tools:context="maxcrowdfund.com.mvvm.ui.changeMobileNumber.ChangeMobileNumberFragment">
 
     <!--For Send OTP-->
     <androidx.cardview.widget.CardView
@@ -65,7 +65,7 @@
                     android:fontFamily="@font/roboto"
                     android:hint="@string/enter_mobile_number"
                     android:inputType="phone"
-                    android:maxLength="10"
+                    android:maxLength="20"
                     android:text=""
                     android:textColor="@color/colorPrimaryDark"
                     android:textColorHint="@color/light_gray_text"
@@ -76,7 +76,7 @@
                 android:id="@+id/btn_send_verify"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
-                android:background="@drawable/button_ripple_green"
+                android:background="@drawable/button_solid_green"
                 android:fontFamily="@font/roboto"
                 android:gravity="center"
                 android:text="@string/send_verification_code"
@@ -143,7 +143,7 @@
                         android:id="@+id/btn_change"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_35sdp"
-                        android:background="@drawable/button_ripple_green"
+                        android:background="@drawable/button_solid_green"
                         android:fontFamily="@font/roboto"
                         android:gravity="center"
                         android:text="@string/change"
@@ -209,7 +209,7 @@
                 android:id="@+id/btn_verify"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
-                android:background="@drawable/button_ripple_green"
+                android:background="@drawable/button_solid_green"
                 android:fontFamily="@font/roboto"
                 android:gravity="center"
                 android:text="@string/verify"

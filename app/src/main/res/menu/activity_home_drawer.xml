@@ -11,17 +11,23 @@
             android:id="@+id/nav_dashboard"
             android:title="@string/menu_dashboard"/>
         <item
+            android:id="@+id/nav_my_account"
+            android:title="@string/menu_my_account"/>
+        <item
+            android:id="@+id/nav_my_wallet"
+            android:title="@string/menu_my_wallet"/>
+        <item
             android:id="@+id/nav_my_investments"
             android:title="@string/menu_my_investments" />
+        <item
+            android:id="@+id/nav_my_portfolio"
+            android:title="@string/menu_my_portfolio" />
         <item
             android:id="@+id/nav_my_profile"
             android:title="@string/menu_my_profile"  />
         <item
             android:id="@+id/nav_contact_information"
             android:title="@string/menu_contact_information" />
-     <!--<item
-            android:id="@+id/investmentOppFragment"
-            android:title="Demo" />-->
        <item
            android:id="@+id/nav_logout"
            android:title="@string/menu_logout" />

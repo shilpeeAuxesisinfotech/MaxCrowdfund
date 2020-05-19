@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray_bg"
+    android:padding="@dimen/_10sdp"
+    tools:context="maxcrowdfund.com.mvvm.ui.BankTransferDetail.BankTransferDetailFragment">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    app:cardCornerRadius="@dimen/_5sdp"
+                    app:contentPadding="@dimen/_10sdp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tvShortMessage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto"
+                            android:gravity="left"
+                            android:text=""
+                            android:padding="@dimen/_5sdp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <LinearLayout
+                            android:padding="@dimen/_5sdp"
+                            android:id="@+id/rlAccountLayout"
+                            android:weightSum="1"
+                            android:orientation="horizontal"
+                            android:layout_below="@+id/tvShortMessage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_weight=".4"
+                                android:id="@+id/tvAccountNumberTittle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto"
+                                android:gravity="left"
+                                android:text=""
+                                android:textColor="@color/light_gray_text"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                android:layout_weight=".6"
+                                android:id="@+id/tvAccountNubValue"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto"
+                                android:gravity="left"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:text=""
+                                android:textColor="@color/light_gray_text"
+                                android:textSize="@dimen/_12sdp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:padding="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:id="@+id/rlbenificiaryName"
+                            android:weightSum="1"
+                            android:orientation="horizontal"
+                            android:layout_below="@+id/rlAccountLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_weight=".4"
+                                android:id="@+id/tvBenifisaryTittle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto"
+                                android:gravity="left"
+                                android:text=""
+                                android:textColor="@color/light_gray_text"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                android:layout_weight=".6"
+                                android:id="@+id/tvtvBenifisaryValue"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto"
+                                android:gravity="left"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:text=""
+                                android:textColor="@color/light_gray_text"
+                                android:textSize="@dimen/_12sdp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:padding="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:id="@+id/rlbiscSwLayout"
+                            android:weightSum="1"
+                            android:orientation="horizontal"
+                            android:layout_below="@+id/rlbenificiaryName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_weight=".4"
+                                android:id="@+id/tvbiscSwTittle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto"
+                                android:gravity="left"
+                                android:text=""
+                                android:textColor="@color/light_gray_text"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                android:layout_weight=".6"
+                                android:id="@+id/tvbiscSwValue"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto"
+                                android:gravity="left"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:text=""
+                                android:textColor="@color/light_gray_text"
+                                android:textSize="@dimen/_12sdp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:id="@+id/rRreferenceLayout"
+                            android:weightSum="1"
+                            android:padding="@dimen/_5sdp"
+                            android:orientation="horizontal"
+                            android:layout_below="@+id/rlbiscSwLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_weight=".4"
+                                android:id="@+id/tvrRreferenceTittle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto"
+                                android:gravity="left"
+                                android:text=""
+                                android:textColor="@color/light_gray_text"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                android:layout_weight=".6"
+                                android:id="@+id/tvrRreferenceValue"
+                                android:layout_toRightOf="@+id/tvShortMess"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto"
+                                android:gravity="left"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:text=""
+                                android:textColor="@color/light_gray_text"
+                                android:textSize="@dimen/_12sdp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:id="@+id/tvLongMessage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto"
+                            android:layout_below="@+id/rRreferenceLayout"
+                            android:gravity="left"
+                            android:text=""
+                            android:padding="@dimen/_5sdp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <Button
+                            android:id="@+id/btnResend"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            android:layout_below="@+id/tvLongMessage"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:background="@drawable/button_solid_green"
+                            android:fontFamily="@font/roboto"
+                            android:gravity="center"
+                            android:text="@string/resend"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/rlHeaderLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_5sdp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:fontFamily="@font/roboto"
+            android:gravity="left"
+            android:text=""
+            android:textColor="@color/light_gray_text"
+            android:textSize="@dimen/_12sdp" />
+
+        <TextView
+            android:id="@+id/tvType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/tvValue"
+            android:fontFamily="@font/roboto"
+            android:text=""
+            android:textColor="@color/light_gray_text"
+            android:textSize="@dimen/_12sdp" />
+
+        <TextView
+            android:id="@+id/tvValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:fontFamily="@font/roboto"
+            android:gravity="right"
+            android:paddingLeft="@dimen/_2sdp"
+            android:text=""
+            android:textColor="@color/light_gray_text"
+            android:textSize="@dimen/_12sdp" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:layout_below="@+id/rlHeaderLayout"
+        android:background="@color/light_gray_bg"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/rlFooterLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view"
+        android:padding="@dimen/_5sdp"
+        android:background="@color/colorPrimary"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tvCashBalance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="left"
+            android:text=""
+            android:textColor="@color/light_gray_text"
+            android:textSize="@dimen/_12sdp" />
+
+        <TextView
+            android:id="@+id/tvCashType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/tvCashValue"
+            android:fontFamily="@font/roboto_medium"
+            android:text=""
+            android:textColor="@color/light_gray_text"
+            android:textSize="@dimen/_12sdp" />
+
+        <TextView
+            android:id="@+id/tvCashValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="right"
+            android:paddingLeft="@dimen/_2sdp"
+            android:text=""
+            android:textColor="@color/light_gray_text"
+            android:textSize="@dimen/_12sdp" />
+    </RelativeLayout>
+
+</RelativeLayout>

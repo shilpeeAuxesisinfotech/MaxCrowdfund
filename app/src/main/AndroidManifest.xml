@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.auxesis.maxcrowdfund">
+    package="maxcrowdfund.com">
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -21,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".mvvm.activity.AccessCodeActivity"/>
         <activity
             android:name=".mvvm.activity.HomeActivity"
             android:label="@string/title_activity_home"
@@ -35,7 +35,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

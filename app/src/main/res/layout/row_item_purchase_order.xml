@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary">
+
+    <RelativeLayout
+        android:id="@+id/rLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:paddingTop="@dimen/_8sdp"
+        android:paddingBottom="@dimen/_8sdp"
+        android:paddingRight="@dimen/_5sdp"
+        android:paddingLeft="@dimen/_5sdp">
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:fontFamily="@font/roboto"
+            android:gravity="left"
+            android:text=""
+            android:textColor="@color/light_gray_text"
+            android:textSize="@dimen/_12sdp" />
+
+        <TextView
+            android:id="@+id/tvType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:paddingLeft="@dimen/_2sdp"
+            android:text=""
+            android:textColor="@color/light_gray_text"
+            android:textSize="@dimen/_12sdp" />
+
+        <TextView
+            android:id="@+id/tvValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/tvDelete"
+            android:fontFamily="@font/roboto"
+            android:gravity="right"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:paddingLeft="@dimen/_2sdp"
+            android:text=""
+            android:textColor="@color/light_gray_text"
+            android:textSize="@dimen/_12sdp" />
+
+        <TextView
+            android:id="@+id/tvDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/ic_delete"
+            android:fontFamily="@font/roboto"
+            android:gravity="right"
+            android:text=""
+            android:textColor="@color/light_gray_text"
+            android:textSize="@dimen/_12sdp"
+            android:visibility="invisible" />
+    </RelativeLayout>
+    <View
+        android:layout_below="@+id/rLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/light_gray_bg"/>
+</RelativeLayout>
