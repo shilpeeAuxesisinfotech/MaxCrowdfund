@@ -110,7 +110,6 @@ public class BankTransferDetailFragment extends Fragment {
                                             tvAccountNumberTittle.setText(response.body().getBankTransferDetail().getData().getAccountNumber().getTitle());
                                             tvAccountNubValue.setText(response.body().getBankTransferDetail().getData().getAccountNumber().getValue());
                                         }
-
                                         if (response.body().getBankTransferDetail().getData().getBenificiaryName() != null) {
                                             tvBenifisaryTittle.setText(response.body().getBankTransferDetail().getData().getBenificiaryName().getTitle());
                                             tvtvBenifisaryValue.setText(response.body().getBankTransferDetail().getData().getBenificiaryName().getValue());

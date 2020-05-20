@@ -25,8 +25,6 @@ import maxcrowdfund.com.mvvm.ui.myWallet.adapter.WalletAdapter;
 import maxcrowdfund.com.mvvm.ui.myWallet.model.PurchaseOrderModel;
 import maxcrowdfund.com.mvvm.ui.myWallet.model.WalletModel;
 
-import static android.widget.LinearLayout.VERTICAL;
-
 public class MyWalletFragment extends Fragment {
     FragmentMyWalletBinding binding;
     List<WalletModel> arrayList = new ArrayList<>();

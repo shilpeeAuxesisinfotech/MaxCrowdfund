@@ -99,7 +99,7 @@
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_delete" />
+                android:src="@drawable/ic_delete_green" />
 
             <TextView
                 android:id="@+id/tvRemove"

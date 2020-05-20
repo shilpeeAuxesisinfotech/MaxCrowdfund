@@ -34,8 +34,6 @@
     <string name="average_return">Average return</string>
     <!--For Summary-->
     <!--For Splash  screen-->
-    <string name="max">Max</string>
-    <string name="crowdfund">Crowdfund</string>
     <string name="loading">Loading...</string>
     <!--For login -->
     <string name="please_enter_your_e_mail_and">Please Enter your e-mail and</string>
@@ -133,6 +131,7 @@
     <string name="hint_active_account">Please select active account</string>
     <string name="hint_trans_signing">Please select transaction signing</string>
     <string name="hint_updated_succ">Update successfully...</string>
+    <string name="euro">"€"</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

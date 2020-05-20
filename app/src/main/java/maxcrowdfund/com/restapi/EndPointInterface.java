@@ -12,8 +12,7 @@ import maxcrowdfund.com.mvvm.ui.changebankaccount.changebankaccountmodel.ChangeB
 import maxcrowdfund.com.mvvm.ui.changeemail.ChangeEmailResponse;
 import maxcrowdfund.com.mvvm.ui.contactinformation.contactInformationModel.ContactInfoResponse;
 import maxcrowdfund.com.mvvm.ui.dashborad.dashboarddeposit.DashboardDepositResponse;
-import maxcrowdfund.com.mvvm.ui.dashborad.dashboardmodel.AccountResponse;
-import maxcrowdfund.com.mvvm.ui.dashborad.pendingmodel.PendingResponse;
+import maxcrowdfund.com.mvvm.ui.dashborad.model.AccountBalanceResponse;
 import maxcrowdfund.com.mvvm.ui.home.homeDetail.funddetail.FundraiserDetailResponse;
 import maxcrowdfund.com.mvvm.ui.home.homeDetail.investmodel.CreateInvestmentResponse;
 import maxcrowdfund.com.mvvm.ui.home.oppmodel.InvestmentOppRes;
@@ -40,14 +39,11 @@ public interface EndPointInterface {
     @POST("api/user/login")
     Call<LoginResponse> getLoginUser(@Header("Content-Type") String content, @Body JsonObject jsonObject);
 
-    @GET("api/portfolio")
-    Call<PendingResponse> getPendingAPI(@Header("Content-Type") String content);
-
     @GET("api/profile")
     Call<ProfileResponse> UserProfile(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);
 
     @GET("api/account-balance")
-    Call<AccountResponse> getAccountBalance(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);
+    Call<AccountBalanceResponse> getAccountBalance(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);
 
     @POST("api/create-deposit-entry")
     Call<DashboardDepositResponse> getDashboardDeposit(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf, @Body JsonObject jsonObject);

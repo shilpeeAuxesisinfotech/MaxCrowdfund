@@ -7,35 +7,14 @@
     android:background="@color/light_gray_bg"
     tools:context="maxcrowdfund.com.mvvm.activity.SplashActivity">
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/ivLogo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:gravity="center">
-
-        <TextView
-            android:id="@+id/tvMax"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_medium"
-            android:gravity="center"
-            android:text="@string/max"
-            android:textColor="@color/green"
-            android:textSize="@dimen/_22sdp" />
-
-        <TextView
-            android:id="@+id/tv_crowdfund"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/tvMax"
-            android:fontFamily="@font/roboto_medium"
-            android:gravity="center"
-            android:paddingLeft="@dimen/_8sdp"
-            android:text="@string/crowdfund"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/_22sdp" />
-    </RelativeLayout>
-
+        android:scaleType="center"
+        android:layout_gravity="center"
+        android:src="@drawable/login_logo" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,7 +25,6 @@
         android:text="@string/loading"
         android:textColor="@color/green"
         android:textSize="@dimen/_14sdp" />
-
     <TextView
         android:id="@+id/tvVersion"
         android:layout_width="match_parent"
@@ -57,5 +35,4 @@
         android:text=""
         android:textColor="@color/green"
         android:textSize="@dimen/_10sdp" />
-
 </RelativeLayout>

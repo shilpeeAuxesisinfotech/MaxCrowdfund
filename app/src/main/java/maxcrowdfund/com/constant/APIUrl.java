@@ -1,8 +1,8 @@
 package maxcrowdfund.com.constant;
 
 public class APIUrl {
-   // public final static String BASE_URL = "https://maxcrowdfund.com/";
-    public final static String BASE_URL = "https://staging.maxcrowdfund.com/";
+    public final static String BASE_URL = "https://maxcrowdfund.com/";
+  //  public final static String BASE_URL = "https://staging.maxcrowdfund.com/";
     //public final static String BASE_URL = "https://test.maxcrowdfund.com/";
     public static String investStatus = "active";
     public final static String GER_LOG_OUT = BASE_URL + "api/user/logout?_format=json&token=";

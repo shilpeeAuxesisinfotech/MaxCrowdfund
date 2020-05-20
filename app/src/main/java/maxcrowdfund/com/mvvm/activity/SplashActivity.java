@@ -3,6 +3,7 @@ package maxcrowdfund.com.mvvm.activity;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,31 +19,26 @@ import android.widget.TextView;
 import maxcrowdfund.com.BuildConfig;
 import maxcrowdfund.com.R;
 import maxcrowdfund.com.constant.Utils;
+import maxcrowdfund.com.databinding.ActivitySplashBinding;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class SplashActivity extends AppCompatActivity {
     private static final String TAG = "SplashActivity";
-    private static int SPLASH_SCREEN_TIME_OUT = 1500;
-    Animation zoom_in;
-    TextView tvMax, tv_crowdfund, tvVersion;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
+    ActivitySplashBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-        zoom_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoom_in);
+        binding=ActivitySplashBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         init();
     }
-    private void init() {
-        tvMax = findViewById(R.id.tvMax);
-        tv_crowdfund = findViewById(R.id.tv_crowdfund);
-        tvVersion = findViewById(R.id.tvVersion);
-        tvMax.startAnimation(zoom_in);
-        tv_crowdfund.startAnimation(zoom_in);
-        tvVersion.setText("Version "+ BuildConfig.VERSION_CODE+"( "+BuildConfig.VERSION_NAME +" )");
 
+    private void init() {
+        binding.tvVersion.setText("Version " + BuildConfig.VERSION_CODE + "( " + BuildConfig.VERSION_NAME + " )");
         if (Utils.isInternetConnected(getApplicationContext())) {
             if (Utils.checkRequestPermiss(getApplicationContext(), SplashActivity.this)) {
                 Log.d(TAG, "onClick: " + "permission already granted");
@@ -67,6 +63,7 @@ public class SplashActivity extends AppCompatActivity {
             alert.show();
         }
     }
+
     private void doPermissionGranted() {
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -94,8 +91,9 @@ public class SplashActivity extends AppCompatActivity {
                     finish();
                 }
             }
-        }, SPLASH_SCREEN_TIME_OUT);
+        }, 1500);
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
