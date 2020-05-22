@@ -1,8 +1,16 @@
-package maxcrowdfund.com.mvvm.ui.investform.questmodel.famodel;
+package maxcrowdfund.com.mvvm.ui.customModels;
 
-public class SpinnerModel {
+public class CustomSpinnerModel {
     private String key;
     private String val;
+
+    public CustomSpinnerModel() {
+    }
+
+    public CustomSpinnerModel(String key, String val) {
+        this.key = key;
+        this.val = val;
+    }
 
     public String getKey() {
         return key;
@@ -19,4 +27,6 @@ public class SpinnerModel {
     public void setVal(String val) {
         this.val = val;
     }
+
+
 }

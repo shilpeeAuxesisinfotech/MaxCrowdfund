@@ -6,6 +6,12 @@ public class PurchaseOrderModel {
     private String amount;
     private boolean isDelete;
 
+    public PurchaseOrderModel(String date, String type, String amount) {
+        this.date = date;
+        this.type = type;
+        this.amount = amount;
+    }
+
     public PurchaseOrderModel(String date, String type, String amount, boolean isDelete) {
         this.date = date;
         this.type = type;

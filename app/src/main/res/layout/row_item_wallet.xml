@@ -16,10 +16,10 @@
         <TextView
             android:id="@+id/tvHeadingTittle"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_medium"
             android:gravity="center"
-            android:padding="@dimen/_5sdp"
+            android:padding="@dimen/_10sdp"
             android:text=""
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/_12sdp" />
@@ -36,11 +36,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/lLayoutHeader"
         android:background="@color/colorPrimary"
-        android:paddingLeft="@dimen/_5sdp"
-        android:paddingTop="@dimen/_8sdp"
-        android:paddingRight="@dimen/_5sdp"
-        android:paddingBottom="@dimen/_8sdp"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingRight="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_5sdp"
         android:visibility="gone">
+
+
 
         <TextView
             android:id="@+id/tvName"

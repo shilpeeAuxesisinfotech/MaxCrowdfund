@@ -29,11 +29,11 @@ import maxcrowdfund.com.constant.MaxCrowdFund;
 import maxcrowdfund.com.constant.ProgressDialog;
 import maxcrowdfund.com.mvvm.activity.LoginActivity;
 import maxcrowdfund.com.mvvm.ui.changeMobileNumber.changeMobileModel.SendOTPResponse;
-import maxcrowdfund.com.mvvm.ui.changePreference.adapter.TransactionSigningAdapter;
 import maxcrowdfund.com.mvvm.ui.changePreference.model.ChangePreferenceResponse;
+import maxcrowdfund.com.mvvm.ui.customAdapter.CustomAdapter;
 import maxcrowdfund.com.mvvm.ui.home.homeDetail.investmodel.CreateInvestmentResponse;
 import maxcrowdfund.com.mvvm.ui.investform.questmodel.InvestFormPreloadResponse;
-import maxcrowdfund.com.mvvm.ui.investform.questmodel.famodel.SpinnerModel;
+import maxcrowdfund.com.mvvm.ui.customModels.CustomSpinnerModel;
 import maxcrowdfund.com.mvvm.ui.investform.questmodel.famodel.TfaValidateResponse;
 import maxcrowdfund.com.mvvm.ui.investform.questmodel.model.SurveyFormDataInsertResponse;
 import maxcrowdfund.com.mvvm.ui.investform.questmodel.question.InvestSurveyQuestionResponse;
@@ -89,12 +89,12 @@ public class InvestFormFragment extends Fragment {
     private String mAmountData = "";
 
     private String mTotalChargeMpgToken = "";
-    TransactionSigningAdapter signingAdapter;
+    CustomAdapter signingAdapter;
     String mTrans_signing = "";
     String mResponseOTP = "";
     String mEnterOTP = "";
-    List<SpinnerModel> modelList = new ArrayList<>();
-    List<SpinnerModel> modelList1 = new ArrayList<>();
+    List<CustomSpinnerModel> modelList = new ArrayList<>();
+    List<CustomSpinnerModel> modelList1 = new ArrayList<>();
     int mQuestionStartFrom = 0;
     int mQuestion1 = 0;
     int mQuestion2 = 0;
@@ -1951,7 +1951,7 @@ public class InvestFormFragment extends Fragment {
         spinnerFA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                SpinnerModel option = signingAdapter.getItem(position);
+                CustomSpinnerModel option = signingAdapter.getItem(position);
                 if (position == 0) {
                     mTrans_signing = "";
                 } else {
@@ -2057,19 +2057,19 @@ public class InvestFormFragment extends Fragment {
                                 //For Transation Sigining
                                 modelList.clear();
                                 modelList1.clear();
-                                SpinnerModel spinnerModel1 = new SpinnerModel();
+                                CustomSpinnerModel spinnerModel1 = new CustomSpinnerModel();
                                 spinnerModel1.setKey("Please select");
                                 spinnerModel1.setVal("Please select");
                                 modelList1.add(0, spinnerModel1);
                                 if (response.body().getPreferences().getData().getTransactionSigning().getOptions().size() > 0) {
                                     for (int i = 0; i < response.body().getPreferences().getData().getTransactionSigning().getOptions().size(); i++) {
-                                        SpinnerModel spinnerModel = new SpinnerModel();
+                                        CustomSpinnerModel spinnerModel = new CustomSpinnerModel();
                                         spinnerModel.setKey(response.body().getPreferences().getData().getTransactionSigning().getOptions().get(i).getKey());
                                         spinnerModel.setVal(response.body().getPreferences().getData().getTransactionSigning().getOptions().get(i).getVal());
                                         modelList.add(spinnerModel);
                                     }
                                     modelList1.addAll(modelList);
-                                    signingAdapter = new TransactionSigningAdapter(getActivity(), modelList1);
+                                    signingAdapter = new CustomAdapter(getActivity(), modelList1);
                                     spinnerFA.setAdapter(signingAdapter);
                                 }
                             } else {

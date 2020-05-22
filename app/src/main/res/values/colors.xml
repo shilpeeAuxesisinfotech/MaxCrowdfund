@@ -15,4 +15,5 @@
     <!--For TextView color code-->
     <color name="light_gray_text">#6e6e6e</color>
 
+    <color name="bg_row_background">#fa315b</color>
 </resources>

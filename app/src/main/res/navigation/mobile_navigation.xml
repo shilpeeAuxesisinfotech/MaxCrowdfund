@@ -155,17 +155,27 @@
         android:id="@+id/nav_my_wallet"
         android:name="maxcrowdfund.com.mvvm.ui.myWallet.MyWalletFragment"
         android:label="@string/menu_my_wallet"
-        tools:layout="@layout/fragment_my_wallet" />
+        tools:layout="@layout/fragment_my_wallet" >
+        <action
+            android:id="@+id/action_nav_my_wallet_to_walletFragment"
+            app:destination="@id/walletFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_my_portfolio"
         android:name="maxcrowdfund.com.mvvm.ui.myPortfolio.MyportfolioFragment"
         android:label="@string/menu_my_portfolio"
         tools:layout="@layout/fragment_myportfolio" />
+
     <fragment
         android:id="@+id/myAccountDetailFragment"
         android:name="maxcrowdfund.com.mvvm.ui.myAccount.detail.MyAccountDetailFragment"
         android:label="@string/menu_my_account"
         tools:layout="@layout/fragment_my_account_detail" />
 
+    <fragment
+        android:id="@+id/walletFragment"
+        android:name="maxcrowdfund.com.mvvm.ui.myWallet.WalletFragment"
+        android:label="@string/menu_my_wallet"
+        tools:layout="@layout/fragment_wallet" />
 </navigation>

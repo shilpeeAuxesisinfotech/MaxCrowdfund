@@ -12,5 +12,4 @@
         android:fontFamily="@font/roboto"
         android:textColor="@color/colorPrimaryDark"
         android:text=""/>
-
 </RelativeLayout>

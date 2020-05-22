@@ -85,7 +85,7 @@
                     </RelativeLayout>
 
                     <TextView
-                        android:id="@+id/tvTransaction_signing"
+                        android:id="@+id/tvTransactionSigning"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
@@ -233,7 +233,7 @@
                                 android:orientation="horizontal">
 
                                 <RadioButton
-                                    android:id="@+id/investment_off"
+                                    android:id="@+id/investmentOff"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
@@ -245,7 +245,7 @@
                                     android:textColor="@drawable/radio_text" />
 
                                 <RadioButton
-                                    android:id="@+id/investment_on"
+                                    android:id="@+id/investmentOn"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
@@ -298,7 +298,7 @@
                                 android:orientation="horizontal">
 
                                 <RadioButton
-                                    android:id="@+id/investUpdate_off"
+                                    android:id="@+id/investUpdateOff"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
@@ -310,7 +310,7 @@
                                     android:textColor="@drawable/radio_text" />
 
                                 <RadioButton
-                                    android:id="@+id/investUpdate_on"
+                                    android:id="@+id/investUpdateOn"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
@@ -363,7 +363,7 @@
                                 android:orientation="horizontal">
 
                                 <RadioButton
-                                    android:id="@+id/newslatter_off"
+                                    android:id="@+id/newslatterOff"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
@@ -375,7 +375,7 @@
                                     android:textColor="@drawable/radio_text" />
 
                                 <RadioButton
-                                    android:id="@+id/newslatter_on"
+                                    android:id="@+id/newslatterOn"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
@@ -390,7 +390,7 @@
                     </LinearLayout>
 
                     <Button
-                        android:id="@+id/btn_update_preference"
+                        android:id="@+id/btnUpdatePreference"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_35sdp"
                         android:layout_marginTop="@dimen/_20sdp"

@@ -19,12 +19,12 @@ import maxcrowdfund.com.mvvm.ui.myAccount.model.AccountModel;
 
 public class MyAccountFragment extends Fragment {
     FragmentMyAccountBinding binding;
-    List<AccountModel> arrayList = new ArrayList<>();
     MyAccountAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentMyAccountBinding.inflate(inflater, container, false);
+        List<AccountModel> arrayList = new ArrayList<>();
         arrayList.clear();
         arrayList.add(new AccountModel("Deposited", "C", "25,000.00"));
         arrayList.add(new AccountModel("Withdrawn", "D", "2,000.00"));
@@ -52,10 +52,12 @@ public class MyAccountFragment extends Fragment {
             binding.tvNoDataFound.setVisibility(View.VISIBLE);
             binding.recyclerView.setVisibility(View.GONE);
         }
+
         binding.btnWithdraw.setOnClickListener(v -> {
             NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
             navController.navigate(R.id.action_nav_my_account_to_myAccountDetailFragment);
         });
+
         return binding.getRoot();
     }
 }

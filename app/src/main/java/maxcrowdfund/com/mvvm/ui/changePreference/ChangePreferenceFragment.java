@@ -11,26 +11,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import maxcrowdfund.com.R;
 import maxcrowdfund.com.constant.MaxCrowdFund;
 import maxcrowdfund.com.constant.ProgressDialog;
 import maxcrowdfund.com.constant.Utils;
+import maxcrowdfund.com.databinding.FragmentChangePreferenceBinding;
 import maxcrowdfund.com.mvvm.activity.HomeActivity;
 import maxcrowdfund.com.mvvm.activity.LoginActivity;
-import maxcrowdfund.com.mvvm.ui.changePreference.adapter.ActiveAccountAdapter;
 import maxcrowdfund.com.mvvm.ui.changePreference.adapter.LanguagePreferenceAdapter;
-import maxcrowdfund.com.mvvm.ui.changePreference.adapter.TransactionSigningAdapter;
 import maxcrowdfund.com.mvvm.ui.changePreference.model.ChangePreferenceResponse;
 import maxcrowdfund.com.mvvm.ui.changePreference.model.Option;
 import maxcrowdfund.com.mvvm.ui.changePreference.model.UpdatePreferenceResponse;
-import maxcrowdfund.com.mvvm.ui.investform.questmodel.famodel.SpinnerModel;
+import maxcrowdfund.com.mvvm.ui.customAdapter.CustomAdapter;
+import maxcrowdfund.com.mvvm.ui.customModels.CustomSpinnerModel;
 import maxcrowdfund.com.restapi.ApiClient;
 import maxcrowdfund.com.restapi.EndPointInterface;
 import com.google.gson.Gson;
@@ -44,77 +40,34 @@ import retrofit2.Response;
 public class ChangePreferenceFragment extends Fragment {
     private static final String TAG = "ChangePreferenceFragmen";
     ProgressDialog pd;
-    TextView tvLanguage, tvActiveAccount, tvNotifications, tvTransaction_signing, tvAccountLogin, tvInvestmentOpp, tvInvestmentUpdate, tvNewslatter;
-    Spinner spinnerLanguage, spinnerActiveAccount, spinnerTranSigning;
-
     LanguagePreferenceAdapter languagePreferenceAdapter;
-    ActiveAccountAdapter activeAccountAdapter;
-    TransactionSigningAdapter signingAdapter;
-    RadioGroup radioGroupLogin, radioGroupInvestment, radioGroupInvestUpdate, radioGroupNewslatter;
-    RadioButton loginOff, loginOn, investment_off, investment_on, investUpdate_off, investUpdate_on, newslatter_off, newslatter_on;
+    CustomAdapter activeAccountAdapter;
+    CustomAdapter signingAdapter;
     private int accountLogin = 0;
-    Button btn_update_preference;
-    String mLanguage = "";
-    String mActive_account = "";
-    String mTrans_signing = "";
-    int mAccount_login = 0;
-    int mInvestment_opportunities = 0;
-    int mInvestment_updates = 0;
-    int mNewsletter = 0;
-    Activity mActivity;
-    String mSelected = "";
+    private String mLanguage = "";
+    private String mActive_account = "";
+    private String mTrans_signing = "";
+    private int mAccount_login = 0;
+    private int mInvestment_opportunities = 0;
+    private int mInvestment_updates = 0;
+    private int mNewsletter = 0;
+    private Activity mActivity;
+    private String mSelected = "";
     List<Option> languageArraySelected = new ArrayList<>();
     List<Option> languageArray = new ArrayList<>();
-    List<SpinnerModel> modelList = new ArrayList<>();
-    List<SpinnerModel> modelList1 = new ArrayList<>();
-    List<SpinnerModel> modelActiveList = new ArrayList<>();
-    List<SpinnerModel> modelActiveList1 = new ArrayList<>();
+    FragmentChangePreferenceBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_change_preference, container, false);
+        binding = FragmentChangePreferenceBinding.inflate(inflater, container, false);
         mActivity = getActivity();
-        tvLanguage = root.findViewById(R.id.tvLanguage);
-        tvActiveAccount = root.findViewById(R.id.tvActiveAccount);
-        tvNotifications = root.findViewById(R.id.tvNotifications);
-        tvTransaction_signing = root.findViewById(R.id.tvTransaction_signing);
-
-        tvAccountLogin = root.findViewById(R.id.tvAccountLogin);
-        tvInvestmentOpp = root.findViewById(R.id.tvInvestmentOpp);
-        tvInvestmentUpdate = root.findViewById(R.id.tvInvestmentUpdate);
-        tvNewslatter = root.findViewById(R.id.tvNewslatter);
-
-        spinnerLanguage = root.findViewById(R.id.spinnerLanguage);
-        spinnerActiveAccount = root.findViewById(R.id.spinnerActiveAccount);
-        spinnerTranSigning = root.findViewById(R.id.spinnerTranSigning);
-
-        radioGroupLogin = root.findViewById(R.id.radioGroupLogin);
-        radioGroupLogin.clearCheck();
-        radioGroupInvestment = root.findViewById(R.id.radioGroupInvestment);
-        radioGroupInvestUpdate = root.findViewById(R.id.radioGroupInvestUpdate);
-        radioGroupNewslatter = root.findViewById(R.id.radioGroupNewslatter);
-
-        loginOff = root.findViewById(R.id.loginOff);
-        loginOn = root.findViewById(R.id.loginOn);
-
-        investment_off = root.findViewById(R.id.investment_off);
-        investment_on = root.findViewById(R.id.investment_on);
-
-        investUpdate_off = root.findViewById(R.id.investUpdate_off);
-        investUpdate_on = root.findViewById(R.id.investUpdate_on);
-
-        newslatter_off = root.findViewById(R.id.newslatter_off);
-        newslatter_on = root.findViewById(R.id.newslatter_on);
-
-        btn_update_preference = root.findViewById(R.id.btn_update_preference);
-
         if (Utils.isInternetConnected(getActivity())) {
             getChangePreference();
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
         }
 
-        spinnerLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.spinnerLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Option option = languagePreferenceAdapter.getItem(position);
@@ -128,122 +81,113 @@ public class ChangePreferenceFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
         //For Active Account
-        spinnerActiveAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.spinnerActiveAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                SpinnerModel optionActive = activeAccountAdapter.getItem(position);
+                CustomSpinnerModel optionActive = activeAccountAdapter.getItem(position);
                 if (position == 0) {
                     mActive_account = "";
                 } else {
                     mActive_account = optionActive.getKey();
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
         //For Transation Siging
-        spinnerTranSigning.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.spinnerTranSigning.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                SpinnerModel option = signingAdapter.getItem(position);
+                CustomSpinnerModel option = signingAdapter.getItem(position);
                 if (position == 0) {
                     mTrans_signing = "";
                 } else {
                     mTrans_signing = option.getKey();
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
         // for Login Prefernec
-        radioGroupLogin.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        binding.radioGroupLogin.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton rb = (RadioButton) group.findViewById(checkedId);
                 if (checkedId == R.id.loginOn) {
                     mAccount_login = 1;
                     Log.d(TAG, "onCheckedChanged: " + ">>>>>>>>>>>>>if----------" + mAccount_login);
-                    loginOn.setBackgroundResource(R.drawable.radio_button_bg_on);
-                    loginOff.setBackgroundResource(R.drawable.radio_button_bg_off);
+                    binding.loginOn.setBackgroundResource(R.drawable.radio_button_bg_on);
+                    binding.loginOff.setBackgroundResource(R.drawable.radio_button_bg_off);
                 } else if (checkedId == R.id.loginOff) {
                     mAccount_login = 0;
                     Log.d(TAG, "onCheckedChanged: " + ">>>>>>>>>>>>else----------" + mAccount_login);
-                    loginOff.setBackgroundResource(R.drawable.radio_button_bg_on);
-                    loginOn.setBackgroundResource(R.drawable.radio_button_bg_off);
+                    binding.loginOff.setBackgroundResource(R.drawable.radio_button_bg_on);
+                    binding.loginOn.setBackgroundResource(R.drawable.radio_button_bg_off);
                 }
             }
         });
-
         // for Investment
-        radioGroupInvestment.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        binding.radioGroupInvestment.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton rb = (RadioButton) group.findViewById(checkedId);
-                if (checkedId == R.id.investment_on) {
+                if (checkedId == R.id.investmentOn) {
                     mInvestment_opportunities = 1;
                     Log.d(TAG, "onCheckedChanged: " + ">>>>>>>>>>>>if----------" + mInvestment_opportunities);
-                    investment_on.setBackgroundResource(R.drawable.radio_button_bg_on);
-                    investment_off.setBackgroundResource(R.drawable.radio_button_bg_off);
-                } else if (checkedId == R.id.investment_off) {
+                    binding.investmentOn.setBackgroundResource(R.drawable.radio_button_bg_on);
+                    binding.investmentOff.setBackgroundResource(R.drawable.radio_button_bg_off);
+                } else if (checkedId == R.id.investmentOff) {
                     mInvestment_opportunities = 0;
                     Log.d(TAG, "onCheckedChanged: " + ">>>>>>>>>>>>else----------" + mInvestment_opportunities);
-                    investment_on.setBackgroundResource(R.drawable.radio_button_bg_off);
-                    investment_off.setBackgroundResource(R.drawable.radio_button_bg_on);
+                    binding.investmentOn.setBackgroundResource(R.drawable.radio_button_bg_off);
+                    binding.investmentOff.setBackgroundResource(R.drawable.radio_button_bg_on);
                 }
             }
         });
-
         // for InvestUpdate
-        radioGroupInvestUpdate.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        binding.radioGroupInvestUpdate.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton rb = (RadioButton) group.findViewById(checkedId);
-                if (checkedId == R.id.investUpdate_on) {
+                if (checkedId == R.id.investUpdateOn) {
                     mInvestment_updates = 1;
-                    Log.d(TAG, "onCheckedChanged: " + ">>>>>>>>>>>>if----------" + mInvestment_updates);
-                    investUpdate_on.setBackgroundResource(R.drawable.radio_button_bg_on);
-                    investUpdate_off.setBackgroundResource(R.drawable.radio_button_bg_off);
-                } else if (checkedId == R.id.investUpdate_off) {
+                    binding.investUpdateOn.setBackgroundResource(R.drawable.radio_button_bg_on);
+                    binding.investUpdateOff.setBackgroundResource(R.drawable.radio_button_bg_off);
+                } else if (checkedId == R.id.investUpdateOff) {
                     mInvestment_updates = 0;
-                    Log.d(TAG, "onCheckedChanged: " + ">>>>>>>>>>>>else----------" + mInvestment_updates);
-                    investUpdate_off.setBackgroundResource(R.drawable.radio_button_bg_on);
-                    investUpdate_on.setBackgroundResource(R.drawable.radio_button_bg_off);
+                    binding.investUpdateOff.setBackgroundResource(R.drawable.radio_button_bg_on);
+                    binding.investUpdateOn.setBackgroundResource(R.drawable.radio_button_bg_off);
                 }
             }
         });
-
         // for Newslatter
-        radioGroupNewslatter.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        binding.radioGroupNewslatter.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton rb = (RadioButton) group.findViewById(checkedId);
-                if (checkedId == R.id.newslatter_on) {
+                if (checkedId == R.id.newslatterOn) {
                     mNewsletter = 1;
-                    Log.d(TAG, "onCheckedChanged: " + ">>>>>>>>>>>>if----------" + mNewsletter);
-                    newslatter_on.setBackgroundResource(R.drawable.radio_button_bg_on);
-                    newslatter_off.setBackgroundResource(R.drawable.radio_button_bg_off);
-                    // Toast.makeText(getActivity(), rb.getText(), Toast.LENGTH_SHORT).show();
-                } else if (checkedId == R.id.newslatter_off) {
+                    binding.newslatterOn.setBackgroundResource(R.drawable.radio_button_bg_on);
+                    binding.newslatterOff.setBackgroundResource(R.drawable.radio_button_bg_off);
+                } else if (checkedId == R.id.newslatterOff) {
                     mNewsletter = 0;
-                    Log.d(TAG, "onCheckedChanged: " + ">>>>>>>>>>>>else----------" + mNewsletter);
-                    newslatter_off.setBackgroundResource(R.drawable.radio_button_bg_on);
-                    newslatter_on.setBackgroundResource(R.drawable.radio_button_bg_off);
-                    // Toast.makeText(getActivity(), rb.getText(), Toast.LENGTH_SHORT).show();
+                    binding.newslatterOff.setBackgroundResource(R.drawable.radio_button_bg_on);
+                    binding.newslatterOn.setBackgroundResource(R.drawable.radio_button_bg_off);
                 }
             }
         });
-
-        btn_update_preference.setOnClickListener(new View.OnClickListener() {
+        binding.btnUpdatePreference.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (Utils.isInternetConnected(getActivity())) {
                     if (mLanguage != null) {
-                        if (mActive_account.length()>0 && mActive_account!= null) {
-                            if (mTrans_signing.length()>0 && mTrans_signing != null) {
+                        if (mActive_account.length() > 0 && mActive_account != null) {
+                            if (mTrans_signing.length() > 0 && mTrans_signing != null) {
                                 getUpdatePreferenceApi();
                             } else {
                                 Toast.makeText(getActivity(), getResources().getString(R.string.hint_trans_signing), Toast.LENGTH_SHORT).show();
@@ -259,9 +203,8 @@ public class ChangePreferenceFragment extends Fragment {
                 }
             }
         });
-        return root;
+        return binding.getRoot();
     }
-
     private void getChangePreference() {
         pd = ProgressDialog.show(getActivity(), "Please Wait...");
         EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
@@ -279,7 +222,7 @@ public class ChangePreferenceFragment extends Fragment {
                             }
                             if (response.body().getUserLoginStatus() == 1) {
                                 /* For Language Preference */
-                                tvLanguage.setText(response.body().getPreferences().getData().getLanguage().getTitle());
+                                binding.tvLanguage.setText(response.body().getPreferences().getData().getLanguage().getTitle());
                                 if (response.body().getPreferences().getData().getLanguage().getOptions().size() > 0) {
                                     mSelected = response.body().getPreferences().getData().getLanguage().getValue();
                                     Log.d("><><selected><>", response.body().getPreferences().getData().getLanguage().getValue());
@@ -291,101 +234,104 @@ public class ChangePreferenceFragment extends Fragment {
                                         languageArray.add(response.body().getPreferences().getData().getLanguage().getOptions().get(i));
                                     }
                                     languageArraySelected.addAll(languageArray);
-                                    //languagePreferenceAdapter = new LanguagePreferenceAdapter(getActivity(), response.body().getPreferences().getData().getLanguage().getValue(), response.body().getPreferences().getData().getLanguage().getOptions());
                                     languagePreferenceAdapter = new LanguagePreferenceAdapter(getActivity(), languageArraySelected);
-                                    spinnerLanguage.setAdapter(languagePreferenceAdapter);
+                                    binding.spinnerLanguage.setAdapter(languagePreferenceAdapter);
                                 }
                                 /*For Active account */
-                                tvActiveAccount.setText(response.body().getPreferences().getData().getActiveAccount().getTitle());
+                                List<CustomSpinnerModel> modelActiveList = new ArrayList<>();
+                                List<CustomSpinnerModel> modelActiveList1 = new ArrayList<>();
+                                binding.tvActiveAccount.setText(response.body().getPreferences().getData().getActiveAccount().getTitle());
                                 modelActiveList.clear();
                                 modelActiveList1.clear();
-                                SpinnerModel spinnerActiveModel1 = new SpinnerModel();
+                                CustomSpinnerModel spinnerActiveModel1 = new CustomSpinnerModel();
                                 spinnerActiveModel1.setKey("Please select");
                                 spinnerActiveModel1.setVal("Please select");
                                 modelActiveList1.add(0, spinnerActiveModel1);
 
                                 if (response.body().getPreferences().getData().getActiveAccount().getOptions().size() > 0) {
                                     for (int i = 0; i < response.body().getPreferences().getData().getActiveAccount().getOptions().size(); i++) {
-                                        SpinnerModel spinnerModel = new SpinnerModel();
+                                        CustomSpinnerModel spinnerModel = new CustomSpinnerModel();
                                         spinnerModel.setKey(response.body().getPreferences().getData().getActiveAccount().getOptions().get(i).getKey());
                                         spinnerModel.setVal(response.body().getPreferences().getData().getActiveAccount().getOptions().get(i).getVal());
                                         modelActiveList.add(spinnerModel);
                                     }
                                     modelActiveList1.addAll(modelActiveList);
-                                    activeAccountAdapter = new ActiveAccountAdapter(getActivity(), modelActiveList1);
-                                    spinnerActiveAccount.setAdapter(activeAccountAdapter);
+                                    activeAccountAdapter = new CustomAdapter(getActivity(), modelActiveList1);
+                                    binding.spinnerActiveAccount.setAdapter(activeAccountAdapter);
                                 }
 
                                 //For Transation Sigining
-                                tvTransaction_signing.setText(response.body().getPreferences().getData().getTransactionSigning().getTitle());
+                                List<CustomSpinnerModel> modelList = new ArrayList<>();
+                                List<CustomSpinnerModel> modelList1 = new ArrayList<>();
+                                binding.tvTransactionSigning.setText(response.body().getPreferences().getData().getTransactionSigning().getTitle());
                                 modelList.clear();
                                 modelList1.clear();
-                                SpinnerModel spinnerModel1 = new SpinnerModel();
+                                CustomSpinnerModel spinnerModel1 = new CustomSpinnerModel();
                                 spinnerModel1.setKey("Please select");
                                 spinnerModel1.setVal("Please select");
                                 modelList1.add(0, spinnerModel1);
                                 if (response.body().getPreferences().getData().getTransactionSigning().getOptions().size() > 0) {
                                     for (int i = 0; i < response.body().getPreferences().getData().getTransactionSigning().getOptions().size(); i++) {
-                                        SpinnerModel spinnerModel = new SpinnerModel();
+                                        CustomSpinnerModel spinnerModel = new CustomSpinnerModel();
                                         spinnerModel.setKey(response.body().getPreferences().getData().getTransactionSigning().getOptions().get(i).getKey());
                                         spinnerModel.setVal(response.body().getPreferences().getData().getTransactionSigning().getOptions().get(i).getVal());
                                         modelList.add(spinnerModel);
                                     }
                                     modelList1.addAll(modelList);
-                                    signingAdapter = new TransactionSigningAdapter(getActivity(), modelList1);
-                                    spinnerTranSigning.setAdapter(signingAdapter);
+                                    signingAdapter = new CustomAdapter(getActivity(), modelList1);
+                                    binding.spinnerTranSigning.setAdapter(signingAdapter);
                                 }
                                 //For Notification Preference
-                                tvNotifications.setText(response.body().getPreferences().getData().getNotificationPreferences().getHeading());
+                                binding.tvNotifications.setText(response.body().getPreferences().getData().getNotificationPreferences().getHeading());
                                 //For Login Account
-                                tvAccountLogin.setText(response.body().getPreferences().getData().getNotificationPreferences().getData().get(0).getTitle());
+                                binding.tvAccountLogin.setText(response.body().getPreferences().getData().getNotificationPreferences().getData().get(0).getTitle());
                                 accountLogin = response.body().getPreferences().getData().getNotificationPreferences().getData().get(0).getValue();
 
                                 if (response.body().getPreferences().getData().getNotificationPreferences().getData().get(0).getValue() == 1) {
                                     mAccount_login = response.body().getPreferences().getData().getNotificationPreferences().getData().get(0).getValue();
-                                    loginOn.setChecked(true);
-                                    loginOn.setBackgroundResource(R.drawable.radio_button_bg_on);
+                                    binding.loginOn.setChecked(true);
+                                    binding.loginOn.setBackgroundResource(R.drawable.radio_button_bg_on);
                                 } else {
                                     mAccount_login = response.body().getPreferences().getData().getNotificationPreferences().getData().get(0).getValue();
-                                    loginOff.setChecked(false);
-                                    loginOff.setBackgroundResource(R.drawable.radio_button_bg_off);
+                                    binding.loginOff.setChecked(false);
+                                    binding.loginOff.setBackgroundResource(R.drawable.radio_button_bg_off);
                                 }
                                 //For InvestmentOpp
-                                tvInvestmentOpp.setText(response.body().getPreferences().getData().getNotificationPreferences().getData().get(1).getTitle());
+                                binding.tvInvestmentOpp.setText(response.body().getPreferences().getData().getNotificationPreferences().getData().get(1).getTitle());
 
                                 if (response.body().getPreferences().getData().getNotificationPreferences().getData().get(1).getValue() == 1) {
                                     mInvestment_opportunities = response.body().getPreferences().getData().getNotificationPreferences().getData().get(1).getValue();
-                                    investment_on.setChecked(true);
-                                    investment_on.setBackgroundResource(R.drawable.radio_button_bg_on);
+                                    binding.investmentOn.setChecked(true);
+                                    binding.investmentOn.setBackgroundResource(R.drawable.radio_button_bg_on);
                                 } else {
                                     mInvestment_opportunities = response.body().getPreferences().getData().getNotificationPreferences().getData().get(1).getValue();
-                                    investment_off.setChecked(false);
-                                    investment_off.setBackgroundResource(R.drawable.radio_button_bg_off);
+                                    binding.investmentOff.setChecked(false);
+                                    binding.investmentOff.setBackgroundResource(R.drawable.radio_button_bg_off);
                                 }
                                 // for InvestmentUpdate
-                                tvInvestmentUpdate.setText(response.body().getPreferences().getData().getNotificationPreferences().getData().get(2).getTitle());
+                                binding.tvInvestmentUpdate.setText(response.body().getPreferences().getData().getNotificationPreferences().getData().get(2).getTitle());
 
                                 if (response.body().getPreferences().getData().getNotificationPreferences().getData().get(2).getValue() == 1) {
                                     mInvestment_updates = response.body().getPreferences().getData().getNotificationPreferences().getData().get(2).getValue();
-                                    investUpdate_on.setChecked(true);
-                                    investUpdate_on.setBackgroundResource(R.drawable.radio_button_bg_on);
+                                    binding.investUpdateOn.setChecked(true);
+                                    binding.investUpdateOn.setBackgroundResource(R.drawable.radio_button_bg_on);
                                 } else {
                                     mInvestment_updates = response.body().getPreferences().getData().getNotificationPreferences().getData().get(2).getValue();
-                                    investUpdate_off.setChecked(false);
-                                    investUpdate_off.setBackgroundResource(R.drawable.radio_button_bg_off);
+                                    binding.investUpdateOff.setChecked(false);
+                                    binding.investUpdateOff.setBackgroundResource(R.drawable.radio_button_bg_off);
                                 }
                                 //For Newslatter
-                                tvNewslatter.setText(response.body().getPreferences().getData().getNotificationPreferences().getData().get(3).getTitle());
+                                binding.tvNewslatter.setText(response.body().getPreferences().getData().getNotificationPreferences().getData().get(3).getTitle());
                                 Log.d(">>>>>>>>>", response.body().getPreferences().getData().getNotificationPreferences().getData().get(3).getTitle());
 
                                 if (response.body().getPreferences().getData().getNotificationPreferences().getData().get(3).getValue() == 1) {
                                     mNewsletter = response.body().getPreferences().getData().getNotificationPreferences().getData().get(3).getValue();
-                                    newslatter_on.setChecked(true);
-                                    newslatter_on.setBackgroundResource(R.drawable.radio_button_bg_on);
+                                   binding.newslatterOn.setChecked(true);
+                                    binding.newslatterOn.setBackgroundResource(R.drawable.radio_button_bg_on);
                                 } else {
                                     mNewsletter = response.body().getPreferences().getData().getNotificationPreferences().getData().get(3).getValue();
-                                    newslatter_off.setChecked(false);
-                                    newslatter_off.setBackgroundResource(R.drawable.radio_button_bg_off);
+                                    binding.newslatterOff.setChecked(false);
+                                    binding.newslatterOff.setBackgroundResource(R.drawable.radio_button_bg_off);
                                 }
                             } else {
                                 Utils.setPreference(getActivity(), "user_id", "");
@@ -420,7 +366,6 @@ public class ChangePreferenceFragment extends Fragment {
             }
         });
     }
-
     private void getUpdatePreferenceApi() {
         pd = ProgressDialog.show(getActivity(), "Please Wait...");
         JsonObject jsonObject = new JsonObject();
@@ -492,7 +437,6 @@ public class ChangePreferenceFragment extends Fragment {
             }
         });
     }
-
     public void onResume() {
         super.onResume();
         // Set title bar
