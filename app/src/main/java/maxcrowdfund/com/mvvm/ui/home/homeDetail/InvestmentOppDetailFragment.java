@@ -172,6 +172,7 @@ public class InvestmentOppDetailFragment extends Fragment implements OnCustomCli
         //For photo card
         recyclerView = root.findViewById(R.id.recyclerView);
         tvNoRecord = root.findViewById(R.id.tvNoRecord);
+
         //For Summary card
         tvSumryHeaderTittle = root.findViewById(R.id.tvSumryHeaderTittle);
         tvSummaryHeaderArrow = root.findViewById(R.id.tvSummaryHeaderArrow);

@@ -2,9 +2,7 @@ package maxcrowdfund.com.restapi;
 
 import android.content.Context;
 import maxcrowdfund.com.constant.APIUrl;
-
 import java.util.concurrent.TimeUnit;
-
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;

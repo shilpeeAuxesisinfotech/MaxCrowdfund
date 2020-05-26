@@ -159,6 +159,9 @@
         <action
             android:id="@+id/action_nav_my_wallet_to_walletFragment"
             app:destination="@id/walletFragment" />
+        <action
+            android:id="@+id/action_nav_my_wallet_to_securityShareFragment"
+            app:destination="@id/securityShareFragment" />
     </fragment>
 
     <fragment
@@ -178,4 +181,9 @@
         android:name="maxcrowdfund.com.mvvm.ui.myWallet.WalletFragment"
         android:label="@string/menu_my_wallet"
         tools:layout="@layout/fragment_wallet" />
+    <fragment
+        android:id="@+id/securityShareFragment"
+        android:name="maxcrowdfund.com.mvvm.ui.securityshare.SecurityShareFragment"
+        android:label="@string/menu_security_share"
+        tools:layout="@layout/fragment_security_share" />
 </navigation>

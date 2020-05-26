@@ -37,7 +37,7 @@ import retrofit2.http.Query;
 
 public interface EndPointInterface {
     @POST("api/user/login")
-    Call<LoginResponse> getLoginUser(@Header("Content-Type") String content, @Body JsonObject jsonObject);
+    Call<LoginResponse> getLoginUser(@Query("_format") String mFormate,@Header("Content-Type") String content, @Body JsonObject jsonObject);
 
     @GET("api/profile")
     Call<ProfileResponse> UserProfile(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);

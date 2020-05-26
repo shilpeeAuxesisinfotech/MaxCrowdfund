@@ -32,7 +32,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding=ActivitySplashBinding.inflate(getLayoutInflater());
+        binding = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         init();
     }
@@ -69,21 +69,10 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (Utils.getPreference(SplashActivity.this, "user_id") != null && !Utils.getPreference(SplashActivity.this, "user_id").isEmpty()) {
-                    if (Utils.getPreference(SplashActivity.this, "isRememberMe") != null && !Utils.getPreference(SplashActivity.this, "isRememberMe").isEmpty()) {
-                        if (Utils.getPreference(SplashActivity.this, "isRememberMe").equals("true")) {
-                            Log.d(TAG, "run: " + Utils.getPreference(SplashActivity.this, "isRememberMe"));
-                            Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.enter, R.anim.exit);
-                            finish();
-                        } else {
-                            Log.d(TAG, "run: " + "<><><><" + Utils.getPreference(SplashActivity.this, "isRememberMe"));
-                            Intent mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
-                            startActivity(mainIntent);
-                            overridePendingTransition(R.anim.enter, R.anim.exit);
-                            finish();
-                        }
-                    }
+                    Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.enter, R.anim.exit);
+                    finish();
                 } else {
                     Intent mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
                     startActivity(mainIntent);
@@ -154,7 +143,7 @@ public class SplashActivity extends AppCompatActivity {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                        startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("com.auxesis.maxcrowdfund")));
+                        startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("maxcrowdfund.com")));
                         // startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
                     }
                 })

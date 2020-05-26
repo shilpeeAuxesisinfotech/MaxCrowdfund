@@ -17,15 +17,14 @@ import maxcrowdfund.com.mvvm.ui.customModels.CustomSpinnerModel;
 
 public class WalletFragment extends Fragment {
     FragmentWalletBinding binding;
-    CustomAdapter adapter =null;
-    CustomAdapter adapterAmount =null;
+    CustomAdapter adapter = null;
+    CustomAdapter adapterAmount = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding =FragmentWalletBinding.inflate(inflater,container,false);
         getCurrencyData();
         getAmount();
-
         binding.btnContinue.setOnClickListener(v->{
             String mAmount = binding.edtAmount.getText().toString().trim();
             if (mAmount!=null && !mAmount.isEmpty()){
@@ -37,7 +36,6 @@ public class WalletFragment extends Fragment {
         });
         return binding.getRoot();
     }
-
     private void getAmount() {
         List<CustomSpinnerModel> arrayList = new ArrayList<>();
         arrayList.clear();
@@ -65,7 +63,6 @@ public class WalletFragment extends Fragment {
             }
         });
     }
-
     private void getCurrencyData() {
         List<CustomSpinnerModel> arrayList = new ArrayList<>();
         arrayList.clear();
@@ -98,7 +95,4 @@ public class WalletFragment extends Fragment {
             }
         });
     }
-
-
-
 }

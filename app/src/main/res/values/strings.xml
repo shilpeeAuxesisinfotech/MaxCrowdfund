@@ -13,6 +13,7 @@
     <string name="menu_my_profile">My Profile</string>
     <string name="menu_contact_information">Contact Information</string>
     <string name="bank_transfer_detail">Bank Transfer Detail</string>
+    <string name="menu_security_share">MPG Security shares</string>
     <string name="menu_logout">Logout</string>
     <!--For Details page-->
     <string name="max_property_group">Max Property Group</string>
@@ -135,5 +136,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="equlty">Equlty</string>
     <!--€-->
 </resources>

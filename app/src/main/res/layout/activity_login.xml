@@ -74,15 +74,6 @@
             android:textSize="@dimen/_12sdp"
             android:textColorHint="@color/colorPrimaryDark" />
 
-        <CheckBox
-            android:id="@+id/checkBoxRMe"
-            android:text="Remember me?"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/_10sdp" />
         <Button
             android:id="@+id/btn_login"
             android:layout_width="match_parent"

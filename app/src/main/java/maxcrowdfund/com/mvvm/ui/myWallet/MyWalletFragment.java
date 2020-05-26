@@ -93,7 +93,8 @@ public class MyWalletFragment extends Fragment {
         });
 
         binding.btnSendMPG.setOnClickListener(v->{
-
+            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+            navController.navigate(R.id.action_nav_my_wallet_to_securityShareFragment);
         });
         binding.btnBuyMPGS.setOnClickListener(v->{
 

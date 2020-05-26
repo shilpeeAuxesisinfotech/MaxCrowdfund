@@ -1,7 +1,7 @@
 package maxcrowdfund.com.constant;
 
 public class APIUrl {
-    public final static String BASE_URL = "https://maxcrowdfund.com/";
+    public final static String BASE_URL = "https://maxcrowdfund.com/en/";
   //  public final static String BASE_URL = "https://staging.maxcrowdfund.com/";
     //public final static String BASE_URL = "https://test.maxcrowdfund.com/";
     public static String investStatus = "active";

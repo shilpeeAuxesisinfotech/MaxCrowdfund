@@ -37,8 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     boolean doubleBackToExitPressedOnce = false;
     String error_msg = "";
     ProgressDialog pd;
-    CheckBox checkBoxRMe;
-    boolean isRememberMe = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,18 +51,6 @@ public class LoginActivity extends AppCompatActivity {
         edt_pssword = findViewById(R.id.edt_pssword);
         tv_max_crowd = findViewById(R.id.tv_max_crowd);
         btn_login = findViewById(R.id.btn_login);
-        checkBoxRMe = findViewById(R.id.checkBoxRMe);
-
-        checkBoxRMe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (checkBoxRMe.isChecked()) {
-                    isRememberMe = checkBoxRMe.isChecked();
-                } else {
-                    isRememberMe = checkBoxRMe.isChecked();
-                }
-            }
-        });
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
             jsonObject.addProperty("name", edt_email.getText().toString().trim());
             jsonObject.addProperty("pass", edt_pssword.getText().toString().trim());
             EndPointInterface git = ApiClient.getClient1(LoginActivity.this).create(EndPointInterface.class);
-            Call<LoginResponse> call = git.getLoginUser("application/json", jsonObject);
+            Call<LoginResponse> call = git.getLoginUser("json","application/json", jsonObject);
             call.enqueue(new Callback<LoginResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<LoginResponse> call, @NonNull retrofit2.Response<LoginResponse> response) {
@@ -107,14 +94,13 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         if (response.code() == 200) {
                             if (response != null && response.isSuccessful()) {
-                                if (response.body().getMessage().equals("Succesfully Logged In")) {
+                               // if (response.body().getMessage().equals("Succesfully Logged In")) {
                                     String mSattus = response.body().getStatus();
                                     if (mSattus.equals("200")) {
                                         String name = response.body().getCurrentUser().getName();
                                         String uid = response.body().getCurrentUser().getUid();
                                         String csrf_token = response.body().getCurrentUser().getCsrfToken();
                                         String logout_token = response.body().getCurrentUser().getLogoutToken();
-                                        Utils.setPreference(LoginActivity.this, "isRememberMe", String.valueOf(isRememberMe));
                                         Utils.setPreference(LoginActivity.this, "user_id", uid);
                                         Utils.setPreference(LoginActivity.this, "mName", name);
                                         Utils.setPreference(LoginActivity.this, "mCsrf_token", csrf_token);
@@ -126,9 +112,9 @@ public class LoginActivity extends AppCompatActivity {
                                         edt_pssword.setText("");
                                         finish();
                                     }
-                                } else {
+                                /*} else {
                                     Toast.makeText(LoginActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                                }
+                                }*/
                             } else {
                                 Log.d(TAG, "onResponse: " + ">>>>>>>>" + response.code());
                                 Log.d(TAG, "onResponse: " + ">>>>>b>>>" + response.body().getMessage());
