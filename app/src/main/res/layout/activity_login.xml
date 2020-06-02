@@ -19,23 +19,25 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/iv_logo"
+            android:id="@+id/ivLogo"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_100sdp"
             android:layout_gravity="center"
             android:src="@drawable/login_logo" />
 
         <TextView
+            android:id="@+id/tvDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
             android:fontFamily="@font/roboto"
             android:gravity="center"
-            android:text="@string/please_enter_your_e_mail_and"
+            android:text=""
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/_12sdp" />
 
         <TextView
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
@@ -45,13 +47,12 @@
             android:textSize="@dimen/_12sdp" />
 
         <EditText
-            android:id="@+id/edt_email"
+            android:id="@+id/edtEmail"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/edittext_outline"
             android:fontFamily="@font/roboto"
-            android:hint="@string/e_mail"
             android:maxLength="40"
             android:textSize="@dimen/_12sdp"
             android:inputType="textEmailAddress"
@@ -60,13 +61,12 @@
             android:textColorHint="@color/colorPrimaryDark" />
 
         <EditText
-            android:id="@+id/edt_pssword"
+            android:id="@+id/edtPassword"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/edittext_outline"
             android:fontFamily="@font/roboto"
-            android:hint="@string/password"
             android:inputType="textPassword"
             android:maxLength="30"
             android:paddingLeft="@dimen/_10sdp"
@@ -75,7 +75,7 @@
             android:textColorHint="@color/colorPrimaryDark" />
 
         <Button
-            android:id="@+id/btn_login"
+            android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_35sdp"
             android:layout_marginLeft="@dimen/_50sdp"
@@ -83,22 +83,22 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/button_solid_green"
             android:fontFamily="@font/roboto"
-            android:text="@string/login"
             android:textAllCaps="false"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
 
         <TextView
+            android:id="@+id/tvPleaseRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
             android:fontFamily="@font/roboto"
             android:gravity="center"
-            android:text="@string/don_t_have_one_yet_please_register"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/_12sdp" />
 
         <RelativeLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

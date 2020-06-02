@@ -89,7 +89,6 @@ public class WalletFragment extends Fragment {
                 Log.d("onItemSelected: ",model.getKey());
                 Log.d("onItemSelected: ",model.getVal());
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }

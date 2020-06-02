@@ -6,68 +6,67 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import maxcrowdfund.com.R;
 import maxcrowdfund.com.constant.MaxCrowdFund;
 import maxcrowdfund.com.constant.ProgressDialog;
+import maxcrowdfund.com.databinding.ActivityLoginBinding;
 import maxcrowdfund.com.mvvm.ui.login.LoginResponse;
 import maxcrowdfund.com.restapi.ApiClient;
 import maxcrowdfund.com.restapi.EndPointInterface;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
 import maxcrowdfund.com.constant.Utils;
 import retrofit2.Call;
 import retrofit2.Callback;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
-    EditText edt_email, edt_pssword;
-    Button btn_login;
-    TextView tv_max_crowd;
     boolean doubleBackToExitPressedOnce = false;
-    String error_msg = "";
+    private String email = null;
+    private String password = null;
     ProgressDialog pd;
-
+    ActivityLoginBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         Utils.hideKeyboard(LoginActivity.this);
         init();
     }
-    private void init() {
-        edt_email = findViewById(R.id.edt_email);
-        edt_pssword = findViewById(R.id.edt_pssword);
-        tv_max_crowd = findViewById(R.id.tv_max_crowd);
-        btn_login = findViewById(R.id.btn_login);
 
-        btn_login.setOnClickListener(new View.OnClickListener() {
+    private void init() {
+        binding.tvDescription.setText(Utils.user_login_description);
+        binding.edtEmail.setHint(Utils.user_login_email_placeholder);
+        binding.edtPassword.setHint(Utils.user_login_password_placehplder);
+        binding.btnLogin.setText(Utils.user_login_btn_login);
+        binding.tvPleaseRegister.setText(Utils.don_t_have_one_yet_please_register);
+        binding.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (Utils.isInternetConnected(getApplicationContext())) {
-                    if (Validation()) {
-                        getLoginAPI();
+                    email = binding.edtEmail.getText().toString().trim();
+                    password = binding.edtPassword.getText().toString().trim();
+                    if (email != null &&!email.isEmpty()) {
+                        if (password!=null &&!password.isEmpty()) {
+                            getLoginAPI();
+                        }else {
+                            Toast.makeText(LoginActivity.this, Utils.enter_password, Toast.LENGTH_SHORT).show();
+                        }
                     } else {
-                        Toast.makeText(LoginActivity.this, error_msg, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, Utils.enter_email, Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(LoginActivity.this, getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, Utils.oops_connect_your_internet, Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        tv_max_crowd.setOnClickListener(new View.OnClickListener() {
+       binding.tvPleaseRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -80,10 +79,10 @@ public class LoginActivity extends AppCompatActivity {
         try {
             pd = ProgressDialog.show(LoginActivity.this, "Please Wait...");
             JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("name", edt_email.getText().toString().trim());
-            jsonObject.addProperty("pass", edt_pssword.getText().toString().trim());
+            jsonObject.addProperty("name", email);
+            jsonObject.addProperty("pass", password);
             EndPointInterface git = ApiClient.getClient1(LoginActivity.this).create(EndPointInterface.class);
-            Call<LoginResponse> call = git.getLoginUser("json","application/json", jsonObject);
+            Call<LoginResponse> call = git.getLoginUser("json", "application/json", jsonObject);
             call.enqueue(new Callback<LoginResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<LoginResponse> call, @NonNull retrofit2.Response<LoginResponse> response) {
@@ -94,27 +93,25 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         if (response.code() == 200) {
                             if (response != null && response.isSuccessful()) {
-                               // if (response.body().getMessage().equals("Succesfully Logged In")) {
-                                    String mSattus = response.body().getStatus();
-                                    if (mSattus.equals("200")) {
-                                        String name = response.body().getCurrentUser().getName();
-                                        String uid = response.body().getCurrentUser().getUid();
-                                        String csrf_token = response.body().getCurrentUser().getCsrfToken();
-                                        String logout_token = response.body().getCurrentUser().getLogoutToken();
-                                        Utils.setPreference(LoginActivity.this, "user_id", uid);
-                                        Utils.setPreference(LoginActivity.this, "mName", name);
-                                        Utils.setPreference(LoginActivity.this, "mCsrf_token", csrf_token);
-                                        Utils.setPreference(LoginActivity.this, "mLogout_token", logout_token);
-                                        Toast.makeText(LoginActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                                        overridePendingTransition(R.anim.enter, R.anim.exit);
-                                        edt_email.setText("");
-                                        edt_pssword.setText("");
-                                        finish();
-                                    }
-                                /*} else {
+                                String mSattus = response.body().getStatus();
+                                if (mSattus.equals("200")) {
+                                    String name = response.body().getCurrentUser().getName();
+                                    String uid = response.body().getCurrentUser().getUid();
+                                    String csrf_token = response.body().getCurrentUser().getCsrfToken();
+                                    String logout_token = response.body().getCurrentUser().getLogoutToken();
+                                    Utils.setPreference(LoginActivity.this, "user_id", uid);
+                                    Utils.setPreference(LoginActivity.this, "mName", name);
+                                    Utils.setPreference(LoginActivity.this, "mCsrf_token", csrf_token);
+                                    Utils.setPreference(LoginActivity.this, "mLogout_token", logout_token);
                                     Toast.makeText(LoginActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                                }*/
+                                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                                    overridePendingTransition(R.anim.enter, R.anim.exit);
+                                    binding.edtEmail.setText("");
+                                    binding.edtPassword.setText("");
+                                    email = "";
+                                    password = "";
+                                    finish();
+                                }
                             } else {
                                 Log.d(TAG, "onResponse: " + ">>>>>>>>" + response.code());
                                 Log.d(TAG, "onResponse: " + ">>>>>b>>>" + response.body().getMessage());
@@ -133,6 +130,7 @@ public class LoginActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+
                 @Override
                 public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
                     Log.e("response", "error " + t.getMessage());
@@ -144,19 +142,6 @@ public class LoginActivity extends AppCompatActivity {
             });
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    private boolean Validation() {
-        error_msg = "";
-        if (TextUtils.isEmpty(edt_email.getText().toString().trim())) {
-            error_msg = getString(R.string.enter_email);
-            return false;
-        } else if (TextUtils.isEmpty(edt_pssword.getText().toString().trim())) {
-            error_msg = getString(R.string.enter_password);
-            return false;
-        } else {
-            return true;
         }
     }
 

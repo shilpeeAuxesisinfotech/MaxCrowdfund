@@ -100,7 +100,7 @@
 
                             <TextView
                                 android:layout_weight=".6"
-                                android:id="@+id/tvtvBenifisaryValue"
+                                android:id="@+id/tvBenifisaryValue"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto"

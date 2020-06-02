@@ -13,20 +13,45 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Currency;
+import java.util.HashSet;
 import java.util.List;
 
 import maxcrowdfund.com.R;
+import maxcrowdfund.com.mvvm.ui.uiTokens.UITokenResponse;
 
 import static android.content.Context.MODE_PRIVATE;
 
 public class Utils {
     private static final String MY_PREFS_NAME = "MaxCrowdfund";
     private final static int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
+    /*For custom  data */
+    public static String user_login_description = null;
+    public static String user_login_email_placeholder = null;
+    public static String user_login_password_placehplder = null;
+    public static String user_login_btn_login = null;
+
+    public static String don_t_have_one_yet_please_register = "Do not have one yet? Please register first on maxcrowdfund.com";
+    public static String enter_email = "Please enter your E-mail";
+    public static String enter_password = "Please enter your password";
+
+    /*FOr common message */
+    public static String sessionExpire = "Session expired please login again...";
+    public static String oops_connect_your_internet = "Oops! Connect Your Internet";
+    public static String noDataFound = "No data found";
+    public static String somethingWent = "Oops ! Something Went Wrong";
+    public static String pleaseWait = "Please Wait...";
+    /*For My profile*/
+    public static String profilePageTitle =null;
+    /*For dashboard*/
+    public static String menuDashboard = "Dashboard";
+
 
     public static boolean isInternetConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -130,5 +155,4 @@ public class Utils {
         }
         return true;
     }
-
 }

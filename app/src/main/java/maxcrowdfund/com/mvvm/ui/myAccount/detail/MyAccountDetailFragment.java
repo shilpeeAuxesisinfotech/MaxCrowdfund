@@ -10,12 +10,11 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 import maxcrowdfund.com.databinding.FragmentMyAccountDetailBinding;
-import maxcrowdfund.com.mvvm.ui.myAccount.adapter.MyAccountDetailAdapter;
-import maxcrowdfund.com.mvvm.ui.myWallet.model.PurchaseOrderModel;
+import maxcrowdfund.com.mvvm.ui.commonmodel.CommonModel;
+import maxcrowdfund.com.mvvm.ui.myWallet.adapter.WalletAdapter;
 
 public class MyAccountDetailFragment extends Fragment {
     FragmentMyAccountDetailBinding binding;
-    MyAccountDetailAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -24,23 +23,23 @@ public class MyAccountDetailFragment extends Fragment {
         return binding.getRoot();
     }
     private void getAccountDetail() {
-        List<PurchaseOrderModel>arrayList =new ArrayList<>();
+        List<CommonModel>arrayList =new ArrayList<>();
         arrayList.clear();
-        arrayList.add(new PurchaseOrderModel("Date", "Description", "Amount"));
-        arrayList.add(new PurchaseOrderModel("02/05", "Investment...", "- € 1,000.00"));
-        arrayList.add(new PurchaseOrderModel("02/05", "Deposit", "+ € 2,500.00"));
-        arrayList.add(new PurchaseOrderModel("30/04", "Investment...", "+ € 2,500.00"));
-        arrayList.add(new PurchaseOrderModel("25/04", "Repayment...", "+ € 60.00"));
-        arrayList.add(new PurchaseOrderModel("20/04", "Withdrawal", "- € 1,000.00"));
-        arrayList.add(new PurchaseOrderModel("20/04", "Repayment...", "+ € 40.00"));
-        arrayList.add(new PurchaseOrderModel("15/04", "Investment...", "- € 5,000.00"));
-        arrayList.add(new PurchaseOrderModel("15/04", "Buy MPG", "- € 250.00"));
-        arrayList.add(new PurchaseOrderModel("15/04", "Deposit", "+ € 10,000.00"));
+        arrayList.add(new CommonModel("Date", "Description", "Amount"));
+        arrayList.add(new CommonModel("02/05", "Investment...", "- € 1,000.00"));
+        arrayList.add(new CommonModel("02/05", "Deposit", "+ € 2,500.00"));
+        arrayList.add(new CommonModel("30/04", "Investment...", "+ € 2,500.00"));
+        arrayList.add(new CommonModel("25/04", "Repayment...", "+ € 60.00"));
+        arrayList.add(new CommonModel("20/04", "Withdrawal", "- € 1,000.00"));
+        arrayList.add(new CommonModel("20/04", "Repayment...", "+ € 40.00"));
+        arrayList.add(new CommonModel("15/04", "Investment...", "- € 5,000.00"));
+        arrayList.add(new CommonModel("15/04", "Buy MPG", "- € 250.00"));
+        arrayList.add(new CommonModel("15/04", "Deposit", "+ € 10,000.00"));
 
         if (arrayList.size() > 0 && !arrayList.isEmpty()) {
             binding.tvNoRecord.setVisibility(View.GONE);
             binding.recyclerView.setVisibility(View.VISIBLE);
-            adapter = new MyAccountDetailAdapter(getActivity(), "Transactions",arrayList);
+            WalletAdapter adapter = new WalletAdapter(getActivity(), "Transactions",arrayList);
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
             binding.recyclerView.setLayoutManager(mLayoutManager);
             binding.recyclerView.setItemAnimator(new DefaultItemAnimator());

@@ -24,7 +24,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
 import maxcrowdfund.com.R;
 import maxcrowdfund.com.constant.APIUrl;
 import maxcrowdfund.com.constant.MaxCrowdFund;

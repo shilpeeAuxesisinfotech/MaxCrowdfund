@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+    <!--Start Common header-->
+    <LinearLayout
+        android:id="@+id/lLayHeaderCommon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tvHeaderTitle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:padding="@dimen/_5sdp"
+            android:text=""
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/_14sdp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/light_gray_bg" />
+
+    </LinearLayout>
+    <!--End Header-->
+    <!--For Wallet-->
+    <RelativeLayout
+        android:id="@+id/rLayoutWallet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:padding="@dimen/_5sdp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tvTitleName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:fontFamily="@font/roboto"
+            android:gravity="left"
+            android:text=""
+            android:textColor="@color/light_gray_text"
+            android:textSize="@dimen/_12sdp" />
+
+        <TextView
+            android:id="@+id/tvTitleValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:fontFamily="@font/roboto"
+            android:gravity="right"
+            android:text=""
+            android:textColor="@color/light_gray_text"
+            android:textSize="@dimen/_12sdp" />
+
+    </RelativeLayout>
+    <!--For Purchase Transaction-->
+    <RelativeLayout
+        android:id="@+id/rLayTransaction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:id="@+id/rLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:padding="@dimen/_5sdp">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:fontFamily="@font/roboto"
+                android:gravity="left"
+                android:text=""
+                android:textColor="@color/light_gray_text"
+                android:textSize="@dimen/_12sdp" />
+
+            <TextView
+                android:id="@+id/tvType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/roboto"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/light_gray_text"
+                android:textSize="@dimen/_12sdp" />
+
+            <TextView
+                android:id="@+id/tvValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:fontFamily="@font/roboto"
+                android:gravity="right|center"
+                android:text=""
+                android:textColor="@color/light_gray_text"
+                android:textSize="@dimen/_12sdp" />
+
+            <!-- <TextView
+                 android:id="@+id/tvDelete"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentRight="true"
+                 android:background="@drawable/ic_delete_green"
+                 android:fontFamily="@font/roboto"
+                 android:gravity="right"
+                 android:text=""
+                 android:textColor="@color/light_gray_text"
+                 android:textSize="@dimen/_12sdp"
+                 android:visibility="invisible" />
+
+            <TextView
+                 android:id="@+id/tvTransValue"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentRight="true"
+                 android:fontFamily="@font/roboto"
+                 android:gravity="right|center"
+                 android:textColor="@color/light_gray_text"
+                 android:textSize="@dimen/_12sdp"
+                 android:visibility="gone" />
+ -->
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_below="@+id/rLayout"
+            android:background="@color/light_gray_bg" />
+    </RelativeLayout>
+    <!--Contact information-->
+
+    <LinearLayout
+        android:id="@+id/lLayoutContactInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingRight="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tvContactTittle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:gravity="left|center"
+            android:text=""
+            android:textColor="@color/light_gray_text"
+            android:textSize="@dimen/_12sdp" />
+
+        <TextView
+            android:id="@+id/tvContactValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:gravity="left|center"
+            android:text=""
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/_12sdp" />
+
+    </LinearLayout>
+
+</LinearLayout>
+

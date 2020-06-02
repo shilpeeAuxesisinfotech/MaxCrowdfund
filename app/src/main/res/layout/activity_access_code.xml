@@ -433,7 +433,5 @@
             android:textAllCaps="false"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
-
     </RelativeLayout>
-
 </RelativeLayout>

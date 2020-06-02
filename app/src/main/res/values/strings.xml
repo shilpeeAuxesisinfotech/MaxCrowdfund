@@ -37,11 +37,12 @@
     <!--For Splash  screen-->
     <string name="loading">Loading...</string>
     <!--For login -->
-    <string name="please_enter_your_e_mail_and">Please Enter your e-mail and</string>
+    <!-- <string name="please_enter_your_e_mail_and">Please Enter your e-mail and</string>-->
     <string name="password_to_login">password to login</string>
-    <string name="e_mail">E-mail</string>
-    <string name="password">Password</string>
-    <string name="login">Login</string>
+    <!-- <string name="e_mail">E-mail</string>
+     <string name="password">Password</string>
+     <string name="login">Login</string>
+     -->
     <string name="don_t_have_one_yet_please_register">Don"'"t have one yet? Please register</string>
     <string name="first_on">first on</string>
     <string name="maxcrowdfund_com">maxcrowdfund.com</string>
@@ -49,17 +50,23 @@
     <string name="enter_password">Please enter your password</string>
     <string name="logout_succ">Logout Successfully..</string>
     <string name="session_expire">Session expired please login again...</string>
+    <string name="please_wait">Please Wait...</string>
+
     <string name="invest">Invest</string>
     <string name="max_crowdfund">Max Crowdfund</string>
     <string name="international_real_estate_crowdfunding_platform">International Real Estate Crowdfunding Platform</string>
-    <string name="yes">Yes</string>
 
-    <string name="no_internet">No internet Connection</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
     <string name="oops_connect_your_internet">Oops! Connect Your Internet</string>
+    <string name="no_internet">No internet Connection</string>
     <string name="something_went">Oops ! Something Went Wrong</string>
     <string name="please_try_again">Please Try Again</string>
     <string name="timed_out">Oops.Timeout Error!</string>
     <string name="server_down">Unable to reach server</string>
+
 
     <string name="version">Version</string>
     <string name="deposit">Deposit</string>

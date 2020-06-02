@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/light_gray_bg"
     tools:context=".mvvm.ui.myWallet.MyWalletFragment">
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"

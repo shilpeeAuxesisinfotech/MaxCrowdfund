@@ -21,11 +21,15 @@ import maxcrowdfund.com.mvvm.ui.investform.questmodel.model.SurveyFormDataInsert
 import maxcrowdfund.com.mvvm.ui.investform.questmodel.question.InvestSurveyQuestionResponse;
 import maxcrowdfund.com.mvvm.ui.investform.questmodel.questionlistmodel.InvestAmountKeyUpResponse;
 import maxcrowdfund.com.mvvm.ui.login.LoginResponse;
+import maxcrowdfund.com.mvvm.ui.myWallet.responsemodel.UserPurchaseOrderResponse;
+import maxcrowdfund.com.mvvm.ui.myWallet.responsemodel.UserTransactionResponse;
+import maxcrowdfund.com.mvvm.ui.myWallet.responsemodel.WalletDetailResponse;
 import maxcrowdfund.com.mvvm.ui.myinvestments.myinvestmentdetail.myinvestmentdetailmodel.CancelInvestmentResponce;
 import maxcrowdfund.com.mvvm.ui.myinvestments.myinvestmentdetail.myinvestmentdetailmodel.MyInvestmentDetailResponse;
 import maxcrowdfund.com.mvvm.ui.myinvestments.model.MyInvestmentResponce;
 import maxcrowdfund.com.mvvm.ui.investform.questmodel.InvestFormPreloadResponse;
 import maxcrowdfund.com.mvvm.ui.myprofile.model.ProfileResponse;
+import maxcrowdfund.com.mvvm.ui.uiTokens.UITokenResponse;
 import maxcrowdfund.com.mvvm.ui.uploadImage.ChangeAvatarResponce;
 import com.google.gson.JsonObject;
 import retrofit2.Call;
@@ -36,6 +40,8 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface EndPointInterface {
+    @GET("api/application-ui-tokens")
+    Call<UITokenResponse> getUiToken(@Query("_format") String mFormat,@Header("Content-Type") String content);
     @POST("api/user/login")
     Call<LoginResponse> getLoginUser(@Query("_format") String mFormate,@Header("Content-Type") String content, @Body JsonObject jsonObject);
 
@@ -122,4 +128,13 @@ public interface EndPointInterface {
 
     @GET("api/bank-transfer-detail-mail")
     Call<BankTransferDetailMailResponse> getBankTransferDetailMail(@Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);
+
+    @GET("api/wallet-detail")
+    Call<WalletDetailResponse> getWalletDetail(@Query("_format") String mFormat, @Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);
+
+    @GET("api/user-purchase-order")
+    Call<UserPurchaseOrderResponse> getUserPurchaseOrder(@Query("_format") String mFormat, @Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);
+
+    @GET("api/user-transaction")
+    Call<UserTransactionResponse> getUserTransaction(@Query("_format") String mFormat, @Header("Content-Type") String content, @Header("X-CSRF-TOKEN") String xcsrf);
 }

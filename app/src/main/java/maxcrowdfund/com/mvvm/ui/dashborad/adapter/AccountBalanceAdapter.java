@@ -107,8 +107,6 @@ public class AccountBalanceAdapter extends RecyclerView.Adapter<AccountBalanceAd
                 holder.binding.tvValue.setText(arrayList.get(position).getValue());
             }
         }
-
-
     }
 
     @Override

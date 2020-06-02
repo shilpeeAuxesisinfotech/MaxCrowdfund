@@ -49,7 +49,7 @@
                                 android:layout_height="wrap_content">
 
                                 <de.hdodenhof.circleimageview.CircleImageView
-                                    android:id="@+id/iv_user_img"
+                                    android:id="@+id/ivUserImg"
                                     android:layout_width="@dimen/_70sdp"
                                     android:layout_height="@dimen/_70sdp"
                                     android:layout_alignParentStart="true"
@@ -59,11 +59,11 @@
                                     app:civ_border_width="1dp" />
 
                                 <TextView
-                                    android:id="@+id/tv_user_name"
+                                    android:id="@+id/tvTitleName"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_centerInParent="true"
-                                    android:layout_toRightOf="@+id/iv_user_img"
+                                    android:layout_toRightOf="@+id/ivUserImg"
                                     android:fontFamily="@font/roboto_medium"
                                     android:gravity="left|center"
                                     android:paddingLeft="@dimen/_10sdp"
@@ -87,7 +87,7 @@
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/tvName"
+                                android:id="@+id/tvUserNameTitle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto"
@@ -97,7 +97,7 @@
                                 android:textSize="@dimen/_12sdp" />
 
                             <TextView
-                                android:id="@+id/tv_name"
+                                android:id="@+id/tvUserNameValue"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_medium"
@@ -108,7 +108,7 @@
                                 android:textSize="@dimen/_12sdp" />
 
                             <TextView
-                                android:id="@+id/tvSurName"
+                                android:id="@+id/tvSurNameTittle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto"
@@ -119,7 +119,7 @@
                                 android:textSize="@dimen/_12sdp" />
 
                             <TextView
-                                android:id="@+id/tv_sur_name"
+                                android:id="@+id/tvSurNameValue"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_medium"
@@ -130,7 +130,7 @@
                                 android:textSize="@dimen/_12sdp" />
 
                             <TextView
-                                android:id="@+id/tvEmail"
+                                android:id="@+id/tvEmailTitle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto"
@@ -141,7 +141,7 @@
                                 android:textSize="@dimen/_12sdp" />
 
                             <TextView
-                                android:id="@+id/tv_email"
+                                android:id="@+id/tvEmailValue"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_medium"
@@ -175,7 +175,7 @@
                                 android:visibility="gone" />
 
                             <TextView
-                                android:id="@+id/tvAddress"
+                                android:id="@+id/tvAddressTitle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto"
@@ -186,7 +186,7 @@
                                 android:textSize="@dimen/_12sdp" />
 
                             <TextView
-                                android:id="@+id/tv_Address"
+                                android:id="@+id/tvAddressValue"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_medium"
@@ -197,7 +197,7 @@
                                 android:textSize="@dimen/_12sdp" />
 
                             <TextView
-                                android:id="@+id/tvInvestorId"
+                                android:id="@+id/tvInvestorIdTitle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto"
@@ -208,7 +208,7 @@
                                 android:textSize="@dimen/_12sdp" />
 
                             <TextView
-                                android:id="@+id/tv_investorId"
+                                android:id="@+id/tvInvestorIdValue"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_medium"
@@ -219,7 +219,7 @@
                                 android:textSize="@dimen/_12sdp" />
 
                             <TextView
-                                android:id="@+id/tvAccountId"
+                                android:id="@+id/tvAccountIdTitle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto"
@@ -230,7 +230,7 @@
                                 android:textSize="@dimen/_12sdp" />
 
                             <TextView
-                                android:id="@+id/tv_accountId"
+                                android:id="@+id/tvAccountIdValue"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_medium"
@@ -353,7 +353,7 @@
                     android:padding="@dimen/_5sdp">
 
                     <Button
-                        android:id="@+id/btn_addChange"
+                        android:id="@+id/btnAddChange"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_45sdp"
                         android:background="@drawable/outline_green"
@@ -365,7 +365,7 @@
                         android:textSize="@dimen/_12sdp" />
 
                     <Button
-                        android:id="@+id/btn_change_email"
+                        android:id="@+id/btnChangeEmail"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_45sdp"
                         android:layout_marginTop="@dimen/_8sdp"
@@ -378,7 +378,7 @@
                         android:textSize="@dimen/_12sdp" />
 
                     <Button
-                        android:id="@+id/btn_change_mobile"
+                        android:id="@+id/btnChangeMobile"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_45sdp"
                         android:layout_marginTop="@dimen/_8sdp"
@@ -391,7 +391,7 @@
                         android:textSize="@dimen/_12sdp" />
 
                     <Button
-                        android:id="@+id/btn_change_pass"
+                        android:id="@+id/btnChangePassword"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_45sdp"
                         android:layout_marginTop="@dimen/_8sdp"
@@ -404,7 +404,7 @@
                         android:textSize="@dimen/_12sdp" />
 
                     <Button
-                        android:id="@+id/btn_change_default_bankA"
+                        android:id="@+id/btnChangeDefaultBank"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_45sdp"
                         android:layout_marginTop="@dimen/_8sdp"
@@ -417,7 +417,7 @@
                         android:textSize="@dimen/_12sdp" />
 
                     <Button
-                        android:id="@+id/btn_change_preference"
+                        android:id="@+id/btnChangePreference"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_45sdp"
                         android:layout_marginTop="@dimen/_8sdp"

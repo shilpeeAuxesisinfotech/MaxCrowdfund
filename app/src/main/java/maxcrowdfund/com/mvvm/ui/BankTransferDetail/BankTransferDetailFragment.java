@@ -3,9 +3,11 @@ package maxcrowdfund.com.mvvm.ui.BankTransferDetail;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,16 +20,20 @@ import maxcrowdfund.com.R;
 import maxcrowdfund.com.constant.MaxCrowdFund;
 import maxcrowdfund.com.constant.ProgressDialog;
 import maxcrowdfund.com.constant.Utils;
+import maxcrowdfund.com.databinding.FragmentBankTransferDetailBinding;
 import maxcrowdfund.com.mvvm.activity.HomeActivity;
 import maxcrowdfund.com.mvvm.activity.LoginActivity;
 import maxcrowdfund.com.mvvm.ui.BankTransferDetail.model.BankTransferDetailMailResponse;
 import maxcrowdfund.com.mvvm.ui.BankTransferDetail.model.BankTransferDetailResponse;
 import maxcrowdfund.com.restapi.ApiClient;
 import maxcrowdfund.com.restapi.EndPointInterface;
+
 import com.google.gson.Gson;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 import static android.text.Html.fromHtml;
 
 public class BankTransferDetailFragment extends Fragment {
@@ -36,7 +42,8 @@ public class BankTransferDetailFragment extends Fragment {
     Activity mActivity;
     Button btnResend;
     String XCSRF = "";
-    TextView tvShortMessage, tvAccountNumberTittle, tvAccountNubValue, tvBenifisaryTittle, tvtvBenifisaryValue, tvbiscSwTittle, tvbiscSwValue, tvrRreferenceTittle, tvrRreferenceValue, tvLongMessage;
+    //TextView tvShortMessage, tvAccountNumberTittle, tvAccountNubValue, tvBenifisaryTittle, tvtvBenifisaryValue, tvbiscSwTittle, tvbiscSwValue, tvrRreferenceTittle, tvrRreferenceValue, tvLongMessage;
+    FragmentBankTransferDetailBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,17 +51,17 @@ public class BankTransferDetailFragment extends Fragment {
         mActivity = getActivity();
 
         XCSRF = Utils.getPreference(getActivity(), "mCsrf_token");
-        tvShortMessage = root.findViewById(R.id.tvShortMessage);
-        tvAccountNumberTittle = root.findViewById(R.id.tvAccountNumberTittle);
-        tvAccountNubValue = root.findViewById(R.id.tvAccountNubValue);
-        tvBenifisaryTittle = root.findViewById(R.id.tvBenifisaryTittle);
-        tvtvBenifisaryValue = root.findViewById(R.id.tvtvBenifisaryValue);
-        tvbiscSwTittle = root.findViewById(R.id.tvbiscSwTittle);
+//        tvShortMessage = root.findViewById(R.id.tvShortMessage);
+//        tvAccountNumberTittle = root.findViewById(R.id.tvAccountNumberTittle);
+//        tvAccountNubValue = root.findViewById(R.id.tvAccountNubValue);
+//        tvBenifisaryTittle = root.findViewById(R.id.tvBenifisaryTittle);
+//        tvtvBenifisaryValue = root.findViewById(R.id.tvtvBenifisaryValue);
+//        tvbiscSwTittle = root.findViewById(R.id.tvbiscSwTittle);
+//        tvbiscSwValue = root.findViewById(R.id.tvbiscSwValue);
+//        tvrRreferenceTittle = root.findViewById(R.id.tvrRreferenceTittle);
+//        tvrRreferenceValue = root.findViewById(R.id.tvrRreferenceValue);
+//        tvLongMessage = root.findViewById(R.id.tvLongMessage);
 
-        tvbiscSwValue = root.findViewById(R.id.tvbiscSwValue);
-        tvrRreferenceTittle = root.findViewById(R.id.tvrRreferenceTittle);
-        tvrRreferenceValue = root.findViewById(R.id.tvrRreferenceValue);
-        tvLongMessage = root.findViewById(R.id.tvLongMessage);
         btnResend = root.findViewById(R.id.btnResend);
 
        /* BankViewModel bankViewModel = ViewModelProviders.of(this).get(BankViewModel.class);
@@ -73,7 +80,7 @@ public class BankTransferDetailFragment extends Fragment {
             Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
         }
 
-        btnResend.setOnClickListener(new View.OnClickListener() {
+        binding.btnResend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (Utils.isInternetConnected(getActivity())) {
@@ -104,42 +111,42 @@ public class BankTransferDetailFragment extends Fragment {
                                 if (response.body().getBankTransferDetail() != null) {
                                     if (response.body().getBankTransferDetail().getData() != null) {
                                         if (response.body().getBankTransferDetail().getData().getShortMessage() != null) {
-                                            tvShortMessage.setText(fromHtml(response.body().getBankTransferDetail().getData().getShortMessage().getValue()));
+                                            binding.tvShortMessage.setText(fromHtml(response.body().getBankTransferDetail().getData().getShortMessage().getValue()));
                                         }
                                         if (response.body().getBankTransferDetail().getData().getAccountNumber() != null) {
-                                            tvAccountNumberTittle.setText(response.body().getBankTransferDetail().getData().getAccountNumber().getTitle());
-                                            tvAccountNubValue.setText(response.body().getBankTransferDetail().getData().getAccountNumber().getValue());
+                                            binding.tvAccountNumberTittle.setText(response.body().getBankTransferDetail().getData().getAccountNumber().getTitle());
+                                            binding.tvAccountNubValue.setText(response.body().getBankTransferDetail().getData().getAccountNumber().getValue());
                                         }
                                         if (response.body().getBankTransferDetail().getData().getBenificiaryName() != null) {
-                                            tvBenifisaryTittle.setText(response.body().getBankTransferDetail().getData().getBenificiaryName().getTitle());
-                                            tvtvBenifisaryValue.setText(response.body().getBankTransferDetail().getData().getBenificiaryName().getValue());
+                                            binding.tvBenifisaryTittle.setText(response.body().getBankTransferDetail().getData().getBenificiaryName().getTitle());
+                                            binding.tvBenifisaryValue.setText(response.body().getBankTransferDetail().getData().getBenificiaryName().getValue());
                                         }
                                         if (response.body().getBankTransferDetail().getData().getBicswift() != null) {
-                                            tvbiscSwTittle.setText(response.body().getBankTransferDetail().getData().getBicswift().getTitle());
-                                            tvbiscSwValue.setText(response.body().getBankTransferDetail().getData().getBicswift().getValue());
+                                            binding.tvbiscSwTittle.setText(response.body().getBankTransferDetail().getData().getBicswift().getTitle());
+                                            binding.tvbiscSwValue.setText(response.body().getBankTransferDetail().getData().getBicswift().getValue());
                                         }
                                         if (response.body().getBankTransferDetail().getData().getReference() != null) {
-                                            tvrRreferenceTittle.setText(response.body().getBankTransferDetail().getData().getReference().getTitle());
-                                            tvrRreferenceValue.setText(response.body().getBankTransferDetail().getData().getReference().getValue());
+                                            binding.tvrRreferenceTittle.setText(response.body().getBankTransferDetail().getData().getReference().getTitle());
+                                            binding.tvrRreferenceValue.setText(response.body().getBankTransferDetail().getData().getReference().getValue());
                                         }
                                         if (response.body().getBankTransferDetail().getData().getLongMessage() != null) {
-                                            tvLongMessage.setText(fromHtml(response.body().getBankTransferDetail().getData().getLongMessage().getValue()));
+                                            binding.tvLongMessage.setText(fromHtml(response.body().getBankTransferDetail().getData().getLongMessage().getValue()));
                                         }
                                     }
                                 } else {
-                                    Toast.makeText(mActivity, getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mActivity, Utils.noDataFound, Toast.LENGTH_SHORT).show();
                                 }
                             } else {
                                 Utils.setPreference(getActivity(), "user_id", "");
                                 Utils.setPreference(getActivity(), "mLogout_token", "");
                                 MaxCrowdFund.getInstance().getClearCookies(getActivity(), "cookies", "");
-                                Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), Utils.sessionExpire, Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                                 startActivity(intent);
                                 mActivity.finish();
                             }
                         } else {
-                            Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), Utils.noDataFound, Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Toast.makeText(getActivity(), getResources().getString(R.string.something_went), Toast.LENGTH_SHORT).show();

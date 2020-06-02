@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import maxcrowdfund.com.R;
 import maxcrowdfund.com.constant.MaxCrowdFund;
 import maxcrowdfund.com.constant.ProgressDialog;
 import maxcrowdfund.com.constant.Utils;
@@ -28,7 +27,6 @@ import maxcrowdfund.com.mvvm.ui.dashborad.model.NetReturn;
 import maxcrowdfund.com.mvvm.ui.dashborad.model.Portfolio;
 import maxcrowdfund.com.restapi.ApiClient;
 import maxcrowdfund.com.restapi.EndPointInterface;
-import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
@@ -36,7 +34,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DashboardFragment extends Fragment {
-    private static final String TAG = "DashboardFragment";
     ProgressDialog pd;
     AccountBalanceAdapter accountbalanceadapter;
     AccountBalanceAdapter portFolioAdapter;
@@ -58,35 +55,31 @@ public class DashboardFragment extends Fragment {
         if (Utils.isInternetConnected(getActivity())) {
             getAccountBalance();
         } else {
-            Toast.makeText(getActivity(), getResources().getString(R.string.oops_connect_your_internet), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), Utils.oops_connect_your_internet, Toast.LENGTH_SHORT).show();
         }
         return binding.getRoot();
     }
 
     private void getAccountBalance() {
-        pd = ProgressDialog.show(getActivity(), "Please Wait...");
+        pd = ProgressDialog.show(getActivity(), Utils.pleaseWait);
         EndPointInterface git = ApiClient.getClient1(getActivity()).create(EndPointInterface.class);
         Call<AccountBalanceResponse> call = git.getAccountBalance("application/json", XCSRF);
         call.enqueue(new Callback<AccountBalanceResponse>() {
             @Override
             public void onResponse(Call<AccountBalanceResponse> call, Response<AccountBalanceResponse> response) {
-                Log.d(TAG, "onResponse: " + ">AccountBalance<" + new Gson().toJson(response.body()));
+                //Log.d(TAG, "onResponse: " + ">AccountBalance<" + new Gson().toJson(response.body()));
                 if (pd != null && pd.isShowing()) {
                     pd.dismiss();
                 }
                 if (response != null) {
                     if (response != null && response.isSuccessful()) {
-                        Log.d(TAG, "onResponse: " + ">AccountBalance---------" + response.body().getUserLoginStatus());
                         if (response.body().getUserLoginStatus() == 1) {
-                            /*For Account Balance */
                             if (response.body().getBalance() != null) {
                                 getAccountData(response.body().getBalance());
                             }
-                            /*For Portfolio*/
                             if (response.body().getPortfolio() != null) {
                                 getPortFolio(response.body().getPortfolio());
                             }
-                            /* For Net Return  */
                             if (response.body().getNetReturn() != null) {
                                 getNetReturn(response.body().getNetReturn());
                             }
@@ -94,19 +87,18 @@ public class DashboardFragment extends Fragment {
                             Utils.setPreference(getActivity(), "user_id", "");
                             Utils.setPreference(getActivity(), "mLogout_token", "");
                             MaxCrowdFund.getInstance().getClearCookies(getActivity(), "cookies", "");
-                            Toast.makeText(getActivity(), getResources().getString(R.string.session_expire), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), Utils.sessionExpire, Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getActivity(), LoginActivity.class);
                             startActivity(intent);
                             mActivity.finish();
                         }
                     } else {
-                        Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),Utils.noDataFound, Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.no_data_found), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), Utils.noDataFound, Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(Call<AccountBalanceResponse> call, Throwable t) {
                 Log.e("response", "error " + t.getMessage());
@@ -143,6 +135,7 @@ public class DashboardFragment extends Fragment {
             if (netReturn.getData().getLastNetReturn() != null) {
                 netReturnList.add(new CommonModel(netReturn.getData().getLastNetReturn().getTitle(), netReturn.getData().getLastNetReturn().getValue()));
             }
+
             if (netReturnList.size() > 0) {
                 binding.tvNoDataFoundNetR.setVisibility(View.GONE);
                 binding.recViewNetReturn.setVisibility(View.VISIBLE);
@@ -153,6 +146,7 @@ public class DashboardFragment extends Fragment {
                 binding.recViewNetReturn.setAdapter(netReturnAdapter);
                 netReturnAdapter.notifyDataSetChanged();
             } else {
+                binding.tvNoDataFoundNetR.setText(Utils.noDataFound);
                 binding.tvNoDataFoundNetR.setVisibility(View.VISIBLE);
                 binding.recViewNetReturn.setVisibility(View.GONE);
             }
@@ -200,6 +194,7 @@ public class DashboardFragment extends Fragment {
                 binding.recyViewPortFolio.setAdapter(portFolioAdapter);
                 portFolioAdapter.notifyDataSetChanged();
             } else {
+                binding.tvNoDataFoundPort.setText(Utils.noDataFound);
                 binding.tvNoDataFoundPort.setVisibility(View.VISIBLE);
                 binding.recyViewPortFolio.setVisibility(View.GONE);
             }
@@ -259,6 +254,7 @@ public class DashboardFragment extends Fragment {
             binding.recyViewAccBalance.setAdapter(accountbalanceadapter);
             accountbalanceadapter.notifyDataSetChanged();
         } else {
+            binding.tvNoDataFoundBalance.setText(Utils.noDataFound);
             binding.tvNoDataFoundBalance.setVisibility(View.VISIBLE);
             binding.recyViewAccBalance.setVisibility(View.GONE);
         }
@@ -266,6 +262,6 @@ public class DashboardFragment extends Fragment {
 
     public void onResume() {
         super.onResume();
-        ((HomeActivity) getActivity()).setActionBarTitle(getString(R.string.menu_dashboard));
+        ((HomeActivity) getActivity()).setActionBarTitle(Utils.menuDashboard);
     }
 }
